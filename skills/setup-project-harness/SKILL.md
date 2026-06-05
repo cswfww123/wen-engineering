@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Scaffold the per-repo configuration that engineering agents assume.
 
-This skill is the strict initialization surface. It is based on `setup-matt-pocock-skills` and extends it with project harness rules for Codex and Claude.
+This skill is the strict initialization surface. It follows the Matt-style setup pattern and extends it with project harness rules for Codex and Claude.
 
 It is prompt-driven, not a deterministic script. Explore, present findings, walk the user through decisions one at a time, confirm the draft, then write.
 

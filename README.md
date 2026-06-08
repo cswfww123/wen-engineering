@@ -38,6 +38,7 @@ That is the fast path. After setup, agents know where project instructions live,
 Common skills:
 
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
+- `/code-review` reviews local diffs or PRs for completion, regressions, performance, and safety.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/do-grill` selects and completes one focused grill topic from `/grill-prep` docs.
 - `/do-issues` works through ready AFK vertical-slice issues one at a time.
@@ -112,6 +113,10 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) — creates or improves skills with clear triggers, short instructions, and one-level references.
 
+### Review And Quality
+
+- [`code-review`](skills/code-review/SKILL.md) — reviews local diffs or PRs for completion, regressions, performance, and safety.
+
 ### Architecture
 
 - [`codebase-design`](skills/codebase-design/SKILL.md) — provides deep-module vocabulary for module interfaces, seams, adapters, leverage, and locality.
@@ -155,6 +160,11 @@ skills/
     SKILL.md
     DEEPENING.md
     DESIGN-IT-TWICE.md
+  code-review/
+    AGENT-BRIEFS.md
+    SKILL.md
+    PROJECT-LENSES.md
+    REVIEW-AXES.md
   domain-modeling/
     SKILL.md
     ADR-FORMAT.md

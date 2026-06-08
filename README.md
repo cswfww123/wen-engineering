@@ -29,7 +29,7 @@ Then run `/setup-project-harness` in the target project. It will configure:
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
 - the five triage labels used by `/triage`, `/to-issues`, and `/to-prd`
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
-- `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and focused `.agent/rules/**`
+- `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and focused `.agents/rules/**`
 
 That is the fast path. After setup, agents know where project instructions live, which rules to load, and which commands prove their work.
 
@@ -58,7 +58,7 @@ The harness skill creates:
 
 - `AGENTS.md` as the shared entrypoint and source of truth
 - `CLAUDE.md` linked to `AGENTS.md`
-- detailed standards under `.agent/rules/`
+- detailed standards under `.agents/rules/`
 - rule files split by language or domain, such as `typescript/`, `java/`, `frontend/`, `backend/`, `api/`, `database/`, `testing/`, or `skills/`
 
 ## Why This Exists
@@ -69,7 +69,7 @@ AI agents fail in predictable ways.
 
 Most projects do not fail because the model cannot write code. They fail because the model does not know the local boundary: which layer owns the logic, which naming convention matters, which command proves success, which tradeoff the team already made.
 
-The fix is a project harness: a small `AGENTS.md` entrypoint plus focused `.agent/rules/**` files that capture the decisions future agents would otherwise rediscover or contradict.
+The fix is a project harness: a small `AGENTS.md` entrypoint plus focused `.agents/rules/**` files that capture the decisions future agents would otherwise rediscover or contradict.
 
 ### #2: The User And Agent Did Not Align
 
@@ -93,7 +93,7 @@ The best rule files prevent predictable drift while leaving room for human taste
 
 When agents do not share the project's vocabulary, they write verbose explanations, inconsistent names, and awkward abstractions.
 
-The fix is progressive disclosure: keep `AGENTS.md` short, put domain language in `CONTEXT.md`, architectural decisions in `docs/adr/`, and detailed standards in `.agent/rules/**`.
+The fix is progressive disclosure: keep `AGENTS.md` short, put domain language in `CONTEXT.md`, architectural decisions in `docs/adr/`, and detailed standards in `.agents/rules/**`.
 
 ## Skills
 
@@ -138,7 +138,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ```text
 AGENTS.md
 CLAUDE.md -> AGENTS.md
-.agent/
+.agents/
   rules/
     project/
       agent-workflow.md
@@ -207,7 +207,7 @@ This repo currently focuses on project initialization and harness engineering:
 
 - identifying the project shape and stack
 - establishing a shared agent entrypoint
-- organizing standards under `.agent/rules/`
+- organizing standards under `.agents/rules/`
 - keeping Codex and Claude aligned through one source of truth
 - helping the user and LLM define boundaries together
 - preparing large project ideas as scoped topic docs before they become overlong chats

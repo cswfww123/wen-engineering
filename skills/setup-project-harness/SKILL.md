@@ -1,6 +1,6 @@
 ---
 name: setup-project-harness
-description: Strictly set up AGENTS.md, CLAUDE.md, docs/agents, and .agent/rules for Codex or Claude projects.
+description: Strictly set up AGENTS.md, CLAUDE.md, docs/agents, and .agents/rules for Codex or Claude projects.
 disable-model-invocation: true
 ---
 
@@ -21,7 +21,7 @@ Do not optimize this skill for line count. Its job is to be complete and reliabl
 - **Domain docs** — how agents read `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs
 - **Agent entrypoint** — `AGENTS.md` as the project source of truth
 - **Claude compatibility** — `CLAUDE.md` points to `AGENTS.md`
-- **Rule harness** — focused `.agent/rules/**` files for project, language, layer, and workflow boundaries
+- **Rule harness** — focused `.agents/rules/**` files for project, language, layer, and workflow boundaries
 
 ## Process
 
@@ -44,7 +44,7 @@ Read the harness surface:
 - source roots and project shape: frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repo
 - languages, frameworks, package manager, and install/dev/build/lint/typecheck/test commands
 - route/API layers, schema/migration layers, database access, generated code, deployment config
-- existing AI instructions: `.agent/rules/`, `.claude/rules/`, `.cursor/rules/`, `.cursorrules`, `.github/copilot-instructions.md`, `.windsurfrules`, `.clinerules`
+- existing AI instructions: `.agents/rules/`, `.claude/rules/`, `.cursor/rules/`, `.cursorrules`, `.github/copilot-instructions.md`, `.windsurfrules`, `.clinerules`
 - existing style from code or skills: naming, formatting, imports, typing, errors, prompts, references, scripts
 
 Summarize what is present, missing, and ambiguous before asking decisions.
@@ -106,13 +106,13 @@ Decide how to handle existing files:
 
 - If neither exists, create `AGENTS.md` and symlink `CLAUDE.md -> AGENTS.md`
 - If `AGENTS.md` exists, update it in place and link `CLAUDE.md`
-- If `CLAUDE.md` exists as a file, preserve useful content into `AGENTS.md` or `.agent/rules/**`, then replace it with a symlink only after the user accepts the draft
+- If `CLAUDE.md` exists as a file, preserve useful content into `AGENTS.md` or `.agents/rules/**`, then replace it with a symlink only after the user accepts the draft
 - If `CLAUDE.md` is already the correct symlink, leave it
 - If symlinks are unsupported, create a one-line stub that points to `AGENTS.md`
 
 #### Section E — Rule Harness
 
-Explainer: Detailed standards do not belong in `AGENTS.md`. They live under `.agent/rules/` so agents load only the relevant boundaries.
+Explainer: Detailed standards do not belong in `AGENTS.md`. They live under `.agents/rules/` so agents load only the relevant boundaries.
 
 Decide which rule directories apply:
 
@@ -148,7 +148,7 @@ Include:
 
 - `AGENTS.md` content based on [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md)
 - the `## Agent skills` block that will be included in `AGENTS.md`
-- `.agent/rules/` tree and new/changed rule file contents
+- `.agents/rules/` tree and new/changed rule file contents
 - `docs/agents/issue-tracker.md`
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
@@ -169,10 +169,10 @@ Write `AGENTS.md`:
 - keep it under 150 lines where practical
 - include project overview, core directives, exact commands, rule index, engineering practices, reference files
 - include an `## Agent skills` block with issue tracker, triage label, and domain docs summaries
-- link to `docs/agents/*.md` and `.agent/rules/**`
-- do not duplicate detailed rule content from `.agent/rules/**`
+- link to `docs/agents/*.md` and `.agents/rules/**`
+- do not duplicate detailed rule content from `.agents/rules/**`
 
-Write `.agent/rules/**`:
+Write `.agents/rules/**`:
 
 - create only directories that apply
 - use [RULE_TEMPLATE.md](RULE_TEMPLATE.md)
@@ -195,7 +195,7 @@ Run all applicable checks:
 - `test -f docs/agents/issue-tracker.md`
 - `test -f docs/agents/triage-labels.md`
 - `test -f docs/agents/domain.md`
-- `find .agent/rules -maxdepth 3 -type f`
+- `find .agents/rules -maxdepth 3 -type f`
 - exact lint/typecheck/test/build commands recorded for the repo, if any
 
 Do not validate this setup skill by `SKILL.md` line count. Completeness beats brevity for this initialization surface.
@@ -213,4 +213,4 @@ Report:
 - verification evidence
 - remaining open decisions
 
-Mention that users can edit `docs/agents/*.md`, `.agent/rules/**`, and `AGENTS.md` directly later. Re-run this skill only when switching trackers, changing domain layout, or reinitializing the harness.
+Mention that users can edit `docs/agents/*.md`, `.agents/rules/**`, and `AGENTS.md` directly later. Re-run this skill only when switching trackers, changing domain layout, or reinitializing the harness.

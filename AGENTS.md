@@ -10,7 +10,7 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Proceed on clear, reversible implementation steps; ask only when the decision is genuinely user-owned or destructive.
 - **Use skills**: prefer project skills such as `/setup-project-harness` and `/skill-review` when they fit the task.
-- **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agent/rules/**`, `README.md`, and `skills/**` files before editing.
+- **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `README.md`, and `skills/**` files before editing.
 - **Domain language**: use this repo's terms: skills, harness, progressive disclosure, user bridge, repo evidence, agent judgment, and rules as guardrails.
 - **Feedback loop**: after changing a skill, verify frontmatter, description length, references, and README/index consistency. Line count is advisory except for strict setup/init skills.
 - **Code quality**: keep skill instructions short, active, and operational. Move templates or rarely needed detail to one-level reference files.
@@ -32,10 +32,10 @@ This repo currently has no package manager, build, lint, typecheck, or test comm
 
 ## Rule Index
 
-Agents must read the relevant files under `.agent/rules/` before editing matching work.
+Agents must read the relevant files under `.agents/rules/` before editing matching work.
 
-- `.agent/rules/project/` — project identity, collaboration, verification, and harness boundaries
-- `.agent/rules/skills/` — skill authoring and skill review rules
+- `.agents/rules/project/` — project identity, collaboration, verification, and harness boundaries
+- `.agents/rules/skills/` — skill authoring and skill review rules
 
 ## Engineering Practices
 
@@ -51,7 +51,7 @@ Agents must read the relevant files under `.agent/rules/` before editing matchin
 - `docs/agents/*.md` — issue tracker, triage label, and domain documentation contracts
 - `skills/**/SKILL.md` — project skills
 - `skills/setup-project-harness/AGENTS_TEMPLATE.md` — generated `AGENTS.md` reference shape
-- `skills/setup-project-harness/RULE_TEMPLATE.md` — `.agent/rules/**` reference shape
-- `.agent/rules/**` — detailed project rules
+- `skills/setup-project-harness/RULE_TEMPLATE.md` — `.agents/rules/**` reference shape
+- `.agents/rules/**` — detailed project rules
 
 Always do real engineering: align on intent, change in small verified steps, and let human taste plus agent judgment both do their best work.

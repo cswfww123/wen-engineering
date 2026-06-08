@@ -1,6 +1,6 @@
 # Rule File Template
 
-Use this shape for files under `.agent/rules/**`. Keep each file focused on one language, layer, workflow, or boundary. Rules should prevent drift, not remove useful judgment.
+Use this shape for files under `.agents/rules/**`. Keep each file focused on one language, layer, workflow, or boundary. Rules should prevent drift, not remove useful judgment.
 
 If the project already has a clearer severity vocabulary, preserve it and map the meaning explicitly.
 

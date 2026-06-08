@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Scaffold the per-repo configuration that engineering agents assume.
 
-This skill is the strict initialization surface. It follows the Matt-style setup pattern and extends it with project harness rules for Codex and Claude.
+This skill is the strict initialization surface. It uses an evidence-first setup pattern for project harness rules across Codex and Claude.
 
 It is prompt-driven, not a deterministic script. Explore, present findings, walk the user through decisions one at a time, confirm the draft, then write.
 
@@ -29,7 +29,7 @@ Do not optimize this skill for line count. Its job is to be complete and reliabl
 
 Look at the current repo to understand its starting state. Read whatever exists; do not assume.
 
-Read the Matt-style setup surface:
+Read the issue-tracker and documentation setup surface:
 
 - `git remote -v` and `.git/config` — is this GitHub, GitLab, self-hosted, or no remote?
 - `AGENTS.md` and `CLAUDE.md` — does either exist, and does either already contain an `## Agent skills` section?

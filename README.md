@@ -12,7 +12,7 @@ The goal is not to turn agents into rigid form-fillers. The goal is to build the
 
 Rules are guardrails. Skills are reusable conversations. The agent should stay smart, the user should keep decisive taste and authority, and the codebase should stop drifting every time a different model touches it.
 
-Inspired by [mattpocock/skills](https://github.com/mattpocock/skills), especially the emphasis on small adaptable skills, grilling for alignment, shared domain language, feedback loops, and codebase design.
+The repo favors small adaptable skills, alignment interviews, shared domain language, feedback loops, and codebase design without making any external style guide the project standard.
 
 ## Quickstart (30-second setup)
 

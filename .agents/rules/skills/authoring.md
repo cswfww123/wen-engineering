@@ -12,7 +12,7 @@ Source: `README.md`, `/write-a-skill`, `skills/setup-project-harness/SKILL.md`, 
 - [MUST] Preserve complete mandatory flow in strict setup/init skills such as `setup-project-harness`; do not shrink them just to satisfy line count.
 - [SHOULD] Use progressive disclosure: put templates, examples, and rarely needed details in one-level sibling references.
 - [SHOULD] Preserve agent judgment; skills should guide, ask, recommend, and verify rather than replace reasoning with rigid forms.
-- [SHOULD] Use concise English, active verbs, and Matt-style instruction density.
+- [SHOULD] Use concise English, active verbs, and operational instruction density.
 - [FORBID] Generic best-practice dumps, repeated philosophy, or rules that restate normal LLM competence.
 
 ## Verify

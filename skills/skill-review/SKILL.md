@@ -40,16 +40,19 @@ Look for issues in this order:
 
 ### 3. Report
 
-Return findings first, ordered by severity. Use file and line references when possible.
+Return findings first, ordered by severity. Use this format for each finding:
 
-For each finding, include:
+```markdown
+### <severity>: <one-line summary>
 
-- the problem
-- why it matters for this skill's behavior
-- the smallest suggested fix
+- **Check area**: <which check from step 2 triggered this>
+- **Location**: `path/to/file:line`
+- **Problem**: <what is wrong>
+- **Why it matters**: <how it affects skill behavior>
+- **Fix**: <smallest suggested change>
+```
 
 Then add:
-
 - what already works well
 - whether the skill is acceptable as-is
 - optional tightening edits if the user asked for implementation

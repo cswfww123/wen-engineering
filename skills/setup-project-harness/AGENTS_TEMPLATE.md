@@ -14,10 +14,10 @@ This repository uses AI coding agents for real engineering work, not vibe coding
 ## Core Directives
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Follow this project's autonomy rule for whether to proceed immediately or wait for confirmation.
-- **Use skills**: prefer available slash skills such as `/grill-with-docs`, `/grill-prep`, `/domain-modeling`, `/codebase-design`, `/to-prd`, `/to-issues`, `/do-issues`, `/tdd`, or project skills when they fit the task.
+- **Use skills**: prefer available slash skills such as `/grill-with-docs`, `/diagnosing-bugs`, `/grill-prep`, `/domain-modeling`, `/codebase-design`, `/to-prd`, `/to-issues`, `/do-issues`, `/tdd`, or project skills when they fit the task.
 - **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `docs/**`, `CONTEXT.md`, and `skills/**` files before editing.
 - **Domain language**: use established project terms from `CONTEXT.md` or docs. Avoid vague substitute terms.
-- **Feedback loop**: run the relevant typecheck, lint, tests, and build before claiming completion. For bugs, use a diagnose-style loop.
+- **Feedback loop**: run the relevant typecheck, lint, tests, and build before claiming completion. For bugs, use `/diagnosing-bugs`.
 - **Code quality**: prefer simple, deep, maintainable modules. Before broad refactors, zoom out and map callers, boundaries, and ownership.
 - **Judgment**: rules are guardrails. When evidence conflicts with a rule, stop, explain the conflict, and choose the smallest reversible path or ask the user.
 

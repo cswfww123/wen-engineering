@@ -34,6 +34,10 @@ RIGHT:
 
 ## Workflow
 
+### 0. Receive Context
+
+When invoked by another skill (e.g., `/do-issues`), use the calling skill's context — the current issue, its acceptance criteria, and the public interface to test. Do not start fresh from `CONTEXT.md` when the calling skill already provided a focus.
+
 ### 1. Planning
 
 Before writing code:
@@ -86,3 +90,10 @@ Never refactor while RED. Get to GREEN first.
 - test would survive internal refactor
 - code is minimal for this test
 - no speculative features added
+
+## Done Means
+
+- all planned behaviors have a passing test
+- tests describe behavior through the public interface
+- code is minimal — no speculative features
+- refactor step is complete and tests still pass

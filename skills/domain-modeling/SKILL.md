@@ -27,9 +27,29 @@ Use [CONTEXT-FORMAT.md](CONTEXT-FORMAT.md) and [ADR-FORMAT.md](ADR-FORMAT.md).
 
 When the user uses a term that conflicts with `CONTEXT.md`, call it out immediately and ask which meaning is correct.
 
+Example:
+
+```
+You said "campaign" but CONTEXT.md defines campaign as "a paid promotion with a budget and schedule."
+You seem to mean "any outgoing message including organic posts."
+Which meaning should we use here, or do we need a new term?
+```
+
 ### Sharpen Fuzzy Language
 
 When the user uses vague or overloaded terms, propose a precise canonical term.
+
+Example:
+
+```
+BAD:  "Handle the payment stuff"
+GOOD: "Process the Stripe charge for the order total, then record the transaction in the payments table"
+
+BAD:  "The system manages users"
+GOOD: "The system creates, authenticates, and authorizes customer accounts"
+```
+
+Propose the sharpened term, explain why the original was ambiguous, and ask for confirmation. Update `CONTEXT.md` once confirmed.
 
 ### Discuss Concrete Scenarios
 
@@ -44,6 +64,18 @@ When the user states how something works, check whether the code agrees. Surface
 When a term is resolved, update `CONTEXT.md` right away. Do not batch glossary updates.
 
 `CONTEXT.md` must stay free of implementation details. It is a glossary, not a spec, scratch pad, or implementation decision log.
+
+Good glossary entry:
+
+```markdown
+- **Order**: a customer's intent to purchase one or more items, identified by `order_id`. Includes line items, total, and payment status. Not the same as a Cart (pre-checkout) or a Transaction (payment record).
+```
+
+Bad glossary entry:
+
+```markdown
+- **Order**: manages orders (too vague, no boundaries, no distinctions from neighbors)
+```
 
 ### Offer ADRs Sparingly
 

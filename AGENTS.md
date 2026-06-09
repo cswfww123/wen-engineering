@@ -21,6 +21,7 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 This repo currently has no package manager, build, lint, typecheck, or test command.
 
 - List skills: `find skills -maxdepth 2 -name SKILL.md -print | sort`
+- Sync skills into Codex and Claude: `./scripts/sync-skills.sh --agents codex,claude`
 - Check skill descriptions: `python3 - <<'PY'\nfrom pathlib import Path\nfor p in sorted(Path('skills').glob('*/SKILL.md')):\n    for line in p.read_text().splitlines():\n        if line.startswith('description:'):\n            d=line.split(':',1)[1].strip(); print(len(d), p, d)\nPY`
 - Check advisory skill line counts: `wc -l skills/*/SKILL.md` (do not fail strict setup/init skills for length)
 
@@ -49,6 +50,7 @@ Agents must read the relevant files under `.agents/rules/` before editing matchi
 
 - `README.md` — project philosophy, skill index, and repository layout
 - `docs/agents/*.md` — issue tracker, triage label, and domain documentation contracts
+- `scripts/sync-skills.sh` — batch sync all repo skills into local Codex and Claude skill directories
 - `skills/**/SKILL.md` — project skills
 - `skills/setup-project-harness/AGENTS_TEMPLATE.md` — generated `AGENTS.md` reference shape
 - `skills/setup-project-harness/RULE_TEMPLATE.md` — `.agents/rules/**` reference shape

@@ -17,6 +17,17 @@ See [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-AXES.md), and [P
 4. Validate and score each finding from 0-100; keep only findings with confidence `>=80`.
 5. Auto-fix only verified low-risk local findings when fixes were requested; report larger findings.
 
+## Auto-Fix Behavior Preservation Contract
+
+Every auto-fix this skill applies must satisfy this contract:
+
+- The fix affects **how** the code does something, never **what** it does
+- All original features, outputs, return values, error modes, and side effects remain intact
+- No business logic, authorization check, validation rule, or data transformation is added, removed, or reordered
+- No new external calls, file writes, or state mutations are introduced by a fix
+
+Review findings and suggestions may describe behavior-changing defects, but those findings are **report-only** unless the candidate fix satisfies this contract. If any part of the contract cannot be verified for a candidate fix, keep the finding **report-only**.
+
 ## Workflow
 
 ### 1. Establish Scope
@@ -46,7 +57,7 @@ Treat formatters, linters, typecheckers, and tests as verification tools. Do not
 
 Build one review packet with the diff commands, changed files, commit list, standards sources, spec source, project shape, and relevant stack lenses.
 
-When sub-agents are available, launch the five axis reviewers from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) in parallel in one message. When parallel agents are unavailable, run the same reviewers sequentially. When no agent tool exists, perform the passes yourself in the same order:
+When sub-agents are available, launch the five axis reviewers from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) in parallel in one message so their contexts stay independent. When parallel agents are unavailable, run the same reviewers sequentially. When no agent tool exists, perform the passes yourself in the same order.
 
 - **Standards**: diff compliance with documented repo rules and local instructions
 - **Completion**: every requested capability is actually wired, tested where appropriate, and not merely claimed complete
@@ -71,19 +82,59 @@ For PR comments, re-check PR eligibility before posting and do not post unless t
 
 ### 5. Auto-Fix And Safety
 
-Auto-fix only after review, only in local working-tree reviews, and only when the user requested fixes or safe auto-fix. Never auto-fix public PR reviews, branch audits, destructive changes, migrations, broad refactors, ambiguous product behavior, or security architecture changes.
+#### Auto-Fix Eligibility
 
-An issue is auto-fixable only when Verification marks it confidence `>=80`, impact small, scope local, rollback obvious, and expected behavior unchanged. Make the smallest edit, then run the relevant verification. If verification is unavailable or fails, stop and report.
+A finding is auto-fixable only when **all** of the following are true:
+
+- Confidence score `>= 80` from the Verification Reviewer
+- Impact: local to the changed lines, no cascade effects
+- Scope: single function or smaller
+- Behavior: the fix preserves exact behavior per the Auto-Fix Behavior Preservation Contract above
+- Rollback: the exact fix hunk can be reverted without touching unrelated user changes
+- Verification: a test, typecheck, or linter exists to confirm the fix
+
+If even one criterion fails, mark the finding **report-only** and explain why.
+
+#### Never Auto-Fix
+
+Do not auto-fix any finding in these categories, regardless of confidence:
+
+- Public PR reviews or branch audits
+- Database migrations or schema changes
+- Security architecture (auth, authz, crypto, secrets)
+- Business logic, product behavior, or authorization rule changes
+- Cross-module refactors
+- Changes to public API contracts
+- Ambiguous fixes with multiple valid approaches
+- Code the user did not author in this session or diff
+
+#### Per-Fix Protocol
+
+When a fix is eligible:
+
+1. Make the **smallest possible edit** — one finding, one hunk
+2. Run available verification immediately (tests, typecheck, lint)
+3. If verification passes, proceed to the next fix
+4. If verification fails or is unavailable, **revert only the fix hunk** and report
+5. Never stack multiple fixes without verifying each one
+
+Never use path-level checkout/reset to undo an auto-fix unless the user explicitly approves it; those commands can discard unrelated user-authored changes in the same file.
+
+After all eligible fixes, report what was fixed with verification results, what was skipped and why, and any remaining findings that need user decision.
 
 ### 6. Report
 
-Lead with findings, ordered by severity. For each finding include:
+Lead with findings, ordered by severity. For each finding use this format:
 
-- file and line
-- why it matters
-- evidence source
-- smallest useful fix direction
-- whether it was auto-fixed, skipped as too large, or needs user decision
+```markdown
+### <severity>: <one-line summary>
+
+- **File**: `path/to/file.ext:line`
+- **Evidence**: <what you saw and where>
+- **Why it matters**: <concrete impact>
+- **Fix direction**: <smallest useful fix>
+- **Status**: auto-fixed / report-only / needs-user-decision
+```
 
 If no issues survive validation, say so clearly and mention any skipped axis or unrun verification. Keep summaries brief; the review is the product.
 

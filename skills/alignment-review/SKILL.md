@@ -58,4 +58,15 @@ Lead with one verdict:
 - `Rework` - missing or misleading enough to regenerate or re-slice
 - `Ask User` - blocked by a real product decision
 
-Then report findings with evidence, affected artifact sections, and the smallest correction. Do not rewrite the whole artifact unless the user asks.
+For each finding, use this format:
+
+```markdown
+### <verdict area>: <one-line summary>
+
+- **Artifact section**: <which part of the PRD/issue/test plan>
+- **Source evidence**: <user request, spec line, or repo evidence that contradicts>
+- **Gap**: <what is missing, misleading, or invented>
+- **Smallest correction**: <how to fix it>
+```
+
+Do not rewrite the whole artifact unless the user asks. Report findings with evidence and corrections, then stop.

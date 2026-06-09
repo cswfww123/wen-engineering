@@ -14,17 +14,53 @@ Rules are guardrails. Skills are reusable conversations. The agent should stay s
 
 The repo favors small adaptable skills, alignment interviews, shared domain language, feedback loops, and codebase design without making any external style guide the project standard.
 
-## Quickstart (30-second setup)
+## Quickstart
 
-Install these skills into Codex, Claude, or another supported coding agent with the skills.sh installer:
+Recommended: clone the repo and synchronize every skill into Codex and Claude:
+
+```bash
+git clone https://github.com/cswfww123/wen-engineering.git
+cd wen-engineering
+./scripts/sync-skills.sh --agents codex,claude
+```
+
+This installs all skills without a picker. It also creates a manifest in each target skill directory so future syncs can remove skills that were deleted from this repo without touching unrelated user skills.
+
+Alternative: use the interactive skills.sh installer when you only want to pick a few skills or install into an agent it supports:
 
 ```bash
 npx skills@latest add cswfww123/wen-engineering
 ```
 
-When prompted, pick the skills you want and the coding agents you want to install them on. For a new project, select **`/setup-project-harness`**.
+The interactive installer may not support every agent or update/delete workflow. Prefer `scripts/sync-skills.sh` when you want Codex and Claude to stay aligned with this repo over time.
 
-Then run `/setup-project-harness` in the target project. It will configure:
+Update later with:
+
+```bash
+cd wen-engineering
+git pull --ff-only
+./scripts/sync-skills.sh --agents codex,claude
+```
+
+By default the sync copies files into `~/.codex/skills` and `~/.claude/skills`. Use `--mode link` if you want local edits in this checkout to be visible immediately:
+
+```bash
+./scripts/sync-skills.sh --agents codex,claude --mode link
+```
+
+If you previously installed same-name skills with another tool, the sync may refuse to overwrite them. Inspect first:
+
+```bash
+./scripts/sync-skills.sh --agents codex,claude --dry-run
+```
+
+Then migrate once when you want this repo to manage those skill names:
+
+```bash
+./scripts/sync-skills.sh --agents codex,claude --force
+```
+
+For a new project, run **`/setup-project-harness`** in the target project after syncing. It will configure:
 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
 - the five triage labels used by `/triage`, `/to-issues`, and `/to-prd`
@@ -40,6 +76,7 @@ Common skills:
 - `/alignment-review` reviews generated planning artifacts for intent, repo evidence, and execution alignment.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` reviews local diffs or PRs for completion, regressions, performance, and safety.
+- `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/do-issues` works through ready AFK vertical-slice issues one at a time.
 - `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
@@ -122,6 +159,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews local diffs or PRs for completion, regressions, performance, and safety.
+- [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, and files durable bug issues.
 
 ### Architecture
@@ -162,6 +200,8 @@ docs/
     domain.md
     issue-tracker.md
     triage-labels.md
+scripts/
+  sync-skills.sh
 skills/
   alignment-review/
     SKILL.md
@@ -175,6 +215,11 @@ skills/
     SKILL.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
+  diagnosing-bugs/
+    SKILL.md
+    ATTRIBUTION.md
+    scripts/
+      hitl-loop.template.sh
   domain-modeling/
     SKILL.md
     ADR-FORMAT.md
@@ -222,6 +267,7 @@ skills/
     SKILL.md
   setup-project-harness/
     SKILL.md
+    SECTIONS.md
     AGENTS_TEMPLATE.md
     RULE_TEMPLATE.md
     domain.md

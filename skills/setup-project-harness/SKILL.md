@@ -23,140 +23,110 @@ Do not optimize this skill for line count. Its job is to be complete and reliabl
 - **Claude compatibility** — `CLAUDE.md` points to `AGENTS.md`
 - **Rule harness** — focused `.agents/rules/**` files for project, language, layer, and workflow boundaries
 
-## Process
+## Idempotency Check
 
-### 1. Explore
+Before starting exploration, check whether setup has already been done:
+
+```
+test -f AGENTS.md
+test -f docs/agents/issue-tracker.md
+test -f docs/agents/triage-labels.md
+```
+
+If all three exist:
+
+- report what is already set up
+- ask whether to reinitialize completely or update in place
+- skip sections that are already complete unless the user wants to change them
+- never silently overwrite existing user-authored content
+
+## Phase 1: Explore
 
 Look at the current repo to understand its starting state. Read whatever exists; do not assume.
 
-Read the issue-tracker and documentation setup surface:
+When sub-agents are available, launch three parallel explorations. Otherwise explore sequentially in this order.
 
-- `git remote -v` and `.git/config` — is this GitHub, GitLab, self-hosted, or no remote?
-- `AGENTS.md` and `CLAUDE.md` — does either exist, and does either already contain an `## Agent skills` section?
+### Exploration A: Infrastructure
+
+- `git remote -v` and `.git/config` — GitHub, GitLab, self-hosted, or no remote?
+- `AGENTS.md` and `CLAUDE.md` — does either exist? Is `CLAUDE.md` a symlink?
 - `CONTEXT.md` and `CONTEXT-MAP.md`
 - `docs/adr/` and any `src/*/docs/adr/`
 - `docs/agents/` — does prior setup output already exist?
 - `.scratch/` — sign that local markdown issue tracking is already in use
 
-Read the harness surface:
+### Exploration B: Code Shape
 
 - `README.md`, docs, CI, formatter/linter configs, package manifests, lockfiles, build files
 - source roots and project shape: frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repo
-- languages, frameworks, package manager, and install/dev/build/lint/typecheck/test commands
+- languages, frameworks, package manager
+- install/dev/build/lint/typecheck/test commands — only from repo evidence, never invented
 - route/API layers, schema/migration layers, database access, generated code, deployment config
-- existing AI instructions: `.agents/rules/`, `.claude/rules/`, `.cursor/rules/`, `.cursorrules`, `.github/copilot-instructions.md`, `.windsurfrules`, `.clinerules`
+
+### Exploration C: Existing AI Instructions
+
+- `.agents/rules/`, `.claude/rules/`, `.cursor/rules/`, `.cursorrules`
+- `.github/copilot-instructions.md`, `.windsurfrules`, `.clinerules`
 - existing style from code or skills: naming, formatting, imports, typing, errors, prompts, references, scripts
 
-Summarize what is present, missing, and ambiguous before asking decisions.
+### Exploration Summary
 
-### 2. Present Findings And Ask
+After all explorations complete, produce a structured summary:
 
-Walk the user through the decisions one section at a time. Do not dump all sections at once.
+```markdown
+## Exploration Summary
 
-Each section starts with a short explainer, shows the evidence you found, names the recommended default, and asks for the user's decision. Recommend defaults when evidence supports them. Do not ask for decisions the repo already proves unless changing them would be destructive.
+### Infrastructure
+- Remote: <GitHub / GitLab / none>
+- Existing AGENTS.md: <yes, N lines / no>
+- Existing CLAUDE.md: <symlink to AGENTS.md / standalone file / no>
+- Existing docs/agents/: <list files / none>
+- Existing .scratch/: <yes / no>
 
-#### Section A — Issue Tracker
+### Code Shape
+- Project type: <frontend / backend / full-stack / library / CLI / monorepo / empty>
+- Languages: <list>
+- Frameworks: <list>
+- Commands found: <list with exact commands>
+- Commands missing: <list>
 
-Explainer: The issue tracker is where issues and PRDs live. Skills like `to-issues`, `triage`, and `to-prd` need to know whether to call `gh`, `glab`, write local markdown, or follow another workflow.
+### Existing AI Instructions
+- Found: <list files and patterns>
+- Not found: <list platforms with no config>
+```
 
-Default posture:
+Present this summary to the user before proceeding to decisions.
 
-- GitHub if `git remote -v` points at GitHub
-- GitLab if it points at GitLab or a self-hosted GitLab
-- Local markdown if there is no remote, no issue tracker evidence, or `.scratch/` already exists
-- Other if the user describes Jira, Linear, or another workflow
+## Phase 2: Decide
 
-Choices:
+Walk the user through setup decisions one section at a time. Do not dump all sections at once.
 
-- **GitHub** — write `docs/agents/issue-tracker.md` from `issue-tracker-github.md`
-- **GitLab** — write it from `issue-tracker-gitlab.md`
-- **Local markdown** — write it from `issue-tracker-local.md`
-- **Other** — write it from the user's paragraph
+See [SECTIONS.md](SECTIONS.md) for the decision tree for each section. Load only the section being discussed.
 
-#### Section B — Triage Labels
+Sections in order:
 
-Explainer: The triage skill needs exact label strings for five canonical roles. If the tracker already has labels, map to those strings rather than creating duplicates.
+1. **A — Issue Tracker** (determines which template to use)
+2. **B — Triage Labels** (depends on tracker choice)
+3. **C — Domain Docs** (independent)
+4. **D — Agent Entrypoint** (independent)
+5. **E — Rule Harness** (depends on code shape from exploration)
+6. **F — Project Commands** (depends on code shape from exploration)
 
-Canonical roles:
+## Phase 3: Draft And Confirm
 
-- `needs-triage` — maintainer needs to evaluate
-- `needs-info` — waiting on reporter
-- `ready-for-agent` — fully specified, AFK-ready
-- `ready-for-human` — needs human implementation
-- `wontfix` — will not be actioned
+Based on all decisions, draft all artifacts before writing:
 
-Default: each role's string equals its name. Ask whether any should be overridden.
-
-#### Section C — Domain Docs
-
-Explainer: Architecture and debugging skills read domain docs so they use the project's language instead of inventing terms. They need to know whether the repo has one global context or multiple contexts.
-
-Choices:
-
-- **Single-context** — one root `CONTEXT.md` plus `docs/adr/`
-- **Multi-context** — root `CONTEXT-MAP.md` pointing to per-context `CONTEXT.md` files
-
-Default: single-context unless `CONTEXT-MAP.md`, monorepo structure, or clear bounded contexts suggest multi-context.
-
-#### Section D — Agent Entrypoint
-
-Explainer: Codex and Claude should share one source of truth. This project standard uses `AGENTS.md` as the entrypoint and makes `CLAUDE.md` point to it.
-
-Decide how to handle existing files:
-
-- If neither exists, create `AGENTS.md` and symlink `CLAUDE.md -> AGENTS.md`
-- If `AGENTS.md` exists, update it in place and link `CLAUDE.md`
-- If `CLAUDE.md` exists as a file, preserve useful content into `AGENTS.md` or `.agents/rules/**`, then replace it with a symlink only after the user accepts the draft
-- If `CLAUDE.md` is already the correct symlink, leave it
-- If symlinks are unsupported, create a one-line stub that points to `AGENTS.md`
-
-#### Section E — Rule Harness
-
-Explainer: Detailed standards do not belong in `AGENTS.md`. They live under `.agents/rules/` so agents load only the relevant boundaries.
-
-Decide which rule directories apply:
-
-- `project/` — project identity, workflow, dependency policy, verification
-- `skills/` — skill authoring/review rules for engineering-skills repos
-- `typescript/`, `javascript/`, `java/`, `python/` — language-specific rules
-- `frontend/`, `backend/`, `api/`, `database/`, `testing/`, `cli/`, `library/`, `monorepo/` — layer/workflow rules
-
-Use [RULE_TEMPLATE.md](RULE_TEMPLATE.md). Use `[MUST]` and `[FORBID]` only for real boundaries; use `[SHOULD]` for defaults where judgment may beat the rule.
-
-#### Section F — Project Commands And Verification
-
-Explainer: Agents need exact commands that prove work is correct. Only record commands found in repo evidence or supplied by the user.
-
-Confirm:
-
-- install command
-- dev command
-- build command
-- lint command
-- typecheck command
-- test command
-- single-test command
-- known missing commands
-
-Do not invent commands from package manager conventions alone. If commands are missing, record that they are missing.
-
-### 3. Confirm Draft
-
-Show the user a draft before writing.
-
-Include:
-
-- `AGENTS.md` content based on [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md)
-- the `## Agent skills` block that will be included in `AGENTS.md`
+- `AGENTS.md` content from [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md)
+- the `## Agent skills` block for `AGENTS.md`
 - `.agents/rules/` tree and new/changed rule file contents
 - `docs/agents/issue-tracker.md`
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
-- how existing `AGENTS.md`, `CLAUDE.md`, and prior rule/docs files will be merged, preserved, or replaced
+- how existing files will be merged, preserved, or replaced
 
-Let the user edit the draft. Do not silently overwrite surrounding user-authored sections.
+Show the complete draft to the user. Let the user edit before writing. Do not silently overwrite surrounding user-authored sections.
 
-### 4. Write
+## Phase 4: Write
 
 Write `docs/agents/`:
 
@@ -178,7 +148,6 @@ Write `.agents/rules/**`:
 - use [RULE_TEMPLATE.md](RULE_TEMPLATE.md)
 - include source evidence or user decision
 - include verification when a rule can be checked
-- create strict rules for style, API, database, testing, and skills only when those areas apply
 
 Write `CLAUDE.md`:
 
@@ -186,7 +155,7 @@ Write `CLAUDE.md`:
 - otherwise write a one-line pointer to `AGENTS.md`
 - never maintain divergent core instructions
 
-### 5. Verify
+## Phase 5: Verify
 
 Run all applicable checks:
 
@@ -198,9 +167,7 @@ Run all applicable checks:
 - `find .agents/rules -maxdepth 3 -type f`
 - exact lint/typecheck/test/build commands recorded for the repo, if any
 
-Do not validate this setup skill by `SKILL.md` line count. Completeness beats compactness for this initialization surface.
-
-### 6. Done
+## Done
 
 Report:
 

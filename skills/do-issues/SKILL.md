@@ -87,3 +87,10 @@ Stop when:
 - a destructive or external-access decision is required
 
 When stopping, report the current feature directory, completed issues, remaining blocked issues, and verification evidence.
+
+## After All Issues Complete
+
+When all runnable AFK issues are done, suggest the user:
+
+1. Run `/code-review` on the local changes
+2. Run `/qa-run` to validate the feature against the test plan

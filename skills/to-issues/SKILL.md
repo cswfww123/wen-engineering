@@ -77,3 +77,11 @@ Exception: if a prototype produced a concise snippet that encodes a decision mor
 
 Or: None - can start immediately
 ```
+
+## Recommended Next Step
+
+After issues are published:
+
+1. Run `/alignment-review` to check that issue slices match the PRD and are truly vertical
+2. Run `/to-test-plan` to define test cases while requirements are fresh
+3. Then run `/do-issues` to start implementation

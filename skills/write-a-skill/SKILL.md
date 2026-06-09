@@ -73,6 +73,22 @@ The description is the only thing an agent sees when deciding whether to load th
 - first sentence says what it does
 - second sentence starts with "Use when..."
 
+Good description values:
+
+```markdown
+Reviews local diffs or PRs for completion, regressions, performance, and safety. Use for WIP or PR reviews.
+Runs or retests QA cases and records results. Use after code-review, bug fixes, smoke, regression, or QA.
+Writes a compact handoff for a fresh agent. Use when handing off, compacting context, or preparing a new session.
+```
+
+Bad description values:
+
+```markdown
+Helps with code review (too vague, no triggers)
+A comprehensive tool for reviewing your code changes, pull requests, and diffs with multiple analysis axes and reporting capabilities (too long, padded, no triggers)
+Use for review (says when but not what)
+```
+
 ## When To Add Scripts
 
 Add scripts when:

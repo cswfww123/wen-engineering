@@ -17,14 +17,14 @@ Assume the user will `/clear` after this session. The only durable state is `doc
 2. Run the state self-check.
 3. Select one runnable topic.
 4. Load only `INDEX.md`, that topic file, `CONTEXT.md`/ADRs, and directly relevant repo evidence.
-5. Run `/start-grill` inside the topic scope.
+5. Run `/grilling` with `/domain-modeling` inside the topic scope.
 6. Persist material answers, decisions, and blockers into the topic file as they crystallize.
 7. Update the topic file and `INDEX.md` with conclusions.
 8. Run the state self-check again and name the next action.
 
 ## Find The Grill Set
 
-If the user passed a grill folder, index path, or topic file, start there. Otherwise, use the most recently active unfinished `docs/grilling/*/INDEX.md`. If multiple sets look equally current, ask one concise question with the candidate paths. If no grill-prep set exists, run `/grill-prep` first unless this is small enough for one normal grill.
+If the user passed a grill folder, index path, or topic file, start there. Otherwise, use the most recently active unfinished `docs/grilling/*/INDEX.md`. If multiple sets look equally current, ask one concise question with the candidate paths. If no grill-prep set exists, run `/grill-prep` only when the user wants persistent multi-session topic docs; otherwise use `/grill-with-docs`.
 
 ## State Self-Check
 
@@ -39,7 +39,7 @@ If every required topic is done, stop and tell the user to run `/finish-grill`. 
 
 ## Native Grill Contract
 
-Do not invent a separate interview style. `/do-grill` only selects scope and persists state. The questioning protocol is `/start-grill`: direct `/grilling` with `/domain-modeling`, unless the selected topic itself needs further prep. Preserve the native rules:
+Do not invent a separate interview style. `/do-grill` only selects scope and persists state. The questioning protocol is `/grilling` with `/domain-modeling`, unless the selected topic itself needs further prep. Preserve the native rules:
 
 - ask one question at a time and wait
 - provide your recommended answer for each question
@@ -48,7 +48,7 @@ Do not invent a separate interview style. `/do-grill` only selects scope and per
 - update `CONTEXT.md` only for glossary terms, never planning notes
 - create ADRs only for hard-to-reverse, surprising trade-offs
 
-If the selected topic itself exceeds the 40% threshold, split it into smaller topic files, update `INDEX.md`, and stop.
+If the selected topic is still too broad for one focused session, split it into smaller topic files, update `INDEX.md`, and stop.
 
 ## Select One Topic
 

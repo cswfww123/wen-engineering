@@ -1,6 +1,6 @@
 ---
 name: finish-grill
-description: Synthesizes all grill topics into a PRD source. Use after do-grill topics are complete or before to-prd.
+description: Synthesizes completed grill-prep topics into a PRD source. Use after explicit grill-prep work is complete.
 ---
 
 # Finish Grill

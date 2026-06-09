@@ -8,8 +8,9 @@ Source: `skills/skill-review/SKILL.md`, user report that overlong descriptions c
 - [MUST] Review the `description:` first; if the agent cannot discover the skill, the rest of the skill cannot help.
 - [MUST] Flag descriptions over 180 characters as too long.
 - [SHOULD] Prefer descriptions under 120 characters.
-- [MUST] Check trigger clarity, appropriate length, progressive disclosure, judgment preservation, output clarity, side effects, and reference depth.
-- [MUST] Treat strict setup/init skills as process specifications; review them for completeness and sequencing before brevity.
+- [MUST] Check trigger clarity, progressive disclosure, judgment preservation, output clarity, side effects, and reference depth.
+- [SHOULD] Treat `SKILL.md` line count as a review signal. Ask whether the extra content is core workflow or reference detail before suggesting cuts.
+- [MUST] Treat strict setup/init skills as process specifications; review them for completeness and sequencing before compactness.
 - [SHOULD] Return findings first, ordered by severity, with file and line references when possible.
 - [SHOULD] Suggest the smallest edit that fixes the issue while preserving the author's intent.
 - [FORBID] Accepting a skill that needs destructive side effects but can be invoked automatically by the model.
@@ -22,4 +23,5 @@ Source: `skills/skill-review/SKILL.md`, user report that overlong descriptions c
 ## Exceptions
 
 - Longer descriptions can be acceptable only when still under 180 characters and materially improve discovery.
+- Ordinary skills may exceed line-count guidance when the extra instructions are required for safe invocation.
 - Strict setup/init skills may exceed ordinary `SKILL.md` line-count guidance when required for mandatory flow.

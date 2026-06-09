@@ -85,14 +85,14 @@ Add scripts when:
 
 Split files when:
 
-- `SKILL.md` would exceed about 100 lines
+- `SKILL.md` mixes always-needed workflow with rarely needed detail
 - content has distinct domains
 - advanced details are rarely needed
 
 ## Review Checklist
 
 - description includes triggers
-- `SKILL.md` is under 100 lines unless it is a strict setup skill
+- `SKILL.md` is concise enough to load, with reference detail split out when useful
 - no time-sensitive claims
 - terminology is consistent
 - references are one level deep

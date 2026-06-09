@@ -198,7 +198,7 @@ Run all applicable checks:
 - `find .agents/rules -maxdepth 3 -type f`
 - exact lint/typecheck/test/build commands recorded for the repo, if any
 
-Do not validate this setup skill by `SKILL.md` line count. Completeness beats brevity for this initialization surface.
+Do not validate this setup skill by `SKILL.md` line count. Completeness beats compactness for this initialization surface.
 
 ### 6. Done
 

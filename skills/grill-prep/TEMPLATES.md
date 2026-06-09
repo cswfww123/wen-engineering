@@ -55,7 +55,7 @@ Create only the topic files the idea needs.
 - Topic threads read only this index, their topic file, and directly relevant evidence.
 - Topic threads return compact conclusions, not transcripts.
 - Use `/do-grill` to complete one topic per session.
-- `/do-grill` runs `/start-grill` inside one topic scope.
+- `/do-grill` runs `/grilling` with `/domain-modeling` inside one topic scope.
 - `/do-grill` self-checks this index before and after each topic.
 - Use `/finish-grill` after required topics are `Complete` or `Out of scope`.
 - Use `/to-prd` only after `PRD-SOURCE.md` exists.
@@ -100,7 +100,7 @@ What this thread should not discuss:
 - Known facts:
 - Existing evidence:
 - Glossary/ADR context:
-- Context budget: <Fits one focused session, or should split further>
+- Scope fit: <Fits one focused session, or needs a smaller topic split>
 
 ## Durable Notes
 
@@ -142,5 +142,5 @@ Read:
 - CONTEXT.md or CONTEXT-MAP.md plus relevant ADRs, if present
 - only directly relevant repo evidence
 
-Do not solve other grill-prep topics. Use /start-grill inside this topic scope: if the topic is small, it will run /grilling with /domain-modeling; if the topic is still too large, split it further and stop. Persist material answers into the topic file, update INDEX.md, then return only a compact conclusion.
+Do not solve other grill-prep topics. Run /grilling with /domain-modeling inside this topic scope. If the topic is still too broad for one focused session, split it further and stop. Persist material answers into the topic file, update INDEX.md, then return only a compact conclusion.
 ```

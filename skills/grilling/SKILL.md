@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: Interview the user relentlessly about a plan or design. Use for grill, grilling, or stress-test requests.
+description: Core interview protocol. Use when grill-with-docs invokes grilling or the user asks for bare grilling.
 ---
 
 # Grilling

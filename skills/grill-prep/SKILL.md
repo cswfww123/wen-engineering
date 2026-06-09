@@ -1,11 +1,11 @@
 ---
 name: grill-prep
-description: Splits big ideas into persistent grill docs. Use when grill-prep, project-prep, or dumb zone appears.
+description: Splits explicit large planning work into persistent grill docs. Use for grill-prep or multi-session docs.
 ---
 
 # Grill Prep
 
-Prepare a large idea for focused discussion without letting the main thread become the dumping ground. This is the large-requirement branch of `/start-grill`: map the grill branches, write persistent topic state, then stop.
+Prepare a large idea for focused discussion without letting the main thread become the dumping ground. This is an explicit large-planning command: map the grill branches, write persistent topic state, then stop.
 
 ## Quick Start
 
@@ -23,7 +23,7 @@ Use [TEMPLATES.md](TEMPLATES.md) for the document shapes.
 
 The main thread is a router, not the workshop. Do not ask topic questions one at a time here. Do not solve market, product, architecture, finance, and security in one conversation. Convert those questions into topic briefs and move the work out.
 
-Only split when `/start-grill` or local evidence shows a full grill is likely to consume more than about 40% of the useful context window. If the requirement is small, return to `/start-grill` for direct `/grilling` with `/domain-modeling`.
+Use this only when the user explicitly wants persistent multi-session planning docs, topic briefs, or `/grill-prep`. For normal one-session plan sharpening, use `/grill-with-docs`.
 
 All grill-prep state lives in `docs/grilling/<slug>/`. Assume the chat will be cleared after every session. `INDEX.md`, topic files, `CONTEXT.md`, and ADRs are the only durable memory.
 
@@ -49,7 +49,7 @@ Keep it light. Aim for 5-12 sharp questions total. Each question should include 
 
 Separate global blockers from topic work. A global blocker is something that prevents creating useful topic threads at all, such as "we do not know what product this is."
 
-This is not a full `/grilling` session. The full grill happens later through `/do-grill`, which runs `/start-grill` inside one topic scope.
+This is not a full `/grilling` session. The full grill happens later through `/do-grill`, which runs `/grilling` with `/domain-modeling` inside one topic scope.
 
 ### 3. Split Topics
 
@@ -65,7 +65,7 @@ Each topic thread gets only the original one-paragraph idea, `INDEX.md`, its own
 
 When native thread tools are available and the user asked for real threads, create one thread per topic. Otherwise, provide copy-ready `/do-grill` launch prompts.
 
-Inside a topic thread, `/do-grill` runs `/start-grill` inside that topic scope.
+Inside a topic thread, `/do-grill` runs `/grilling` with `/domain-modeling` inside that topic scope.
 
 ### 5. Return Conclusions
 

@@ -37,22 +37,22 @@ That is the fast path. After setup, agents know where project instructions live,
 
 Common skills:
 
+- `/alignment-review` reviews generated planning artifacts for intent, repo evidence, and execution alignment.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` reviews local diffs or PRs for completion, regressions, performance, and safety.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
-- `/do-grill` selects and completes one focused grill topic from `/grill-prep` docs.
 - `/do-issues` works through ready AFK vertical-slice issues one at a time.
-- `/finish-grill` synthesizes completed grill topics into a PRD source.
-- `/grilling` stress-tests a plan one question at a time with recommended answers.
-- `/grill-prep` prepares a broad idea with a light grill, splits topics, and writes scoped thread briefs.
+- `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
+- `/grill-prep` prepares explicit large multi-session ideas as scoped topic docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
+- `/qa-run` executes planned QA cases, records evidence, and files durable bug issues.
 - `/setup-project-harness` initializes a project-level agent harness.
 - `/skill-review` reviews a new or changed skill before accepting it.
-- `/start-grill` starts grill work and routes between direct grilling and persistent prep docs.
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
 - `/to-issues` breaks a PRD or plan into tracer-bullet vertical-slice issues.
 - `/to-prd` turns settled discussion into a PRD for the configured issue tracker.
+- `/to-test-plan` creates traceable test plans and test cases from PRDs and issues.
 - `/write-a-skill` creates or improves skills with progressive disclosure.
 - `/zoom-out` maps relevant modules and callers using the project's domain language.
 
@@ -101,15 +101,18 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
+- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews generated planning artifacts for intent, repo evidence, and execution alignment.
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`do-grill`](skills/do-grill/SKILL.md) — selects one highest-priority unfinished grill topic, completes that scoped grill, and writes PRD-ready conclusions.
+- [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
+- [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
+- [`grill-prep`](skills/grill-prep/SKILL.md) — prepares explicit large multi-session ideas with topic docs before deeper grilling.
+- [`do-grill`](skills/do-grill/SKILL.md) — selects one unfinished grill-prep topic, completes that scoped grill, and writes PRD-ready conclusions.
 - [`finish-grill`](skills/finish-grill/SKILL.md) — reads every completed grill topic and writes `PRD-SOURCE.md` for `/to-prd`.
-- [`grilling`](skills/grilling/SKILL.md) — stress-tests a plan or design by asking one relentless question at a time with a recommended answer.
-- [`grill-prep`](skills/grill-prep/SKILL.md) — prepares big project ideas with a light grill, topic split, docs, and thread briefs before deeper grilling.
-- [`start-grill`](skills/start-grill/SKILL.md) — starts a grill request and routes through direct `/grilling` or persistent `/grill-prep` docs based on context size.
+- [`start-grill`](skills/start-grill/SKILL.md) — legacy compatibility alias for `/grill-with-docs`, used only when invoked by name.
 - [`to-prd`](skills/to-prd/SKILL.md) — turns settled discussion and repo evidence into a PRD on the configured issue tracker.
 - [`to-issues`](skills/to-issues/SKILL.md) — breaks a PRD, plan, or spec into independently grabbable vertical-slice issues.
+- [`to-test-plan`](skills/to-test-plan/SKILL.md) — creates traceable test plans and cases from PRDs and issues.
 - [`do-issues`](skills/do-issues/SKILL.md) — works through ready AFK vertical-slice issues one at a time with verification.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) — creates or improves skills with clear triggers, short instructions, and one-level references.
@@ -118,6 +121,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews local diffs or PRs for completion, regressions, performance, and safety.
+- [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, and files durable bug issues.
 
 ### Architecture
 
@@ -127,7 +131,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Engineering Harness
 
 - [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds an interview-driven project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
-- [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for short descriptions, trigger clarity, brevity, and judgment-preserving guidance.
+- [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
 
 ## Skill Design Principles
 
@@ -158,6 +162,9 @@ docs/
     issue-tracker.md
     triage-labels.md
 skills/
+  alignment-review/
+    SKILL.md
+    CHECKLIST.md
   codebase-design/
     SKILL.md
     DEEPENING.md
@@ -177,6 +184,8 @@ skills/
     SKILL.md
   finish-grill/
     SKILL.md
+  grill-with-docs/
+    SKILL.md
   grilling/
     SKILL.md
   grill-prep/
@@ -189,6 +198,9 @@ skills/
   improve-codebase-architecture/
     SKILL.md
     HTML-REPORT.md
+  qa-run/
+    SKILL.md
+    TEMPLATES.md
   skill-review/
     SKILL.md
   tdd/
@@ -200,6 +212,9 @@ skills/
     SKILL.md
   to-prd/
     SKILL.md
+  to-test-plan/
+    SKILL.md
+    TEMPLATES.md
   write-a-skill/
     SKILL.md
   zoom-out/

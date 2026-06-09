@@ -12,11 +12,14 @@ Options:
   --mode MODE      copy or link (default: copy)
   --dry-run        Print planned changes without writing
   --force          Replace same-name skill directories not yet managed by this repo
+  --archive-legacy-agents
+                  Move same-name skills from $HOME/.agents/skills to a timestamped backup
   -h, --help       Show this help
 
 Environment overrides:
   CODEX_SKILLS_DIR   Default: $HOME/.codex/skills
   CLAUDE_SKILLS_DIR  Default: $HOME/.claude/skills
+  AGENTS_SKILLS_DIR  Default: $HOME/.agents/skills
 USAGE
 }
 
@@ -26,9 +29,11 @@ agents="both"
 mode="copy"
 dry_run=0
 force=0
+archive_legacy_agents=0
 marker_file=".wen-engineering-managed"
 manifest_file=".wen-engineering-skills-manifest"
 manifest_names=()
+legacy_agents_dir="${AGENTS_SKILLS_DIR:-$HOME/.agents/skills}"
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -54,6 +59,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --force)
       force=1
+      shift
+      ;;
+    --archive-legacy-agents)
+      archive_legacy_agents=1
       shift
       ;;
     -h|--help)
@@ -165,6 +174,66 @@ is_managed_dir() {
   [ -f "$dest/$marker_file" ] && grep -q "wen-engineering" "$dest/$marker_file"
 }
 
+check_target_conflicts() {
+  local agent="$1"
+  local target
+  target="$(target_for_agent "$agent")"
+  local manifest="$target/$manifest_file"
+  local conflicts=()
+  local name dest src link_target
+
+  read_manifest "$manifest"
+
+  for name in "${skill_names[@]}"; do
+    dest="$target/$name"
+    src="$skills_src/$name"
+    if [ -e "$dest" ] || [ -L "$dest" ]; then
+      if { [ "${#manifest_names[@]}" -gt 0 ] && contains "$name" "${manifest_names[@]}"; } || is_managed_dir "$dest"; then
+        continue
+      fi
+      if [ -L "$dest" ]; then
+        link_target="$(readlink "$dest")"
+        [ "$link_target" = "$src" ] && continue
+      fi
+      [ "$force" -eq 1 ] || conflicts+=("$name")
+    fi
+  done
+
+  if [ "${#conflicts[@]}" -gt 0 ]; then
+    echo "Refusing to replace existing unmarked $agent skills in $target:" >&2
+    printf '  %s\n' "${conflicts[@]}" >&2
+    echo "Re-run with --force if you want this repo to manage those skill names." >&2
+    return 3
+  fi
+}
+
+archive_legacy_agents_skills() {
+  [ "$archive_legacy_agents" -eq 1 ] || return 0
+  [ -d "$legacy_agents_dir" ] || return 0
+
+  local names_to_archive=()
+  local name dest backup_dir
+
+  for name in "${skill_names[@]}"; do
+    dest="$legacy_agents_dir/$name"
+    if [ -e "$dest" ] || [ -L "$dest" ]; then
+      names_to_archive+=("$name")
+    fi
+  done
+
+  if [ "${#names_to_archive[@]}" -eq 0 ]; then
+    echo "No legacy same-name skills found in $legacy_agents_dir"
+    return 0
+  fi
+
+  backup_dir="$legacy_agents_dir/.wen-engineering-legacy-$(date +%Y%m%d%H%M%S)"
+  run mkdir -p "$backup_dir"
+  for name in "${names_to_archive[@]}"; do
+    run mv "$legacy_agents_dir/$name" "$backup_dir/"
+  done
+  echo "Archived ${#names_to_archive[@]} legacy skills from $legacy_agents_dir to $backup_dir"
+}
+
 sync_one_skill() {
   local target="$1"
   local name="$2"
@@ -199,32 +268,9 @@ sync_target() {
   local target
   target="$(target_for_agent "$agent")"
   local manifest="$target/$manifest_file"
-  local conflicts=()
-  local name dest src link_target old
+  local name dest old
 
   read_manifest "$manifest"
-
-  for name in "${skill_names[@]}"; do
-    dest="$target/$name"
-    src="$skills_src/$name"
-    if [ -e "$dest" ] || [ -L "$dest" ]; then
-      if { [ "${#manifest_names[@]}" -gt 0 ] && contains "$name" "${manifest_names[@]}"; } || is_managed_dir "$dest"; then
-        continue
-      fi
-      if [ -L "$dest" ]; then
-        link_target="$(readlink "$dest")"
-        [ "$link_target" = "$src" ] && continue
-      fi
-      [ "$force" -eq 1 ] || conflicts+=("$name")
-    fi
-  done
-
-  if [ "${#conflicts[@]}" -gt 0 ]; then
-    echo "Refusing to replace existing unmarked $agent skills in $target:" >&2
-    printf '  %s\n' "${conflicts[@]}" >&2
-    echo "Re-run with --force if you want this repo to manage those skill names." >&2
-    exit 3
-  fi
 
   run mkdir -p "$target"
 
@@ -252,9 +298,10 @@ case "$agents" in
 esac
 
 IFS=',' read -r -a requested_agents <<< "$agents"
+validated_agents=()
 for agent in "${requested_agents[@]}"; do
   case "$agent" in
-    codex|claude) sync_target "$agent" ;;
+    codex|claude) validated_agents+=("$agent") ;;
     "")
       echo "Empty agent name in --agents" >&2
       exit 2
@@ -265,3 +312,13 @@ for agent in "${requested_agents[@]}"; do
       ;;
   esac
 done
+
+for agent in "${validated_agents[@]}"; do
+  check_target_conflicts "$agent"
+done
+
+for agent in "${validated_agents[@]}"; do
+  sync_target "$agent"
+done
+
+archive_legacy_agents_skills

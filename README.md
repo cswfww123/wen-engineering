@@ -60,6 +60,14 @@ Then migrate once when you want this repo to manage those skill names:
 ./scripts/sync-skills.sh --agents codex,claude --force
 ```
 
+If Codex shows duplicate WEN skills after migration, you likely still have an older shared install in `~/.agents/skills`. Migrate Claude and archive those old shared copies in one step:
+
+```bash
+./scripts/sync-skills.sh --agents codex,claude --force --archive-legacy-agents
+```
+
+This moves same-name WEN skills from `~/.agents/skills` into a timestamped `.wen-engineering-legacy-*` backup directory after Codex and Claude have been synced.
+
 For a new project, run **`/setup-project-harness`** in the target project after syncing. It will configure:
 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker

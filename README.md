@@ -1,5 +1,7 @@
 # WEN Engineering Skills
 
+Default language: English | [简体中文](README.zh-CN.md)
+
 Skills for real engineering with AI agents.
 
 This repo is for building small, composable skills that help Codex, Claude, and other coding agents do useful engineering work without taking control away from the user.
@@ -76,6 +78,18 @@ For a new project, run **`/setup-project-harness`** in the target project after 
 - `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and focused `.agents/rules/**`
 
 That is the fast path. After setup, agents know where project instructions live, which rules to load, and which commands prove their work.
+
+### Empty Project Routing
+
+For an empty project, choose `/setup-project-harness` or `/grill-with-docs` based on what is already known:
+
+- If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `.agents/rules/**`, and local scratch space.
+- If you only have a goal and the stack is unclear, run a short `/grill-with-docs` pass first. Resolve only enough to know the project type, target user, core constraints, and which stack choices are still open.
+- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue grilling product, architecture, or stack details after the harness exists.
+
+Rule of thumb: no workbench means setup; no direction means micro-grill; once there is enough direction to create the workbench, setup immediately and keep refining from there.
+
+In empty repos, the harness must record facts and user decisions only. Leave package manager, framework, build, lint, typecheck, and test commands undefined until scaffold evidence exists.
 
 ## Local Workspace
 
@@ -194,6 +208,8 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ## Repository Layout
 
 ```text
+README.md
+README.zh-CN.md
 AGENTS.md
 CLAUDE.md -> AGENTS.md
 .agents/

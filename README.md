@@ -54,6 +54,7 @@ Common skills:
 - `/to-issues` breaks a PRD or plan into tracer-bullet vertical-slice issues.
 - `/to-prd` turns settled discussion into a PRD for the configured issue tracker.
 - `/write-a-skill` creates or improves skills with progressive disclosure.
+- `/zoom-out` maps relevant modules and callers using the project's domain language.
 
 The harness skill creates:
 
@@ -112,6 +113,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`do-issues`](skills/do-issues/SKILL.md) — works through ready AFK vertical-slice issues one at a time with verification.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) — creates or improves skills with clear triggers, short instructions, and one-level references.
+- [`zoom-out`](skills/zoom-out/SKILL.md) — maps relevant modules and callers using the project's domain language.
 
 ### Review And Quality
 
@@ -199,6 +201,8 @@ skills/
   to-prd/
     SKILL.md
   write-a-skill/
+    SKILL.md
+  zoom-out/
     SKILL.md
   setup-project-harness/
     SKILL.md

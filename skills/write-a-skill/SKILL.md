@@ -76,8 +76,8 @@ The description is the only thing an agent sees when deciding whether to load th
 Good description values:
 
 ```markdown
-Reviews local diffs or PRs for completion, regressions, performance, and safety. Use for WIP or PR reviews.
-Runs or retests QA cases and records results. Use after code-review, bug fixes, smoke, regression, or QA.
+Reviews diffs for standards, correctness, performance, security, and shape. Use for WIP or PR reviews.
+Runs QA cases and judges completion. Use after code-review, bug fixes, smoke, regression, or QA.
 Writes a compact handoff for a fresh agent. Use when handing off, compacting context, or preparing a new session.
 ```
 

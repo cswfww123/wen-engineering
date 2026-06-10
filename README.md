@@ -95,9 +95,9 @@ In empty repos, the harness must record facts and user decisions only. Leave pac
 
 Common skills:
 
-- `/alignment-review` reviews generated planning artifacts for intent, repo evidence, and execution alignment.
+- `/alignment-review` reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
-- `/code-review` reviews local diffs or PRs for completion, regressions, performance, and safety.
+- `/code-review` reviews diffs for standards, correctness, performance, security, and shape.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/do-issues` works through ready AFK vertical-slice issues one at a time.
@@ -105,7 +105,7 @@ Common skills:
 - `/grill-prep` prepares explicit large multi-session ideas as scoped topic docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
-- `/qa-run` executes planned QA cases, records evidence, and files durable bug issues.
+- `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
 - `/setup-project-harness` initializes a project-level agent harness.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
@@ -160,7 +160,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews generated planning artifacts for intent, repo evidence, and execution alignment.
+- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
 - [`context-resume`](skills/context-resume/SKILL.md) — bootstraps a fresh agent session by reading existing project artifacts (CONTEXT.md, issues, PRDs, git history). Use when resuming after rate limits or switching agents.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
@@ -180,9 +180,9 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews local diffs or PRs for completion, regressions, performance, and safety.
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for standards, correctness, performance, security, and shape.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
-- [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, and files durable bug issues.
+- [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, judges completion, and files durable bug issues.
 
 ### Architecture
 

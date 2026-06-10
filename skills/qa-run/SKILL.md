@@ -1,11 +1,11 @@
 ---
 name: qa-run
-description: Runs or retests QA cases and records results. Use after code-review, bug fixes, smoke, regression, or QA.
+description: Runs QA cases and judges completion. Use after code-review, bug fixes, smoke, regression, or QA.
 ---
 
 # QA Run
 
-Execute or retest QA cases against finished code, record evidence, and file durable bug issues for confirmed defects.
+Execute or retest QA cases against finished code, record evidence, judge requirement completion, and file durable bug issues for confirmed defects.
 
 This skill is report-first. Do not fix implementation code unless the user explicitly asks for a fix loop.
 
@@ -21,6 +21,7 @@ Read only what is needed:
 
 - the test plan from `/to-test-plan`, or bug issues with `Fix Verification` steps
 - the PRD, parent issue, issue set, or acceptance criteria
+- `/alignment-review` results for the PRD, issue set, or test plan when available
 - code review results and changed-file diff when available
 - `CONTEXT.md`, `docs/agents/issue-tracker.md`, and relevant `.agents/rules/**`
 - project commands for tests, builds, dev servers, smoke checks, and single-test runs
@@ -72,7 +73,18 @@ For each case, record status as `Pass`, `Fail`, `Blocked`, or `Not Run` with con
 
 In retest mode, rerun the original failing case first, then related regression scope. Record each bug as `Verified`, `Reopened`, or `Blocked`. Close or mark the bug verified only when project tracker rules allow it.
 
-### 6. Triage Failures
+### 6. Assess Completion
+
+Use the accepted PRD/issues/test plan as the completion source. Do not invent new requirements during QA; if execution reveals a missing requirement or missing case, mark it as a plan gap and recommend `/alignment-review`.
+
+Classify the feature:
+
+- `Complete`: every material requirement has passing evidence, and no required P0/P1 case is failed, blocked, or not run.
+- `Incomplete`: at least one material requirement failed or lacks passing evidence because of product/code behavior.
+- `Blocked`: completion cannot be judged because the environment, data, permissions, or dependency access is unavailable.
+- `Not Assessable`: the source/test plan is missing or misaligned enough that QA cannot fairly judge completion.
+
+### 7. Triage Failures
 
 For each failed or blocked case, classify the cause:
 
@@ -83,11 +95,13 @@ For each failed or blocked case, classify the cause:
 
 Bug issues must describe user-visible behavior or documented contract breakage, not private implementation details.
 
-### 7. Report Quality
+### 8. Report Quality
 
 Write a QA report with:
 
 - coverage summary by priority and scenario type
+- completion verdict: `Complete`, `Incomplete`, `Blocked`, or `Not Assessable`
+- requirement-by-requirement completion summary
 - pass/fail/blocked/not-run counts
 - bugs filed or linked
 - smoke and regression results
@@ -96,7 +110,7 @@ Write a QA report with:
 
 For retest mode, include bugs verified, reopened, and blocked, plus evidence and remaining release risk.
 
-### 8. Handoff
+### 9. Handoff
 
 If bugs were filed or reopened, point the next agent to the bug issue, original test case, `/do-issues`, and `/tdd`.
 
@@ -105,6 +119,7 @@ If the user explicitly asks QA to fix issues now, switch from report-first QA in
 ## Done Means
 
 - every runnable planned case has a recorded result or blocker
+- every material requirement has a completion status or the whole run is marked `Not Assessable`
 - every confirmed defect has a linked bug issue
 - every retested fixed bug is `Verified`, `Reopened`, or `Blocked`
 - evidence is sufficient for a developer to reproduce failures

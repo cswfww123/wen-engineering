@@ -22,9 +22,9 @@ Use these templates when `/to-test-plan` needs concrete artifact shapes.
 
 ## Coverage Matrix
 
-| Requirement / Issue | Behavior Or Contract | Test Cases | Evidence | Status |
+| Requirement ID / Source | Behavior Or Contract | Test Cases | Evidence | Status |
 | --- | --- | --- | --- | --- |
-| <REQ-1> | <what must be true> | TC-XXX-001 | <evidence type> | Covered / Blocked / Out of scope |
+| <REQ-001, PRD section, or issue link> | <what must be true> | TC-XXX-001 | <evidence type> | Covered / Blocked / Out of scope |
 
 ## Test Cases
 
@@ -54,7 +54,7 @@ Use these templates when `/to-test-plan` needs concrete artifact shapes.
 ```md
 ### TC-<FEATURE>-001: <title>
 
-- Linked requirement / issue: <PRD section, issue id, or acceptance criterion>
+- Linked requirement / issue: <REQ id, PRD section, issue id, or acceptance criterion>
 - Module / feature: <domain term>
 - Scenario type: Positive / Negative / Boundary / Permission / Exception / Performance / Regression / Smoke
 - Priority: P0 / P1 / P2

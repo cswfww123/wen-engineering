@@ -22,7 +22,18 @@ This repo currently has no package manager, build, lint, typecheck, or test comm
 
 - List skills: `find skills -maxdepth 2 -name SKILL.md -print | sort`
 - Sync skills into Codex and Claude: `./scripts/sync-skills.sh --agents codex,claude`
-- Check skill descriptions: `python3 - <<'PY'\nfrom pathlib import Path\nfor p in sorted(Path('skills').glob('*/SKILL.md')):\n    for line in p.read_text().splitlines():\n        if line.startswith('description:'):\n            d=line.split(':',1)[1].strip(); print(len(d), p, d)\nPY`
+- Check skill descriptions:
+
+```bash
+python3 - <<'PY'
+from pathlib import Path
+for p in sorted(Path('skills').glob('*/SKILL.md')):
+    for line in p.read_text().splitlines():
+        if line.startswith('description:'):
+            d=line.split(':',1)[1].strip()
+            print(len(d), p, d)
+PY
+```
 - Check advisory skill line counts: `wc -l skills/*/SKILL.md` (do not fail strict setup/init skills for length)
 
 ## Agent Skills

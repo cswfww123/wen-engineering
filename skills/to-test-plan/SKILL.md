@@ -45,6 +45,7 @@ Do not invent UI cases for backend-only work, DB assertions for frontend-only wo
 Create a compact coverage matrix:
 
 - every material requirement or acceptance criterion
+- stable requirement IDs or source references that can be reused by `/alignment-review` and `/qa-run`
 - the behavior, contract, or risk it needs to prove
 - one or more test case IDs that cover it
 - the evidence type needed to judge pass/fail
@@ -72,7 +73,7 @@ Do not include empty `Actual Result` or `Status` fields in the design artifact. 
 
 For each case include:
 
-- case ID, title, linked requirement or issue
+- case ID, title, linked requirement or issue, and source reference
 - scenario type, priority, applicable surface, verification level
 - automation recommendation
 - preconditions, test data, steps, expected results, evidence type, cleanup, and risk notes
@@ -86,6 +87,8 @@ Use the configured tracker shape:
 - other tracker: follow `docs/agents/issue-tracker.md`
 
 If the repo does not define where test plans live, show the artifact draft and ask where to publish it.
+
+After publishing, run `/alignment-review` or hand off to it so requirement coverage and test-case completeness are reviewed before `/qa-run`.
 
 ## Done Means
 

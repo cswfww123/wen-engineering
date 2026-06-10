@@ -23,6 +23,10 @@ Use these templates when `/qa-run` needs concrete artifact shapes.
 
 ## Summary
 
+- Completion verdict: Complete / Incomplete / Blocked / Not Assessable
+- Release recommendation: Ship / Ship With Known Risk / Do Not Ship / Blocked
+- Reason: <short evidence-based reason>
+
 | Status | Count |
 | --- | ---: |
 | Pass | 0 |
@@ -40,6 +44,12 @@ Use these templates when `/qa-run` needs concrete artifact shapes.
 | Boundary | 0 | 0 | 0 | 0 | 0 |
 | Permission | 0 | 0 | 0 | 0 | 0 |
 | Regression | 0 | 0 | 0 | 0 | 0 |
+
+## Requirement Completion
+
+| Requirement | Cases | Status | Evidence / Gap |
+| --- | --- | --- | --- |
+| <REQ-001> | TC-XXX-001 | Complete / Incomplete / Blocked / Not Assessable | <link, excerpt, or plan gap> |
 
 ## Results
 

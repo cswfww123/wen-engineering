@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Reviews local diffs or PRs for completion, regressions, performance, and safety. Use for WIP or PR reviews.
+description: Reviews diffs for standards, correctness, performance, security, and shape. Use for WIP or PR reviews.
 ---
 
 # Code Review
@@ -12,7 +12,7 @@ See [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-AXES.md), and [P
 ## Quick Start
 
 1. Default to local staged and unstaged changes unless the user names a PR, branch, commit, tag, or fixed point.
-2. Gather the diff, commit list, changed files, project shape, standards sources, and spec source.
+2. Gather the diff, commit list, changed files, project shape, standards sources, and behavior evidence.
 3. Run independent reviewer briefs in parallel when possible, or sequentially with the same prompts when not.
 4. Validate and score each finding from 0-100; keep only findings with confidence `>=80`.
 5. Auto-fix only verified low-risk local findings when fixes were requested; report larger findings.
@@ -47,7 +47,7 @@ If there is no PR, no local diff, and no fixed point, ask what to review against
 Collect only the sources needed for the changed files:
 
 - standards: `AGENTS.md`, `CLAUDE.md`, `.agents/rules/**`, `CONTRIBUTING.md`, `STYLE*`, `STANDARDS*`, relevant `CONTEXT.md` files, ADRs, and machine config
-- spec: linked issue, PRD, user-provided path, branch-matching docs under `docs/`, `specs/`, or `.scratch/`
+- behavior evidence: linked issue, PRD, user-provided path, branch-matching docs under `docs/`, `specs/`, or `.scratch/`
 - project shape: setup harness notes, `CONTEXT.md`, `.agents/rules/**`, package/build files, routes, services, migrations, and deployment config
 - local context: comments near modified hunks, adjacent helper modules, and relevant git history
 
@@ -55,19 +55,17 @@ Treat formatters, linters, typecheckers, and tests as verification tools. Do not
 
 ### 3. Run Focused Passes
 
-Build one review packet with the diff commands, changed files, commit list, standards sources, spec source, project shape, and relevant stack lenses.
+Build one review packet with the diff commands, changed files, commit list, standards sources, behavior evidence, project shape, and relevant stack lenses.
 
 When sub-agents are available, launch the five axis reviewers from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) in parallel in one message so their contexts stay independent. When parallel agents are unavailable, run the same reviewers sequentially. When no agent tool exists, perform the passes yourself in the same order.
 
 - **Standards**: diff compliance with documented repo rules and local instructions
-- **Completion**: every requested capability is actually wired, tested where appropriate, and not merely claimed complete
 - **Correctness**: bugs visible in the diff, historical intent, modified-line impact, and nearby comments
-- **Performance/Security**: slow queries, memory growth, timeouts, unsafe input, data exposure, and stack-specific load risks
+- **Performance**: slow queries, memory growth, timeouts, resource leaks, and stack-specific load risks
+- **Security**: unsafe input, authorization bypasses, data exposure, tenant leaks, and stack-specific exploit risks
 - **Shape**: reuse, quality, maintainability, and efficiency issues that matter enough to change
 
 After collecting candidate findings, run the Verification Reviewer from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) once.
-
-Skip Completion only when no request, issue, PRD, branch intent, or conversation summary is available and the user confirms there is none.
 
 ### 4. Validate Findings
 

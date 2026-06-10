@@ -8,6 +8,7 @@ Use this only when the core workflow needs sharper review prompts.
 - Are all explicit constraints, exclusions, actors, states, and edge cases represented?
 - Are ambiguous points marked as assumptions or user questions instead of hidden decisions?
 - Does the solution preserve the user's preferred level of backend, frontend, product, or operational scope?
+- Are non-functional constraints such as security, observability, compatibility, accessibility, performance, retention, or migration called out when the source or repo risk requires them?
 
 ## Repo Evidence
 
@@ -22,12 +23,14 @@ Use this only when the core workflow needs sharper review prompts.
 - Solution matches the agreed behavior and does not smuggle in extra product scope.
 - User stories cover the complete behavior surface.
 - Implementation decisions state module, contract, schema, API, and interaction choices without stale file-path detail.
+- Rollout, config, migration, monitoring, manual operation, and rollback decisions are explicit when they affect release safety.
 - Testing decisions identify the highest useful seams and prior art.
 - Out-of-scope items prevent predictable drift.
 
 ## Issue Slice Review
 
 - Each issue delivers a narrow complete path through the system.
+- Each issue keeps a stable link back to the PRD requirement, source issue, or acceptance criterion it satisfies.
 - Each issue is demoable or verifiable alone.
 - Slices are not horizontal tasks such as only schema, only API, only UI, or only tests.
 - Required prefactoring comes before dependent behavior and has a clear payoff.
@@ -37,8 +40,12 @@ Use this only when the core workflow needs sharper review prompts.
 ## Test Plan Review
 
 - Each test case maps to a requirement, contract, regression, or risk.
+- Traceability is stable enough to follow `source requirement -> issue/test case -> QA evidence`.
+- Every material requirement is covered by at least one case, explicitly blocked, or explicitly out of scope.
+- Positive, negative, boundary, permission, error, async, migration, performance, and regression coverage are present where the source or repo risk calls for them.
 - Tests use the highest stable seam available in the repo.
 - The plan avoids brittle checks of private implementation details unless that is the actual contract.
+- Expected results and evidence types are concrete enough for `/qa-run` to decide pass, fail, blocked, or not run without rereading the whole planning thread.
 - Missing test data, fixtures, permissions, or environment assumptions are called out.
 
 ## Verdict Calibration

@@ -43,7 +43,7 @@ skill-name/
 ```md
 ---
 name: skill-name
-description line: Brief capability. Use when specific triggers appear.
+description: Brief capability. Use when specific triggers appear.
 ---
 
 # Skill Name

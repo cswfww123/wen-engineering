@@ -11,17 +11,17 @@ Use this language wherever code is being designed or restructured. The aim is le
 
 ## Glossary
 
-Use these terms exactly. Do not substitute component, service, API, or boundary.
+Use these meanings for design discussion. Preserve local code and domain names when naming real artifacts.
 
-**Module**: anything with an interface and implementation. It can be a function, class, package, or tier-spanning slice. Avoid: unit, component, service.
+**Module**: anything with an interface and implementation. It can be a function, class, package, or tier-spanning slice. Avoid using unit, component, or service as substitutes for this concept unless those are the repo's real artifact names.
 
-**Interface**: everything a caller must know to use the module correctly: type surface, invariants, ordering constraints, error modes, configuration, and performance characteristics. Avoid: API, signature.
+**Interface**: everything a caller must know to use the module correctly: type surface, invariants, ordering constraints, error modes, configuration, and performance characteristics. Avoid using API or signature as substitutes for this concept unless those are the repo's real artifact names.
 
 **Implementation**: what is inside a module. Use **adapter** when the seam role is the topic; use implementation otherwise.
 
 **Depth**: leverage at the interface. A module is **deep** when much behavior sits behind a small interface, and **shallow** when the interface is nearly as complex as the implementation.
 
-**Seam**: a place where behavior can change without editing that place. It is where a module's interface lives. Avoid: boundary.
+**Seam**: a place where behavior can change without editing that place. It is where a module's interface lives. Avoid using boundary as a substitute for this concept unless that is the repo's real domain term.
 
 **Adapter**: a concrete thing that satisfies an interface at a seam.
 
@@ -72,7 +72,7 @@ Good interfaces make testing natural:
 
 ## Relationships
 
-- A module has exactly one interface.
+- Discuss a module as having one interface for design purposes; real artifacts may expose multiple entrypoints that together form that interface.
 - Depth is measured against the interface.
 - A seam is where the interface lives.
 - An adapter sits at a seam and satisfies the interface.

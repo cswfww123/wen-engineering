@@ -15,12 +15,12 @@ This skill is the *reading* counterpart to `/handoff`. `/handoff` is run by the 
 
 ### 1. Determine Focus
 
-If the user passed a task description argument, use it as the focus. Skip to step 3.
+If the user passed a task description argument, use it as the focus, then continue to step 2.
 
 If no argument was given, do a lightweight scan:
 
 ```
-cat CONTEXT.md
+test -f CONTEXT.md && sed -n '1,160p' CONTEXT.md || true
 git log --oneline -10
 git status --short
 git branch --show-current

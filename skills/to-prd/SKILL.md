@@ -15,7 +15,7 @@ The issue tracker and triage label vocabulary should come from `/setup-project-h
 1. If this came from a large grill, read `docs/grilling/<slug>/PRD-SOURCE.md`. If grill topic docs exist but `PRD-SOURCE.md` is missing, run `/finish-grill` first.
 2. Explore the repo to understand the current state if needed. Use glossary vocabulary and respect relevant ADRs.
 3. Sketch the test seams for the feature. Prefer existing seams, use the highest seam possible, and keep the number of seams as low as practical.
-4. Check with the user that those seams match expectations.
+4. Ask about test seams only when the choice is user-owned or repo evidence is insufficient. Otherwise record the chosen seams and assumptions in the PRD.
 5. Write the PRD using the template below.
 6. Publish it to the project issue tracker and apply the `ready-for-agent` triage label.
 

@@ -10,14 +10,28 @@ Turn settled context and codebase understanding into a PRD. Do not interview the
 
 The issue tracker and triage label vocabulary should come from `/setup-project-harness`.
 
+## Readiness Gate
+
+Before writing or publishing the PRD, confirm the source is settled enough:
+
+- problem, outcome, and target user are clear
+- scope and out of scope are explicit
+- core behavior and main flows are specified
+- material edge cases or error paths are covered or explicitly deferred
+- dependencies, integrations, migrations, or permissions are named when relevant
+- remaining unknowns are explicitly non-blocking assumptions or follow-up questions
+
+If any item is missing, contradictory, or blocked on a user-owned decision, stop. Report the gaps and recommend `/grill-with-docs` or targeted repo evidence gathering instead of turning guesses into PRD decisions.
+
 ## Process
 
-1. If this came from a large grill, read `docs/grilling/<slug>/PRD-SOURCE.md`. If grill topic docs exist but `PRD-SOURCE.md` is missing, run `/finish-grill` first.
+1. Synthesize from the current discussion, user-provided docs, existing PRDs, issues, or other durable repo artifacts.
 2. Explore the repo to understand the current state if needed. Use glossary vocabulary and respect relevant ADRs.
-3. Sketch the test seams for the feature. Prefer existing seams, use the highest seam possible, and keep the number of seams as low as practical.
-4. Ask about test seams only when the choice is user-owned or repo evidence is insufficient. Otherwise record the chosen seams and assumptions in the PRD.
-5. Write the PRD using the template below.
-6. Publish it to the project issue tracker and apply the `ready-for-agent` triage label.
+3. Run the readiness gate above.
+4. Sketch the test seams for the feature. Prefer existing seams, use the highest seam possible, and keep the number of seams as low as practical.
+5. Ask about test seams only when the choice is user-owned or repo evidence is insufficient. Otherwise record the chosen seams and assumptions in the PRD.
+6. Write the PRD using the template below.
+7. Publish it to the project issue tracker and apply the `ready-for-agent` triage label.
 
 ## PRD Template
 

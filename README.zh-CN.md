@@ -102,7 +102,6 @@ git pull --ff-only
 - `/domain-modeling` 在设计决策结晶时打磨 glossary terms 并记录 ADRs。
 - `/do-issues` 一次处理一个 ready AFK vertical-slice issue。
 - `/grill-with-docs` 在维护 glossary 和 ADR docs 的同时 stress-test 一个 plan。
-- `/grill-prep` 把大型多会话想法准备成 scoped topic docs。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
 - `/qa-run` 执行计划好的 QA cases，记录 evidence，并沉淀 durable bug issues。
@@ -166,10 +165,6 @@ AI agents 会以很可预测的方式失败。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 打磨 domain language，更新 `CONTEXT.md`，并在决策结晶时少量记录 ADRs。
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) - 运行 `/grilling` 并同时激活 `/domain-modeling`，作为常规 plan-sharpening 入口。
 - [`grilling`](skills/grilling/SKILL.md) - 提供 grill skills 使用的一次一个问题的核心访谈协议。
-- [`grill-prep`](skills/grill-prep/SKILL.md) - 在更深的 grilling 前，把明确的大型多会话想法准备成 topic docs。
-- [`do-grill`](skills/do-grill/SKILL.md) - 选择一个未完成的 grill-prep topic，完成该 scoped grill，并写出 PRD-ready conclusions。
-- [`finish-grill`](skills/finish-grill/SKILL.md) - 读取所有已完成 grill topics，并为 `/to-prd` 写 `PRD-SOURCE.md`。
-- [`start-grill`](skills/start-grill/SKILL.md) - `/grill-with-docs` 的旧兼容 alias，仅在用户按名称调用时使用。
 - [`to-prd`](skills/to-prd/SKILL.md) - 把已经沉淀的讨论和 repo evidence 转成适配当前 issue tracker 的 PRD。
 - [`to-issues`](skills/to-issues/SKILL.md) - 把 PRD、plan 或 spec 拆成可以独立领取的 vertical-slice issues。
 - [`to-test-plan`](skills/to-test-plan/SKILL.md) - 从 PRDs 和 issues 创建可追踪 test plans 和 cases。
@@ -248,20 +243,11 @@ skills/
     SKILL.md
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
-  do-grill/
-    SKILL.md
   do-issues/
-    SKILL.md
-  finish-grill/
     SKILL.md
   grill-with-docs/
     SKILL.md
   grilling/
-    SKILL.md
-  grill-prep/
-    SKILL.md
-    TEMPLATES.md
-  start-grill/
     SKILL.md
   handoff/
     SKILL.md
@@ -310,7 +296,7 @@ skills/
 - 把 standards 组织到 `.agents/rules/`
 - 通过单一 source of truth 保持 Codex 和 Claude 对齐
 - 帮助用户和 LLM 一起定义边界
-- 在大型项目想法变成超长聊天之前，把它们准备成 scoped topic docs
+- 在实现开始前，通过单会话访谈打磨早期计划
 
 未来 skills 可以覆盖更窄的项目类型，例如 frontend apps、backend services、libraries、CLIs、monorepos 和 skills-authoring workflows。
 

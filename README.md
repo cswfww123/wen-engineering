@@ -102,7 +102,6 @@ Common skills:
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/do-issues` works through ready AFK vertical-slice issues one at a time.
 - `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
-- `/grill-prep` prepares explicit large multi-session ideas as scoped topic docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
@@ -166,10 +165,6 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
 - [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
-- [`grill-prep`](skills/grill-prep/SKILL.md) — prepares explicit large multi-session ideas with topic docs before deeper grilling.
-- [`do-grill`](skills/do-grill/SKILL.md) — selects one unfinished grill-prep topic, completes that scoped grill, and writes PRD-ready conclusions.
-- [`finish-grill`](skills/finish-grill/SKILL.md) — reads every completed grill topic and writes `PRD-SOURCE.md` for `/to-prd`.
-- [`start-grill`](skills/start-grill/SKILL.md) — legacy compatibility alias for `/grill-with-docs`, used only when invoked by name.
 - [`to-prd`](skills/to-prd/SKILL.md) — turns settled discussion and repo evidence into a PRD on the configured issue tracker.
 - [`to-issues`](skills/to-issues/SKILL.md) — breaks a PRD, plan, or spec into independently grabbable vertical-slice issues.
 - [`to-test-plan`](skills/to-test-plan/SKILL.md) — creates traceable test plans and cases from PRDs and issues.
@@ -248,20 +243,11 @@ skills/
     SKILL.md
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
-  do-grill/
-    SKILL.md
   do-issues/
-    SKILL.md
-  finish-grill/
     SKILL.md
   grill-with-docs/
     SKILL.md
   grilling/
-    SKILL.md
-  grill-prep/
-    SKILL.md
-    TEMPLATES.md
-  start-grill/
     SKILL.md
   handoff/
     SKILL.md
@@ -310,7 +296,7 @@ This repo currently focuses on project initialization and harness engineering:
 - organizing standards under `.agents/rules/`
 - keeping Codex and Claude aligned through one source of truth
 - helping the user and LLM define boundaries together
-- preparing large project ideas as scoped topic docs before they become overlong chats
+- sharpening early plans through one-session interviews before implementation work starts
 
 Future skills can cover narrower project types, such as frontend apps, backend services, libraries, CLIs, monorepos, and skills-authoring workflows.
 

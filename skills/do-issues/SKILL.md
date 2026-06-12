@@ -91,7 +91,9 @@ When stopping, report the current feature directory, completed issues, remaining
 
 ## After All Issues Complete
 
-When all runnable AFK issues are done, suggest the user:
+When all runnable AFK issues are done, validation is usually the next concern:
 
-1. Run `/code-review` on the local changes
-2. Run `/qa-run` to validate the feature against the test plan
+- `/code-review` — review the local changes
+- `/qa-run` — validate the feature against the test plan
+
+Use any, in any order; this skill prescribes no sequence.

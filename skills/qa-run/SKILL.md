@@ -114,7 +114,7 @@ For retest mode, include bugs verified, reopened, and blocked, plus evidence and
 
 ### 9. Handoff
 
-If bugs were filed or reopened, point the next agent to the bug issue, original test case, `/do-issues`, and `/tdd`.
+If bugs were filed or reopened, the bug issue and original test case are the anchors for whoever fixes them. `/do-issues` and `/tdd` are common fix skills; this skill does not require them.
 
 If the user explicitly asks QA to fix issues now, switch from report-first QA into the normal implementation flow: one bug issue at a time, with a regression test at the correct seam.
 

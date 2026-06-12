@@ -106,7 +106,9 @@ Common skills:
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
+- `/security-review` threat-models and audits a feature or service for system-level security risks.
 - `/setup-project-harness` initializes a project-level agent harness.
+- `/ship` judges release readiness and drafts version, release notes, and rollback plan.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
 - `/to-issues` breaks a PRD or plan into tracer-bullet vertical-slice issues.
@@ -180,6 +182,11 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`deep-code-trace`](skills/deep-code-trace/SKILL.md) — traces an entry point through internal calls for deep code analysis, debugging, reviews, or risky edits.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, judges completion, and files durable bug issues.
+- [`security-review`](skills/security-review/SKILL.md) — system-level threat model and audit of a service or feature; complements code-review's diff-level axis.
+
+### Release And Delivery
+
+- [`ship`](skills/ship/SKILL.md) — judges release readiness and drafts the next version, release notes, and rollback plan; the release gate consumes evidence from code-review, qa-run, and security-review.
 
 ### Architecture
 
@@ -217,6 +224,8 @@ CLAUDE.md -> AGENTS.md
       authoring.md
       review.md
 docs/
+  adr/
+    0001-skill-composition.md
   agents/
     domain.md
     issue-tracker.md
@@ -262,6 +271,10 @@ skills/
   qa-run/
     SKILL.md
     TEMPLATES.md
+  security-review/
+    SKILL.md
+  ship/
+    SKILL.md
   skill-review/
     SKILL.md
   tdd/

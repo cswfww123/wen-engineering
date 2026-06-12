@@ -79,9 +79,10 @@ What is explicitly outside this PRD.
 Any further notes about the feature.
 ```
 
-## Recommended Next Step
+## Related Skills
 
-After the PRD is published:
+- `/alignment-review` — check the PRD preserves user intent and fits the codebase
+- `/to-issues` — break the PRD into vertical-slice issues
+- `/to-test-plan` — derive traceable test cases from the PRD
 
-1. Run `/alignment-review` to check that the PRD preserves user intent and fits the codebase
-2. Then run `/to-issues` to break the PRD into vertical-slice implementation issues
+Use any, in any order; this skill prescribes no sequence.

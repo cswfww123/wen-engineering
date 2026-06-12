@@ -24,6 +24,8 @@ Read only the artifacts needed for the review:
 - existing related tests, contracts, or implementation seams
 - code review or QA results when reviewing a revised test plan after implementation
 
+If the artifact's fit depends on actual code behavior, load `/deep-code-trace` for the relevant entrypoint before judging module ownership, integration seams, data flow, permissions, or async side effects.
+
 If the source material is missing, say what cannot be verified and review only the claims that have evidence.
 
 ### 2. Zoom Out

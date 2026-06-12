@@ -9,6 +9,8 @@ Design deep modules: lots of behavior behind a small interface, placed at a clea
 
 Use this language wherever code is being designed or restructured. The aim is leverage for callers, locality for maintainers, and testability for everyone.
 
+When applying this vocabulary to existing code, load `/deep-code-trace` for representative entrypoints before judging depth, caller leverage, hidden implementation behavior, seam placement, or testability.
+
 ## Glossary
 
 Use these meanings for design discussion. Preserve local code and domain names when naming real artifacts.

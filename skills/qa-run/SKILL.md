@@ -93,6 +93,8 @@ For each failed or blocked case, classify the cause:
 - environment or data problem: keep it in the QA report unless it needs engineering work
 - test case problem: note the correction needed; do not hide the failed run
 
+When a failure looks like product or code behavior and the responsible path is not obvious from the test evidence, load `/deep-code-trace` on the failing entrypoint before filing or reopening a bug.
+
 Bug issues must describe user-visible behavior or documented contract breakage, not private implementation details.
 
 ### 8. Report Quality

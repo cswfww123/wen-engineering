@@ -98,6 +98,7 @@ git pull --ff-only
 - `/alignment-review` 审查生成的规划产物是否对齐用户意图、repo evidence 和执行路径。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
 - `/code-review` 审查本地 diff 或 PR，关注完成度、回归、性能和安全性。
+- `/deep-code-trace` 递归追踪入口方法到内部调用链，用于深度代码分析。
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归。
 - `/domain-modeling` 在设计决策结晶时打磨 glossary terms 并记录 ADRs。
 - `/do-issues` 一次处理一个 ready AFK vertical-slice issue。
@@ -176,6 +177,7 @@ AI agents 会以很可预测的方式失败。
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) - 审查本地 diffs 或 PRs，关注完成度、回归、性能和安全性。
+- [`deep-code-trace`](skills/deep-code-trace/SKILL.md) - 递归追踪入口方法到内部调用链，用于深度代码分析、调试、审查或高风险修改。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`qa-run`](skills/qa-run/SKILL.md) - 执行计划好的 QA cases，记录 evidence，并提交 durable bug issues。
 
@@ -234,6 +236,9 @@ skills/
     SKILL.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
+  deep-code-trace/
+    EXAMPLES.md
+    SKILL.md
   diagnosing-bugs/
     SKILL.md
     ATTRIBUTION.md

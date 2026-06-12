@@ -51,6 +51,8 @@ Collect only the sources needed for the changed files:
 - project shape: setup harness notes, `CONTEXT.md`, `.agents/rules/**`, package/build files, routes, services, migrations, and deployment config
 - local context: comments near modified hunks, adjacent helper modules, and relevant git history
 
+When a diff changes behavior across internal calls, public entrypoints, Mapper/DAO queries, converters, permissions, async paths, or side effects, load `/deep-code-trace` on the touched entrypoint before validating correctness, performance, security, or behavior-preservation claims.
+
 Treat formatters, linters, typecheckers, and tests as verification tools. Do not report issues that CI will plainly catch unless the user asked for that kind of review.
 
 ### 3. Run Focused Passes

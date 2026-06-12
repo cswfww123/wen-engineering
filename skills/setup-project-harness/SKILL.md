@@ -62,6 +62,7 @@ When sub-agents are available, launch three parallel explorations. Otherwise exp
 - languages, frameworks, package manager
 - install/dev/build/lint/typecheck/test commands — only from repo evidence, never invented
 - route/API layers, schema/migration layers, database access, generated code, deployment config
+- when existing behavior is unclear from structure alone, load `/deep-code-trace` on a representative entrypoint before writing layer, command, verification, or rule-harness claims
 
 ### Exploration C: Existing AI Instructions
 

@@ -11,6 +11,7 @@ Surface architectural friction and propose deepening opportunities: refactors th
 This workflow uses:
 
 - `/codebase-design` for module, interface, depth, seam, adapter, leverage, and locality vocabulary
+- `/deep-code-trace` for representative entrypoints, call chains, queries, conversions, and side effects
 - `/domain-modeling` for glossary and ADR awareness
 - `/grilling` after the user picks a candidate
 
@@ -24,6 +25,8 @@ Read the project's domain glossary and relevant ADRs first:
 - `docs/adr/` and context-specific ADRs when present
 
 Then walk the codebase. Use native subagents for bounded exploration if available. Otherwise use normal repo search and file reads.
+
+For every serious candidate, load `/deep-code-trace` on at least one representative entrypoint before calling a module shallow, tangled, hard to test, or worth deepening.
 
 Look for friction:
 

@@ -25,6 +25,8 @@ Read only what is needed:
 - `docs/agents/issue-tracker.md` and `docs/agents/domain.md` when present
 - existing tests, API docs, fixtures, or similar feature plans that show local testing seams
 
+If the correct test seam or risk coverage depends on hidden behavior, load `/deep-code-trace` for the relevant entrypoint before designing cases.
+
 If the source has no explicit requirements or acceptance criteria, mark that as a gap and derive cases only from evidence.
 
 ### 2. Identify The Project Test Surface

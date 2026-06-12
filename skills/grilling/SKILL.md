@@ -42,6 +42,8 @@ If you cannot recommend confidently, say what evidence would resolve it and whet
 
 If a question can be answered by exploring the codebase, explore the codebase instead of asking. Report what you found and whether it resolves the question or only narrows it.
 
+If the answer depends on real execution behavior rather than file names or surface structure, load `/deep-code-trace` for the relevant entrypoint before recommending an answer.
+
 Do not ask questions that repo evidence already answers.
 
 ## Handling Contradictions

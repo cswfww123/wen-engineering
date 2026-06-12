@@ -55,12 +55,13 @@ If the next issue is HITL, blocked, or underspecified, leave it untouched, add a
 For each selected issue:
 
 1. Mark it `Status: in-progress` unless it already is.
-2. Load `/tdd` and derive behavior tests from the acceptance criteria and public interface.
-3. Run the failing test first and confirm RED.
-4. Implement only enough code to pass that behavior.
-5. Confirm GREEN, then repeat for the next behavior.
-6. Refactor only after all tests for the slice are green.
-7. Run the project's required verification commands before claiming completion.
+2. If the issue modifies existing behavior, load `/deep-code-trace` on the relevant entrypoint before choosing the public interface and test seam.
+3. Load `/tdd` and derive behavior tests from the acceptance criteria and public interface.
+4. Run the failing test first and confirm RED.
+5. Implement only enough code to pass that behavior.
+6. Confirm GREEN, then repeat for the next behavior.
+7. Refactor only after all tests for the slice are green.
+8. Run the project's required verification commands before claiming completion.
 
 Respect project instructions for verification, commits, docs, OpenAPI, SQL, and generated artifacts.
 

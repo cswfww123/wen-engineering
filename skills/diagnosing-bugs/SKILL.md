@@ -58,6 +58,8 @@ Confirm:
 
 Before editing, write 3-5 ranked hypotheses.
 
+When the repro identifies a stack frame, endpoint, handler, public API, job, or failing test path, load `/deep-code-trace` before finalizing hypotheses so the real call chain, queries, conversions, and side effects shape the diagnosis.
+
 Each hypothesis must be falsifiable:
 
 ```text

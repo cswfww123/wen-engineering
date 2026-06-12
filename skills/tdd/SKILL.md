@@ -48,6 +48,8 @@ Before writing code:
 - confirm the behaviors to test and their priority
 - list behaviors, not implementation steps
 
+If you are changing existing behavior or selecting a seam in unfamiliar code, load `/deep-code-trace` on the relevant entrypoint before writing the first RED test.
+
 Ask only for decisions that are user-owned or not discoverable from the repo.
 
 ### 2. Tracer Bullet

@@ -16,14 +16,9 @@ Use this as the normal user entrypoint for sharpening a plan or design. Ask one 
 
 When a plan or design question depends on current code behavior, also load `/deep-code-trace` for the relevant entrypoint so repo evidence answers what it can before the user is asked.
 
-## Routing
+## Boundary
 
-- For normal one-session plan sharpening → use this skill (`/grill-with-docs`)
-- If the user is reporting an existing bug, broken behavior, failing test, exception, crash, or performance regression → route to `/diagnosing-bugs`
-- For broad ideas, keep the interview in this skill and narrow the active scope one question at a time
-- Do not route by estimated context size or create a separate multi-session grill path
-
-Bug routing means: stop the plan interview, load `/diagnosing-bugs`, and build a feedback loop around the reported symptom. Return to `/grill-with-docs` only if diagnosis shows the request is really a product/design decision rather than a defect.
+Keep this skill as instruction for a docs-backed grilling session, not a router. For broad ideas, narrow the active scope one question at a time. Do not route by estimated context size or create a separate multi-session grill path.
 
 ## Done
 

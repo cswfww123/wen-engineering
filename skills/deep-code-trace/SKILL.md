@@ -1,105 +1,78 @@
 ---
 name: deep-code-trace
-description: Traces an entry method through internal calls. Use for deep code analysis, debugging, reviews, or risky edits.
+description: Traces an entry point through internal calls. Use for deep code analysis, debugging, reviews, or risky edits.
 ---
 
 # Deep Code Trace
 
 ## Purpose
 
-Use this skill when understanding only the entry method would miss business behavior.
-
-Common hidden behavior includes:
+Use when reading only the entry method would miss business behavior. Hidden behavior lives in:
 
 - validation, state machines, and conditional branches
-- Mapper/DAO query conditions, which often encode the real business rule
-- asynchronous side effects such as messages, cache writes, and events
-- conversion logic in MapStruct or custom converter classes
+- data-access query conditions, which often encode the real business rule
+- async side effects: messages, cache writes, events
+- conversion, mapping, and serialization logic
 
 Core rule: after reading a method, follow every project-internal call until the chain reaches an external library, an already visited method, or a data-only boundary.
 
+## What Counts As A Project-Internal Call
+
+Trace into anything the project owns, in any language:
+
+- same-file or same-class methods and private helpers
+- injected or constructed services, managers, repositories, handlers, clients
+- data-access layers: ORM or repository methods, query builders, SQL or template fragments, raw queries — read the query conditions
+- mappers, converters, serializers, and DTO/VO assemblers
+- project utilities, shared modules, and common packages
+- closures, lambdas, callbacks, and async handlers that call project code
+- project constants and enum values that drive branching, queries, or output
+
+Do **not** trace the implementation internals of:
+
+- standard libraries and language builtins
+- third-party frameworks and libraries (web frameworks, ORMs, queues, caches, UI libraries)
+- pure data construction (empty collections, plain struct, record, or object literals)
+- enum `valueOf`/`values` or trivial field accessors
+
 ## Workflow
 
-### 1. Read the entry method
+1. **Read the entry** — the file, function, method, endpoint, handler, stack frame, or failing test the user named. Extract every project-internal call from the visible control flow.
+2. **Build the queue** — list the internal calls found above. Maintain a **visited ledger** so you never re-read a method; pick one stable id format (e.g. `Module#function`) and stay consistent.
+3. **Read queued calls in parallel** — when several methods are queued, read or search them in one batch, not serially. If a location is unclear, search by symbol name (prefer `rg`, fall back to `grep`).
+4. **Recurse** — for each newly read method, repeat steps 2–3. Stop a branch only when it reaches an external library, an already-visited method, a data-only boundary, or a project boundary you cannot inspect locally (say so explicitly).
+5. **Report** — compact call tree, key business logic, and risks or notes, using the template below.
 
-Read the user-provided file, class, method, stack frame, endpoint, or test failure. Extract every project-internal call from the visible control flow.
+If this trace supports a risky edit, finish the trace before changing behavior, unless the user explicitly asks for a fast patch.
 
-### 2. Build the trace queue
-
-Trace these project-internal calls:
-
-- `this.someMethod()` same-class methods
-- `service`, `manager`, `repository`, and `client` calls owned by the project
-- `mapper` and DAO calls, including XML, annotations, `QueryWrapper`, SQL fragments, and query conditions
-- MapStruct mappings and custom converters
-- project utility methods
-- project calls inside lambdas and method references
-- project constants and enum fields that affect branching, status, query conditions, or output values
-
-Do not trace implementation internals for:
-
-- standard library methods
-- third-party frameworks and libraries such as Spring, MyBatis-Plus, Hutool, Redis, React, or Express
-- pure data constructors such as `new ArrayList<>()`
-- enum `valueOf()` or `values()` implementations
-
-### 3. Read queued calls in parallel
-
-When several methods must be read, read or search them in parallel. If the location is unclear, prefer `rg -n "methodName" -g "*.java"` and fall back to `grep` only when `rg` is unavailable.
-
-Maintain a visited ledger to prevent loops:
-
-```text
-Visited:
-- UserService#validateUser(UserCreateDTO)
-- UserMapper#selectByPhone(String)
-```
-
-Skip methods that are already in the ledger, but mention the skip in the report when it matters to the call tree.
-
-### 4. Recurse until the chain closes
-
-For each newly read method, repeat steps 2 and 3. Stop only when every branch reaches one of these boundaries:
-
-- external library/framework behavior
-- an already visited project method
-- a data-only object or trivial constructor
-- a project boundary that cannot be inspected locally; state the missing evidence
-
-### 5. Report the trace
-
-Return a compact report:
+### Report Template
 
 ```markdown
 ## Call Tree
 
 entryMethod()
 |-- internalCallA()
-|   |-- internalCallA1() [stops: mapper query read]
+|   |-- internalCallA1() [stops: ORM query read]
 |   `-- internalCallA2() [stops: external library]
 `-- internalCallB()
     `-- internalCallB1() [stops: already visited]
 
 ## Key Business Logic
 - [Validation] ...
-- [Database Query] ...
-- [Conversion] ...
-- [Side Effect] ...
+- [Data access / query] ...
+- [Conversion / mapping] ...
+- [Side effect] ...
 
 ## Risks And Notes
 - ...
 ```
 
-## Trace Rules
+## Hard Rules
 
-1. Read every branch in `if/else`, `switch`, early returns, error paths, callbacks, and async handlers.
-2. Always read Mapper/DAO layers. Query conditions are business logic.
-3. Never trust method names alone. A method named `convertToVO()` can filter, mask, branch, or enrich data.
-4. Read MapStruct annotations and custom mapping methods. Mappings are behavior.
-5. Trace cross-module project code, including common modules and shared utility modules.
-6. If tracing is part of a risky edit, finish the trace before changing behavior unless the user explicitly asks for a fast patch.
-7. Mark uncertainty as uncertainty. Do not invent missing query conditions, constants, or downstream effects.
+1. **Names lie.** A name like `convertToVO`, `toDto`, `sanitize`, or `findActive` is not its body. Conversion, mapping, and data-access layers often hide the real rule — read them.
+2. **Read every branch.** Every arm of `if/else`, `switch`/`match`, early returns, error and exception paths, callbacks, and async handlers must be traced. Branches that look unused still encode rules.
+3. **Do not invent.** If you cannot read a query condition, constant, or downstream effect, mark it unknown. Never fabricate the missing piece.
 
 ## References
 
-- `EXAMPLES.md` - Java/Spring trace example.
+- `EXAMPLES.md` — trace examples in Java/Spring, Next.js/TypeScript, Rust, Go, and Python.

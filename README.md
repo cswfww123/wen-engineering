@@ -98,7 +98,7 @@ Common skills:
 - `/alignment-review` reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` reviews diffs for standards, correctness, performance, security, and shape.
-- `/deep-code-trace` recursively traces an entry method through internal calls for deep code analysis.
+- `/deep-code-trace` recursively traces an entry point through internal calls for deep code analysis.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/do-issues` works through ready AFK vertical-slice issues one at a time.
@@ -177,7 +177,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews diffs for standards, correctness, performance, security, and shape.
-- [`deep-code-trace`](skills/deep-code-trace/SKILL.md) — traces an entry method through internal calls for deep code analysis, debugging, reviews, or risky edits.
+- [`deep-code-trace`](skills/deep-code-trace/SKILL.md) — traces an entry point through internal calls for deep code analysis, debugging, reviews, or risky edits.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, judges completion, and files durable bug issues.
 

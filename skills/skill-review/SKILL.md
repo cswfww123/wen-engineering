@@ -28,8 +28,8 @@ Look for issues in this order:
 
 - **Description**: short enough for discovery, usually under 120 characters and never padded past 180. It says what the skill does and when to use it.
 - **Trigger**: the description contains concrete trigger words an agent can match, not a long list of loosely related cases.
-- **Shape**: treat `SKILL.md` length as a signal, not a verdict. Keep core workflow in `SKILL.md`; move templates, examples, and rarely needed detail to one-level reference files.
-- **Progressive disclosure**: the skill loads the minimum useful context first, then points to detail only when needed.
+- **Shape**: treat `SKILL.md` length as a signal, not a verdict. Keep core workflow in `SKILL.md`; move templates, examples, schemas, and rarely needed detail to one-level sibling references.
+- **Progressive disclosure**: skills load in three layers — metadata (name + description, always in context) → SKILL.md body (loaded on trigger) → references/scripts/assets (loaded only when needed). For each layer ask: does the body carry the minimum useful context for one run, with detail blocks (templates, schemas, large examples) extracted rather than inline? Does every reference link say *when* to read it, not just what it is? For multi-domain skills, is each domain its own reference file so only the relevant one loads? Are scripts reserved for deterministic repeatable work that prose alone does less reliably? For reference files over ~300 lines, is there a table of contents?
 - **Judgment**: rules guide the agent without replacing reasoning, taste, or user-owned decisions.
 - **User bridge**: the skill helps the agent ask, recommend, and clarify instead of silently assuming.
 - **Evidence**: instructions tell the agent to read repo/files before making claims or edits.

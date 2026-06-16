@@ -18,7 +18,7 @@ Walk through these layers in order. Earlier layers resolve dependencies for late
 1. **Constraints** — what must be true? Budget, timeline, technology, team, regulation, existing commitments
 2. **Scope boundaries** — what is explicitly out of scope? What adjacent problems are we not solving?
 3. **Core behavior** — what must the system do? What are the main user-visible flows?
-4. **Edge cases and error paths** — what happens when things go wrong? Invalid input, partial failure, concurrency, missing data
+4. **Edge cases and error paths** — what happens when things go wrong? Invalid input, partial failure, concurrency, missing data. When the work touches a shared mutable invariant (balance/quota/counter/inventory/state machine), apply `.agents/rules/invariants/` — require the invariant, a concurrency contract, and a concurrency test seam.
 5. **Dependencies and integration** — what does this touch? Upstream/downstream systems, shared state, migration
 6. **Trade-offs** — where are we choosing between competing goals? Performance vs simplicity, flexibility vs speed, consistency vs availability
 

@@ -9,6 +9,7 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 ## Core Directives
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Proceed on clear, reversible implementation steps; ask only when the decision is genuinely user-owned or destructive.
+- **Persistent breakdowns**: use the session todo list for tactical, same-session steps; route multi-slice or cross-session work to `/to-prd` then `/to-issues` so the breakdown persists in the issue tracker instead of dying with the session.
 - **Use skills**: prefer project skills such as `/setup-project-harness` and `/skill-review` when they fit the task.
 - **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `README.md`, and `skills/**` files before editing.
 - **Domain language**: use this repo's terms: skills, harness, progressive disclosure, user bridge, repo evidence, agent judgment, and rules as guardrails.
@@ -48,6 +49,7 @@ Agents must read the relevant files under `.agents/rules/` before editing matchi
 
 - `.agents/rules/project/` — project identity, collaboration, verification, and harness boundaries
 - `.agents/rules/skills/` — skill authoring and skill review rules
+- `.agents/rules/invariants/` — shared mutable state (balance/quota/counter/inventory/state machine): require the invariant, concurrency contract, and concurrency test seam
 
 ## Engineering Practices
 

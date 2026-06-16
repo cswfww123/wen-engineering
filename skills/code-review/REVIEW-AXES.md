@@ -25,6 +25,7 @@ Look for:
 - changed invariants, ordering, error handling, authorization, persistence, or data migration behavior
 - regressions suggested by git blame, nearby tests, previous PR comments, or comments in modified files
 - security or data-loss risks directly introduced by the diff
+- when the diff touches a shared mutable invariant (balance/quota/counter/inventory/state machine), require a concurrency test seam per `.agents/rules/invariants/`; serial-only tests are insufficient
 
 Avoid speculative "could be better" comments. A finding should survive a skeptical second read.
 

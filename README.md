@@ -122,7 +122,7 @@ The harness skill creates:
 - `AGENTS.md` as the shared entrypoint and source of truth
 - `CLAUDE.md` linked to `AGENTS.md`
 - detailed standards under `.agents/rules/`
-- rule files split by language or domain, such as `typescript/`, `java/`, `frontend/`, `backend/`, `api/`, `database/`, `testing/`, or `skills/`
+- rule files split by language or domain, such as `typescript/`, `java/`, `frontend/`, `backend/`, `api/`, `database/`, `testing/`, `invariants/`, or `skills/`
 
 ## Why This Exists
 
@@ -223,6 +223,8 @@ CLAUDE.md -> AGENTS.md
     skills/
       authoring.md
       review.md
+    invariants/
+      invariants.md
 docs/
   adr/
     0001-skill-composition.md

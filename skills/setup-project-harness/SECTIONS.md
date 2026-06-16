@@ -65,10 +65,11 @@ Explainer: Detailed standards do not belong in `AGENTS.md`. They live under `.ag
 
 Decide which rule directories apply:
 
-- `project/` — project identity, workflow, dependency policy, verification
+- `project/` — project identity, workflow, dependency policy, verification, and routing multi-slice work to PRD/issues rather than the session todo
 - `skills/` — skill authoring/review rules for engineering-skills repos
 - `typescript/`, `javascript/`, `java/`, `python/` — language-specific rules
 - `frontend/`, `backend/`, `api/`, `database/`, `testing/`, `cli/`, `library/`, `monorepo/` — layer/workflow rules
+- `invariants/` — shared mutable state (balance/quota/counter/inventory/state machine). Copy or adapt this repo's `.agents/rules/invariants/` as the reference; it requires an invariant, a concurrency contract, and a concurrency test seam on any matching change
 
 Use [RULE_TEMPLATE.md](RULE_TEMPLATE.md). Use `[MUST]` and `[FORBID]` only for real boundaries; use `[SHOULD]` for defaults where judgment may beat the rule.
 

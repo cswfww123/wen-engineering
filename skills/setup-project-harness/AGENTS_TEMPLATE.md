@@ -14,6 +14,7 @@ This repository uses AI coding agents for real engineering work, not vibe coding
 ## Core Directives
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Follow this project's autonomy rule for whether to proceed immediately or wait for confirmation.
+- **Persistent breakdowns**: use the session todo list only for tactical, same-session steps. When a task spans multiple vertical slices or outlives a session, route it to `/to-prd` then `/to-issues` so it lands in the issue tracker instead of dying with the session.
 - **Use skills**: prefer available slash skills such as `/grill-with-docs`, `/diagnosing-bugs`, `/domain-modeling`, `/codebase-design`, `/to-prd`, `/to-issues`, `/do-issues`, `/tdd`, or project skills when they fit the task.
 - **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `docs/**`, `CONTEXT.md`, and `skills/**` files before editing.
 - **Domain language**: use established project terms from `CONTEXT.md` or docs. Avoid vague substitute terms.

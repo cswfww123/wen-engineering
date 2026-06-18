@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Writes a compact handoff for a fresh agent. Use when handing off, compacting context, or preparing a new session.
+description: Write a compact handoff for a fresh agent.
 argument-hint: "What will the next session be used for?"
 disable-model-invocation: true
 ---

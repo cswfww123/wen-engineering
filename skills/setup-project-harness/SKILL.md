@@ -6,179 +6,75 @@ disable-model-invocation: true
 
 # Setup Project Harness
 
-Scaffold the per-repo configuration that engineering agents assume.
+Build the smallest useful per-repo harness for Codex and Claude.
 
-This skill is the strict initialization surface. It uses an evidence-first setup pattern for project harness rules across Codex and Claude.
+This is an evidence-first initializer, not a script. Explore the repo, recommend
+defaults, ask only for user-owned or destructive decisions, draft everything,
+then write after the user accepts the draft.
 
-It is prompt-driven, not a deterministic script. Explore, present findings, walk the user through decisions one at a time, confirm the draft, then write.
+## Output Contract
 
-Do not optimize this skill for line count. Its job is to be complete and reliable.
+Create or update only the harness files the repo actually needs:
 
-## What It Sets Up
+- `AGENTS.md` as the shared project instruction entrypoint
+- `CLAUDE.md` as a symlink to `AGENTS.md`, or a one-line pointer when symlinks are unavailable
+- `docs/agents/issue-tracker.md`
+- `docs/agents/triage-labels.md`
+- `docs/agents/domain.md`
+- focused `.agents/rules/**` files for concrete project boundaries
 
-- **Issue tracker** — where issues, PRDs, and triage workflows live
-- **Triage labels** — the five canonical triage roles mapped to this repo's vocabulary
-- **Domain docs** — how agents read `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs
-- **Agent entrypoint** — `AGENTS.md` as the project source of truth
-- **Claude compatibility** — `CLAUDE.md` points to `AGENTS.md`
-- **Rule harness** — focused `.agents/rules/**` files for project, language, layer, and workflow boundaries
+Do not add rule directories, commands, dependencies, abstractions, or docs that
+repo evidence or a user decision does not justify.
 
-## Idempotency Check
+## Start Gate
 
-Before starting exploration, check whether setup has already been done:
+Before exploring, check whether the harness already exists:
 
-```
+```bash
 test -f AGENTS.md
 test -f docs/agents/issue-tracker.md
 test -f docs/agents/triage-labels.md
 ```
 
-If all three exist:
+If all three exist, report what is already configured and ask whether to update
+in place or reinitialize. Never silently overwrite user-authored content.
 
-- report what is already set up
-- ask whether to reinitialize completely or update in place
-- skip sections that are already complete unless the user wants to change them
-- never silently overwrite existing user-authored content
+## Operating Rules
 
-## Phase 1: Explore
+- Prefer small, boring, reversible changes.
+- Read repo evidence before asking. Ask only when the repo cannot answer.
+- Record exact commands only when found in repo evidence or supplied by the user.
+- Keep `AGENTS.md` short. Move detail into `.agents/rules/**` or `docs/agents/**`.
+- Create rules only for drift risks agents are likely to get wrong.
+- Use `[MUST]` and `[FORBID]` sparingly; prefer `[SHOULD]` when judgment may win.
+- Use `/deep-code-trace` before encoding behavior that depends on real call paths.
+- Treat deterministic lifecycle enforcement as CI, hook, or platform work; do not rely on memory text for it.
 
-Look at the current repo to understand its starting state. Read whatever exists; do not assume.
+## Workflow
 
-When sub-agents are available, launch three parallel explorations. Otherwise explore sequentially in this order.
+1. **Explore** - follow [HARNESS_FLOW.md](HARNESS_FLOW.md) for the exploration checklist. Use parallel sub-agents when available; otherwise explore sequentially.
+2. **Summarize** - present the exploration summary before decisions.
+3. **Decide** - use [SECTIONS.md](SECTIONS.md), one section at a time. Recommend defaults and skip questions repo evidence already answers.
+4. **Draft** - prepare all target file contents before writing. Use [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md), [RULE_TEMPLATE.md](RULE_TEMPLATE.md), and the tracker/domain templates.
+5. **Confirm** - show the complete draft and merge plan. Let the user edit it before writing.
+6. **Write** - preserve useful existing content, make the smallest file changes, and keep `CLAUDE.md` aligned with `AGENTS.md`.
+7. **Verify** - run the harness checks and any exact repo commands recorded in `AGENTS.md`.
+8. **Report** - list changed files, decisions, verification evidence, and remaining open questions.
 
-### Exploration A: Infrastructure
+## References
 
-- `git remote -v` and `.git/config` — GitHub, GitLab, self-hosted, or no remote?
-- `AGENTS.md` and `CLAUDE.md` — does either exist? Is `CLAUDE.md` a symlink?
-- `CONTEXT.md` and `CONTEXT-MAP.md`
-- `docs/adr/` and any `src/*/docs/adr/`
-- `docs/agents/` — does prior setup output already exist?
-- `.scratch/` — sign that local markdown issue tracking is already in use
+Load only the reference needed for the current step:
 
-### Exploration B: Code Shape
-
-- `README.md`, docs, CI, formatter/linter configs, package manifests, lockfiles, build files
-- source roots and project shape: frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repo
-- languages, frameworks, package manager
-- install/dev/build/lint/typecheck/test commands — only from repo evidence, never invented
-- route/API layers, schema/migration layers, database access, generated code, deployment config
-- when existing behavior is unclear from structure alone, load `/deep-code-trace` on a representative entrypoint before writing layer, command, verification, or rule-harness claims
-
-### Exploration C: Existing AI Instructions
-
-- `.agents/rules/`, `.claude/rules/`, `.cursor/rules/`, `.cursorrules`
-- `.github/copilot-instructions.md`, `.windsurfrules`, `.clinerules`
-- existing style from code or skills: naming, formatting, imports, typing, errors, prompts, references, scripts
-
-### Exploration Summary
-
-After all explorations complete, produce a structured summary:
-
-```markdown
-## Exploration Summary
-
-### Infrastructure
-- Remote: <GitHub / GitLab / none>
-- Existing AGENTS.md: <yes, N lines / no>
-- Existing CLAUDE.md: <symlink to AGENTS.md / standalone file / no>
-- Existing docs/agents/: <list files / none>
-- Existing .scratch/: <yes / no>
-
-### Code Shape
-- Project type: <frontend / backend / full-stack / library / CLI / monorepo / empty>
-- Languages: <list>
-- Frameworks: <list>
-- Commands found: <list with exact commands>
-- Commands missing: <list>
-
-### Existing AI Instructions
-- Found: <list files and patterns>
-- Not found: <list platforms with no config>
-```
-
-Present this summary to the user before proceeding to decisions.
-
-## Phase 2: Decide
-
-Walk the user through setup decisions one section at a time. Do not dump all sections at once.
-
-See [SECTIONS.md](SECTIONS.md) for the decision tree for each section. Load only the section being discussed.
-
-Sections in order:
-
-1. **A — Issue Tracker** (determines which template to use)
-2. **B — Triage Labels** (depends on tracker choice)
-3. **C — Domain Docs** (independent)
-4. **D — Agent Entrypoint** (independent)
-5. **E — Rule Harness** (depends on code shape from exploration)
-6. **F — Project Commands** (depends on code shape from exploration)
-
-## Phase 3: Draft And Confirm
-
-Based on all decisions, draft all artifacts before writing:
-
-- `AGENTS.md` content from [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md)
-- the `## Agent skills` block for `AGENTS.md`
-- `.agents/rules/` tree and new/changed rule file contents
-- `docs/agents/issue-tracker.md`
-- `docs/agents/triage-labels.md`
-- `docs/agents/domain.md`
-- how existing files will be merged, preserved, or replaced
-
-Show the complete draft to the user. Let the user edit before writing. Do not silently overwrite surrounding user-authored sections.
-
-## Phase 4: Write
-
-Write `docs/agents/`:
-
-- `issue-tracker.md` from the chosen issue tracker template, or from the user's "Other" workflow
-- `triage-labels.md` from `triage-labels.md`, edited with the selected label strings
-- `domain.md` from `domain.md`, edited for single-context or multi-context layout
-
-Write `AGENTS.md`:
-
-- keep it under 150 lines where practical
-- include project overview, core directives, exact commands, rule index, engineering practices, reference files
-- include an `## Agent skills` block with issue tracker, triage label, and domain docs summaries
-- link to `docs/agents/*.md` and `.agents/rules/**`
-- do not duplicate detailed rule content from `.agents/rules/**`
-
-Write `.agents/rules/**`:
-
-- create only directories that apply
-- use [RULE_TEMPLATE.md](RULE_TEMPLATE.md)
-- include source evidence or user decision
-- include verification when a rule can be checked
-
-Write `CLAUDE.md`:
-
-- symlink to `AGENTS.md` when possible
-- otherwise write a one-line pointer to `AGENTS.md`
-- never maintain divergent core instructions
-
-## Phase 5: Verify
-
-Run all applicable checks:
-
-- `test -f AGENTS.md`
-- `test -L CLAUDE.md && readlink CLAUDE.md`, or inspect the stub if symlinks are unsupported
-- `test -f docs/agents/issue-tracker.md`
-- `test -f docs/agents/triage-labels.md`
-- `test -f docs/agents/domain.md`
-- `find .agents/rules -maxdepth 3 -type f`
-- exact lint/typecheck/test/build commands recorded for the repo, if any
+- [HARNESS_FLOW.md](HARNESS_FLOW.md) - exploration, draft, write, verify, and done checklists
+- [SECTIONS.md](SECTIONS.md) - issue tracker, labels, domain docs, entrypoint, rules, and command decisions
+- [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md) - concise generated `AGENTS.md` shape
+- [RULE_TEMPLATE.md](RULE_TEMPLATE.md) - `.agents/rules/**` file shape
+- `issue-tracker-github.md`, `issue-tracker-gitlab.md`, `issue-tracker-local.md` - tracker docs templates
+- `triage-labels.md` - canonical label mapping template
+- `domain.md` - domain-doc consumption template
 
 ## Done
 
-Report:
-
-- changed files
-- detected project shape and stack
-- issue tracker choice
-- triage labels
-- domain doc layout
-- rule directories created
-- verification evidence
-- remaining open decisions
-
-Mention that users can edit `docs/agents/*.md`, `.agents/rules/**`, and `AGENTS.md` directly later. Re-run this skill only when switching trackers, changing domain layout, or reinitializing the harness.
+The skill is complete when the repo has a verified shared entrypoint, tracker
+contract, triage-label mapping, domain-doc contract, only the rule files it
+needs, and no unexplained overwrite of existing instructions.

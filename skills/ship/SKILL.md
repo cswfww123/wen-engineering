@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Judges release readiness and drafts version, release notes, and rollback plan. Use before a release or to gate a merge.
+description: Judge release readiness and draft version, release notes, and rollback plan.
 disable-model-invocation: true
 ---
 

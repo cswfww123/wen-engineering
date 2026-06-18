@@ -1,6 +1,7 @@
 ---
 name: do-issues
-description: Works ready vertical-slice issues one at a time. Use when resuming to-issues work or picking next AFK issue.
+description: Work ready vertical-slice issues one at a time.
+disable-model-invocation: true
 ---
 
 # Do Issues

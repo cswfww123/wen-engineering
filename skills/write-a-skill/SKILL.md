@@ -1,6 +1,6 @@
 ---
 name: write-a-skill
-description: Creates agent skills with structure and progressive disclosure. Use when creating or improving SKILL.md files.
+description: Create or improve agent skills with structure and progressive disclosure.
 disable-model-invocation: true
 ---
 
@@ -27,6 +27,13 @@ Create:
 - one-level reference files when detail would bloat `SKILL.md`
 - utility scripts only for deterministic repeated operations
 
+Before drafting, choose the invocation boundary using `docs/invocation.md`:
+
+- user-invoked for orchestration, durable artifacts, issue-state changes, or
+  high-impact side effects
+- model-invoked for reusable disciplines the agent should reach for
+  autonomously
+
 ## Skill Structure
 
 ```text
@@ -43,7 +50,7 @@ skill-name/
 ```md
 ---
 name: skill-name
-description: Brief capability. Use when specific triggers appear.
+description: Brief capability or human-facing command summary.
 ---
 
 # Skill Name
@@ -63,7 +70,14 @@ See sibling reference files when needed.
 
 ## Description Requirements
 
-The description is the only thing an agent sees when deciding whether to load the skill. Goal:
+Descriptions have different jobs by invocation type:
+
+- **Model-invoked**: the description is the only thing an agent sees when
+  deciding whether to load the skill.
+- **User-invoked**: the description is a human-facing command summary because
+  the model should not auto-select it.
+
+For model-invoked skills, the goal is:
 
 - state the capability
 - include concrete triggers
@@ -73,12 +87,19 @@ The description is the only thing an agent sees when deciding whether to load th
 - first sentence says what it does
 - second sentence starts with "Use when..."
 
+For user-invoked skills, keep the description shorter:
+
+- state what the command does
+- omit trigger lists unless they help a human choose the command
+- set `disable-model-invocation: true`
+
 Good description values:
 
 ```markdown
 Reviews diffs for standards, correctness, performance, security, and shape. Use for WIP or PR reviews.
 Runs QA cases and judges completion. Use after code-review, bug fixes, smoke, regression, or QA.
 Writes a compact handoff for a fresh agent. Use when handing off, compacting context, or preparing a new session.
+Ask which WEN skill or flow fits the situation.
 ```
 
 Bad description values:
@@ -112,3 +133,5 @@ Split files when:
 - no time-sensitive claims
 - terminology is consistent
 - references are one level deep
+- invocation boundary is correct for side effects
+- quality issues from [QUALITY.md](QUALITY.md) have been checked

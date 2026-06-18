@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: Runs grilling with domain docs. Use for grill, grill-with-docs, or plan/design stress tests.
+description: Run a plan-sharpening interview with domain docs active.
 disable-model-invocation: true
 ---
 

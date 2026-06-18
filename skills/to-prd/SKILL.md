@@ -1,6 +1,6 @@
 ---
 name: to-prd
-description: Turns discussion into a PRD and publishes it to the issue tracker. Use when user asks for to-prd or PRD synthesis.
+description: Turn settled discussion into a PRD and publish it to the issue tracker.
 disable-model-invocation: true
 ---
 

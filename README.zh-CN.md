@@ -95,6 +95,7 @@ git pull --ff-only
 
 常用 skills：
 
+- `/ask-wen` 为当前情况推荐最小可用的 WEN skill flow。
 - `/alignment-review` 审查生成的规划产物是否对齐用户意图、repo evidence 和执行路径。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
 - `/code-review` 审查本地 diff 或 PR，关注完成度、回归、性能和安全性。
@@ -105,8 +106,11 @@ git pull --ff-only
 - `/grill-with-docs` 在维护 glossary 和 ADR docs 的同时 stress-test 一个 plan。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
+- `/prototype` 构建一次性 logic/state 或 UI prototype，用来回答一个设计问题。
 - `/qa-run` 执行计划好的 QA cases，记录 evidence，并沉淀 durable bug issues。
+- `/security-review` 对 service 或 feature 做 system-level threat model 和安全审查。
 - `/setup-project-harness` 初始化项目级 agent harness。
+- `/ship` 判断 release readiness，并草拟版本、release notes 和 rollback plan。
 - `/skill-review` 在接受新增或修改后的 skill 前进行审查。
 - `/tdd` 通过 public behavior tests 引导 Red-Green-Refactor 实现。
 - `/to-issues` 把 PRD 或 plan 拆成 tracer-bullet vertical-slice issues。
@@ -160,6 +164,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Planning And Alignment
 
+- [`ask-wen`](skills/ask-wen/SKILL.md) - 为当前情况推荐最小可用的 WEN skill flow。
 - [`alignment-review`](skills/alignment-review/SKILL.md) - 审查生成的规划产物是否对齐 intent、repo evidence 和执行路径。
 - [`handoff`](skills/handoff/SKILL.md) - 为新的 agent 写一份紧凑 handoff document，并保存在 repo 外。
 - [`context-resume`](skills/context-resume/SKILL.md) - 通过读取既有项目产物启动新的 agent session，例如 `CONTEXT.md`、issues、PRDs 和 git history。用于 rate limit 后恢复或切换 agents。
@@ -170,6 +175,7 @@ AI agents 会以很可预测的方式失败。
 - [`to-issues`](skills/to-issues/SKILL.md) - 把 PRD、plan 或 spec 拆成可以独立领取的 vertical-slice issues。
 - [`to-test-plan`](skills/to-test-plan/SKILL.md) - 从 PRDs 和 issues 创建可追踪 test plans 和 cases。
 - [`do-issues`](skills/do-issues/SKILL.md) - 一次处理一个 ready AFK vertical-slice issue，并完成 verification。
+- [`prototype`](skills/prototype/SKILL.md) - 构建一次性 logic/state 或 UI prototype，用来回答一个设计问题。
 - [`tdd`](skills/tdd/SKILL.md) - 通过 vertical Red-Green-Refactor cycles 和 public behavior tests 引导实现。
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) - 创建或改进 skills，强调清晰 trigger、短 instructions 和一层 reference。
 - [`zoom-out`](skills/zoom-out/SKILL.md) - 使用项目领域语言映射相关模块和调用方。
@@ -180,6 +186,11 @@ AI agents 会以很可预测的方式失败。
 - [`deep-code-trace`](skills/deep-code-trace/SKILL.md) - 递归追踪入口方法到内部调用链，用于深度代码分析、调试、审查或高风险修改。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`qa-run`](skills/qa-run/SKILL.md) - 执行计划好的 QA cases，记录 evidence，并提交 durable bug issues。
+- [`security-review`](skills/security-review/SKILL.md) - 对 service 或 feature 做 system-level threat model 和安全审查。
+
+### Release And Delivery
+
+- [`ship`](skills/ship/SKILL.md) - 判断 release readiness，并草拟版本、release notes 和 rollback plan。
 
 ### Architecture
 
@@ -188,7 +199,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Engineering Harness
 
-- [`setup-project-harness`](skills/setup-project-harness/SKILL.md) - 为 Codex 和 Claude 构建 interview-driven project harness。适用于 frontend、backend、full-stack、library、CLI、monorepo、empty starter 或 engineering-skills repos。
+- [`setup-project-harness`](skills/setup-project-harness/SKILL.md) - 为 Codex 和 Claude 构建 minimal、evidence-first 的 project harness。适用于 frontend、backend、full-stack、library、CLI、monorepo、empty starter 或 engineering-skills repos。
 - [`skill-review`](skills/skill-review/SKILL.md) - 审查 skills 的 discovery、trigger clarity、progressive disclosure 和 judgment-preserving guidance。
 
 ## Skill Design Principles
@@ -201,6 +212,7 @@ AI agents 会以很可预测的方式失败。
 - 用 rules 捕获边界，不写泛泛建议。
 - 把 verification 放进 workflow。
 - 在 divergence 不危险的地方保留 model judgment。
+- orchestration 和 side effects 用 user-invoked skills；可复用 discipline 用 model-invoked skills。
 
 ## Repository Layout
 
@@ -216,7 +228,14 @@ CLAUDE.md -> AGENTS.md
     skills/
       authoring.md
       review.md
+    invariants/
+      invariants.md
 docs/
+  invocation.md
+  adr/
+    0001-skill-composition.md
+    0002-invariants-rule.md
+    0003-skill-invocation-boundaries.md
   agents/
     domain.md
     issue-tracker.md
@@ -224,6 +243,8 @@ docs/
 scripts/
   sync-skills.sh
 skills/
+  ask-wen/
+    SKILL.md
   alignment-review/
     SKILL.md
     CHECKLIST.md
@@ -259,9 +280,17 @@ skills/
   improve-codebase-architecture/
     SKILL.md
     HTML-REPORT.md
+  prototype/
+    SKILL.md
+    LOGIC.md
+    UI.md
   qa-run/
     SKILL.md
     TEMPLATES.md
+  security-review/
+    SKILL.md
+  ship/
+    SKILL.md
   skill-review/
     SKILL.md
   tdd/
@@ -278,10 +307,12 @@ skills/
     TEMPLATES.md
   write-a-skill/
     SKILL.md
+    QUALITY.md
   zoom-out/
     SKILL.md
   setup-project-harness/
     SKILL.md
+    HARNESS_FLOW.md
     SECTIONS.md
     AGENTS_TEMPLATE.md
     RULE_TEMPLATE.md

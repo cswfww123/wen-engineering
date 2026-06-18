@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: Finds deepening opportunities and writes an HTML architecture report. Use for architecture review or module deepening.
+description: Scan a codebase for deepening opportunities and write an HTML architecture report.
 disable-model-invocation: true
 ---
 

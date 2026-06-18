@@ -1,6 +1,6 @@
 ---
 name: to-test-plan
-description: Creates traceable test plans and cases from PRDs/issues. Use after to-prd or to-issues.
+description: Create traceable test plans and cases from PRDs or issues.
 disable-model-invocation: true
 ---
 

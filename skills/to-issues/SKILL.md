@@ -1,6 +1,6 @@
 ---
 name: to-issues
-description: Breaks a PRD into vertical-slice issues. Use when user asks for to-issues or AFK implementation issues.
+description: Break a PRD, plan, or spec into vertical-slice issues.
 disable-model-invocation: true
 ---
 

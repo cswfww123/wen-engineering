@@ -1,6 +1,6 @@
 ---
 name: context-resume
-description: Bootstrap a fresh agent session from existing project artifacts. Use when starting a new session after hitting rate limits, switching agents, or resuming interrupted work.
+description: Bootstrap a fresh agent session from existing project artifacts.
 argument-hint: "What were you working on? (optional — auto-detected from git if omitted)"
 disable-model-invocation: true
 ---

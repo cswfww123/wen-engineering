@@ -95,6 +95,7 @@ In empty repos, the harness must record facts and user decisions only. Leave pac
 
 Common skills:
 
+- `/ask-wen` recommends the smallest useful WEN skill flow for the situation.
 - `/alignment-review` reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` reviews diffs for standards, correctness, performance, security, and shape.
@@ -105,6 +106,7 @@ Common skills:
 - `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
+- `/prototype` builds a throwaway logic/state or UI prototype to answer one design question.
 - `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
 - `/security-review` threat-models and audits a feature or service for system-level security risks.
 - `/setup-project-harness` initializes a project-level agent harness.
@@ -162,6 +164,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
+- [`ask-wen`](skills/ask-wen/SKILL.md) — recommends the smallest useful WEN skill flow for the situation.
 - [`alignment-review`](skills/alignment-review/SKILL.md) — reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
 - [`context-resume`](skills/context-resume/SKILL.md) — bootstraps a fresh agent session by reading existing project artifacts (CONTEXT.md, issues, PRDs, git history). Use when resuming after rate limits or switching agents.
@@ -172,6 +175,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`to-issues`](skills/to-issues/SKILL.md) — breaks a PRD, plan, or spec into independently grabbable vertical-slice issues.
 - [`to-test-plan`](skills/to-test-plan/SKILL.md) — creates traceable test plans and cases from PRDs and issues.
 - [`do-issues`](skills/do-issues/SKILL.md) — works through ready AFK vertical-slice issues one at a time with verification.
+- [`prototype`](skills/prototype/SKILL.md) — builds a throwaway logic/state or UI prototype to answer one design question.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) — creates or improves skills with clear triggers, short instructions, and one-level references.
 - [`zoom-out`](skills/zoom-out/SKILL.md) — maps relevant modules and callers using the project's domain language.
@@ -195,7 +199,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Engineering Harness
 
-- [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds an interview-driven project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
+- [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds a minimal, evidence-first project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
 - [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
 
 ## Skill Design Principles
@@ -208,6 +212,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - Capture boundaries in rules, not generic advice.
 - Make verification part of the workflow.
 - Preserve model judgment wherever divergence is not dangerous.
+- Choose user-invoked skills for orchestration and side effects; choose model-invoked skills for reusable disciplines.
 
 ## Repository Layout
 
@@ -226,8 +231,11 @@ CLAUDE.md -> AGENTS.md
     invariants/
       invariants.md
 docs/
+  invocation.md
   adr/
     0001-skill-composition.md
+    0002-invariants-rule.md
+    0003-skill-invocation-boundaries.md
   agents/
     domain.md
     issue-tracker.md
@@ -235,6 +243,8 @@ docs/
 scripts/
   sync-skills.sh
 skills/
+  ask-wen/
+    SKILL.md
   alignment-review/
     SKILL.md
     CHECKLIST.md
@@ -270,6 +280,10 @@ skills/
   improve-codebase-architecture/
     SKILL.md
     HTML-REPORT.md
+  prototype/
+    SKILL.md
+    LOGIC.md
+    UI.md
   qa-run/
     SKILL.md
     TEMPLATES.md
@@ -293,10 +307,12 @@ skills/
     TEMPLATES.md
   write-a-skill/
     SKILL.md
+    QUALITY.md
   zoom-out/
     SKILL.md
   setup-project-harness/
     SKILL.md
+    HARNESS_FLOW.md
     SECTIONS.md
     AGENTS_TEMPLATE.md
     RULE_TEMPLATE.md

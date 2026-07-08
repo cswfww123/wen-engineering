@@ -27,7 +27,7 @@ If any item is missing, contradictory, or blocked on a user-owned decision, stop
 
 1. Synthesize from the current discussion, user-provided docs, existing PRDs, issues, or other durable repo artifacts.
 2. Explore the repo to understand the current state if needed. Use glossary vocabulary and respect relevant ADRs.
-3. If current-state claims depend on actual code behavior, load `/deep-code-trace` for the relevant entrypoint before recording modules, interfaces, interactions, permissions, migrations, or test seams.
+3. If current-state claims depend on actual code behavior, trace the relevant entrypoint before recording modules, interfaces, interactions, permissions, migrations, or test seams.
 4. Run the readiness gate above.
 5. Sketch the test seams for the feature. Prefer existing seams, use the highest seam possible, and keep the number of seams as low as practical.
 6. Ask about test seams only when the choice is user-owned or repo evidence is insufficient. Otherwise record the chosen seams and assumptions in the PRD.

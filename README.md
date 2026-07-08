@@ -95,14 +95,12 @@ In empty repos, the harness must record facts and user decisions only. Leave pac
 
 Common skills:
 
-- `/ask-wen` recommends the smallest useful WEN skill flow for the situation.
 - `/alignment-review` reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` reviews diffs for standards, correctness, performance, security, and shape.
-- `/deep-code-trace` recursively traces an entry point through internal calls for deep code analysis.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
-- `/do-issues` works through ready AFK vertical-slice issues one at a time.
+- `/implement` implements one bounded task or ready issue slice with verification.
 - `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
@@ -110,7 +108,6 @@ Common skills:
 - `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
 - `/security-review` threat-models and audits a feature or service for system-level security risks.
 - `/setup-project-harness` initializes a project-level agent harness.
-- `/ship` judges release readiness and drafts version, release notes, and rollback plan.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
 - `/to-issues` breaks a PRD or plan into tracer-bullet vertical-slice issues.
@@ -164,17 +161,15 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
-- [`ask-wen`](skills/ask-wen/SKILL.md) — recommends the smallest useful WEN skill flow for the situation.
 - [`alignment-review`](skills/alignment-review/SKILL.md) — reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
-- [`context-resume`](skills/context-resume/SKILL.md) — bootstraps a fresh agent session by reading existing project artifacts (CONTEXT.md, issues, PRDs, git history). Use when resuming after rate limits or switching agents.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
 - [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
 - [`to-prd`](skills/to-prd/SKILL.md) — turns settled discussion and repo evidence into a PRD on the configured issue tracker.
 - [`to-issues`](skills/to-issues/SKILL.md) — breaks a PRD, plan, or spec into independently grabbable vertical-slice issues.
 - [`to-test-plan`](skills/to-test-plan/SKILL.md) — creates traceable test plans and cases from PRDs and issues.
-- [`do-issues`](skills/do-issues/SKILL.md) — works through ready AFK vertical-slice issues one at a time with verification.
+- [`implement`](skills/implement/SKILL.md) — implements one bounded task or ready issue slice with verification.
 - [`prototype`](skills/prototype/SKILL.md) — builds a throwaway logic/state or UI prototype to answer one design question.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) — creates or improves skills with clear triggers, short instructions, and one-level references.
@@ -183,14 +178,9 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews diffs for standards, correctness, performance, security, and shape.
-- [`deep-code-trace`](skills/deep-code-trace/SKILL.md) — traces an entry point through internal calls for deep code analysis, debugging, reviews, or risky edits.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, judges completion, and files durable bug issues.
 - [`security-review`](skills/security-review/SKILL.md) — system-level threat model and audit of a service or feature; complements code-review's diff-level axis.
-
-### Release And Delivery
-
-- [`ship`](skills/ship/SKILL.md) — judges release readiness and drafts the next version, release notes, and rollback plan; the release gate consumes evidence from code-review, qa-run, and security-review.
 
 ### Architecture
 
@@ -243,8 +233,6 @@ docs/
 scripts/
   sync-skills.sh
 skills/
-  ask-wen/
-    SKILL.md
   alignment-review/
     SKILL.md
     CHECKLIST.md
@@ -257,9 +245,6 @@ skills/
     SKILL.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
-  deep-code-trace/
-    EXAMPLES.md
-    SKILL.md
   diagnosing-bugs/
     SKILL.md
     ATTRIBUTION.md
@@ -269,7 +254,7 @@ skills/
     SKILL.md
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
-  do-issues/
+  implement/
     SKILL.md
   grill-with-docs/
     SKILL.md
@@ -288,8 +273,6 @@ skills/
     SKILL.md
     TEMPLATES.md
   security-review/
-    SKILL.md
-  ship/
     SKILL.md
   skill-review/
     SKILL.md

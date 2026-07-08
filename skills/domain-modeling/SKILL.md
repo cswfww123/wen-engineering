@@ -59,7 +59,7 @@ When domain relationships are being discussed, invent specific scenarios that pr
 
 When the user states how something works, check whether the code agrees. Surface contradictions directly.
 
-If the term or rule depends on behavior hidden behind services, callers, Mapper/DAO queries, converters, permissions, or side effects, load `/deep-code-trace` and use its findings as code evidence. Keep `CONTEXT.md` glossary entries conceptual; do not paste implementation traces into the glossary.
+If the term or rule depends on behavior hidden behind services, callers, Mapper/DAO queries, converters, permissions, or side effects, trace the relevant code path and use its findings as code evidence. Keep `CONTEXT.md` glossary entries conceptual; do not paste implementation traces into the glossary.
 
 ### Update CONTEXT.md Inline
 

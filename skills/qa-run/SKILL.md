@@ -93,7 +93,7 @@ For each failed or blocked case, classify the cause:
 - environment or data problem: keep it in the QA report unless it needs engineering work
 - test case problem: note the correction needed; do not hide the failed run
 
-When a failure looks like product or code behavior and the responsible path is not obvious from the test evidence, load `/deep-code-trace` on the failing entrypoint before filing or reopening a bug.
+When a failure looks like product or code behavior and the responsible path is not obvious from the test evidence, trace the failing entrypoint before filing or reopening a bug.
 
 Bug issues must describe user-visible behavior or documented contract breakage, not private implementation details.
 
@@ -114,7 +114,7 @@ For retest mode, include bugs verified, reopened, and blocked, plus evidence and
 
 ### 9. Handoff
 
-If bugs were filed or reopened, the bug issue and original test case are the anchors for whoever fixes them. `/do-issues` and `/tdd` are common fix skills; this skill does not require them.
+If bugs were filed or reopened, the bug issue and original test case are the anchors for whoever fixes them. `/implement` and `/tdd` are common fix skills; this skill does not require them.
 
 If the user explicitly asks QA to fix issues now, switch from report-first QA into the normal implementation flow: one bug issue at a time, with a regression test at the correct seam.
 

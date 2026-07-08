@@ -20,7 +20,7 @@ Work from the current conversation. If the user passes an issue number, URL, or 
 
 If you have not already explored the codebase, do so enough to understand the current shape. Use the project's domain glossary vocabulary and respect relevant ADRs.
 
-When the vertical slice boundaries depend on existing behavior, load `/deep-code-trace` for the relevant entrypoint before deciding blockers, integration layers, prefactoring, or test seams.
+When the vertical slice boundaries depend on existing behavior, trace the relevant entrypoint before deciding blockers, integration layers, prefactoring, or test seams.
 
 Look for useful prefactoring opportunities. Make the change easy, then make the easy change.
 
@@ -84,6 +84,6 @@ Or: None - can start immediately
 
 - `/alignment-review` — check issue slices match the PRD and are truly vertical
 - `/to-test-plan` — define test cases while requirements are fresh
-- `/do-issues` — work the issues one at a time
+- `/implement` — work the issues one at a time
 
 Use any, in any order; this skill prescribes no sequence.

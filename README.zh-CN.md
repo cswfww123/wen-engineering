@@ -95,14 +95,12 @@ git pull --ff-only
 
 常用 skills：
 
-- `/ask-wen` 为当前情况推荐最小可用的 WEN skill flow。
 - `/alignment-review` 审查生成的规划产物是否对齐用户意图、repo evidence 和执行路径。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
 - `/code-review` 审查本地 diff 或 PR，关注完成度、回归、性能和安全性。
-- `/deep-code-trace` 递归追踪入口方法到内部调用链，用于深度代码分析。
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归。
 - `/domain-modeling` 在设计决策结晶时打磨 glossary terms 并记录 ADRs。
-- `/do-issues` 一次处理一个 ready AFK vertical-slice issue。
+- `/implement` 实现一个 bounded task 或 ready issue slice，并完成 verification。
 - `/grill-with-docs` 在维护 glossary 和 ADR docs 的同时 stress-test 一个 plan。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
@@ -110,7 +108,6 @@ git pull --ff-only
 - `/qa-run` 执行计划好的 QA cases，记录 evidence，并沉淀 durable bug issues。
 - `/security-review` 对 service 或 feature 做 system-level threat model 和安全审查。
 - `/setup-project-harness` 初始化项目级 agent harness。
-- `/ship` 判断 release readiness，并草拟版本、release notes 和 rollback plan。
 - `/skill-review` 在接受新增或修改后的 skill 前进行审查。
 - `/tdd` 通过 public behavior tests 引导 Red-Green-Refactor 实现。
 - `/to-issues` 把 PRD 或 plan 拆成 tracer-bullet vertical-slice issues。
@@ -164,17 +161,15 @@ AI agents 会以很可预测的方式失败。
 
 ### Planning And Alignment
 
-- [`ask-wen`](skills/ask-wen/SKILL.md) - 为当前情况推荐最小可用的 WEN skill flow。
 - [`alignment-review`](skills/alignment-review/SKILL.md) - 审查生成的规划产物是否对齐 intent、repo evidence 和执行路径。
 - [`handoff`](skills/handoff/SKILL.md) - 为新的 agent 写一份紧凑 handoff document，并保存在 repo 外。
-- [`context-resume`](skills/context-resume/SKILL.md) - 通过读取既有项目产物启动新的 agent session，例如 `CONTEXT.md`、issues、PRDs 和 git history。用于 rate limit 后恢复或切换 agents。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 打磨 domain language，更新 `CONTEXT.md`，并在决策结晶时少量记录 ADRs。
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) - 运行 `/grilling` 并同时激活 `/domain-modeling`，作为常规 plan-sharpening 入口。
 - [`grilling`](skills/grilling/SKILL.md) - 提供 grill skills 使用的一次一个问题的核心访谈协议。
 - [`to-prd`](skills/to-prd/SKILL.md) - 把已经沉淀的讨论和 repo evidence 转成适配当前 issue tracker 的 PRD。
 - [`to-issues`](skills/to-issues/SKILL.md) - 把 PRD、plan 或 spec 拆成可以独立领取的 vertical-slice issues。
 - [`to-test-plan`](skills/to-test-plan/SKILL.md) - 从 PRDs 和 issues 创建可追踪 test plans 和 cases。
-- [`do-issues`](skills/do-issues/SKILL.md) - 一次处理一个 ready AFK vertical-slice issue，并完成 verification。
+- [`implement`](skills/implement/SKILL.md) - 实现一个 bounded task 或 ready issue slice，并完成 verification。
 - [`prototype`](skills/prototype/SKILL.md) - 构建一次性 logic/state 或 UI prototype，用来回答一个设计问题。
 - [`tdd`](skills/tdd/SKILL.md) - 通过 vertical Red-Green-Refactor cycles 和 public behavior tests 引导实现。
 - [`write-a-skill`](skills/write-a-skill/SKILL.md) - 创建或改进 skills，强调清晰 trigger、短 instructions 和一层 reference。
@@ -183,14 +178,9 @@ AI agents 会以很可预测的方式失败。
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) - 审查本地 diffs 或 PRs，关注完成度、回归、性能和安全性。
-- [`deep-code-trace`](skills/deep-code-trace/SKILL.md) - 递归追踪入口方法到内部调用链，用于深度代码分析、调试、审查或高风险修改。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`qa-run`](skills/qa-run/SKILL.md) - 执行计划好的 QA cases，记录 evidence，并提交 durable bug issues。
 - [`security-review`](skills/security-review/SKILL.md) - 对 service 或 feature 做 system-level threat model 和安全审查。
-
-### Release And Delivery
-
-- [`ship`](skills/ship/SKILL.md) - 判断 release readiness，并草拟版本、release notes 和 rollback plan。
 
 ### Architecture
 
@@ -243,8 +233,6 @@ docs/
 scripts/
   sync-skills.sh
 skills/
-  ask-wen/
-    SKILL.md
   alignment-review/
     SKILL.md
     CHECKLIST.md
@@ -257,9 +245,6 @@ skills/
     SKILL.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
-  deep-code-trace/
-    EXAMPLES.md
-    SKILL.md
   diagnosing-bugs/
     SKILL.md
     ATTRIBUTION.md
@@ -269,7 +254,7 @@ skills/
     SKILL.md
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
-  do-issues/
+  implement/
     SKILL.md
   grill-with-docs/
     SKILL.md
@@ -288,8 +273,6 @@ skills/
     SKILL.md
     TEMPLATES.md
   security-review/
-    SKILL.md
-  ship/
     SKILL.md
   skill-review/
     SKILL.md

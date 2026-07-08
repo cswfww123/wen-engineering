@@ -1,22 +1,22 @@
 ---
-name: do-issues
-description: Work ready vertical-slice issues one at a time.
+name: implement
+description: Implements one bounded task or ready issue slice with verification.
 disable-model-invocation: true
 ---
 
-# Do Issues
+# Implement
 
-Work through a generated issue set as an AFK implementation loop.
+Implement a bounded task, or work through a ready issue set one slice at a time.
 
-Each issue is one tracer-bullet vertical slice. Finish and verify the slice in front of you before picking another one.
+Each task is one vertical slice. Finish and verify the slice in front of you before picking another one.
 
 ## What To Do
 
-Find the current requirement's issue set, choose the highest-priority unblocked AFK issue that is not complete, implement it with `/tdd`, update the issue, then repeat until no runnable AFK issues remain or the user's iteration limit is reached.
+Find the current task. If it is a single request, implement that slice. If it is an issue set, choose the highest-priority unblocked AFK issue that is not complete, implement it with `/tdd`, update the issue, then repeat until no runnable AFK issues remain or the user's iteration limit is reached.
 
-Never start two issues at once. Never skip verification before marking an issue complete.
+Never start two slices at once. Never skip verification before marking a slice complete.
 
-## Finding The Issue Set
+## Finding The Work
 
 Read the repo context first:
 
@@ -26,13 +26,17 @@ Read the repo context first:
 
 Treat those files as the source of truth for where issues live and how to list, read, update, comment on, and complete them. Do not assume GitHub, GitLab, local markdown, `.scratch/`, or any other tracker shape unless the repo config says so.
 
-If the user passed a PRD path, feature slug, issue path, or issue number, start there.
+If the user passed a PRD path, feature slug, issue path, issue number, bug report, or task brief, start there.
 
-If not, use the issue tracker doc's find-current-work or list-issues instructions. Prefer the most recently active unfinished requirement. If multiple active requirement sets look equally current, ask one concise question with the candidate references.
+If the user gave a bounded task and no issue set exists, do not invent issues. Implement the task directly.
+
+If the work points to an issue set, use the issue tracker doc's find-current-work or list-issues instructions. Prefer the most recently active unfinished requirement. If multiple active requirement sets look equally current, ask one concise question with the candidate references.
 
 Read the parent PRD, spec, or source issue before selecting an implementation issue. Do not close or modify a parent issue unless the user explicitly asks.
 
 ## Selecting The Next Issue
+
+Skip this section for a single bounded task with no issue set.
 
 An issue is complete if its `Status:` is `complete`, `completed`, `done`, or `closed`, or if every acceptance criterion is checked and comments show verified completion.
 
@@ -51,12 +55,26 @@ Prefer issues in this order:
 
 If the next issue is HITL, blocked, or underspecified, leave it untouched, add a short note only if useful, and continue to the next runnable AFK issue. If none remain, report the blocker.
 
+## Coder Delegation
+
+Use a fresh `Coder` subagent for each selected slice when available. If `Coder` is unavailable, implement the slice directly.
+
+The main agent owns work selection, harness reading, issue updates, and final reporting. `Coder` owns only the selected slice.
+
+Pass `Coder` a concrete brief:
+
+- task reference and acceptance criteria
+- relevant repo instructions and boundaries
+- code evidence or likely files
+- required verification commands
+- explicit out-of-scope work
+
 ## Execution Loop
 
-For each selected issue:
+For each selected slice:
 
-1. Mark it `Status: in-progress` unless it already is.
-2. If the issue modifies existing behavior, load `/deep-code-trace` on the relevant entrypoint before choosing the public interface and test seam.
+1. Mark the issue `Status: in-progress` unless it already is. Skip this for non-issue tasks.
+2. If the slice modifies existing behavior, trace the relevant entrypoint before choosing the public interface and test seam.
 3. Load `/tdd` and derive behavior tests from the acceptance criteria and public interface.
 4. Run the failing test first and confirm RED.
 5. Implement only enough code to pass that behavior.
@@ -67,6 +85,8 @@ For each selected issue:
 Respect project instructions for verification, commits, docs, OpenAPI, SQL, and generated artifacts.
 
 ## Updating The Issue
+
+Skip this section for non-issue tasks.
 
 After a verified slice:
 
@@ -85,7 +105,7 @@ Stop when:
 
 - all runnable AFK issues are complete
 - the user's iteration limit is reached
-- every remaining issue is blocked, HITL, or needs information
+- every remaining slice is blocked, HITL, or needs information
 - a destructive or external-access decision is required
 
 When stopping, report the current feature directory, completed issues, remaining blocked issues, and verification evidence.

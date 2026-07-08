@@ -11,7 +11,7 @@ depends on its output.
 
 The repository has grown enough skills that a flat list is no longer a good
 mental model. Some skills are safe and useful for the model to select
-automatically, such as `tdd`, `diagnosing-bugs`, or `deep-code-trace`. Others
+automatically, such as `tdd` or `diagnosing-bugs`. Others
 coordinate durable side effects, such as publishing PRDs, working issue loops,
 or shaping multi-skill flows. Those should remain under explicit human control.
 
@@ -39,7 +39,7 @@ the wrong triage label. Other skills merely get better wording from domain docs.
 
 ## Consequences
 
-- `do-issues` is user-invoked because it selects issues, edits code, updates
+- `implement` is user-invoked because it selects issues, edits code, updates
   issue state, and can repeat until no runnable issue remains.
 - A router skill can reduce the user's cognitive load without making every
   orchestration skill model-invoked.

@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Review generated planning artifacts before implementation or QA so the next agent does not drift from user intent, requirement coverage, repo evidence, or executable scope.
 
-Use this after skills such as `/to-prd`, `/to-issues`, or `/to-test-plan`, and before `/do-issues`, TDD, implementation work, or `/qa-run`.
+Use this after skills such as `/to-prd`, `/to-issues`, or `/to-test-plan`, and before `/implement`, TDD, implementation work, or `/qa-run`.
 
 See [CHECKLIST.md](CHECKLIST.md) for detailed review questions.
 
@@ -24,7 +24,7 @@ Read only the artifacts needed for the review:
 - existing related tests, contracts, or implementation seams
 - code review or QA results when reviewing a revised test plan after implementation
 
-If the artifact's fit depends on actual code behavior, load `/deep-code-trace` for the relevant entrypoint before judging module ownership, integration seams, data flow, permissions, or async side effects.
+If the artifact's fit depends on actual code behavior, trace the relevant entrypoint before judging module ownership, integration seams, data flow, permissions, or async side effects.
 
 If the source material is missing, say what cannot be verified and review only the claims that have evidence.
 

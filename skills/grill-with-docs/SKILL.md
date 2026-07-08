@@ -14,7 +14,7 @@ Use this as the normal user entrypoint for sharpening a plan or design. Ask one 
 
 "Run `/grilling` with `/domain-modeling` active" means: load both skills' instructions and follow them together. During the interview, apply `/domain-modeling` rules whenever domain terms appear — challenge fuzzy terms, propose precise alternatives, update `CONTEXT.md` inline. Do not treat them as separate phases.
 
-When a plan or design question depends on current code behavior, also load `/deep-code-trace` for the relevant entrypoint so repo evidence answers what it can before the user is asked.
+When a plan or design question depends on current code behavior, trace the relevant entrypoint so repo evidence answers what it can before the user is asked.
 
 ## Boundary
 

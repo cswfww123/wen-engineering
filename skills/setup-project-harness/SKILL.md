@@ -47,7 +47,7 @@ in place or reinitialize. Never silently overwrite user-authored content.
 - Keep `AGENTS.md` short. Move detail into `.agents/rules/**` or `docs/agents/**`.
 - Create rules only for drift risks agents are likely to get wrong.
 - Use `[MUST]` and `[FORBID]` sparingly; prefer `[SHOULD]` when judgment may win.
-- Use `/deep-code-trace` before encoding behavior that depends on real call paths.
+- Trace real call paths before encoding behavior that depends on them.
 - Treat deterministic lifecycle enforcement as CI, hook, or platform work; do not rely on memory text for it.
 
 ## Workflow

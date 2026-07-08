@@ -14,9 +14,9 @@ Hold every finding report-only. Security changes — auth, crypto, secrets,
 authorization rules — are never auto-fixed; the smallest fix is proposed and left
 to `/to-issues`.
 
-Use `/deep-code-trace` whenever a claim depends on actual call behavior, permission
-checks, query conditions, converters, or side effects. Do not reason about hidden
-behavior from names.
+Trace the relevant code path whenever a claim depends on actual call behavior,
+permission checks, query conditions, converters, or side effects. Do not reason
+about hidden behavior from names.
 
 ## What Is Out Of Scope
 
@@ -34,9 +34,8 @@ If the target is unclear, ask what to secure before proceeding.
 
 ## 2. Threat Model (judgment)
 
-1. Trace the target with `/deep-code-trace` and map its trust boundaries and data
-   flow: where untrusted input enters, where it crosses a boundary, where it is
-   persisted or returned.
+1. Trace the target and map its trust boundaries and data flow: where untrusted
+   input enters, where it crosses a boundary, where it is persisted or returned.
 2. Apply STRIDE per boundary: spoofing, tampering, repudiation, information
    disclosure, denial of service, elevation of privilege.
 3. For each threat, state whether the code already defends against it, and cite
@@ -76,7 +75,6 @@ any threat that could not be confirmed.
 ## Related Skills
 
 - `/code-review` — diff-level vulnerability review of changes
-- `/deep-code-trace` — trace calls, permissions, queries, and side effects
 - `/to-issues` — turn critical findings into tracked security issues
 - `/setup-project-harness` — configure security tooling (scanners, secret management)
 

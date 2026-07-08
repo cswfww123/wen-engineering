@@ -36,7 +36,7 @@ RIGHT:
 
 ### 0. Receive Context
 
-When invoked by another skill (e.g., `/do-issues`), use the calling skill's context — the current issue, its acceptance criteria, and the public interface to test. Do not start fresh from `CONTEXT.md` when the calling skill already provided a focus.
+When invoked by another skill (e.g., `/implement`), use the calling skill's context — the current issue, its acceptance criteria, and the public interface to test. Do not start fresh from `CONTEXT.md` when the calling skill already provided a focus.
 
 ### 1. Planning
 
@@ -48,7 +48,7 @@ Before writing code:
 - confirm the behaviors to test and their priority
 - list behaviors, not implementation steps
 
-If you are changing existing behavior or selecting a seam in unfamiliar code, load `/deep-code-trace` on the relevant entrypoint before writing the first RED test.
+If you are changing existing behavior or selecting a seam in unfamiliar code, trace the relevant entrypoint before writing the first RED test.
 
 Ask only for decisions that are user-owned or not discoverable from the repo.
 

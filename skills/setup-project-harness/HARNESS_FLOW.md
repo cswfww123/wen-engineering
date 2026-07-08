@@ -24,7 +24,7 @@ infer facts from conventions alone.
 - languages, frameworks, package manager, workspace layout
 - install, dev, build, lint, typecheck, test, and single-test commands found in repo evidence
 - route/API layers, schema/migration layers, database access, generated code, deployment config
-- behavior hidden behind real call paths that requires `/deep-code-trace` before becoming a rule
+- behavior hidden behind real call paths that requires tracing before becoming a rule
 
 ### Existing AI Instructions
 

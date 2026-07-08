@@ -32,7 +32,7 @@ A compact module map with three sections:
 
 Map at **module level** — packages, services, or top-level files. Do not descend to individual functions or classes unless a module is the only file in the area.
 
-If the module map depends on exact behavior, callers, queries, converters, permissions, or side effects, load `/deep-code-trace` for the relevant entrypoint, then summarize the result back at module level.
+If the module map depends on exact behavior, callers, queries, converters, permissions, or side effects, trace the relevant entrypoint, then summarize the result back at module level.
 
 Use the project's domain glossary from `CONTEXT.md` for names. Do not invent new terms.
 

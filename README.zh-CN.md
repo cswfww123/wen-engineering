@@ -114,7 +114,6 @@ git pull --ff-only
 - `/to-prd` 把已经沉淀的讨论转成适配当前 issue tracker 的 PRD。
 - `/to-test-plan` 从 PRDs 和 issues 创建可追踪 test plans 和 test cases。
 - `/writing-great-skills` 提供写作和编辑 predictable skills 的 reference。
-- `/zoom-out` 使用项目领域语言映射相关模块和调用方。
 
 Harness skill 会创建：
 
@@ -173,7 +172,6 @@ AI agents 会以很可预测的方式失败。
 - [`prototype`](skills/prototype/SKILL.md) - 构建一次性 logic/state 或 UI prototype，用来回答一个设计问题。
 - [`tdd`](skills/tdd/SKILL.md) - 通过 vertical Red-Green-Refactor cycles 和 public behavior tests 引导实现。
 - [`writing-great-skills`](skills/writing-great-skills/SKILL.md) - 提供写作 predictable skills 的 vocabulary 和 principles。
-- [`zoom-out`](skills/zoom-out/SKILL.md) - 使用项目领域语言映射相关模块和调用方。
 
 ### Review And Quality
 
@@ -291,8 +289,6 @@ skills/
   writing-great-skills/
     SKILL.md
     GLOSSARY.md
-  zoom-out/
-    SKILL.md
   setup-project-harness/
     SKILL.md
     HARNESS_FLOW.md

@@ -43,6 +43,6 @@ the wrong triage label. Other skills merely get better wording from domain docs.
   issue state, and can repeat until no runnable issue remains.
 - A router skill can reduce the user's cognitive load without making every
   orchestration skill model-invoked.
-- `write-a-skill` and skill review rules judge descriptions differently for
+- `writing-great-skills` and skill review rules judge descriptions differently for
   user-invoked and model-invoked skills.
 - Setup pointers become evidence of a hard dependency, not boilerplate.

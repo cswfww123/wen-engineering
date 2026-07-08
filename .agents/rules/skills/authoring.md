@@ -1,7 +1,7 @@
 # Skill Authoring
 
 Applies to: `skills/**/SKILL.md` and sibling reference files
-Source: `README.md`, `docs/invocation.md`, `/write-a-skill`, `skills/setup-project-harness/SKILL.md`, `skills/skill-review/SKILL.md`
+Source: `README.md`, `docs/invocation.md`, `/writing-great-skills`, `skills/setup-project-harness/SKILL.md`, `skills/skill-review/SKILL.md`
 
 ## Rules
 

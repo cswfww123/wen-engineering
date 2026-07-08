@@ -113,7 +113,7 @@ Common skills:
 - `/to-issues` breaks a PRD or plan into tracer-bullet vertical-slice issues.
 - `/to-prd` turns settled discussion into a PRD for the configured issue tracker.
 - `/to-test-plan` creates traceable test plans and test cases from PRDs and issues.
-- `/write-a-skill` creates or improves skills with progressive disclosure.
+- `/writing-great-skills` provides a reference for writing and editing predictable skills.
 - `/zoom-out` maps relevant modules and callers using the project's domain language.
 
 The harness skill creates:
@@ -172,7 +172,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`implement`](skills/implement/SKILL.md) — implements one bounded task or ready issue slice with verification.
 - [`prototype`](skills/prototype/SKILL.md) — builds a throwaway logic/state or UI prototype to answer one design question.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
-- [`write-a-skill`](skills/write-a-skill/SKILL.md) — creates or improves skills with clear triggers, short instructions, and one-level references.
+- [`writing-great-skills`](skills/writing-great-skills/SKILL.md) — provides vocabulary and principles for writing predictable skills.
 - [`zoom-out`](skills/zoom-out/SKILL.md) — maps relevant modules and callers using the project's domain language.
 
 ### Review And Quality
@@ -288,9 +288,9 @@ skills/
   to-test-plan/
     SKILL.md
     TEMPLATES.md
-  write-a-skill/
+  writing-great-skills/
     SKILL.md
-    QUALITY.md
+    GLOSSARY.md
   zoom-out/
     SKILL.md
   setup-project-harness/

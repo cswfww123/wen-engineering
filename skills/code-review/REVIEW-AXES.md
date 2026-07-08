@@ -2,6 +2,20 @@
 
 Use these focused briefs when running sub-agents or separate review passes. Keep each pass evidence-first and under the review scope.
 
+## Intent
+
+Read the PRD, issue, bug report, spec, user-provided path, branch-matching docs, and explicit user decisions before judging the diff.
+
+Look for:
+
+- requested behavior missing from the changed code
+- behavior the diff adds that was not requested
+- implementation that satisfies the words but violates the agreed intent
+- fixes placed at a shallow caller when the issue belongs in a shared owner
+- PRD, issue, spec, or bugfix acceptance criteria with no matching code path
+
+Report only claims tied to a cited intent source. If no intent source exists, say so and skip this axis instead of inventing product requirements.
+
 ## Standards
 
 Read the relevant standards docs before reading the diff. Report only places where changed code violates a documented rule.
@@ -22,9 +36,9 @@ Look for:
 
 - bugs that a user can hit in normal or edge-case flows
 - null/undefined dereferences, unchecked optional values, or partial-result assumptions introduced by changed data flow
-- changed invariants, ordering, error handling, authorization, persistence, or data migration behavior
+- changed invariants, ordering, error handling, persistence, or data migration behavior
 - regressions suggested by git blame, nearby tests, previous PR comments, or comments in modified files
-- security or data-loss risks directly introduced by the diff
+- data-loss risks directly introduced by the diff
 - when the diff touches a shared mutable invariant (balance/quota/counter/inventory/state machine), require a concurrency test seam per `.agents/rules/invariants/`; serial-only tests are insufficient
 
 Avoid speculative "could be better" comments. A finding should survive a skeptical second read.
@@ -36,6 +50,7 @@ Use the project shape from [PROJECT-LENSES.md](PROJECT-LENSES.md). Report risks 
 Look for:
 
 - query or IO amplification: N+1 access, repeated same-table/query calls in loops, per-row remote calls, or request work that grows from `O(1)` to `O(n)`/`O(n*m)`
+- loops that query or call remotely where one bounded lookup, join, batch, or cache read would do
 - unbounded work on hot paths, missing pagination, missing filters, missing indexes, full scans, or unnecessary network waterfalls
 - memory pressure and OOM risks: whole-file/result loading, unbounded lists/maps/caches/queues, large materialized joins, or missing streaming/backpressure
 - CPU or serialization amplification: nested loops over growing inputs, repeated parsing/encoding, expensive transforms in render/request paths, or avoidable recomputation
@@ -59,21 +74,23 @@ Look for:
 - dependency changes that add unnecessary privilege, risky transitive code, unpinned sources, license/policy exposure, or large runtime attack surface
 - broken security assumptions across frontend/backend seams, background jobs, migrations, or third-party callbacks
 
+For security-relevant changes, trace the affected trust boundary or data flow: where untrusted input enters, where permissions are checked, where data is persisted, logged, returned, exported, or cached. Mark unknowns as unknown; do not infer hidden defenses from names.
+
 Tie each finding to changed code and stack-specific exploitability. Treat auth, crypto, dependency policy, data exposure, and public contract changes as `report-only` unless exact behavior preservation is proven.
 
-## Shape
+## Ponytail
 
-Use this pass for issues worth fixing even when behavior is probably correct.
+Use this pass only for over-engineering and complexity. The diff's best cleanup outcome is getting shorter.
 
 Look for:
 
-- duplicate logic where an existing helper or adapter already fits
-- parameter sprawl, redundant state, leaky interfaces, or copy-paste variation
-- stringly-typed code where local constants, types, or enums already exist
-- unnecessary work, missed concurrency, hot-path bloat, or unclear ownership that is not covered by Performance And Security
-- comments that narrate what obvious code does instead of preserving non-obvious why
+- `delete`: dead code, unused flexibility, speculative feature, or obvious narration.
+- `stdlib`: hand-rolled code the standard library already ships.
+- `native`: dependency or code doing what the platform already does.
+- `yagni`: abstraction with one implementation, config nobody sets, layer with one caller.
+- `shrink`: same behavior in fewer lines.
 
-Do not turn this axis into a style critique. Report only issues with clear maintenance, locality, or performance cost.
+Name what to cut and what replaces it. Do not report correctness, security, performance, or style findings in this axis; route them to their own axes.
 
 ## Confidence Rubric
 
@@ -95,7 +112,7 @@ Use after confidence scoring:
 - `report-only`: broad refactor, migration, security architecture, data model/query redesign, public API behavior, or risky rollout
 - `needs-user-decision`: product behavior, tradeoff, unclear intent, or multiple valid fixes
 
-Auto-fix only `auto-fixable` findings in local reviews when fixes were requested. Report everything else.
+Auto-fix `auto-fixable` findings in local WIP reviews unless the user asked for report-only. Report everything else.
 
 ## Common False Positives
 

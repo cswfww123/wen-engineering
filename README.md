@@ -97,7 +97,7 @@ Common skills:
 
 - `/alignment-review` reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
-- `/code-review` reviews diffs for standards, correctness, performance, security, and shape.
+- `/code-review` reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` implements one bounded task or ready issue slice with verification.
@@ -106,7 +106,7 @@ Common skills:
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` builds a throwaway logic/state or UI prototype to answer one design question.
 - `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
-- `/security-review` threat-models and audits a feature or service for system-level security risks.
+- `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 - `/setup-project-harness` initializes a project-level agent harness.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
@@ -177,10 +177,10 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for standards, correctness, performance, security, and shape.
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, judges completion, and files durable bug issues.
-- [`security-review`](skills/security-review/SKILL.md) — system-level threat model and audit of a service or feature; complements code-review's diff-level axis.
+- [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
 ### Architecture
 
@@ -272,9 +272,9 @@ skills/
   qa-run/
     SKILL.md
     TEMPLATES.md
-  security-review/
-    SKILL.md
   skill-review/
+    SKILL.md
+  simplify/
     SKILL.md
   tdd/
     SKILL.md

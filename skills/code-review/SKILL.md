@@ -1,21 +1,30 @@
 ---
 name: code-review
-description: Reviews diffs for standards, correctness, performance, security, and shape. Use for WIP or PR reviews.
+description: Reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
 ---
 
 # Code Review
 
-Review changed code against repo evidence, not personal taste. Default to local changes, keep findings high-confidence, and never change business behavior during review.
+Review changed code against repo evidence, not personal taste. Default to local changes, keep findings high-confidence, and fix only behavior-preserving cleanup unless the user asks for report-only.
 
 See [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-AXES.md), and [PROJECT-LENSES.md](PROJECT-LENSES.md) for reviewer prompts, stack lenses, scoring, and false-positive filters.
 
 ## Quick Start
 
 1. Default to local staged and unstaged changes unless the user names a PR, branch, commit, tag, or fixed point.
-2. Gather the diff, commit list, changed files, project shape, standards sources, and behavior evidence.
+2. Gather the diff, commit list, changed files, project shape, standards sources, and intent evidence.
 3. Run independent reviewer briefs in parallel when possible, or sequentially with the same prompts when not.
 4. Validate and score each finding from 0-100; keep only findings with confidence `>=80`.
-5. Auto-fix only verified low-risk local findings when fixes were requested; report larger findings.
+5. For local WIP, apply verified low-risk fixes by default. Report branch, PR, security architecture, business behavior, and ambiguous findings.
+
+## Review Axes
+
+- **Intent**: the diff matches the PRD, issue, bug report, spec, or user consensus; missing requirements and scope creep are findings.
+- **Correctness**: the changed behavior works under real control flow, data flow, errors, migrations, and edge cases.
+- **Ponytail**: the diff avoids over-engineering, reinvented stdlib/native features, dead flexibility, and needless layers.
+- **Performance**: the diff avoids query or IO amplification, hot-path bloat, unbounded work, leaks, and diagnosis-blind slow paths.
+- **Security**: the diff preserves trust boundaries, authn/authz, tenant isolation, privacy, secret handling, and supply-chain safety.
+- **Standards**: the diff follows documented repo rules and local instructions not already enforced by tooling.
 
 ## Auto-Fix Behavior Preservation Contract
 
@@ -47,7 +56,7 @@ If there is no PR, no local diff, and no fixed point, ask what to review against
 Collect only the sources needed for the changed files:
 
 - standards: `AGENTS.md`, `CLAUDE.md`, `.agents/rules/**`, `CONTRIBUTING.md`, `STYLE*`, `STANDARDS*`, relevant `CONTEXT.md` files, ADRs, and machine config
-- behavior evidence: linked issue, PRD, user-provided path, branch-matching docs under `docs/`, `specs/`, or `.scratch/`
+- intent evidence: linked issue, PRD, bug report, user-provided path, branch-matching docs under `docs/`, `specs/`, or `.scratch/`, and explicit user decisions in the thread
 - project shape: setup harness notes, `CONTEXT.md`, `.agents/rules/**`, package/build files, routes, services, migrations, and deployment config
 - local context: comments near modified hunks, adjacent helper modules, and relevant git history
 
@@ -57,15 +66,16 @@ Treat formatters, linters, typecheckers, and tests as verification tools. Do not
 
 ### 3. Run Focused Passes
 
-Build one review packet with the diff commands, changed files, commit list, standards sources, behavior evidence, project shape, and relevant stack lenses.
+Build one review packet with the diff commands, changed files, commit list, standards sources, intent evidence, project shape, and relevant stack lenses.
 
-When sub-agents are available, launch the five axis reviewers from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) in parallel in one message so their contexts stay independent. When parallel agents are unavailable, run the same reviewers sequentially. When no agent tool exists, perform the passes yourself in the same order.
+When sub-agents are available, launch the six axis reviewers from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) in parallel in one message so their contexts stay independent. When parallel agents are unavailable, run the same reviewers sequentially. When no agent tool exists, perform the passes yourself in the same order.
 
-- **Standards**: diff compliance with documented repo rules and local instructions
+- **Intent**: diff compliance with PRD, issue, bug report, spec, and user consensus
 - **Correctness**: bugs visible in the diff, historical intent, modified-line impact, and nearby comments
+- **Ponytail**: over-engineering and complexity issues worth deleting
 - **Performance**: slow queries, memory growth, timeouts, resource leaks, and stack-specific load risks
 - **Security**: unsafe input, authorization bypasses, data exposure, tenant leaks, and stack-specific exploit risks
-- **Shape**: reuse, quality, maintainability, and efficiency issues that matter enough to change
+- **Standards**: documented repo rules and local instructions
 
 After collecting candidate findings, run the Verification Reviewer from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) once.
 
@@ -94,6 +104,8 @@ A finding is auto-fixable only when **all** of the following are true:
 - Verification: a test, typecheck, or linter exists to confirm the fix
 
 If even one criterion fails, mark the finding **report-only** and explain why.
+
+Prefer auto-fixing eligible Ponytail and Standards findings. Correctness, Performance, and Security findings are auto-fixable only when the fix is mechanical, local, and behavior-preserving.
 
 #### Never Auto-Fix
 

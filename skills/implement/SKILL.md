@@ -80,7 +80,8 @@ For each selected slice:
 5. Implement only enough code to pass that behavior.
 6. Confirm GREEN, then repeat for the next behavior.
 7. Refactor only after all tests for the slice are green.
-8. Run the project's required verification commands before claiming completion.
+8. Load `/simplify` by default when the slice changed more than a one- or two-line mechanical fix. Skip it for tiny diffs.
+9. Run the project's required verification commands before claiming completion.
 
 Respect project instructions for verification, commits, docs, OpenAPI, SQL, and generated artifacts.
 
@@ -114,6 +115,7 @@ When stopping, report the current feature directory, completed issues, remaining
 
 When all runnable AFK issues are done, validation is usually the next concern:
 
+- `/simplify` — clean up non-trivial local changes before review
 - `/code-review` — review the local changes
 - `/qa-run` — validate the feature against the test plan
 

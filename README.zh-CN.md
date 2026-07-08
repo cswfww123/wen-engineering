@@ -97,7 +97,7 @@ git pull --ff-only
 
 - `/alignment-review` 审查生成的规划产物是否对齐用户意图、repo evidence 和执行路径。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
-- `/code-review` 审查本地 diff 或 PR，关注完成度、回归、性能和安全性。
+- `/code-review` 审查本地 diff 或 PR，关注意图对齐、bug、ponytail 复杂度、性能、安全和规范。
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归。
 - `/domain-modeling` 在设计决策结晶时打磨 glossary terms 并记录 ADRs。
 - `/implement` 实现一个 bounded task 或 ready issue slice，并完成 verification。
@@ -106,7 +106,7 @@ git pull --ff-only
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
 - `/prototype` 构建一次性 logic/state 或 UI prototype，用来回答一个设计问题。
 - `/qa-run` 执行计划好的 QA cases，记录 evidence，并沉淀 durable bug issues。
-- `/security-review` 对 service 或 feature 做 system-level threat model 和安全审查。
+- `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 - `/setup-project-harness` 初始化项目级 agent harness。
 - `/skill-review` 在接受新增或修改后的 skill 前进行审查。
 - `/tdd` 通过 public behavior tests 引导 Red-Green-Refactor 实现。
@@ -177,10 +177,10 @@ AI agents 会以很可预测的方式失败。
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) - 审查本地 diffs 或 PRs，关注完成度、回归、性能和安全性。
+- [`code-review`](skills/code-review/SKILL.md) - 审查本地 diffs 或 PRs，关注意图对齐、bug、ponytail 复杂度、性能、安全和规范。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`qa-run`](skills/qa-run/SKILL.md) - 执行计划好的 QA cases，记录 evidence，并提交 durable bug issues。
-- [`security-review`](skills/security-review/SKILL.md) - 对 service 或 feature 做 system-level threat model 和安全审查。
+- [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 
 ### Architecture
 
@@ -272,9 +272,9 @@ skills/
   qa-run/
     SKILL.md
     TEMPLATES.md
-  security-review/
-    SKILL.md
   skill-review/
+    SKILL.md
+  simplify/
     SKILL.md
   tdd/
     SKILL.md

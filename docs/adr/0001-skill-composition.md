@@ -13,7 +13,8 @@ The repo grew an implicit linear pipeline — `to-prd → to-issues → implemen
 code-review → qa-run` — hard-coded as "Recommended Next Step" command chains inside
 five skills. That chain assumes every user enters at `to-prd` and follows one
 ordering, which conflicts with role-based use: a tester enters at `to-test-plan`,
-security at `security-review`, a bug fix at `diagnosing-bugs`.
+security through the security axis of `code-review`, a bug fix at
+`diagnosing-bugs`.
 
 Two enterprise gaps — release/delivery and security/compliance — needed filling,
 but the repo philosophy ("small beats comprehensive") rules out folding ops, data
@@ -37,10 +38,9 @@ deterministic execution.
    from scanners, builders, and deployers; it does not replace them. Scanning,
    builds, deploys, and signing belong to CI, the project harness
    (`setup-project-harness`), or external tools.
-4. **New skills fill enterprise gaps under this boundary:** `security-review`
-   covers system-level threat model and audit. Ops, observability, release
-   automation, and data migration stay project-harness concerns, not general
-   skills.
+4. **Enterprise gaps stay inside existing review boundaries.** Security is a
+   `code-review` axis for changed code. Ops, observability, release automation,
+   and data migration stay project-harness concerns, not general skills.
 
 ## Considered Options
 
@@ -57,6 +57,6 @@ deterministic execution.
 - Five existing skills (`to-prd`, `to-issues`, `implement`, `to-test-plan`,
   `qa-run`) lose their "Recommended Next Step" command chains, replaced by
   unordered `Related Skills` lists.
-- `security-review` declares what it does *not* do so it stays non-overlapping
-  with `code-review` and CI.
+- `code-review` owns diff-level security review; scanners and deterministic
+  security tooling stay in CI or the project harness.
 - Every future skill follows the same boundary: judgment in, execution out.

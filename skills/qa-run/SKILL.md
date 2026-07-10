@@ -1,11 +1,12 @@
 ---
 name: qa-run
-description: Runs QA cases and judges completion. Use after code-review, bug fixes, smoke, regression, or QA.
+description: Execute QA cases, record evidence, judge completion, and file confirmed defects.
+disable-model-invocation: true
 ---
 
 # QA Run
 
-Execute or retest QA cases against finished code, record evidence, judge requirement completion, and file durable bug issues for confirmed defects.
+Execute or retest QA cases against finished code, record evidence, judge requirement completion, and file durable defect artifacts for confirmed defects.
 
 This skill is report-first. Do not fix implementation code unless the user explicitly asks for a fix loop.
 
@@ -20,13 +21,15 @@ See [TEMPLATES.md](TEMPLATES.md) for QA report, execution result, retest result,
 Read only what is needed:
 
 - the test plan from `/to-test-plan`, or bug issues with `Fix Verification` steps
-- the PRD, parent issue, issue set, or acceptance criteria
-- `/alignment-review` results for the PRD, issue set, or test plan when available
+- the spec, implementation tickets, legacy PRD/issue set, or acceptance criteria
+- `/alignment-review` results for the spec, ticket set, or test plan when available
 - code review results and changed-file diff when available
 - `CONTEXT.md`, `docs/agents/issue-tracker.md`, and relevant `.agents/rules/**`
 - project commands for tests, builds, dev servers, smoke checks, and single-test runs
 
-If the user asks to verify fixed bugs, enter retest mode. If no test plan exists, create a minimal temporary checklist from the PRD/issues and report that a real `/to-test-plan` artifact is missing.
+If the user asks to verify fixed bugs, enter retest mode. If no test plan exists,
+create a minimal temporary checklist from the spec/tickets or legacy PRD/issues
+and report that a real `/to-test-plan` artifact is missing.
 
 ### 2. Confirm Scope And Surface
 
@@ -75,7 +78,12 @@ In retest mode, rerun the original failing case first, then related regression s
 
 ### 6. Assess Completion
 
-Use the accepted PRD/issues/test plan as the completion source. Do not invent new requirements during QA; if execution reveals a missing requirement or missing case, mark it as a plan gap and recommend `/alignment-review`.
+Use the accepted spec/tickets/test plan as the completion source. Follow stable
+requirement IDs through ticket `Covers` fields into cases and evidence; for
+legacy inputs, follow the test plan's stable source reference or acceptance
+criterion instead. Do not invent new requirements during QA; if execution
+reveals a missing requirement or case, mark it as a plan gap and recommend
+`/alignment-review`.
 
 Classify the feature:
 
@@ -95,7 +103,25 @@ For each failed or blocked case, classify the cause:
 
 When a failure looks like product or code behavior and the responsible path is not obvious from the test evidence, trace the failing entrypoint before filing or reopening a bug.
 
-Bug issues must describe user-visible behavior or documented contract breakage, not private implementation details.
+Publish a confirmed defect directly as `Kind: implementation-ticket` only when
+the fix, regression test, verification, and review fit one fresh context. Give
+it subtype `bug`, a stable source/test `Covers` reference, parent, blockers,
+verification seam, and the configured readiness role. When a source spec
+exists, make it the parent and preserve the failing ticket/test as `Origin`, so
+the bug blocks spec closeout. Use `Mode: AFK` only when no live judgment remains;
+use `HITL` for a named user-owned gate.
+
+If the defect needs more diagnosis, slicing, or more than one context, publish
+`Kind: bug-report`, `Runnable: no`, `Status: needs-triage`, and no readiness
+label. Keep the same parent, origin, reproduction, and evidence. It remains a
+source for `/diagnosing-bugs` and explicit conversion; it never enters a
+frontier as intake. Use `/implement` when one context now fits. When an accepted
+parent spec already covers the defect, use `/to-tickets` to create replacements
+under that parent. Use `/to-spec` followed by `/to-tickets` only for genuinely
+new or out-of-scope work, and record that scope disposition on the report.
+
+Describe user-visible behavior or a documented contract breakage, not private
+implementation details.
 
 ### 8. Report Quality
 
@@ -112,11 +138,41 @@ Write a QA report with:
 
 For retest mode, include bugs verified, reopened, and blocked, plus evidence and remaining release risk.
 
-### 9. Handoff
+### 9. Publish Evidence And Close Out
+
+Publish the QA report through `docs/agents/issue-tracker.md` and read it back:
+
+- local Markdown: write a new `qa-reports/<run-id>.md` beside the source
+  lifecycle artifacts and link it from the source; never overwrite an earlier run
+- GitHub/GitLab: attach the report to the source spec, ticket, bug, or test
+  artifact through the configured comment/note operation and link any larger
+  repo artifact
+- other tracker: use its configured QA-evidence operation
+
+Return the canonical path or URL. When a source spec exists, only a `Complete`
+verdict with every in-scope implementation/human ticket resolved and every
+child bug report resolved, converted, or explicitly moved out of scope with
+evidence may mark it `Status: delivered`. A converted in-scope report remains a
+closeout blocker until all replacement tickets resolve; read the whole child
+set through the adapter before recording requirement-level evidence and closing
+the spec.
+For lifecycles where QA is optional, leave spec closeout to the explicit human
+operation in the adapter. Never close the parent for `Incomplete`, `Blocked`,
+or `Not Assessable`.
+
+After publication, update every bug filed or reopened during this run with the
+canonical QA-report path/URL and read it back. The report links the bugs; the
+bugs must link the report.
+
+### 10. Handoff
 
 If bugs were filed or reopened, the bug issue and original test case are the anchors for whoever fixes them. `/implement` and `/tdd` are common fix skills; this skill does not require them.
 
-If the user explicitly asks QA to fix issues now, switch from report-first QA into the normal implementation flow: one bug issue at a time, with a regression test at the correct seam.
+Finish the QA report before any fix loop. If the same user request explicitly
+invoked `/implement` and authorized both QA and fixes, hand one bug ticket at a
+time to that workflow with its failing case and regression seam. Otherwise
+recommend a separate, explicit `/implement` run; do not silently start another
+user-invoked workflow.
 
 ## Done Means
 
@@ -126,3 +182,7 @@ If the user explicitly asks QA to fix issues now, switch from report-first QA in
 - every retested fixed bug is `Verified`, `Reopened`, or `Blocked`
 - evidence is sufficient for a developer to reproduce failures
 - release risk is explicit and tied to test results
+- the QA report has a read-back canonical path or URL
+- every filed or reopened bug links that canonical QA report
+- a source spec, when present, is correctly delivered/closed or explicitly left open
+- no open in-scope bug report or unresolved replacement was skipped by closeout

@@ -16,6 +16,10 @@ infer facts from conventions alone.
 - `docs/adr/` and context-scoped ADR folders such as `src/*/docs/adr/`
 - `docs/agents/`: prior setup output
 - `.scratch/`: local markdown issue tracking signal
+- installed tracker CLI version and relevant help output
+- deterministic JSON parser availability (`jq` or a documented equivalent)
+- native parent/dependency capability, server/tier limits, and body fallback
+- claim identity and whether the tracker provides atomic claiming
 
 ### Code Shape
 
@@ -45,6 +49,8 @@ Present this before decisions:
 - Existing CLAUDE.md: <symlink to AGENTS.md / standalone file / no>
 - Existing docs/agents/: <list files / none>
 - Existing .scratch/: <yes / no>
+- Tracker lifecycle support: <native relationships / body fallback / unknown>
+- Claim guarantee: <atomic / advisory / serial-only>
 
 ### Code Shape
 - Project type: <frontend / backend / full-stack / library / CLI / monorepo / empty>
@@ -69,6 +75,7 @@ Draft all artifacts before writing:
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
 - preservation, merge, or replacement plan for existing files
+- tracker capability choice and proof that every operation in `TRACKER_CONTRACT.md` is covered
 
 Show the full draft and merge plan. Do not silently overwrite surrounding
 user-authored sections.
@@ -77,7 +84,13 @@ user-authored sections.
 
 ### `docs/agents/`
 
-- Write `issue-tracker.md` from the chosen tracker template, or from the user's "Other" workflow.
+- Write `issue-tracker.md` from the chosen tracker template. For "Other",
+  document exact equivalent operations for every item in `TRACKER_CONTRACT.md`.
+- Record native parent/block capabilities only when the installed CLI,
+  server/tier, permissions, and read-back support them; otherwise record the
+  parseable body-field fallback.
+- State the real claim guarantee. Local Markdown claims are advisory unless the
+  repo supplies atomic locking.
 - Write `triage-labels.md` from `triage-labels.md`, editing only the selected label strings.
 - Write `domain.md` from `domain.md`, edited for single-context or multi-context layout.
 
@@ -114,6 +127,18 @@ test -f docs/agents/triage-labels.md
 test -f docs/agents/domain.md
 find .agents/rules -maxdepth 3 -type f
 ```
+
+Then verify `docs/agents/issue-tracker.md` covers:
+
+- create/read/update/comment/list/reopen/close
+- spec, implementation-ticket, Wayfinder-map, Wayfinder-ticket, and non-runnable
+  bug-report storage plus claimed, exact-`Origin`, read-back
+  conversion/supersession
+- parent, blocking, implementation/human/discovery frontiers, ticket and map
+  claims, release, and resolution operations
+- QA evidence publication and delivered-spec closeout
+- native capability detection plus body fallback
+- legacy PRD/issue discovery
 
 If symlinks are unsupported, inspect the `CLAUDE.md` pointer instead of the
 symlink check. Also run the exact lint, typecheck, test, or build commands

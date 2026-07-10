@@ -28,13 +28,14 @@ Look for issues in this order:
 
 - **Description**: short enough for discovery, usually under 120 characters and never padded past 180. It says what the skill does and when to use it.
 - **Trigger**: the description contains concrete trigger words an agent can match, not a long list of loosely related cases.
+- **Invocation**: user-invoked orchestration carries `disable-model-invocation: true`; model-invoked disciplines have a concrete autonomous trigger and do not open a new shared workflow on their own.
 - **Shape**: treat `SKILL.md` length as a signal, not a verdict. Keep core workflow in `SKILL.md`; move templates, examples, schemas, and rarely needed detail to one-level sibling references.
 - **Progressive disclosure**: skills load in three layers — metadata (name + description, always in context) → SKILL.md body (loaded on trigger) → references/scripts/assets (loaded only when needed). For each layer ask: does the body carry the minimum useful context for one run, with detail blocks (templates, schemas, large examples) extracted rather than inline? Does every reference link say *when* to read it, not just what it is? For multi-domain skills, is each domain its own reference file so only the relevant one loads? Are scripts reserved for deterministic repeatable work that prose alone does less reliably? For reference files over ~300 lines, is there a table of contents?
 - **Judgment**: rules guide the agent without replacing reasoning, taste, or user-owned decisions.
 - **User bridge**: the skill helps the agent ask, recommend, and clarify instead of silently assuming.
 - **Evidence**: instructions tell the agent to read repo/files before making claims or edits.
 - **Outputs**: the skill says what artifact, decision, review, or action should result.
-- **Side effects**: destructive or high-impact workflows require explicit user trigger or confirmation.
+- **Side effects**: every mutation stays inside explicit or already-authorized scope. Model-invoked research/prototype skills are evidence-only and leave trackers, canonical plans, manifests, deployments, external systems, and production behavior unchanged. Code-editing disciplines carry their own verification plus rollback or behavior-preservation boundary. Destructive or high-impact work requires explicit user authority.
 - **Structure**: frontmatter is valid, references are one level deep, scripts are only for deterministic repeated work.
 - **Language**: concise English, active verbs, no generic best-practice dumps.
 

@@ -4,9 +4,12 @@ Decision trees for each setup section. The orchestrator loads one section at a t
 
 Each section starts with a short explainer, shows the evidence found, names the recommended default, and asks for the user's decision. Recommend defaults when evidence supports them. Do not ask for decisions the repo already proves unless changing them would be destructive.
 
-## A — Issue Tracker
+## A — Lifecycle Tracker
 
-Explainer: The issue tracker is where issues and PRDs live. Skills like `to-issues`, `triage`, and `to-prd` need to know whether to call `gh`, `glab`, write local markdown, or follow another workflow.
+Explainer: The tracker stores specs, implementation tickets, Wayfinder maps,
+and discovery tickets. `/to-spec`, `/to-tickets`, `/wayfinder`, `/implement`,
+and `triage` need exact operations, not only a tracker name. Use
+[`TRACKER_CONTRACT.md`](TRACKER_CONTRACT.md) as the acceptance contract.
 
 Default posture:
 
@@ -20,7 +23,26 @@ Choices:
 - **GitHub** — write `docs/agents/issue-tracker.md` from `issue-tracker-github.md`
 - **GitLab** — write it from `issue-tracker-gitlab.md`
 - **Local markdown** — write it from `issue-tracker-local.md`
-- **Other** — write it from the user's paragraph
+- **Other** — document exact equivalent operations for every item in
+  `TRACKER_CONTRACT.md`; a generic paragraph naming the tracker is not enough
+
+Inspect capabilities before drafting:
+
+- base create/read/update/comment/list/reopen/close operations
+- deterministic JSON parser used by exhaustive tracker filters
+- storage and lookup for all five artifact kinds
+- native parent and blocking relationships in the installed CLI/server/tier
+- body-field fallback when a native capability is unavailable
+- exhaustive implementation, human, and per-map discovery frontier queries
+- ticket claim/release identity, idempotent bug-report conversion claims, and
+  map-level serialization for Wayfinder
+- whether claims are atomic; if not, require serial execution
+- QA report publication/read-back and delivered-spec closeout
+- legacy PRD/issue discovery without in-place renames
+
+Prefer native relationships only after capability detection and read-back.
+Do not ask the user to choose a weaker fallback when repo and platform evidence
+already prove the available capability.
 
 ## B — Triage Labels
 
@@ -65,7 +87,7 @@ Explainer: Detailed standards do not belong in `AGENTS.md`. They live under `.ag
 
 Decide which rule directories apply:
 
-- `project/` — project identity, workflow, dependency policy, verification, and routing multi-slice work to PRD/issues rather than the session todo
+- `project/` — project identity, workflow, dependency policy, verification, and routing persistent multi-slice work to specs/tickets rather than the session todo
 - `skills/` — skill authoring/review rules for engineering-skills repos
 - `typescript/`, `javascript/`, `java/`, `python/` — language-specific rules
 - `frontend/`, `backend/`, `api/`, `database/`, `testing/`, `cli/`, `library/`, `monorepo/` — layer/workflow rules

@@ -18,15 +18,18 @@ The repo favors small adaptable skills, alignment interviews, shared domain lang
 
 ## Quickstart
 
-Recommended: clone the repo and synchronize every skill into Codex and Claude:
+Recommended: clone the repo, sync every WEN skill into `~/.agents/skills`, and link Codex, Claude, ZCode, and Kimi to that shared directory:
 
 ```bash
 git clone https://github.com/cswfww123/wen-engineering.git
 cd wen-engineering
-./scripts/sync-skills.sh --agents codex,claude
+./scripts/sync-skills.sh --agents all
 ```
 
-This installs all skills without a picker. It also creates a manifest in each target skill directory so future syncs can remove skills that were deleted from this repo without touching unrelated user skills.
+This installs all WEN skills without a picker. It also creates a manifest in
+`~/.agents/skills` so future syncs can remove deleted repo skills without
+touching unrelated user skills, and installs `WEN_THIRD_PARTY_NOTICES.md` beside
+the shared skills.
 
 Alternative: use the interactive skills.sh installer when you only want to pick a few skills or install into an agent it supports:
 
@@ -34,46 +37,40 @@ Alternative: use the interactive skills.sh installer when you only want to pick 
 npx skills@latest add cswfww123/wen-engineering
 ```
 
-The interactive installer may not support every agent or update/delete workflow. Prefer `scripts/sync-skills.sh` when you want Codex and Claude to stay aligned with this repo over time.
+The interactive installer may not support every agent or update/delete workflow. Prefer `scripts/sync-skills.sh` when you want Codex, Claude, ZCode, and Kimi to stay aligned with this repo over time.
 
 Update later with:
 
 ```bash
 cd wen-engineering
 git pull --ff-only
-./scripts/sync-skills.sh --agents codex,claude
+./scripts/sync-skills.sh --agents all
 ```
 
-By default the sync copies files into `~/.codex/skills` and `~/.claude/skills`. Use `--mode link` if you want local edits in this checkout to be visible immediately:
+By default the sync copies WEN skills into `~/.agents/skills`, then makes each selected agent's skill directory a symlink to that shared directory. Use `--mode link` if you want local edits in this checkout to be visible immediately:
 
 ```bash
-./scripts/sync-skills.sh --agents codex,claude --mode link
+./scripts/sync-skills.sh --agents all --mode link
 ```
 
 If you previously installed same-name skills with another tool, the sync may refuse to overwrite them. Inspect first:
 
 ```bash
-./scripts/sync-skills.sh --agents codex,claude --dry-run
+./scripts/sync-skills.sh --agents all --dry-run
 ```
 
-Then migrate once when you want this repo to manage those skill names:
+Then migrate once when you want this repo to manage those skill names or replace existing agent-specific skill directories with shared symlinks:
 
 ```bash
-./scripts/sync-skills.sh --agents codex,claude --force
+./scripts/sync-skills.sh --agents all --force
 ```
 
-If Codex shows duplicate WEN skills after migration, you likely still have an older shared install in `~/.agents/skills`. Migrate Claude and archive those old shared copies in one step:
-
-```bash
-./scripts/sync-skills.sh --agents codex,claude --force --archive-legacy-agents
-```
-
-This moves same-name WEN skills from `~/.agents/skills` into a timestamped `.wen-engineering-legacy-*` backup directory after Codex and Claude have been synced.
+With `--force`, the script imports skills that only existed in an agent-specific directory into `~/.agents/skills`, backs up the old directory as `*.wen-engineering-backup-*`, and replaces it with a symlink.
 
 For a new project, run **`/setup-project-harness`** in the target project after syncing. It will configure:
 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
-- the five triage labels used by `/triage`, `/to-issues`, and `/to-prd`
+- the five triage roles used by `/to-tickets`, `/implement`, and tracker adapters
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
 - `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and focused `.agents/rules/**`
 
@@ -91,28 +88,84 @@ Rule of thumb: no workbench means setup; no direction means micro-grill; once th
 
 In empty repos, the harness must record facts and user decisions only. Leave package manager, framework, build, lint, typecheck, and test commands undefined until scaffold evidence exists.
 
+## Lifecycle
+
+The route follows the shape of the work; it is not a form every request must
+complete. See [docs/lifecycle.md](docs/lifecycle.md) for the full artifact,
+frontier, review, and concurrency contract.
+
+### 1. Clear, Bounded Work
+
+```text
+bounded task -> /implement
+```
+
+Use `/implement` directly when one fresh context can hold the task and its
+acceptance boundary. It owns the evidence loop (TDD for behavior, an exact
+GREEN baseline for behavior-preserving work), simplification, project
+verification, the independent `/code-review` gate, and completion reporting.
+
+### 2. Settled, Multi-Slice Work
+
+```text
+settled context -> /to-spec -> /to-tickets -> /implement per implementation-frontier ticket
+```
+
+`/to-spec` publishes a non-runnable parent with stable requirement IDs.
+`/to-tickets` normally creates one-context vertical slices with explicit
+blocking edges; its named expand-contract branch handles wide mechanical
+migrations without pretending they add behavior.
+Use `/alignment-review` when intent or slicing is risky, `/to-test-plan` for a
+durable coverage design, and `/qa-run` when release completion needs runtime
+evidence.
+
+QA may publish a confirmed one-context defect directly as an implementation
+ticket. Broader or under-diagnosed defects remain non-runnable `bug-report`
+intake with `needs-triage` until explicitly converted or specified and sliced.
+
+### 3. Huge, Foggy, Multi-Session Work
+
+```text
+foggy effort -> /wayfinder -> settled decisions -> /to-spec -> /to-tickets
+```
+
+`/wayfinder` maps discovery and resolves at most one discovery ticket per
+session. `/research` and `/prototype` can produce bounded evidence for the map;
+the user-invoked orchestration retains tracker publication and closure.
+
+### v1.1 Command Migration
+
+`/to-spec` replaces `/to-prd`, and `/to-tickets` replaces `/to-issues`. The old
+slash commands are retired, while existing `PRD.md`, `issues/`, links, and
+tracker objects remain valid legacy inputs and are never renamed in place.
+Sync removes managed copies of the retired commands; an unmarked same-name
+canonical skill blocks normal sync, while `--force` backs it up outside the
+active skills root before removal.
+
 ## Local Workspace
 
 Common skills:
 
-- `/alignment-review` reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
+- `/alignment-review` reviews specs, tickets, and test plans for intent, coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
-- `/code-review` reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
+- `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
-- `/implement` implements one bounded task or ready issue slice with verification.
+- `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
 - `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
-- `/prototype` builds a throwaway logic/state or UI prototype to answer one design question.
-- `/qa-run` executes planned QA cases, records evidence, judges completion, and files durable bug issues.
+- `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
+- `/qa-run` executes approved QA cases, records evidence, judges completion, and files confirmed defects.
+- `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 - `/setup-project-harness` initializes a project-level agent harness.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
-- `/to-issues` breaks a PRD or plan into tracer-bullet vertical-slice issues.
-- `/to-prd` turns settled discussion into a PRD for the configured issue tracker.
-- `/to-test-plan` creates traceable test plans and test cases from PRDs and issues.
+- `/to-spec` turns settled context into a non-runnable spec with stable requirements.
+- `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
+- `/to-test-plan` designs traceable test cases from specs or tickets without executing them.
+- `/wayfinder` charts and resolves discovery for large, foggy, multi-session work.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
 The harness skill creates:
@@ -160,24 +213,25 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews PRDs, issues, and test plans for intent, requirement coverage, repo evidence, and execution fit.
-- [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
+- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs, tickets, and test plans for intent, coverage, evidence, and execution fit.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
 - [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
-- [`to-prd`](skills/to-prd/SKILL.md) — turns settled discussion and repo evidence into a PRD on the configured issue tracker.
-- [`to-issues`](skills/to-issues/SKILL.md) — breaks a PRD, plan, or spec into independently grabbable vertical-slice issues.
-- [`to-test-plan`](skills/to-test-plan/SKILL.md) — creates traceable test plans and cases from PRDs and issues.
-- [`implement`](skills/implement/SKILL.md) — implements one bounded task or ready issue slice with verification.
-- [`prototype`](skills/prototype/SKILL.md) — builds a throwaway logic/state or UI prototype to answer one design question.
+- [`wayfinder`](skills/wayfinder/SKILL.md) — charts and resolves discovery work for large, foggy, multi-session efforts.
+- [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
+- [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
+- [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
+- [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
+- [`to-test-plan`](skills/to-test-plan/SKILL.md) — designs traceable test plans and cases from specs or tickets.
+- [`implement`](skills/implement/SKILL.md) — takes one bounded task or implementation-frontier ticket through testing or compatibility evidence, review, and verification.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
-- [`writing-great-skills`](skills/writing-great-skills/SKILL.md) — provides vocabulary and principles for writing predictable skills.
+- [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
 
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
-- [`qa-run`](skills/qa-run/SKILL.md) — executes planned QA cases, records evidence, judges completion, and files durable bug issues.
+- [`qa-run`](skills/qa-run/SKILL.md) — executes QA cases, records evidence, judges completion, and files confirmed defects.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
 ### Architecture
@@ -189,6 +243,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds a minimal, evidence-first project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
 - [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
+- [`writing-great-skills`](skills/writing-great-skills/SKILL.md) — provides vocabulary and principles for writing predictable skills.
 
 ## Skill Design Principles
 
@@ -207,6 +262,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ```text
 README.md
 README.zh-CN.md
+THIRD_PARTY_NOTICES.md
 AGENTS.md
 CLAUDE.md -> AGENTS.md
 .agents/
@@ -224,12 +280,15 @@ docs/
     0001-skill-composition.md
     0002-invariants-rule.md
     0003-skill-invocation-boundaries.md
+    0004-wen-lifecycle.md
   agents/
     domain.md
     issue-tracker.md
     triage-labels.md
+  lifecycle.md
 scripts/
   sync-skills.sh
+  test-sync-skills.sh
 skills/
   alignment-review/
     SKILL.md
@@ -270,6 +329,20 @@ skills/
   qa-run/
     SKILL.md
     TEMPLATES.md
+  research/
+    SKILL.md
+  setup-project-harness/
+    SKILL.md
+    HARNESS_FLOW.md
+    SECTIONS.md
+    TRACKER_CONTRACT.md
+    AGENTS_TEMPLATE.md
+    RULE_TEMPLATE.md
+    domain.md
+    issue-tracker-github.md
+    issue-tracker-gitlab.md
+    issue-tracker-local.md
+    triage-labels.md
   skill-review/
     SKILL.md
   simplify/
@@ -279,41 +352,47 @@ skills/
     mocking.md
     refactoring.md
     tests.md
-  to-issues/
+  to-spec/
     SKILL.md
-  to-prd/
-    SKILL.md
+    TEMPLATE.md
   to-test-plan/
+    SKILL.md
+    TEMPLATES.md
+  to-tickets/
+    SKILL.md
+    TEMPLATE.md
+    EXPAND-CONTRACT.md
+  wayfinder/
     SKILL.md
     TEMPLATES.md
   writing-great-skills/
     SKILL.md
     GLOSSARY.md
-  setup-project-harness/
-    SKILL.md
-    HARNESS_FLOW.md
-    SECTIONS.md
-    AGENTS_TEMPLATE.md
-    RULE_TEMPLATE.md
-    domain.md
-    issue-tracker-github.md
-    issue-tracker-gitlab.md
-    issue-tracker-local.md
-    triage-labels.md
 ```
 
 ## Current Focus
 
-This repo currently focuses on project initialization and harness engineering:
+This repo currently focuses on an evidence-first engineering lifecycle:
 
-- identifying the project shape and stack
-- establishing a shared agent entrypoint
-- organizing standards under `.agents/rules/`
-- keeping Codex and Claude aligned through one source of truth
-- helping the user and LLM define boundaries together
-- sharpening early plans through one-session interviews before implementation work starts
+- initialize a trustworthy project harness and shared agent entrypoint
+- route bounded, settled, and foggy work through distinct paths
+- preserve intent in non-runnable specs and traceable ticket DAGs
+- implement one isolated implementation-frontier ticket through the right evidence loop, simplification, review, and verification
+- use research and prototypes as bounded evidence rather than hidden production changes
+- connect requirements to test design, QA evidence, and confirmed defects
+- keep Codex, Claude, ZCode, and Kimi aligned through `~/.agents/skills`
 
-Future skills can cover narrower project types, such as frontend apps, backend services, libraries, CLIs, monorepos, and skills-authoring workflows.
+The design stays tracker-neutral and context-aware: small work stays small, while
+large work earns durable artifacts, explicit dependencies, and fresh execution
+contexts.
+
+## Upstream Attribution
+
+WEN adapts lifecycle and skill-design ideas from
+[Matt Pocock's Skills for Real Engineers v1.1.0](https://github.com/mattpocock/skills/tree/v1.1.0),
+then extends them with WEN's harness, tracker, review, verification, and
+multi-agent contracts. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for
+the exact source revision, adaptation notes, and MIT license.
 
 ## Contributing Skills
 

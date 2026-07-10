@@ -10,13 +10,16 @@ Source: `README.md`, `docs/invocation.md`, `/writing-great-skills`, `skills/setu
 - [MUST] Write a short `description:`; target 120 characters or less.
 - [MUST] For model-invoked skills, include concrete trigger words in the description instead of long lists of loosely related cases.
 - [SHOULD] For user-invoked skills, keep the description human-facing and omit trigger lists unless they help command browsing.
-- [MUST] Mark high-impact orchestration, durable artifact publication, issue-state changes, or broad working-tree loops with `disable-model-invocation: true`.
+- [MUST] Mark shared orchestration, canonical publication, tracker-state changes, or broad working-tree loops with `disable-model-invocation: true`.
+- [MUST] Limit model-invoked side effects to bounded, reversible changes inside an explicit request or active authorized orchestration. They must not start a shared workflow or mutate trackers, relationships, canonical plans, manifests, deployments, or external systems outside that authority.
+- [MUST] Keep model-invoked research/prototype disciplines evidence-only. Code disciplines may edit only the already-authorized code scope and must carry their own verification, behavior-preservation, and rollback contracts.
 - [SHOULD] Keep ordinary `SKILL.md` files around 100 lines. Treat longer files as a prompt to move rarely needed detail into one-level references, not as a failure by itself.
 - [MUST] Preserve complete mandatory flow in strict setup/init skills such as `setup-project-harness`; do not shrink them just to satisfy line count.
 - [SHOULD] Use progressive disclosure: put templates, examples, and rarely needed details in one-level sibling references.
 - [SHOULD] Preserve agent judgment; skills should guide, ask, recommend, and verify rather than replace reasoning with rigid forms.
 - [SHOULD] Use concise English, active verbs, and operational instruction density.
 - [SHOULD] Use hard setup pointers only when the skill cannot work correctly without `/setup-project-harness` output.
+- [SHOULD] Make evidence support disciplines return the artifact path and keep/delete/promote disposition; the user-invoked caller owns publication or closure.
 - [FORBID] Generic best-practice dumps, repeated philosophy, or rules that restate normal LLM competence.
 
 ## Verify

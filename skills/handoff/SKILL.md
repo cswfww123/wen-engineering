@@ -21,7 +21,9 @@ Open it for the user and provide the absolute path.
 
 ## Content
 
-Do not duplicate content already captured in PRDs, plans, ADRs, issues, commits, or diffs. Reference those artifacts by path or URL instead.
+Do not duplicate content already captured in specs, tickets, Wayfinder maps,
+legacy PRDs/issues, plans, ADRs, commits, or diffs. Reference those artifacts by
+path or URL instead.
 
 Redact sensitive information such as API keys, passwords, tokens, and personally identifiable information.
 
@@ -45,7 +47,7 @@ If the user passed arguments, treat them as the next session focus and tailor th
 ## Decisions Made
 
 - <Decisions locked in this session, with rationale. Skip if none.>
-- Reference existing PRDs/ADRs/issues by path, do not repeat their content.
+- Reference existing specs/tickets, legacy PRDs/issues, and ADRs by path; do not repeat their content.
 
 ## Open Questions And Blockers
 

@@ -1,13 +1,19 @@
 ---
 name: prototype
-description: Build a throwaway prototype to answer a product, logic, state, or UI design question.
-disable-model-invocation: true
+description: Prototype logic, state, or UI for an explicit question or active Wayfinder ticket.
 ---
 
 # Prototype
 
-Build throwaway code that answers one question before the team commits to a
-PRD, issue slice, or production implementation.
+Build one bounded, throwaway evidence artifact that answers a concrete question.
+Run only for an explicit matching request or an active, authorized Wayfinder
+ticket.
+
+## Bound The Question
+
+State the question, the reaction or observation that will answer it, and the
+production surface that must remain unchanged. A Wayfinder caller retains all
+tracker claims, relationships, comments, and closure.
 
 ## Pick A Branch
 
@@ -19,23 +25,31 @@ Choose the branch from the question being tested:
 If the branch is ambiguous, infer from repo evidence. Backend services,
 state machines, data shapes, pricing rules, quotas, and permissions usually use
 the logic branch. Pages, components, dashboards, forms, and workflows usually
-use the UI branch. State the assumption before writing prototype code.
+use the UI branch. State an evidence-backed assumption when the user is not
+available.
 
 ## Shared Rules
 
-- Make the question explicit before writing code.
-- Keep the prototype obviously disposable in path, filename, README, or comment.
-- Use the host project's existing runtime and conventions.
-- Avoid production persistence unless persistence is the question.
-- Do not add a new package manager, framework, or permanent abstraction.
-- Provide one command or URL that lets the user try it.
-- Capture the answer in an issue, ADR, PRD note, commit message, or nearby
-  `NOTES.md`.
-- Delete, absorb, or promote the winning decision when the prototype has served
-  its purpose.
+- Put the artifact in the repo's prototype convention or
+  `.scratch/<effort-slug>/prototype/<question-slug>/` fallback.
+- Mark its path and README as disposable, and reuse installed runtimes and
+  dependencies without changing manifests.
+- Keep production persistence and existing production behavior unchanged.
+  When persistence is the question, confine it to a disposable local file or
+  scratch database inside the artifact.
+- Build only enough interaction to answer the question. Provide one exact
+  command or URL and record the observation in the artifact's `RESULTS.md`.
+- Leave tracker state, dependency relationships, canonical specs/ADRs, and
+  production promotion to the user-invoked caller.
 
-## Done
+## Return
 
-The prototype is done when it has answered the named question and the durable
-answer is recorded somewhere the next agent can find. The throwaway code should
-not remain as unexplained production code.
+Report:
+
+- `Artifact`: prototype directory and `RESULTS.md`
+- `Try it`: exact command or URL
+- `Answer`: what the prototype proved and what remains uncertain
+- `Disposition`: `keep`, `delete`, or `promote`, with a reason
+
+`Promote` recommends extracting the validated decision later; it does not
+authorize production edits, tracker mutation, or canonical publication.

@@ -9,7 +9,7 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 ## Core Directives
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Proceed on clear, reversible implementation steps; ask only when the decision is genuinely user-owned or destructive.
-- **Persistent breakdowns**: use the session todo list for tactical, same-session steps; route multi-slice or cross-session work to `/to-prd` then `/to-issues` so the breakdown persists in the issue tracker instead of dying with the session.
+- **Persistent work**: use the session todo list only for tactical, same-session steps. Route a settled multi-slice objective through `/to-spec` then `/to-tickets`; use `/wayfinder` first when the work is still too foggy to specify honestly. Implement one implementation-frontier ticket at a time in a fresh context.
 - **Use skills**: prefer project skills such as `/setup-project-harness` and `/skill-review` when they fit the task.
 - **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `README.md`, and `skills/**` files before editing.
 - **Domain language**: use this repo's terms: skills, harness, progressive disclosure, user bridge, repo evidence, agent judgment, and rules as guardrails.
@@ -19,10 +19,13 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 
 ## Development Commands
 
-This repo currently has no package manager, build, lint, typecheck, or test command.
+This repo has no package manager, build, lint, or typecheck suite. It has a
+shell fixture for skill-sync migration safety.
 
 - List skills: `find skills -maxdepth 2 -name SKILL.md -print | sort`
-- Sync skills into Codex and Claude: `./scripts/sync-skills.sh --agents codex,claude`
+- Sync skills into shared agent directory and link Codex, Claude, ZCode, and Kimi: `./scripts/sync-skills.sh --agents all`
+- Check shell syntax: `bash -n scripts/sync-skills.sh scripts/test-sync-skills.sh`
+- Test sync migration safety: `./scripts/test-sync-skills.sh`
 - Check skill descriptions:
 
 ```bash
@@ -40,6 +43,7 @@ PY
 ## Agent Skills
 
 - **Issue tracker**: GitHub issues for `cswfww123/wen-engineering`; use `gh` as described in `docs/agents/issue-tracker.md`.
+- **Lifecycle**: use `docs/lifecycle.md` for routing among direct implementation, specs and tickets, Wayfinder, research, and prototypes.
 - **Triage labels**: use the canonical labels in `docs/agents/triage-labels.md`: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`.
 - **Domain docs**: single-context layout; read `CONTEXT.md` and relevant ADRs when they exist, following `docs/agents/domain.md`.
 
@@ -62,8 +66,9 @@ Agents must read the relevant files under `.agents/rules/` before editing matchi
 ## Reference Files
 
 - `README.md` — project philosophy, skill index, and repository layout
+- `docs/lifecycle.md` — canonical work routing, artifact model, completion gates, and legacy compatibility
 - `docs/agents/*.md` — issue tracker, triage label, and domain documentation contracts
-- `scripts/sync-skills.sh` — batch sync all repo skills into local Codex and Claude skill directories
+- `scripts/sync-skills.sh` — batch sync all repo skills into `~/.agents/skills` and link local agent skill directories
 - `skills/**/SKILL.md` — project skills
 - `skills/setup-project-harness/AGENTS_TEMPLATE.md` — generated `AGENTS.md` reference shape
 - `skills/setup-project-harness/RULE_TEMPLATE.md` — `.agents/rules/**` reference shape

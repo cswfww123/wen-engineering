@@ -5,8 +5,8 @@ Skills split on one operational axis: who is allowed to reach them.
 ## User-Invoked Skills
 
 User-invoked skills are orchestration surfaces. They should run only when the
-human names them, because they usually choose a workflow, write durable
-artifacts, change issue state, or coordinate multiple skills.
+human names them, because they choose a shared workflow, publish canonical
+artifacts, change tracker state, or coordinate multiple skills.
 
 Use `disable-model-invocation: true` in frontmatter.
 
@@ -30,12 +30,38 @@ For model-invoked skills, the `description:` is model-facing:
 - include concrete trigger words the model can match
 - keep it short enough to avoid permanent context load
 
+Model-invoked disciplines may act only inside an explicit request or an active
+user-invoked orchestration that already authorized the scope. Their changes
+must be bounded, reversible, and covered by the discipline's own verification
+or disposition contract. They cannot start a new shared workflow or mutate
+tracker state, relationships, canonical planning artifacts, manifests,
+deployments, or external systems merely because their trigger matches.
+
+Evidence-only disciplines such as `/research` and `/prototype` must also leave
+existing production behavior unchanged and report the artifact path plus a
+`keep`, `delete`, or `promote` recommendation. The caller owns publication and
+closure. Code disciplines such as `/tdd`, `/simplify`, and `/code-review` may
+edit only the already-authorized code-change scope and must obey their test,
+behavior-preservation, and rollback contracts.
+
+A request to diagnose, debug, or explain a failure authorizes inspection and
+disposable evidence, not tracked production edits. `/diagnosing-bugs` may enter
+its fix branch only for an explicit fix request or an already-authorized code
+scope; a named non-runnable bug report still requires user-invoked conversion
+before production work.
+
 ## Dependency Pointers
 
 Point to another skill by prose invocation, such as "load `/tdd`". Do not link
 deeply into another skill's private reference files. Shared reference either
 lives in the skill that owns the discipline or in a plain docs file outside the
 skill tree.
+
+A user-invoked orchestration may load a model-invoked discipline as a quality
+or evidence step. It must not silently start another user-invoked orchestration.
+It may write its own minimal temporary continuation artifact when required for
+safety, but naming that artifact a `/handoff` does not invoke the user-only
+skill.
 
 ## Setup Dependencies
 

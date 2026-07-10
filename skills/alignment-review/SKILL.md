@@ -1,6 +1,6 @@
 ---
 name: alignment-review
-description: Reviews PRDs, issues, and test plans for intent, requirement coverage, evidence, and execution fit.
+description: Reviews specs, tickets, and test plans for intent, coverage, evidence, and execution fit.
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,9 @@ disable-model-invocation: true
 
 Review generated planning artifacts before implementation or QA so the next agent does not drift from user intent, requirement coverage, repo evidence, or executable scope.
 
-Use this after skills such as `/to-prd`, `/to-issues`, or `/to-test-plan`, and before `/implement`, TDD, implementation work, or `/qa-run`.
+Use this after `/to-spec`, `/to-tickets`, or `/to-test-plan` when intent,
+coverage, slicing, or repo fit is risky. It may precede `/to-tickets`,
+`/implement`, TDD, or `/qa-run` according to the artifact under review.
 
 See [CHECKLIST.md](CHECKLIST.md) for detailed review questions.
 
@@ -18,8 +20,8 @@ See [CHECKLIST.md](CHECKLIST.md) for detailed review questions.
 
 Read only the artifacts needed for the review:
 
-- original user request, source issue, PRD source, or grill output
-- generated PRD, issue slices, test plan, rollout plan, or acceptance checklist
+- original user request, source issue, legacy PRD, or grill/Wayfinder output
+- generated spec, implementation tickets, test plan, rollout plan, or acceptance checklist
 - relevant repo evidence, glossary, ADRs, and harness rules
 - existing related tests, contracts, or implementation seams
 - code review or QA results when reviewing a revised test plan after implementation
@@ -39,16 +41,22 @@ Use the project's domain language. Keep this map short enough to support review 
 Compare the artifact against the source material and repo map:
 
 - does it preserve the user's actual problem, constraints, and explicit out-of-scope boundaries?
-- does every material requirement appear in a PRD section, issue slice, test case, or acceptance criterion?
+- does every material requirement have a stable spec ID or legacy source reference and appear in a ticket `Covers`, test case, or explicit acceptance criterion?
 - does every material risk or regression concern appear in a test case, acceptance criterion, or explicit out-of-scope/blocker note?
-- is there a stable traceability chain from source requirement to issue or test case, and later to QA evidence?
+- is there a stable traceability chain from source requirement to ticket or test case, and later to QA evidence?
 - did the agent invent certainty where the source only supported an assumption?
 - does the technical direction fit current module ownership and integration seams?
 - are verification points concrete enough for the next agent to prove completion?
 
 ### 4. Check Execution Shape
 
-For issue slices, confirm they are vertical tracer bullets through required layers, not horizontal tasks by database, backend, frontend, or tests.
+For implementation tickets, confirm behavior work is a one-context vertical
+tracer bullet through required layers, not a horizontal task by database,
+backend, frontend, or tests. Permit a mechanical ticket only under the named
+expand-contract branch: `Covers: none`, stable `Supports` and `Decision`, plus
+compatibility and behavior-preservation evidence. Confirm `Kind`, `Mode`,
+parent, trace fields, blockers, verification seam, initial
+implementation/human frontiers, and an acyclic graph.
 
 For test plans, confirm each case ties to user-visible behavior or a documented contract, not only implementation details. Check the coverage matrix requirement-by-requirement: positive, negative, boundary, permission, error, async, migration, performance, and regression coverage should be present when the source or repo risk calls for it.
 
@@ -62,7 +70,7 @@ For any generated plan, confirm dependencies, blockers, rollout order, config or
 
 Lead with one verdict:
 
-- `Pass` - ready for implementation
+- `Pass` - ready for the next declared lifecycle step; name that step
 - `Small Fix` - mostly aligned; list required edits
 - `Rework` - missing or misleading enough to regenerate or re-slice
 - `Ask User` - blocked by a real product decision
@@ -72,7 +80,7 @@ For each finding, use this format:
 ```markdown
 ### <verdict area>: <one-line summary>
 
-- **Artifact section**: <which part of the PRD/issue/test plan>
+- **Artifact section**: <which part of the spec/ticket/test plan>
 - **Source evidence**: <user request, spec line, or repo evidence that contradicts>
 - **Gap**: <what is missing, misleading, or invented>
 - **Smallest correction**: <how to fix it>

@@ -9,8 +9,9 @@ Use these templates when `/to-test-plan` needs concrete artifact shapes.
 
 ## Sources
 
-- PRD: <link or path>
-- Issues: <links or paths>
+- Spec: <link or path>
+- Tickets: <links or paths>
+- Legacy source: <PRD/issue link or path, omit when not applicable>
 - Repo evidence: <brief list>
 
 ## Project Test Surface
@@ -24,7 +25,7 @@ Use these templates when `/to-test-plan` needs concrete artifact shapes.
 
 | Requirement ID / Source | Behavior Or Contract | Test Cases | Evidence | Status |
 | --- | --- | --- | --- | --- |
-| <REQ-001, PRD section, or issue link> | <what must be true> | TC-XXX-001 | <evidence type> | Covered / Blocked / Out of scope |
+| <REQ-001, ticket Covers ref, or legacy source> | <what must be true> | TC-XXX-001 | <evidence type> | Covered / Blocked / Out of scope |
 
 ## Test Cases
 
@@ -54,7 +55,7 @@ Use these templates when `/to-test-plan` needs concrete artifact shapes.
 ```md
 ### TC-<FEATURE>-001: <title>
 
-- Linked requirement / issue: <REQ id, PRD section, issue id, or acceptance criterion>
+- Linked requirement / ticket: <REQ id, ticket id, legacy issue id, or acceptance criterion>
 - Module / feature: <domain term>
 - Scenario type: Positive / Negative / Boundary / Permission / Exception / Performance / Regression / Smoke
 - Priority: P0 / P1 / P2

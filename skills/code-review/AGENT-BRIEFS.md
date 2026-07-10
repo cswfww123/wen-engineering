@@ -6,7 +6,7 @@ Preferred execution: launch the six axis reviewers in parallel in one message so
 
 ## Intent Reviewer
 
-Read the intent evidence first: PRD, issue, bug report, spec, user-provided path, branch-matching docs, and explicit user decisions. Then read the diff. Report only where changed code misses requested behavior, adds unrequested scope, or implements the right requirement in the wrong place.
+Read the intent evidence first: spec, ticket, legacy PRD/issue, bug report, user-provided path, branch-matching docs, and explicit user decisions. Then read the diff. Report only where changed code misses requested behavior, adds unrequested scope, or implements the right requirement in the wrong place.
 
 Return under 300 words:
 

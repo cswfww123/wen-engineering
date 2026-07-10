@@ -4,7 +4,7 @@ Use these focused briefs when running sub-agents or separate review passes. Keep
 
 ## Intent
 
-Read the PRD, issue, bug report, spec, user-provided path, branch-matching docs, and explicit user decisions before judging the diff.
+Read the spec, ticket, legacy PRD/issue, bug report, user-provided path, branch-matching docs, and explicit user decisions before judging the diff.
 
 Look for:
 
@@ -12,7 +12,7 @@ Look for:
 - behavior the diff adds that was not requested
 - implementation that satisfies the words but violates the agreed intent
 - fixes placed at a shallow caller when the issue belongs in a shared owner
-- PRD, issue, spec, or bugfix acceptance criteria with no matching code path
+- spec, ticket, legacy PRD/issue, or bugfix acceptance criteria with no matching code path
 
 Report only claims tied to a cited intent source. If no intent source exists, say so and skip this axis instead of inventing product requirements.
 
@@ -112,7 +112,9 @@ Use after confidence scoring:
 - `report-only`: broad refactor, migration, security architecture, data model/query redesign, public API behavior, or risky rollout
 - `needs-user-decision`: product behavior, tradeoff, unclear intent, or multiple valid fixes
 
-Auto-fix `auto-fixable` findings in local WIP reviews unless the user asked for report-only. Report everything else.
+Auto-fix `auto-fixable` findings only when the user explicitly authorized
+review fixes or `/implement` supplied an already-authorized code scope. A
+standalone review is report-only. Report everything else.
 
 ## Common False Positives
 

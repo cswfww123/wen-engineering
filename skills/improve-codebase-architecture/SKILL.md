@@ -78,4 +78,4 @@ Run `/domain-modeling` inline as decisions crystallize:
 - add new domain terms to `CONTEXT.md`
 - sharpen fuzzy terms immediately
 - offer ADRs only for load-bearing, future-relevant decisions
-- use `/codebase-design` and [DESIGN-IT-TWICE.md](../codebase-design/DESIGN-IT-TWICE.md) when exploring alternative interfaces
+- load `/codebase-design` and use its design-it-twice branch when exploring alternative interfaces

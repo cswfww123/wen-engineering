@@ -1,122 +1,130 @@
 ---
 name: implement
-description: Implements one bounded task or ready issue slice with verification.
+description: Implements one bounded task or implementation-frontier ticket through evidence, review, and verification.
 disable-model-invocation: true
 ---
 
 # Implement
 
-Implement a bounded task, or work through a ready issue set one slice at a time.
+Implement one bounded task or one runnable implementation ticket. One ticket
+gets one claim, one fresh working context, one reviewable delta, and one
+completion decision.
 
-Each task is one vertical slice. Finish and verify the slice in front of you before picking another one.
+## Find The Work
 
-## What To Do
+Read the repo's `CONTEXT.md` or context map when present, plus the source spec,
+ticket, legacy PRD/issue, bug report, or task brief. For tracked work, also read
+`docs/agents/issue-tracker.md` and `docs/agents/triage-labels.md`; the tracker
+doc owns list, frontier, claim, update, and close mechanics. An explicit user
+reference wins. If canonical and legacy active sets conflict, show both
+candidates instead of silently merging them.
 
-Find the current task. If it is a single request, implement that slice. If it is an issue set, choose the highest-priority unblocked AFK issue that is not complete, implement it with `/tdd`, update the issue, then repeat until no runnable AFK issues remain or the user's iteration limit is reached.
+A clear bounded request needs no harness, invented spec, or ticket. Implement
+it directly and skip tracker-only steps.
 
-Never start two slices at once. Never skip verification before marking a slice complete.
+## Select The Frontier
 
-## Finding The Work
+For tracked work, choose only a ticket that is:
 
-Read the repo context first:
+- `Kind: implementation-ticket`, or an unmistakable legacy implementation issue
+- `Mode: AFK`, or otherwise free of unresolved human judgment
+- open and incomplete
+- unblocked: every `Blocked by` edge is complete
+- unclaimed by another worker
 
-- `CONTEXT.md`, or `CONTEXT-MAP.md` plus the relevant context file
-- `docs/agents/issue-tracker.md`
-- `docs/agents/triage-labels.md`
+Never implement a `spec`, `wayfinder-map`, or `wayfinder-ticket`. Prefer explicit
+priority, then configured tracker/map order. If no implementation frontier
+ticket exists, report the blockers and human frontier rather than taking a
+nearby task.
 
-Treat those files as the source of truth for where issues live and how to list, read, update, comment on, and complete them. Do not assume GitHub, GitLab, local markdown, `.scratch/`, or any other tracker shape unless the repo config says so.
+Never select a `bug-report` from a frontier. When the user explicitly names one,
+use the adapter's intake-conversion protocol: read it, claim it for conversion,
+and re-read ownership. Search exact `Origin` fields and its `Converted to`
+pointer before creating anything; reuse an existing replacement. If it is a
+runnable ticket, finish any missing report pointer/read-back and claim that
+ticket normally. If it is a spec or another non-runnable artifact, report the
+canonical route and stop. When claiming is not atomic or workers share one
+identity, convert serially.
 
-If the user passed a PRD path, feature slug, issue path, issue number, bug report, or task brief, start there.
+Only when no replacement exists, verify under that claim that diagnosis, fix,
+regression test, verification, and review fit one context. If so, create one
+`Kind: implementation-ticket`,
+`Subtype: bug`, `Runnable: yes`, with `Origin` pointing to the report. Reuse its
+spec parent or use the report as parent when no spec exists. Read the ticket
+back, write its canonical reference to `Converted to`, resolve the report as
+converted, and read the report back. Then claim the runnable ticket normally.
+If it does not fit, release the conversion claim, leave it `needs-triage`, and
+recommend `/diagnosing-bugs` or the explicit spec/ticket route.
 
-If the user gave a bounded task and no issue set exists, do not invent issues. Implement the task directly.
+For a specifically named `HITL` ticket, distinguish the work before claiming it:
 
-If the work points to an issue set, use the issue tracker doc's find-current-work or list-issues instructions. Prefer the most recently active unfinished requirement. If multiple active requirement sets look equally current, ask one concise question with the candidate references.
+- a manual-only action or decision resolves directly through the adapter after
+  the human action and evidence are recorded; `/implement` does not manufacture
+  a code delta, TDD result, or code-review verdict
+- code-bearing paired work requires the user to remain available for the named
+  judgment; claim it from the human frontier, never infer the decision, and use
+  the evidence loop that matches the actual change plus verification and review
 
-Read the parent PRD, spec, or source issue before selecting an implementation issue. Do not close or modify a parent issue unless the user explicitly asks.
+If the decision is settled before work starts, record it and reclassify the
+ticket to `AFK` through the adapter instead of carrying a false HITL marker.
 
-## Selecting The Next Issue
+## Claim And Isolate
 
-Skip this section for a single bounded task with no issue set.
+Claim through the configured adapter before repo exploration or edits, then
+re-read ownership. If another worker won the claim, release yours and choose
+again. A claim coordinates work; it is not assumed to be an atomic lock.
 
-An issue is complete if its `Status:` is `complete`, `completed`, `done`, or `closed`, or if every acceptance criterion is checked and comments show verified completion.
+Record a review fixed point that isolates this ticket's delta. Use a clean
+working tree, isolated worktree, authorized checkpoint/commit, or another
+project-proven boundary. If pre-existing changes make the delta ambiguous, stop
+before editing. Do not complete this ticket or start another on an unreviewable
+diff.
 
-An issue is runnable when:
+## Execute The Ticket
 
-- `Type:` is `AFK`, or the issue clearly does not require human judgment
-- `Status:` is missing, `ready-for-agent`, `todo`, `open`, or `in-progress`
-- `Blocked by` is `None` / `None - can start immediately`, or every referenced blocker is complete
-- it does not require unresolved external access, product judgment, design review, or user clarification
+1. Mark the ticket in progress using adapter-specific state.
+2. Trace the relevant entrypoint when behavior crosses callers, persistence,
+   permissions, async paths, conversions, or side effects.
+3. Choose the evidence loop from the actual change:
+   - observable behavior: load `/tdd`, derive a public-behavior test, confirm
+     RED, implement the smallest behavior, and confirm GREEN
+   - authorized behavior-preserving docs, config, or mechanical work: establish
+     a GREEN baseline and exact verification, make one increment, and rerun it;
+     an expand-contract ticket also records the caller inventory and runs its
+     compatibility/static checks
+4. Load `/simplify` for non-trivial changes; keep tiny mechanical diffs direct.
+5. Run the project's exact verification commands.
+6. Load `/code-review` against the recorded fixed point. Resolve every blocking
+   finding or user-owned decision, then rerun affected verification.
+7. Re-check every acceptance criterion. Update comments/evidence and complete
+   the ticket through the adapter only when tests, verification, and review pass.
 
-Prefer issues in this order:
+Keep unverified criteria open. Commit only when the user or project workflow
+authorizes it.
 
-1. Explicit `Priority:` if present
-2. Lowest issue number, because `/to-issues` publishes blockers first
-3. Oldest unfinished issue if numbering is missing
+## Stop Or Continue
 
-If the next issue is HITL, blocked, or underspecified, leave it untouched, add a short note only if useful, and continue to the next runnable AFK issue. If none remain, report the blocker.
+Default to one ticket, then stop with the next implementation/human frontiers
+and review evidence. If the user explicitly requested a bounded multi-ticket
+loop, dispatch a fresh worker and isolated delta for each ticket, then recompute
+affected frontiers. Never run two dependent tickets in one context.
 
-## Coder Delegation
+If an unexpected user-owned gate appears at any point, update the ticket through
+the adapter to `Mode: HITL` plus the configured human-readiness role, record the
+named decision, and read both fields back. Reconcile any partial update before
+continuing. With no unfinished delta, release the claim and recompute both
+frontiers. With unfinished changes, preserve the claim so the delta keeps one
+owner; the HITL ticket remains outside the unclaimed human frontier until its
+handoff resumes. Never release it unchanged into the AFK frontier.
 
-Use a fresh `Coder` subagent for each selected slice when available. If `Coder` is unavailable, implement the slice directly.
+If work otherwise stops before edits, release the claim. Whenever unfinished
+changes exist, record the human or external blocker on the ticket and write a
+compact handoff in the OS temp directory with the ticket, fixed point, changed
+files, verification state, and blocker. Return its absolute path; do not
+silently invoke another user-invoked skill.
 
-The main agent owns work selection, harness reading, issue updates, and final reporting. `Coder` owns only the selected slice.
+## Done
 
-Pass `Coder` a concrete brief:
-
-- task reference and acceptance criteria
-- relevant repo instructions and boundaries
-- code evidence or likely files
-- required verification commands
-- explicit out-of-scope work
-
-## Execution Loop
-
-For each selected slice:
-
-1. Mark the issue `Status: in-progress` unless it already is. Skip this for non-issue tasks.
-2. If the slice modifies existing behavior, trace the relevant entrypoint before choosing the public interface and test seam.
-3. Load `/tdd` and derive behavior tests from the acceptance criteria and public interface.
-4. Run the failing test first and confirm RED.
-5. Implement only enough code to pass that behavior.
-6. Confirm GREEN, then repeat for the next behavior.
-7. Refactor only after all tests for the slice are green.
-8. Load `/simplify` by default when the slice changed more than a one- or two-line mechanical fix. Skip it for tiny diffs.
-9. Run the project's required verification commands before claiming completion.
-
-Respect project instructions for verification, commits, docs, OpenAPI, SQL, and generated artifacts.
-
-## Updating The Issue
-
-Skip this section for non-issue tasks.
-
-After a verified slice:
-
-- set `Status:` to the local completed status already used nearby, otherwise `complete`
-- check off acceptance criteria that are now satisfied
-- append a concise `## Comments` entry with what changed and exact verification commands and results
-- leave unfinished or unverified criteria unchecked
-
-If verification fails, keep `Status: in-progress`, append the failure only if useful for the next agent, and keep working unless the blocker is genuinely external.
-
-Commit only when the user or project workflow asks for per-issue commits.
-
-## Stop Conditions
-
-Stop when:
-
-- all runnable AFK issues are complete
-- the user's iteration limit is reached
-- every remaining slice is blocked, HITL, or needs information
-- a destructive or external-access decision is required
-
-When stopping, report the current feature directory, completed issues, remaining blocked issues, and verification evidence.
-
-## After All Issues Complete
-
-When all runnable AFK issues are done, validation is usually the next concern:
-
-- `/simplify` — clean up non-trivial local changes before review
-- `/code-review` — review the local changes
-- `/qa-run` — validate the feature against the test plan
-
-Use any, in any order; this skill prescribes no sequence.
+Report the task/ticket, source spec or legacy source, fixed point, changed files,
+tests and verification, code-review verdict, tracker update, commit status, and
+the next implementation/human frontiers or blocker.

@@ -1,6 +1,6 @@
 # Skill composition: profiles, decoupled skills, and the judgment/execution boundary
 
-Status: accepted
+Status: superseded in part by ADR 0004
 
 We keep skills as atomic, freely combinable units, capture role-based bundles and
 recommended workflow order in a separate `profiles/` layer, and locate all

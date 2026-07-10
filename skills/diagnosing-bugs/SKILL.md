@@ -18,13 +18,31 @@ Use this when the user reports:
 - a performance regression
 - a request phrased as "debug this", "diagnose this", "why is this failing", or "fix this bug"
 
-Do not use it for new feature planning. Use `/grill-with-docs`, `/to-prd`, `/to-issues`, or `/tdd` instead.
+Do not use it for new feature planning. Use `/grill-with-docs`, `/wayfinder`,
+`/to-spec`, `/to-tickets`, or `/tdd` according to the work shape instead.
+
+## Authority Gate
+
+Choose the mode from the user's explicit authority:
+
+- **Diagnosis only** — for “debug”, “diagnose”, “why is this failing”, or a
+  named non-runnable `bug-report`. Use existing signals, read-only probes, or
+  disposable evidence. Do not edit tracked production code, tests, or config,
+  and do not mutate tracker state.
+- **Fix authorized** — only when the user explicitly asked for the fix or an
+  active implementation scope already authorizes code changes. Record a review
+  fixed point before editing. A named `bug-report` still stays diagnosis-only
+  here until a user-invoked workflow converts it to runnable work.
 
 ## Workflow
 
 ### 1. Build A Feedback Loop
 
 Create the fastest agent-runnable pass/fail signal that reproduces the user's bug.
+
+In diagnosis-only mode, prefer an existing signal. Put any new harness or
+instrumentation in the OS temp directory or an authorized scratch path, then
+remove it or return its disposable path; do not add a tracked regression test.
 
 Try these in order:
 
@@ -82,6 +100,10 @@ Tag temporary instrumentation with a unique prefix such as `[DEBUG-a4f2]`. Never
 
 ### 5. Fix With Regression Coverage
 
+Run this step only in fix-authorized mode. In diagnosis-only mode, stop after
+the root cause is proved and return whether the fix is bounded for an explicit
+`/implement` run or needs `/to-spec` followed by `/to-tickets`.
+
 Write the regression test before the fix when a correct seam exists.
 
 A correct seam exercises the real bug pattern through the same public boundary or call chain that failed. If no correct seam exists, document that as an architecture/testing gap.
@@ -93,10 +115,15 @@ Then:
 3. apply the smallest behavior-correct fix
 4. watch the regression check pass
 5. rerun the original feedback loop
+6. load `/simplify` for a non-trivial diff and run the project's exact checks
+7. load `/code-review` against the fixed point, resolve every blocking finding,
+   and rerun affected verification
 
 ### 6. Clean Up And Explain
 
-Before declaring done:
+For diagnosis-only work, require a captured reproducer, an evidence-backed root
+cause, unchanged production files, and a clear next disposition. For an
+authorized fix, require:
 
 - original repro no longer fails
 - regression check passes, or missing seam is documented
@@ -105,4 +132,10 @@ Before declaring done:
 - the confirmed root cause is stated plainly
 - remaining risk and verification gaps are listed
 
-If the root cause exposed a poor seam, tangled callers, or hidden coupling, hand off specifics to `/improve-codebase-architecture` after the bug fix.
+Return the mode, root cause, reproducer/evidence, changed files if any,
+verification and review results, and one disposition: `bounded-fix`,
+`spec-and-slice`, or `blocked`.
+
+If the root cause exposed a poor seam, tangled callers, or hidden coupling,
+recommend an explicit `/improve-codebase-architecture` run with the relevant
+evidence after the bug work completes.

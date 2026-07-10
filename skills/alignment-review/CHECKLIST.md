@@ -17,24 +17,28 @@ Use this only when the core workflow needs sharper review prompts.
 - Are new abstractions justified by repeated complexity or existing local patterns?
 - Are claims about behavior backed by code, docs, tracker comments, runtime evidence, or user-provided facts?
 
-## PRD Review
+## Spec Review
 
 - Problem statement is from the user's perspective.
 - Solution matches the agreed behavior and does not smuggle in extra product scope.
-- User stories cover the complete behavior surface.
+- Requirements and Main Flows cover the complete behavior surface.
 - Implementation decisions state module, contract, schema, API, and interaction choices without stale file-path detail.
 - Rollout, config, migration, monitoring, manual operation, and rollback decisions are explicit when they affect release safety.
 - Testing decisions identify the highest useful seams and prior art.
 - Out-of-scope items prevent predictable drift.
 
-## Issue Slice Review
+## Implementation Ticket Review
 
-- Each issue delivers a narrow complete path through the system.
-- Each issue keeps a stable link back to the PRD requirement, source issue, or acceptance criterion it satisfies.
-- Each issue is demoable or verifiable alone.
+- Each ticket has `Kind: implementation-ticket` and an explicit AFK/HITL mode.
+- Each behavior ticket delivers a narrow complete path through the system in one fresh context; only the named expand-contract exception may be mechanical.
+- Each ticket's `Covers` field links to stable spec requirements or a legacy source criterion.
+- `Covers: none` appears only on an expand-contract enabling ticket with `Supports`, a stable `Decision` source, and behavior-preservation verification; `Supports` is not counted as requirement coverage.
+- Each ticket is demoable or verifiable alone through its named verification seam.
 - Slices are not horizontal tasks such as only schema, only API, only UI, or only tests.
-- Required prefactoring comes before dependent behavior and has a clear payoff.
-- Blocked-by relationships are minimal, accurate, and publishable.
+- Small prefactoring is folded into the first vertical slice; only the named expand-contract exception becomes a separate enabling ticket.
+- Blocked-by relationships are minimal, acyclic, accurate, and publishable.
+- The reported implementation frontier contains only open, unblocked, unclaimed AFK tickets.
+- The reported human frontier contains only open, unblocked, unclaimed HITL tickets with a named judgment or manual gate.
 - Acceptance criteria are observable and do not depend on reading the agent's mind.
 
 ## Test Plan Review

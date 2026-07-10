@@ -21,6 +21,11 @@ reversible, and grounded in repo evidence.
 - Keep `AGENTS.md` short; put detailed standards in `.agents/rules/**`.
 - Read the relevant `.agents/rules/**` file before editing matching work.
 - Record only exact commands proven by repo evidence or supplied by the user.
+- Send clear bounded work directly to `/implement`; it needs no invented spec or ticket.
+- Route settled multi-slice work through `/to-spec` then `/to-tickets`; use
+  `/wayfinder` first only for genuinely foggy, multi-session work.
+- For tracked work, implement only an implementation-frontier ticket: open, `AFK`, unblocked, and unclaimed.
+  Claim and resolve it through `docs/agents/issue-tracker.md`.
 - Put deterministic lifecycle requirements in CI, hooks, or platform settings, not only in agent memory.
 - Do not skip input validation, security, data-loss prevention, accessibility, or explicit user requirements.
 

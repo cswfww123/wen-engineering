@@ -10,11 +10,13 @@ Source: `docs/invocation.md`, `skills/skill-review/SKILL.md`, user report that o
 - [SHOULD] Prefer descriptions under 120 characters.
 - [MUST] Review the invocation boundary: user-invoked skills should not carry model trigger prose, and model-invoked skills need concrete trigger language.
 - [MUST] Check trigger clarity, progressive disclosure, judgment preservation, output clarity, side effects, and reference depth.
+- [MUST] For model-invoked side effects, require an explicit matching request or active authorized orchestration, bounded reversible changes, and no new tracker/relationship/canonical-plan/manifest/deployment/external-system authority.
+- [MUST] Require evidence-only research/prototype skills to preserve production behavior; require code-editing disciplines to stay inside the authorized diff and provide verification plus rollback or behavior-preservation boundaries.
 - [SHOULD] Treat `SKILL.md` line count as a review signal. Ask whether the extra content is core workflow or reference detail before suggesting cuts.
 - [MUST] Treat strict setup/init skills as process specifications; review them for completeness and sequencing before compactness.
 - [SHOULD] Return findings first, ordered by severity, with file and line references when possible.
 - [SHOULD] Suggest the smallest edit that fixes the issue while preserving the author's intent.
-- [FORBID] Accepting a skill that needs destructive side effects but can be invoked automatically by the model.
+- [FORBID] Accepting a model-invoked skill that expands scope through destructive, shared-state, canonical-publication, deployment, or external-system side effects.
 - [SHOULD] Flag setup pointers that are soft dependencies disguised as hard preconditions.
 
 ## Verify

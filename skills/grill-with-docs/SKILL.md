@@ -20,6 +20,11 @@ When a plan or design question depends on current code behavior, trace the relev
 
 Keep this skill as instruction for a docs-backed grilling session, not a router. For broad ideas, narrow the active scope one question at a time. Do not route by estimated context size or create a separate multi-session grill path.
 
+If breadth-first questioning shows the destination is still foggy and the work
+cannot fit one honest planning session, stop with the evidence gathered and
+recommend `/wayfinder`. Do not create its map implicitly; Wayfinder is a
+user-invoked shared-state workflow.
+
 ## Done
 
 When the interview stops, return a compact summary:
@@ -29,4 +34,4 @@ When the interview stops, return a compact summary:
 - repo evidence checked
 - glossary or ADR docs changed
 - remaining user-owned questions
-- recommended next skill, such as `/to-prd` only when the source is settled
+- recommended next skill: `/to-spec` when settled, or `/wayfinder` when material fog remains

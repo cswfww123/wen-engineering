@@ -10,7 +10,8 @@ Use these templates when `/qa-run` needs concrete artifact shapes.
 ## Sources
 
 - Test plan: <link or path>
-- PRD / parent issue: <link or path>
+- Spec / parent ticket: <link or path>
+- Legacy PRD / issue: <link or path, omit when not applicable>
 - Code review: <link or path, optional>
 - Branch / commit: <branch, sha>
 
@@ -123,14 +124,38 @@ Reason: <short evidence-based reason>
 
 ## Bug Issue Template
 
+The header fields are logical. A native adapter stores identity, parent,
+blockers, readiness, and claims in native metadata and omits duplicate body
+fields; local Markdown renders them all.
+
 ```md
+Kind: implementation-ticket | bug-report
+Subtype: bug
+ID: <assigned tracker reference or local ID>
+Runnable: yes | no
+Mode: AFK | HITL | n/a
+Parent: <source spec when present; otherwise source ticket or test artifact>
+Origin: <failing ticket and test-case reference>
+Converted to: none | n/a
+Scope disposition: pending | covered-by-existing-parent | moved-out-of-scope-to <spec> | n/a
+Covers: <REQ id, stable legacy source, or test-case ID>
+Supports: none
+Decision: none
+Blocked by: none | <ticket references>
+Status: ready-for-agent | ready-for-human | needs-triage
+Claimed by: none
+Claimed at: none
+Resolution: pending
+
+# Bug: <observable failure>
+
 ## What Happened
 
 <Actual behavior observed during QA.>
 
 ## Expected
 
-<Expected behavior from the test case, PRD, issue, or documented contract.>
+<Expected behavior from the test case, spec, ticket, legacy PRD/issue, or documented contract.>
 
 ## Steps To Reproduce
 
@@ -156,6 +181,7 @@ P0 / P1 / P2 / P3
 
 ## Fix Verification
 
+- Public verification seam: <test/API/UI/command boundary>
 - [ ] Original failing test case passes
 - [ ] Related regression scope passes
 - [ ] Regression automation added or explicitly deferred

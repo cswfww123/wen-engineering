@@ -5,7 +5,13 @@ description: Reviews diffs for intent, bugs, ponytail complexity, performance, s
 
 # Code Review
 
-Review changed code against repo evidence, not personal taste. Default to local changes, keep findings high-confidence, and fix only behavior-preserving cleanup unless the user asks for report-only.
+Review changed code against repo evidence, not personal taste. Default to local
+changes and keep findings high-confidence. Standalone review is report-only;
+auto-fix behavior-preserving cleanup only when the user explicitly authorized
+review fixes or `/implement` supplied an already-authorized code-change scope.
+
+When `/implement` loads this skill, use its recorded ticket fixed point and
+return a completion verdict; `/implement` remains responsible for tracker state.
 
 See [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-AXES.md), and [PROJECT-LENSES.md](PROJECT-LENSES.md) for reviewer prompts, stack lenses, scoring, and false-positive filters.
 
@@ -15,11 +21,13 @@ See [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-AXES.md), and [P
 2. Gather the diff, commit list, changed files, project shape, standards sources, and intent evidence.
 3. Run independent reviewer briefs in parallel when possible, or sequentially with the same prompts when not.
 4. Validate and score each finding from 0-100; keep only findings with confidence `>=80`.
-5. For local WIP, apply verified low-risk fixes by default. Report branch, PR, security architecture, business behavior, and ambiguous findings.
+5. For an authorized local implementation scope, apply verified low-risk fixes.
+   Otherwise report every finding without editing. Always keep branch, PR,
+   security architecture, business behavior, and ambiguous findings report-only.
 
 ## Review Axes
 
-- **Intent**: the diff matches the PRD, issue, bug report, spec, or user consensus; missing requirements and scope creep are findings.
+- **Intent**: the diff matches the spec, ticket, legacy PRD/issue, bug report, or user consensus; missing requirements and scope creep are findings.
 - **Correctness**: the changed behavior works under real control flow, data flow, errors, migrations, and edge cases.
 - **Ponytail**: the diff avoids over-engineering, reinvented stdlib/native features, dead flexibility, and needless layers.
 - **Performance**: the diff avoids query or IO amplification, hot-path bloat, unbounded work, leaks, and diagnosis-blind slow paths.
@@ -56,7 +64,7 @@ If there is no PR, no local diff, and no fixed point, ask what to review against
 Collect only the sources needed for the changed files:
 
 - standards: `AGENTS.md`, `CLAUDE.md`, `.agents/rules/**`, `CONTRIBUTING.md`, `STYLE*`, `STANDARDS*`, relevant `CONTEXT.md` files, ADRs, and machine config
-- intent evidence: linked issue, PRD, bug report, user-provided path, branch-matching docs under `docs/`, `specs/`, or `.scratch/`, and explicit user decisions in the thread
+- intent evidence: linked spec, ticket, legacy PRD/issue, bug report, user-provided path, branch-matching docs under `docs/`, `specs/`, or `.scratch/`, and explicit user decisions in the thread
 - project shape: setup harness notes, `CONTEXT.md`, `.agents/rules/**`, package/build files, routes, services, migrations, and deployment config
 - local context: comments near modified hunks, adjacent helper modules, and relevant git history
 
@@ -70,7 +78,7 @@ Build one review packet with the diff commands, changed files, commit list, stan
 
 When sub-agents are available, launch the six axis reviewers from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) in parallel in one message so their contexts stay independent. When parallel agents are unavailable, run the same reviewers sequentially. When no agent tool exists, perform the passes yourself in the same order.
 
-- **Intent**: diff compliance with PRD, issue, bug report, spec, and user consensus
+- **Intent**: diff compliance with spec, ticket, legacy PRD/issue, bug report, and user consensus
 - **Correctness**: bugs visible in the diff, historical intent, modified-line impact, and nearby comments
 - **Ponytail**: over-engineering and complexity issues worth deleting
 - **Performance**: slow queries, memory growth, timeouts, resource leaks, and stack-specific load risks
@@ -96,6 +104,8 @@ For PR comments, re-check PR eligibility before posting and do not post unless t
 
 A finding is auto-fixable only when **all** of the following are true:
 
+- Authority: the user explicitly requested review fixes, or `/implement`
+  supplied the already-authorized ticket scope and fixed point
 - Confidence score `>= 80` from the Verification Reviewer
 - Impact: local to the changed lines, no cascade effects
 - Scope: single function or smaller
@@ -148,6 +158,14 @@ Lead with findings, ordered by severity. For each finding use this format:
 - **Status**: auto-fixed / report-only / needs-user-decision
 ```
 
-If no issues survive validation, say so clearly and mention any skipped axis or unrun verification. Keep summaries brief; the review is the product.
+End with one verdict:
+
+- `Pass` — no validated blocking finding remains and every auto-fix was verified
+- `Changes Required` — a validated finding must be resolved before completion
+- `Needs User Decision` — review found a behavior or trade-off the evidence cannot decide
+
+If no issues survive validation, say so clearly and mention any skipped axis or
+unrun verification. Keep summaries brief; the review is the product. This skill
+never closes a ticket; the calling workflow owns shared tracker state.
 
 For GitHub comments, cite code with full commit SHA links and line ranges so the rendered review stays stable.

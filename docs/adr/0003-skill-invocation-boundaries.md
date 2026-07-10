@@ -1,6 +1,6 @@
 # Skill invocation boundaries and setup dependency weight
 
-Status: accepted
+Status: superseded in part by ADR 0004
 
 Skills are categorized by invocation boundary: user-invoked orchestration
 skills and model-invoked discipline skills. Setup dependencies are categorized

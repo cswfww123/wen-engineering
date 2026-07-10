@@ -1,6 +1,6 @@
 # Shared Mutable Invariants
 
-Applies to: any work — PRD, issue, code, or test — that reads or writes a shared mutable invariant
+Applies to: any work — spec, ticket, legacy PRD/issue, code, or test — that reads or writes a shared mutable invariant
 Source: billing under-charge postmortem (concurrent message billing skipped charges under fast send); `.agents/rules/project/agent-workflow.md` `[FORBID]` on broad generic rules
 
 ## Recognize — The Trigger
@@ -20,7 +20,7 @@ None of the above hit ⇒ this rule does not apply. The trigger is concrete on p
 
 ## Must Carry — When The Trigger Hits
 
-Regardless of which skill you are running, the matching work must carry three artifacts. They live in whatever layer the role is working in — the PRD, the issue body, the code comments, or the test:
+Regardless of which skill you are running, the matching work must carry three artifacts. They live in whatever layer the role is working in — the spec, ticket body, legacy PRD/issue, code comments, or test:
 
 1. **Invariant** — state the condition that must always hold.
    - `balance ≥ 0`; `Σ charges == Σ credits`; `coupon claimed at most once per user`; `order.status never goes paid → pending`.
@@ -47,7 +47,7 @@ Regardless of which skill you are running, the matching work must carry three ar
 
 ## Verify
 
-- Grep the diff, PRD, or issue for invariant keywords (balance, quota, counter, inventory, status, claim, once, limit, window). On a hit, confirm all three artifacts are present and a concurrency test seam exists.
+- Grep the diff, spec, ticket, or legacy PRD/issue for invariant keywords (balance, quota, counter, inventory, status, claim, once, limit, window). On a hit, confirm all three artifacts are present and a concurrency test seam exists.
 - If a matching change has no concurrency test seam, block it: the original bug shape (serial tests only) is exactly what this rule exists to stop.
 
 ## Exceptions

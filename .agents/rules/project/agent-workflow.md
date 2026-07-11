@@ -11,10 +11,11 @@ Source: `README.md`, `docs/lifecycle.md`, `docs/boundaries.md`, `skills/setup-pr
 - [SHOULD] Proceed on clear, reversible edits after a concise plan; ask only for destructive changes, genuine ambiguity, or user-owned taste decisions.
 - [SHOULD] Prefer repo evidence over assumptions, and mark harmless unknowns as open decisions instead of blocking work.
 - [FORBID] Adding broad, generic best-practice rules that do not prevent a concrete drift risk in this repo.
-- [MUST] Keep this pack coding-focused: PM-optional and test-pack-optional. Do not run product discovery or system QA ownership here (`to-test-plan` / `qa-run` belong to companion `wen-test` when used).
-- [MUST] When product intent is open, stop and hand to the product/design owner (optional `/pm-intake` only if `wen-pm` is in use).
+- [MUST] Keep this pack coding-focused and **composable**: works alone or linked with optional `wen-pm` / `wen-test`. Never fail a coding task solely because another pack is missing.
+- [MUST] Do not run product discovery or own system QA here (`to-test-plan` / `qa-run` are `wen-test` when used).
+- [MUST] When product intent is open, stop and hand to the product/design owner (mention `/pm-intake` only if `wen-pm` is in use).
 - [MUST] Scope gates to ticket layer: frontend-only UI fidelity when UI changes; backend-only API fidelity without UI pins; do not implement out-of-scope layers without authority.
-- [SHOULD] Use the session todo list only for tactical steps. Bounded work → `/implement`; multi-slice → `/to-spec` → `/to-tickets` → `/implement`; recommend `wen-test` for system QA; technical `/wayfinder` only for multi-session engineering fog.
+- [SHOULD] Bounded work → `/implement`; multi-slice → `/to-spec` → `/to-tickets` → `/implement`; recommend `wen-test` for system QA when installed; technical `/wayfinder` only for multi-session engineering fog.
 - [MUST] Implement one ready implementation-frontier ticket at a time in a fresh context, and load `/code-review` before closing it.
 - [FORBID] Planning persistent work as "Phase 1/2/3" items inside the session todo list when it should instead become a spec, ticket graph, or technical Wayfinder decision map.
 - [FORBID] Using Wayfinder or `/to-spec` to invent product value, Expected behavior after rejection, or market bets.

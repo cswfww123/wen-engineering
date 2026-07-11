@@ -4,10 +4,13 @@ Companion to [boundaries.md](boundaries.md). Defines what engineering admits
 before `/to-spec` or `/implement`, without requiring the companion `wen-pm`
 pack.
 
-## This pack stands alone
+## Standalone or linked
 
-`wen-engineering` is a **coding lifecycle**. It does not assume `/pm-intake`,
-`to-prd`, or any PM skill is installed.
+`wen-engineering` is a **coding lifecycle**. It works **alone** or **linked**
+with optional `wen-pm` / `wen-test`. It does not assume `/pm-intake`, `to-prd`,
+`/qa-run`, or any other pack is installed.
+
+See also [boundaries.md](boundaries.md) composition contract.
 
 Settled product intent may come from any durable source the project actually
 uses, for example:

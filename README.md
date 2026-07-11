@@ -92,9 +92,15 @@ In empty repos, the harness must record facts and user decisions only. Leave pac
 ## Lifecycle
 
 The route follows the shape of the work; it is not a form every request must
-complete. This pack stays **coding-light** and **PM-optional**: product discovery
-uses whatever process the team has (optional companion `wen-pm`). Work may be
-frontend-only, backend-only, or full-stack. See [docs/lifecycle.md](docs/lifecycle.md),
+complete. This pack is **coding-only** and **composable**:
+
+| Mode | Meaning |
+| --- | --- |
+| **Standalone** | Use only `wen-engineering` when AC/tickets are already settled, or for pure eng work |
+| **Linked** | Optional `wen-pm` for product discovery; optional `wen-test` for system QA |
+
+No hard dependency on the other packs. Work may be frontend-only, backend-only,
+or full-stack. See [docs/lifecycle.md](docs/lifecycle.md),
 [docs/boundaries.md](docs/boundaries.md), and
 [docs/handoff-package.md](docs/handoff-package.md).
 
@@ -380,10 +386,11 @@ skills/
 This repo currently focuses on a **lightweight, evidence-first coding lifecycle**:
 
 - initialize a trustworthy project harness and shared agent entrypoint
-- stay PM-optional; accept delivery inputs from any settled product source
+- standalone **or** linked with optional `wen-pm` / `wen-test` (no hard deps)
+- accept delivery inputs from any settled product source
 - support frontend-only, backend-only, and full-stack layer scope
 - default multi-session coding path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
-- system test/QA via optional companion `wen-test`
+- system test/QA via optional companion `wen-test` (or human/CI)
 - optional technical `/wayfinder` only for multi-session engineering fog
 - preserve intent in non-runnable specs and traceable ticket DAGs
 - implement one isolated implementation-frontier ticket through the right evidence loop, simplification, review, and verification

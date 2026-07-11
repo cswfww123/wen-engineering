@@ -1,54 +1,78 @@
-# Engineering Boundaries (Coding Layer)
+# WEN Layer Boundaries (Coding)
 
 Companion to [lifecycle.md](lifecycle.md) and [handoff-package.md](handoff-package.md).
 
-## Three optional layers
+## Composition contract: standalone **or** linked
+
+`wen-pm` · `wen-engineering` · `wen-test` are **three independent packs**.
+
+| Mode | Meaning |
+| --- | --- |
+| **Standalone** | This pack alone is enough for coding work when the user brings settled AC, a ticket, or pure eng tasks. Do **not** require `wen-pm` or `wen-test` to be installed. |
+| **Linked** | When those packs exist and the user routes across layers, prefer their durable artifacts; recommend them — never hard-fail if missing. |
+
+```text
+# linked (all optional except the layer you actually run)
+wen-pm ──► wen-engineering ──► wen-test
+
+# standalone coding
+user AC / ticket / bug → /implement
+or settled multi-slice → /to-spec → /to-tickets → /implement
+```
+
+## Ownership
 
 | Layer | Pack | Owns |
 | --- | --- | --- |
-| Product | optional `wen-pm` or any PM process | intent, delivery contract, product scenarios |
+| Product | optional any PM process / `wen-pm` | intent, delivery contract, product SCN |
 | **Coding** | **this repo** | specs, tickets, implement, TDD, code-review, technical wayfinder |
-| Test | optional `wen-test` | system test plans, QA execution, completion judgment, defect filing |
-
-This pack must work **alone**. It does not require `wen-pm` or `wen-test`.
+| Test | optional `wen-test` | system test plans, QA execution, completion judgment |
 
 ## Coding owns / does not own
 
 | Owns | Does not own |
 | --- | --- |
 | `/to-spec`, `/to-tickets`, `/implement` | Product discovery |
-| `/tdd`, `/simplify`, `/code-review` (dev quality) | System `/to-test-plan`, `/qa-run` (moved to `wen-test`) |
+| `/tdd`, `/simplify`, `/code-review` | System `/to-test-plan`, `/qa-run` |
 | Technical `/wayfinder`, `/research`, `/prototype` | Inventing Expected product behavior |
-| FE/BE layer-scoped implementer fidelity checks | Independent acceptance QA sign-off |
+| Layer-scoped implementer fidelity (FE/BE) | Independent acceptance QA sign-off |
 
-## Product fog
+## Standalone coding
 
-Stop inventing. Hand to product/design owner (optional `/pm-intake`).
+Valid without PM or test packs:
 
-## After implement
+- clear bugfix or named AC → `/implement`  
+- multi-slice with settled intent from **any** PRD/docs/chat-approved AC → `/to-spec` → …  
+- human or CI performs QA outside this pack  
+
+Product fog → stop inventing; hand to product owner (mention `/pm-intake` **only if** the team uses `wen-pm`).
+
+## Linked spine (when other packs are used)
 
 ```text
-/implement done (dev green + layer fidelity)
-  -> optional wen-test /to-test-plan + /qa-run
-  -> or human QA / CI policy
-  -> defects back to /implement or product rework
+(optional PM package) → /to-spec → /to-tickets → /implement
+  → (optional) wen-test /to-test-plan → /qa-run
+  → defects → /implement or product rework
 ```
 
-Do not hard-chain coding skills into `/qa-run` as a mandatory next step inside
-this pack. Recommend the test pack when system verification is needed.
+Do not hard-chain coding skills into `/qa-run` inside this pack.
 
 ## Layer scope (FE / BE)
 
-Unchanged: frontend-only, backend-only, full-stack gates for **implementation**
-admission and developer fidelity. See [handoff-package.md](handoff-package.md).
+| Scope | Developer gates |
+| --- | --- |
+| Frontend-only | Behavior + UI fidelity when UI changes; pin API/mocks at boundary |
+| Backend-only | Behavior + API/contract fidelity; no UI pin |
+| Full-stack | Only for surfaces this ticket changes |
+
+See [handoff-package.md](handoff-package.md).
 
 ## Skill map
 
-| Need | Skill |
+| Need | Where |
 | --- | --- |
 | Bounded coding | `/implement` |
 | Multi-slice coding | `/to-spec` → `/to-tickets` → `/implement` |
-| Tech plan sharpen | `/grill-with-docs` |
 | Tech multi-session fog | `/wayfinder` (rare) |
-| System test design/exec | **`wen-test`**: `/to-test-plan`, `/qa-run` |
+| System test/QA | optional **`wen-test`** |
 | Product fog | team's product process (optional `/pm-intake`) |

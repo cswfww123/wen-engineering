@@ -4,12 +4,14 @@ This is the routing source of truth for WEN **coding** skills. The route follows
 the shape of the work; it is not a form every request must complete.
 
 This repo is for **production coding**: settled product intent becomes
-verifiable implementation work. It does **not** require companion `wen-pm` or
-`wen-test`. Product discovery and system QA are optional external layers.
+verifiable implementation work. The three WEN packs are **standalone or
+linked** — this pack never requires `wen-pm` or `wen-test` to function.
 
-- Product / market / need → team's product process (optional `wen-pm`)
-- System test design / QA execution → optional `wen-test` (`/to-test-plan`, `/qa-run`)
-- Developer proof (TDD, verification, code-review) → **this pack**
+| Layer | Pack | Role |
+| --- | --- | --- |
+| Product | optional `wen-pm` or any PM process | intent / delivery contract |
+| Coding | **this pack** | specs, tickets, implement, TDD, code-review |
+| Test | optional `wen-test` | system test plan + QA |
 
 See [boundaries.md](boundaries.md) and [handoff-package.md](handoff-package.md).
 

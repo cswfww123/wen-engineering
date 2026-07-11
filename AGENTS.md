@@ -9,7 +9,7 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 ## Core Directives
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Proceed on clear, reversible implementation steps; ask only when the decision is genuinely user-owned or destructive.
-- **Persistent work**: use the session todo list only for tactical, same-session steps. Default multi-session coding path is `/to-spec` then `/to-tickets` then `/implement`. System test plan/QA live in optional companion `wen-test` (`/to-test-plan`, `/qa-run`), not this pack. Use technical `/wayfinder` only for multi-session engineering fog. Product fog → team's product process (optional `/pm-intake`). Scope FE/BE gates to the ticket layer. Implement one frontier ticket at a time in a fresh context.
+- **Persistent work**: use the session todo list only for tactical, same-session steps. This pack is standalone coding **or** linked with optional `wen-pm` / `wen-test` (no hard deps). Default multi-session coding path: `/to-spec` → `/to-tickets` → `/implement`. System QA → optional `wen-test` or human/CI. Technical `/wayfinder` only for eng multi-session fog. Product fog → product owner (optional `/pm-intake`). Scope FE/BE gates to the ticket layer. One frontier ticket per fresh context.
 - **Use skills**: prefer project skills such as `/setup-project-harness` and `/skill-review` when they fit the task.
 - **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `README.md`, and `skills/**` files before editing.
 - **Domain language**: use this repo's terms: skills, harness, progressive disclosure, user bridge, repo evidence, agent judgment, and rules as guardrails.

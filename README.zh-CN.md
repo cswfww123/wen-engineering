@@ -90,8 +90,14 @@ git pull --ff-only
 
 ## Lifecycle
 
-流程由工作形态决定，不是每个请求都必须填写的固定表单。本仓库保持 **coding
-轻量** 且 **不强制 wen-pm**：产品探索用团队既有流程（可选 companion PM）。
+流程由工作形态决定，不是每个请求都必须填写的固定表单。本仓库是 **纯 coding 层**，
+与 `wen-pm` / `wen-test` **可单独用也可联动**，互不硬依赖：
+
+| 模式 | 含义 |
+| --- | --- |
+| **单独使用** | 只要 AC/工单已 settled，或纯工程任务，只装本仓库即可 |
+| **联动使用** | 可选 `wen-pm` 做产品发现；可选 `wen-test` 做系统 QA |
+
 工作可仅为前端、仅为后端或全栈。完整契约见
 [docs/lifecycle.md](docs/lifecycle.md)、[docs/boundaries.md](docs/boundaries.md)
 与 [docs/handoff-package.md](docs/handoff-package.md)。
@@ -374,10 +380,11 @@ skills/
 这个仓库当前关注 **轻量、evidence-first 的 coding lifecycle**：
 
 - 初始化可信的 project harness 和共享 agent entrypoint
-- 不强制 wen-pm；接受任意 settled 产品输入
+- 可单独用，也可与 `wen-pm` / `wen-test` 联动（无硬依赖）
+- 接受任意 settled 产品输入
 - 支持仅前端 / 仅后端 / 全栈的层级门禁
 - 默认跨会话编码路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
-- 系统测试/QA 由可选 companion `wen-test` 负责
+- 系统测试/QA 由可选 `wen-test` 或人工/CI 负责
 - 可选技术 `/wayfinder` 仅用于多会话工程雾
 - 用 non-runnable specs 和可追踪 ticket DAGs 保存 intent
 - 让一个 isolated implementation-frontier ticket 完整经过正确的 evidence loop、simplification、review 和 verification

@@ -38,10 +38,10 @@ honest spec in one session:
 foggy effort -> /wayfinder -> cleared decisions -> /to-spec -> /to-tickets
 ```
 
-Wayfinder maps discovery, not destination implementation. Each session resolves
-at most one research, prototype, grilling, or prerequisite ticket. If the
-opening breadth-first pass finds no real fog, skip the map and use the settled
-route.
+Wayfinder maps discovery for production coding work, not destination
+implementation. Each session resolves at most one research, prototype, grilling,
+or prerequisite ticket, gated by that ticket's Resolution Signal. If the opening
+breadth-first pass finds no real fog, skip the map and use the settled route.
 
 ### Bugs and regressions
 

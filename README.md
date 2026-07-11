@@ -129,9 +129,10 @@ intake with `needs-triage` until explicitly converted or specified and sliced.
 foggy effort -> /wayfinder -> settled decisions -> /to-spec -> /to-tickets
 ```
 
-`/wayfinder` maps discovery and resolves at most one discovery ticket per
-session. `/research` and `/prototype` can produce bounded evidence for the map;
-the user-invoked orchestration retains tracker publication and closure.
+`/wayfinder` clears foggy multi-session coding work into a discovery map and
+resolves at most one discovery ticket per session until an honest spec is
+writable. `/research` and `/prototype` produce bounded evidence only; the
+user-invoked orchestration retains tracker publication and closure.
 
 ### v1.1 Command Migration
 
@@ -165,7 +166,7 @@ Common skills:
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
 - `/to-test-plan` designs traceable test cases from specs or tickets without executing them.
-- `/wayfinder` charts and resolves discovery for large, foggy, multi-session work.
+- `/wayfinder` clears foggy multi-session coding work until an honest spec is writable.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
 The harness skill creates:
@@ -217,7 +218,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
 - [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
-- [`wayfinder`](skills/wayfinder/SKILL.md) — charts and resolves discovery work for large, foggy, multi-session efforts.
+- [`wayfinder`](skills/wayfinder/SKILL.md) — clears foggy multi-session coding work into a discovery map until an honest spec is writable.
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.

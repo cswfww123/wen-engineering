@@ -126,7 +126,7 @@ QA 可以把已确认且适合 one-context 的 defect 直接发布为 implementa
 foggy effort -> /wayfinder -> settled decisions -> /to-spec -> /to-tickets
 ```
 
-`/wayfinder` 负责绘制 discovery map，每个 session 最多解决一个 discovery
+`/wayfinder` 将跨会话、仍模糊的 coding 工作清成 discovery map，每个 session 最多解决一个 discovery
 ticket。`/research` 和 `/prototype` 可以为 map 产出 bounded evidence；tracker
 发布和 closure 仍由 user-invoked orchestration 负责。
 
@@ -161,7 +161,7 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
 - `/to-test-plan` 从 specs 或 tickets 设计可追踪 test cases，但不执行它们。
-- `/wayfinder` 为巨大、模糊、跨会话的工作绘制并解决 discovery 路径。
+- `/wayfinder` 将跨会话、仍模糊的 coding 工作清到可写 honest spec 为止。
 - `/writing-great-skills` 提供写作和编辑 predictable skills 的 reference。
 
 Harness skill 会创建：
@@ -213,7 +213,7 @@ AI agents 会以很可预测的方式失败。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 打磨 domain language，更新 `CONTEXT.md`，并在决策结晶时少量记录 ADRs。
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) - 运行 `/grilling` 并同时激活 `/domain-modeling`，作为常规 plan-sharpening 入口。
 - [`grilling`](skills/grilling/SKILL.md) - 提供 grill skills 使用的一次一个问题的核心访谈协议。
-- [`wayfinder`](skills/wayfinder/SKILL.md) - 为巨大、模糊、跨会话的工作绘制并解决 discovery 路径。
+- [`wayfinder`](skills/wayfinder/SKILL.md) - 将跨会话、仍模糊的 coding 工作清到可写 honest spec 为止。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec。

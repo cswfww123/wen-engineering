@@ -1,88 +1,114 @@
 ---
 name: wayfinder
-description: Chart and resolve discovery work for large, foggy, multi-session efforts.
+description: Clear foggy multi-session coding work into a discovery map; resolve one ticket until an honest spec is writable.
 disable-model-invocation: true
 ---
 
 # Wayfinder
 
-Find a route to a named destination when the route is too foggy for a spec and
-too large for one session. The map indexes decisions; discovery tickets own the
-detail.
+Find a route to a named coding destination when the route is too foggy for an
+honest `/to-spec` and too large for one session. The map indexes decisions;
+discovery tickets own the detail. Wayfinding **finds the way** — it does not
+charge at the destination or ship production code.
 
-This skill requires the Wayfinder operations configured by
-`/setup-project-harness`: map and ticket storage, parent, blocking, discovery frontier,
-claim, resolution, and closure. Read `docs/agents/issue-tracker.md` first.
+Requires Wayfinder operations from `/setup-project-harness`: map and ticket
+storage, parent, blocking, discovery frontier, claim, resolution, and closure.
+Read `docs/agents/issue-tracker.md` first.
 
 Choose one mode:
 
 - no map supplied: **Chart**
 - map path, URL, or identifier supplied: **Resolve**
 
-Resolve at most one discovery ticket in a session. Charting never also resolves
-a ticket.
+Resolve at most one discovery ticket per session. Charting never also resolves.
+
+## Operating Rules
+
+- **Plan, don't implement.** Tickets resolve decisions. The map is done when
+  nothing material remains to decide before `/to-spec`. The urge to "just build
+  it" is the signal to hand off, not to expand the map.
+- **Destination fixes scope.** Name it first. Typical production destinations:
+  an honest spec, a locked architecture/data decision, or a migration readiness
+  gate — not a merged feature.
+- **Fog or ticket?** Ticket only when the question is already precise, even if
+  blocked. Keep imprecise in-scope work in `Not yet specified`. Do not pre-slice
+  fog into fake tickets.
+- **Map is an index.** Open tickets live in the tracker query, not the map body.
+  `Decisions so far` holds only named links plus one-line gists. Refer to maps
+  and tickets by **title/name** (link may wrap the id), never a bare `#42`.
+- **One answer, one place.** The resolution comment is the detail source. Never
+  restate full answers on the map.
+- **HITL means human.** For grilling and prototype, the agent never answers for
+  the user. AFK research/task may run alone inside the ticket bound.
+- **Never implement the destination.** No production, manifest, deployment,
+  canonical-doc, or behavior-changing repo mutation. External or irreversible
+  prerequisites stay open with a precise handoff. Disposable `/prototype`
+  evidence is allowed only when the ticket authorizes it.
+
+## Disciplines
+
+Pick one discipline and mode per ticket. Load ticket-type detail from
+[TEMPLATES.md](TEMPLATES.md) when charting or graduating tickets.
+
+| Discipline | Mode | Use when |
+| --- | --- | --- |
+| `research` | AFK | Need primary sources outside the working tree (docs, APIs, standards, upstream code) |
+| `prototype` | HITL | Need a cheap disposable artifact for the user to react to (shape, flow, seam) |
+| `grilling` | HITL | Need a user-owned product, scope, or trade-off decision (default) |
+| `task` | AFK or HITL | Need a prerequisite action that unblocks a **decision**, not delivery of the destination |
 
 ## Chart
 
-1. Name the destination with the user: the spec, decision, or prerequisite
-   state this effort must make possible. The destination fixes scope.
-2. Explore breadth-first. Separate:
-   - precise questions that can become live discovery tickets
-   - in-scope fog that is not yet precise enough to ticket
-   - work beyond the destination
-3. If exploration finds no multi-session fog, stop before creating tracker
-   state. Report that the work can proceed to `/to-spec` or `/implement`.
-4. Load [TEMPLATES.md](TEMPLATES.md). Publish one non-runnable map with the
+1. **Name the destination** with the user. If it is still fuzzy, run a short
+   `/grilling` and `/domain-modeling` pass until destination and out-of-scope
+   boundary are stable. Destination shapes every later ticket.
+2. **Explore breadth-first** across the coding surface: problem boundary,
+   existing seams, data/auth ownership, integration contracts, migration risk,
+   testability, and failure modes. Separate:
+   - precise questions → candidate discovery tickets
+   - in-scope but imprecise → `Not yet specified`
+   - beyond destination → `Out of scope`
+3. If no multi-session fog remains, **stop without tracker state**. Report that
+   the work can proceed to `/to-spec` or `/implement`.
+4. Load [TEMPLATES.md](TEMPLATES.md). Publish one non-runnable map with
    destination, notes, unresolved fog, and out-of-scope boundary.
-5. Create only questions precise enough to answer now as child discovery
-   tickets. Create identities first, then wire genuine blocking edges.
-6. Query and report the discovery frontier, then stop for this session.
-
-The map lists no open tickets; the tracker query is their source of truth. Its
-`Decisions so far` section contains only named links plus one-line gists. The
-linked resolution remains the detail source.
+5. Create only sharp questions as child discovery tickets. Each ticket must have
+   a `Resolution Signal`. Create identities first, then wire genuine blocking
+   edges. Prefer the smallest set that unblocks an honest spec.
+6. Query and report the discovery frontier, then stop.
 
 ## Resolve
 
-1. Load the map's low-resolution body, claim the map, and re-read ownership.
-   The map claim serializes updates to its decision index; if the adapter cannot
-   distinguish workers or lock the map, resolve that map serially.
-2. Query the map's discovery frontier. If it is empty, either perform terminal
-   closeout when no fog remains, or release the map claim and report the
-   still-imprecise fog; then stop. Otherwise choose the named ticket, or the
-   first in tracker order, claim it, and re-read ownership. Load full ticket
-   bodies only when they become relevant.
+1. Load the map's low-resolution body, **claim the map**, and re-read ownership.
+   The map claim serializes `Decisions so far`. If the adapter cannot
+   distinguish workers, resolve that map serially.
+2. Query the map's discovery frontier. If empty: terminal closeout when no fog
+   remains, else release the map claim, report remaining fog, and stop.
+   Otherwise take the named ticket or the first frontier ticket, **claim it**,
+   re-read ownership. Zoom into full bodies only when needed.
 3. Resolve exactly that ticket:
-   - `research` / `AFK`: load `/research`
-   - `prototype` / `HITL`: load `/prototype` and get the user's reaction
-   - `grilling` / `HITL`: ask one evidence-backed question at a time
-   - `task`: perform only read-only inspection or a disposable evidence setup
-     already authorized by the ticket
-4. Check the ticket's `Resolution Signal`. If the evidence or user reaction is
-   insufficient, record partial evidence, keep the ticket open, release child
-   and map claims, report the blocker, and stop. Otherwise record one resolution
-   comment, close the ticket, and append one named context pointer to
-   `Decisions so far`.
-5. Graduate newly precise fog into tickets, create identities before edges, and
-   remove each graduated item from `Not yet specified`. Close and move any
-   newly out-of-scope ticket to the map's boundary.
-6. Recompute the discovery frontier. If it and `Not yet specified` are empty,
-   record terminal evidence, set the map to `Status: resolved`, and close it.
-   Read back every map/graph mutation, release the map claim, report the updated
-   state, and stop. A later session resolves the next discovery ticket.
+   - `research` / AFK → load `/research`
+   - `prototype` / HITL → load `/prototype` and capture the user's reaction
+   - `grilling` / HITL → one evidence-backed question at a time (repo first)
+   - `task` → only the ticket-authorized read-only inspection or disposable
+     evidence setup; never destination delivery
+4. Gate on `Resolution Signal`. If evidence or user reaction is insufficient:
+   record partial evidence, keep the ticket open, release child and map claims,
+   report the blocker, stop. If sufficient: one resolution comment, close the
+   ticket, append one named context pointer to `Decisions so far`.
+5. Graduate newly precise fog into tickets (identities before edges); remove
+   each graduated item from `Not yet specified`. Close mis-scoped tickets and
+   move them to `Out of scope` with reason — they never enter `Decisions so far`.
+6. Recompute the discovery frontier. If it and `Not yet specified` are empty:
+   record terminal evidence, set `Status: resolved`, close the map. Read back
+   every map/graph mutation, release the map claim, report state, stop.
 
-`/research` and `/prototype` return evidence only. Wayfinder owns tracker
-claims, relationships, comments, closure, and map updates.
-
-A prerequisite that needs external, production, manifest, canonical-doc, or
-behavior-changing repo mutation stays unresolved. Record the required action
-and hand it to a separately authorized workflow; Wayfinder never implements the
-destination.
+`/research` and `/prototype` return evidence only. Wayfinder owns claims,
+relationships, comments, closure, and map updates.
 
 ## Completion
 
 Wayfinding ends when no unresolved decision blocks the destination and no
-in-scope fog remains. Record terminal evidence, set the map to
-`Status: resolved`, close its tracker object, and read it back. Report the
-resolved map and recommend an explicit `/to-spec`; destination implementation
-is always outside the map.
+in-scope fog remains. Read back the resolved map. Recommend explicit `/to-spec`
+(or `/implement` only if the cleared path is one-context). Destination
+implementation is always outside the map.

@@ -25,20 +25,24 @@ Confirm every item before drafting:
 
 Treat a missing or contradictory user-owned decision as a readiness gap.
 
-- **Product / market / need gap** (worth-doing, target user, stakeholder inner
-  need, unvalidated product intent): stop and recommend `/pm-intake` (PM
-  workspace). Do not invent Expected behavior or product value here.
+- **Product / market / need gap**: stop and hand to the product/design owner or
+  the team's product process (optional `/pm-intake` only if `wen-pm` is in use).
+  Do not invent Expected behavior or product value here.
 - **Engineering gap** (seams, contracts, migration, testability): recommend
   `/grill-with-docs`, technical `/wayfinder` when multi-session, or targeted
   `/research` / `/prototype`; resume `/to-spec` after it is settled.
-- **UI package gap** (user-visible surface without `SCR`/`FLD`/`RULE` or without
-  a pinned delivery prototype version): stop and list missing IDs/sections;
-  recommend PM `to-prd` UI contract completion. Do not invent fields, copy, or
-  linkage from screenshots alone. See `docs/handoff-package.md`.
+- **UI package gap** (this work changes user-visible UI without field/rule
+  structure or a pinned delivery design version): stop and list gaps for the
+  product/design owner. Do not invent fields or copy from screenshots alone.
+  **Skip this check for backend-only / non-UI specs.**
+- **API package gap** (this work changes a published API/event without stated
+  request/response/error/authz expectations): stop and list gaps. **Skip for
+  pure UI tickets that only consume a pinned external contract/mocks.**
 
-Prefer the PM handoff package (Product Delivery Contract, `REQ-*` / `AC-*`,
-`SCN-*`, UI contract + pin) over chat paraphrase. Preserve PM IDs; do not
-renumber product requirements without an explicit note.
+State the **layer scope**: `frontend` | `backend` | `full-stack` | `non-UI`.
+Prefer durable delivery inputs from any source (optional `wen-pm` package,
+other PRD, in-repo docs, ticket AC) over chat paraphrase. See
+`docs/handoff-package.md`. Preserve stable source IDs when present.
 
 ## Bug Report Source
 
@@ -65,12 +69,13 @@ original parent remains blocked.
 4. Choose stable `REQ-###` identifiers. Each requirement states observable
    behavior and an acceptance boundary. Give a stable `DEC-###` identifier to
    any implementation decision an enabling ticket must reference.
-5. Sketch the fewest useful test seams. Prefer the highest existing public seam
-   and record why any new seam is necessary. Map material `SCN-*` and UI
-   `RULE-*` onto verification notes when present.
-6. Load [TEMPLATE.md](TEMPLATE.md) and draft the spec. Link the PM PRD, UI
-   contract, delivery prototype pin, and scenario file; inline only decision-
-   rich excerpts. Do not expand UI beyond the PM UI contract.
+5. Sketch the fewest useful test seams for the **layer in scope**. Prefer the
+   highest existing public seam. Map scenarios and UI rules or API contract
+   items onto verification notes when present. Record out-of-scope layers and
+   integration owners (e.g. FE-only consuming API@v).
+6. Load [TEMPLATE.md](TEMPLATE.md) and draft the spec. Link delivery sources
+   (PRD/docs/design pin/OpenAPI as applicable). Do not invent UI beyond the UI
+   contract or API beyond the stated contract.
 7. Present the draft, assumptions, and evidence gaps. Treat explicit approval
    already given in the current discussion as approval; otherwise wait for it.
 8. Immediately before publication, claim and re-read a bug-report source through

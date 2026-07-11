@@ -92,14 +92,16 @@ In empty repos, the harness must record facts and user decisions only. Leave pac
 ## Lifecycle
 
 The route follows the shape of the work; it is not a form every request must
-complete. This pack stays **coding-light**: product/market/need discovery lives
-in the companion PM workspace. See [docs/lifecycle.md](docs/lifecycle.md) and
-[docs/boundaries.md](docs/boundaries.md).
+complete. This pack stays **coding-light** and **PM-optional**: product discovery
+uses whatever process the team has (optional companion `wen-pm`). Work may be
+frontend-only, backend-only, or full-stack. See [docs/lifecycle.md](docs/lifecycle.md),
+[docs/boundaries.md](docs/boundaries.md), and
+[docs/handoff-package.md](docs/handoff-package.md).
 
-### 0. Product Fog → PM (not here)
+### 0. Product Fog → Product Owner (not inventing here)
 
 ```text
-product / market / need fog -> /pm-intake (wen-pm)
+product / market / need fog -> team's product process (optional /pm-intake)
 ```
 
 Do not use Wayfinder or `/to-spec` to invent user value or Expected behavior.
@@ -122,13 +124,13 @@ completion reporting.
 settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
 ```
 
-Prefer the PM handoff package (Delivery Contract, scenarios, UI contract + pin).
+Prefer a settled delivery package from any source (optional `wen-pm`, other
+PRD, in-repo docs). Scope FE/BE gates to the ticket layer — backend-only does
+not need UI pins; frontend-only does not require implementing the API.
 See [docs/handoff-package.md](docs/handoff-package.md).
-`/to-spec` publishes a non-runnable parent with stable requirement IDs and
-preserves PM UI IDs. `/to-tickets` creates one-context vertical slices;
-`/implement` requires behavior and (when UI) fidelity gates; `/qa-run` rechecks
-both. Use `/grill-with-docs` for same-session technical sharpening and
-`/alignment-review` when intent or slicing is risky.
+`/to-spec` → `/to-tickets` → `/implement` → `/qa-run` with behavior +
+layer-scoped fidelity. Use `/grill-with-docs` for same-session technical
+sharpening and `/alignment-review` when intent or slicing is risky.
 
 QA may publish a confirmed one-context defect directly as an implementation
 ticket. Broader or under-diagnosed defects remain non-runnable `bug-report`
@@ -388,7 +390,8 @@ skills/
 This repo currently focuses on a **lightweight, evidence-first coding lifecycle**:
 
 - initialize a trustworthy project harness and shared agent entrypoint
-- keep product/market/need discovery in the companion PM workspace
+- stay PM-optional; accept delivery inputs from any settled product source
+- support frontend-only, backend-only, and full-stack layer scope
 - default multi-session path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
 - optional technical `/wayfinder` only for multi-session engineering fog
 - preserve intent in non-runnable specs and traceable ticket DAGs

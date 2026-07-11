@@ -25,7 +25,8 @@ reversible, and grounded in repo evidence.
 - Route settled multi-slice work through `/to-spec` then `/to-tickets`.
 - Use technical `/wayfinder` only when product intent is settled (or work is
   pure engineering) and multi-session technical fog remains; send product,
-  market, or need discovery to the PM process (`/pm-intake`), not Wayfinder.
+  market, or need discovery to the team's product process (optional `/pm-intake`
+  if they use wen-pm), not Wayfinder. Scope FE/BE gates to the ticket layer.
 - For tracked work, implement only an implementation-frontier ticket: open, `AFK`, unblocked, and unclaimed.
   Claim and resolve it through `docs/agents/issue-tracker.md`.
 - Put deterministic lifecycle requirements in CI, hooks, or platform settings, not only in agent memory.

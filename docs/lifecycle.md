@@ -4,16 +4,17 @@ This is the routing source of truth for WEN skills. The route follows the shape
 of the work; it is not a form every request must complete.
 
 This repo is for **production coding**: settled product intent becomes
-verifiable engineering work. Product, market, and inner-need discovery belong
-in the companion PM workspace (`wen-pm` / `/pm-intake`). See
-[boundaries.md](boundaries.md).
+verifiable engineering work. It **does not require** companion `wen-pm`. Product,
+market, and inner-need discovery belong to the team's product process (optional
+`/pm-intake` if they use `wen-pm`). Work may be **frontend-only**,
+**backend-only**, or full-stack — gates follow layer scope. See
+[boundaries.md](boundaries.md) and [handoff-package.md](handoff-package.md).
 
 ## Choose The Entry
 
-### Product or market fog (reject into PM)
+### Product or market fog (stop inventing)
 
-Stop the engineering lifecycle and recommend PM discovery when material
-uncertainty is about:
+Stop the engineering lifecycle when material uncertainty is about:
 
 - whether the work is worth doing, for whom, or what outcome to optimize
 - customer or stakeholder inner need, interviews, opportunity framing
@@ -22,7 +23,8 @@ uncertainty is about:
   behavior is still product-ambiguous
 
 Do not open `/wayfinder`, `/to-spec`, or `/implement` to invent product answers.
-Hand off to `/pm-intake` (or the project's PM process) with the gap named.
+Hand the gap to the **product/design owner** or the team's product process
+(optional pointer: `/pm-intake` only if that pack is in use).
 
 ### Clear, bounded work
 
@@ -39,16 +41,18 @@ than one independently verifiable slice:
 settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
 ```
 
-Prefer the PM handoff package (Product Delivery Contract, `SCN-*`, UI contract +
-pin when visual). See [handoff-package.md](handoff-package.md).
+Prefer a settled **delivery package** from any source (optional `wen-pm`
+contract, other PRD, in-repo docs, or clear AC). Scope FE/BE gates to the
+ticket's layer. See [handoff-package.md](handoff-package.md).
 
 - `/to-spec` records stable requirements and technical/testing decisions;
-  preserves PM IDs; refuses incomplete UI packages.
-- `/to-tickets` creates one-context tracer bullets with blocking edges and UI
-  subset fields when needed.
-- `/implement` claims one runnable ticket, runs behavior (+ UI fidelity) gates,
-  and stops unless the user explicitly requested a bounded multi-ticket loop.
-- `/qa-run` judges completion with the same dual gates when UI is in scope.
+  preserves source IDs; refuses incomplete **UI** packages only when UI is in
+  scope; refuses incomplete **API** contracts when BE contracts change.
+- `/to-tickets` creates one-context tracer bullets with layer scope and the
+  right subset fields (UI and/or API).
+- `/implement` claims one runnable ticket, runs behavior + layer-scoped fidelity
+  gates, and stops unless the user requested a bounded multi-ticket loop.
+- `/qa-run` judges completion with the same gates for the surfaces under test.
 
 Use `/grill-with-docs` first when the plan needs same-session technical
 sharpening (seams, terms, ADRs) but is not multi-session fog.

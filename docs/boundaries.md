@@ -1,78 +1,78 @@
-# Engineering vs PM Boundaries
+# Engineering Boundaries And Adaptability
 
-Companion to [lifecycle.md](lifecycle.md) and [handoff-package.md](handoff-package.md).
-Keeps this skill pack light and production-coding-focused.
+Companion to [lifecycle.md](lifecycle.md) and
+[handoff-package.md](handoff-package.md). This pack is **coding-first** and
+**PM-optional**.
 
 ## Ownership
 
 | Layer | Owns | Does not own |
 | --- | --- | --- |
-| **PM** (`wen-pm`, `/pm-intake`) | Product/market/need discovery; Build/Bet; Product Delivery Contract; UI contract + pin; `SCN` | Shipping production code; eng implementation tickets |
-| **Engineering** (this repo) | Specs, technical discovery, slicing, implement, review, QA; **UI fidelity** vs pin | Inventing user value or Expected behavior |
+| **Product / design** (any process) | Worth-doing, intent, acceptance, UI rules, delivery design pins | Shipping production code in this pack |
+| **Engineering** (this repo) | Specs, technical discovery, FE and/or BE implementation, review, QA gates scoped to layer | Inventing user value or Expected behavior |
+| **wen-pm** (optional companion) | One possible product process (`/pm-intake` …) | Required dependency of this pack |
 
 ## Two kinds of fog
 
 | Fog | Examples | Route |
 | --- | --- | --- |
-| **Product fog** | Worth doing? Who? Outcome? Inner need after rejection? | `/pm-intake` — never engineering Wayfinder |
-| **Technical fog** | Migration, ownership, contracts, dual-write, test seams | `/grill-with-docs` or slim `/wayfinder` after product is settled |
+| **Product fog** | Worth doing? Who? Outcome? What they really meant? | Stop inventing answers; use the team's product process (optional: `/pm-intake`) |
+| **Technical fog** | Migration, ownership, contracts, dual-write, test seams | `/grill-with-docs` or slim `/wayfinder` after intent is settled |
 
-## Admission into engineering
+## Admission
 
-Enter coding skills only when at least one holds:
+Enter coding skills when at least one holds:
 
-1. **Settled product package** — Build/Bet Product Delivery Contract with
-   `REQ-*` / `AC-*`; when UI is in scope, complete UI contract + pin (see
-   [handoff-package.md](handoff-package.md)).
-2. **Pure engineering work** — migration, reliability, performance, platform,
-   or defect fix where product behavior is already defined or unchanged.
-3. **Explicit user authority** to implement a named technical change with a
-   stated acceptance boundary.
+1. **Settled delivery inputs** for the **layer in scope** (see
+   [handoff-package.md](handoff-package.md)) — not necessarily a wen-pm PRD.
+2. **Pure engineering** — migration, reliability, performance, platform, or
+   defect fix with product behavior defined or unchanged.
+3. **Explicit user authority** for a named technical change with a clear
+   acceptance boundary.
 
-Otherwise: name the product gap and stop. Recommend PM discovery.
+Otherwise: name the gap and stop. Recommend product/design owners — not
+engineering Wayfinder for product discovery.
 
-## Handoff from PM
+## Layer-scoped work (FE / BE / full-stack)
 
-Prefer the handoff package over chat paraphrase. Full checklist:
+| Scope | Default gates |
+| --- | --- |
+| Frontend-only | Behavior + **UI fidelity** (when UI changes); pin API/mocks at the boundary |
+| Backend-only | Behavior + **API/contract fidelity**; no UI pin required |
+| Full-stack | Both, for the surfaces the ticket actually changes |
+
+Do not force backend tickets through UI prototype gates. Do not force
+frontend-only tickets to implement backend. Record out-of-scope layers and
+integration owners on the ticket.
+
+## Delivery inputs (any source)
+
+Prefer durable inputs over chat paraphrase. Full checklist:
 [handoff-package.md](handoff-package.md).
 
 ```text
-PM: to-prd → test-scenarios → [optional to-issues]
-  -> /to-spec → /to-tickets → /implement
-  -> /qa-run   # behavior + UI fidelity when visual
+settled inputs (PM optional)
+  -> /to-spec -> /to-tickets -> /implement
+  -> /qa-run   # gates match layer scope
 ```
 
-PM `to-issues` is human-board only — never the agent frontier.
+Human boards are never the agent execution frontier.
 
-**UI admission (visual work):** refuse prose-only screenshots. Require
-`SCR-*` / `FLD-*` / `RULE-*` and a pinned delivery prototype version (or an
-explicit non-pin reason). Missing pieces → stop and list gaps for PM.
-
-Use technical `/wayfinder` only if product is settled but the **implementation
-route** still cannot be specified honestly in one session.
+**UI admission** applies only when **this work** changes user-visible UI.
+**API admission** applies when **this work** changes published contracts.
 
 ## Completion gates
 
-| Gate | When | Required |
-| --- | --- | --- |
-| Behavior | every ticket | tests / SCN / verification match `AC-*` |
-| Fidelity | ticket touches UI | fields, labels, linkage, and UI states match UI contract + pin |
+| Gate | When |
+| --- | --- |
+| Behavior | every ticket |
+| UI fidelity | ticket changes user-visible UI |
+| Contract fidelity | ticket changes published API/events |
 
-Do not close UI tickets on behavior-green alone. Contract errors return to PM;
-implementation errors stay in eng.
+Contract/product errors return to the product/design owner (optional PM).
+Implementation errors stay in eng.
 
-## Handoff back to PM
-
-Return work to PM when:
-
-- intended behavior is disputed or underspecified
-- fidelity failure is a **contract** gap (wrong/missing FLD/RULE/pin)
-- a "bug" is product rework without authorized Expected
-
-Send: repo-backed Current, statements as statements, failing AC/SCN/FLD/RULE
-IDs, and the open product question — not a guessed Expected.
-
-## Skill map (lightweight)
+## Skill map
 
 | Need | Skill |
 | --- | --- |
@@ -80,4 +80,4 @@ IDs, and the open product question — not a guessed Expected.
 | Settled multi-slice | `/to-spec` → `/to-tickets` → `/implement` |
 | Same-session tech plan sharpen | `/grill-with-docs` |
 | Multi-session **technical** fog | `/wayfinder` (rare) |
-| Product/market/need fog | **Stop** → `/pm-intake` |
+| Product/market/need fog | **Stop** → team's product process (optional `/pm-intake`) |

@@ -23,12 +23,16 @@ A clear bounded request needs no harness, invented spec, or ticket. Implement
 it directly and skip tracker-only steps.
 
 If material product fog remains (worth-doing, target user, stakeholder inner
-need, or unspecified Expected after rejection), stop and recommend `/pm-intake`
-instead of inventing product intent. See `docs/boundaries.md`.
+need, or unspecified Expected after rejection), stop and hand to the
+product/design owner or the team's product process (optional `/pm-intake` only
+if `wen-pm` is in use). Do not invent product intent. See `docs/boundaries.md`.
 
-If the work is UI-scoped and the ticket/spec lacks a PM UI contract (`FLD`/
-`RULE`) or delivery prototype pin when one is required, stop and report the
-package gap (`docs/handoff-package.md`). Do not invent UI copy or linkage.
+Read **Layer** on the ticket/spec (`frontend` | `backend` | `full-stack` |
+`non-UI`). If UI-scoped work lacks field/rule structure or a design pin when
+required, stop and report the package gap (`docs/handoff-package.md`). If
+backend contract work lacks API/event expectations, stop similarly. Do not
+force UI pins on backend-only tickets or force BE implementation on FE-only
+tickets.
 
 ## Select The Frontier
 
@@ -102,20 +106,26 @@ diff.
      an expand-contract ticket also records the caller inventory and runs its
      compatibility/static checks
 4. Load `/simplify` for non-trivial changes; keep tiny mechanical diffs direct.
-5. Run the project's exact verification commands (**behavior gate**).
-6. **Fidelity gate (UI-scoped tickets only):** against the PM UI contract and
-   pinned delivery prototype, verify covered fields/labels, requiredness,
-   show/hide/enable linkage (`RULE-*`), and listed empty/error/loading states.
-   Use a structured checklist and/or screenshot compare vs the pin; exercise
-   linkage `SCN-*` paths. Do not close on behavior-green alone.
+5. Run the project's exact verification commands (**behavior gate** for this
+   layer).
+6. **Layer fidelity gates:**
+   - **UI** (frontend or full-stack UI delta): against the UI contract and
+     pinned design source, verify fields/labels, requiredness, show/hide/
+     enable linkage, and empty/error/loading states. Checklist and/or
+     screenshot vs pin; exercise linkage scenarios. Not required for
+     backend-only / non-UI.
+   - **API/contract** (backend or full-stack contract delta): verify
+     request/response/error/authz/compat against the stated contract. Not
+     required for pure UI tickets that only consume a pinned external API.
+   Do not close on behavior-green alone when a fidelity gate applies.
 7. Load `/code-review` against the recorded fixed point. Include AC coverage and
-   (when UI) FLD/RULE fidelity in the review. Resolve every blocking finding or
+   applicable fidelity (UI and/or contract). Resolve every blocking finding or
    user-owned decision, then rerun affected verification.
-8. Re-check every acceptance criterion. If fidelity fails because the **contract
-   is wrong**, stop and hand back to PM with IDs — do not invent Expected UI.
-   If fidelity fails because **implementation** drifts, fix or leave open.
-   Update comments/evidence and complete the ticket only when behavior gate,
-   fidelity gate (if UI), verification, and review pass.
+8. Re-check every acceptance criterion. If fidelity fails because the
+   **product/design contract is wrong**, stop and hand to the product/design
+   owner with IDs — do not invent Expected. If **implementation** drifts, fix
+   or leave open. Complete only when behavior gate, applicable fidelity gates,
+   verification, and review pass.
 
 Keep unverified criteria open. Commit only when the user or project workflow
 authorizes it.

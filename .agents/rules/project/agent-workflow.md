@@ -11,7 +11,8 @@ Source: `README.md`, `docs/lifecycle.md`, `docs/boundaries.md`, `skills/setup-pr
 - [SHOULD] Proceed on clear, reversible edits after a concise plan; ask only for destructive changes, genuine ambiguity, or user-owned taste decisions.
 - [SHOULD] Prefer repo evidence over assumptions, and mark harmless unknowns as open decisions instead of blocking work.
 - [FORBID] Adding broad, generic best-practice rules that do not prevent a concrete drift risk in this repo.
-- [MUST] Keep this pack coding-focused: do not run product/market/need discovery here. When worth-doing, target user, stakeholder inner need, or unvalidated product intent is open, stop and recommend `/pm-intake` (PM workspace).
+- [MUST] Keep this pack coding-focused and PM-optional: do not run product/market/need discovery here. When worth-doing, target user, stakeholder inner need, or unvalidated product intent is open, stop and hand to the product/design owner or the team's product process (optional `/pm-intake` only if `wen-pm` is in use).
+- [MUST] Scope gates to ticket layer: frontend-only needs UI fidelity when UI changes; backend-only needs API/contract fidelity and must not require UI prototype pins; do not implement out-of-scope layers without authority.
 - [SHOULD] Use the session todo list only for tactical, same-session steps. Send clear bounded work directly to `/implement`; send settled multi-slice work through `/to-spec` then `/to-tickets`; use technical `/wayfinder` only when product is settled (or work is pure engineering) and multi-session **technical** fog remains.
 - [MUST] Implement one ready implementation-frontier ticket at a time in a fresh context, and load `/code-review` before closing it.
 - [FORBID] Planning persistent work as "Phase 1/2/3" items inside the session todo list when it should instead become a spec, ticket graph, or technical Wayfinder decision map.

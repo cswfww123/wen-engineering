@@ -43,21 +43,33 @@ Origin: <bug-report reference | none>
 
 <Ordered flows and material failure or recovery paths.>
 
+## Layer Scope
+
+- **Scope:** frontend | backend | full-stack | non-UI
+- **Out of scope layers:** <none | FE | BE | ...> — owner / seam
+
 ## Product Sources
 
-- **PRD / Delivery Contract:** <path or URL, version>
-- **Scenarios:** <SCN file or none>
-- **UI Contract:** none | present — SCR/FLD/RULE ids preserved from PM
-- **Delivery Prototype Pin:** none | <path/URL@version, frames>
+- **Delivery source:** <PRD / RFC / ticket set / user brief — path or URL, version>
+- **Scenarios:** <path or none>
+- **UI Contract:** none (non-UI / BE-only) | present — field/rule structure from source
+- **Delivery design pin:** none | <Figma/path/URL@version, frames>
+- **API / event contract:** none | <OpenAPI/proto/doc@version>
 
-## UI Scope (omit if none)
+## UI Scope (omit if layer is backend-only or non-UI)
 
-Preserve PM IDs. Engineering does not invent fields or linkage.
+Preserve source IDs when present. Do not invent fields or linkage.
 
-- **Screens:** SCR-...
-- **Fields covered:** FLD-...
-- **Rules covered:** RULE-...
-- **Fidelity gate:** checklist vs pin + linkage SCN paths on UI tickets
+- **Screens / surfaces:** ...
+- **Fields:** ...
+- **Rules / linkage:** ...
+- **Fidelity gate:** checklist vs pin on UI tickets
+
+## API Scope (omit if layer is frontend-only with pinned external contract only)
+
+- **Endpoints / events under change:** ...
+- **Authz / errors / idempotency:** ...
+- **Contract fidelity gate:** consumer-compatible checks on BE tickets
 
 ## Implementation Decisions
 

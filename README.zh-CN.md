@@ -91,13 +91,15 @@ git pull --ff-only
 ## Lifecycle
 
 流程由工作形态决定，不是每个请求都必须填写的固定表单。本仓库保持 **coding
-轻量**：产品/市场/内心需求探索在 companion PM 工作区。完整契约见
-[docs/lifecycle.md](docs/lifecycle.md) 与 [docs/boundaries.md](docs/boundaries.md)。
+轻量** 且 **不强制 wen-pm**：产品探索用团队既有流程（可选 companion PM）。
+工作可仅为前端、仅为后端或全栈。完整契约见
+[docs/lifecycle.md](docs/lifecycle.md)、[docs/boundaries.md](docs/boundaries.md)
+与 [docs/handoff-package.md](docs/handoff-package.md)。
 
-### 0. 产品雾 → PM（不在这里）
+### 0. 产品雾 → 产品负责人（不在这里编造）
 
 ```text
-product / market / need fog -> /pm-intake (wen-pm)
+product / market / need fog -> 团队产品流程（可选 /pm-intake）
 ```
 
 不要用 Wayfinder 或 `/to-spec` 编造用户价值或 Expected 行为。
@@ -119,11 +121,11 @@ simplification、项目 verification、独立的 `/code-review` gate，以及完
 settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
 ```
 
-优先使用 PM 交接包（Delivery Contract、SCN、有 UI 时的 UI 契约 + 钉死原型）。
+优先使用任意已 settled 的交付输入（可选 wen-pm、其他 PRD、仓库文档）。
+按 ticket 的 **Layer** 定门禁：纯后端不要求 UI 钉死；纯前端不要求实现 API。
 见 [docs/handoff-package.md](docs/handoff-package.md)。
-`/to-spec` 发布带稳定 requirement IDs 的 parent 并保留 PM UI IDs；
-`/to-tickets` 做 one-context 切片；`/implement` 要求行为门 +（有 UI 时）保真门；
-`/qa-run` 复查双门。同会话技术压方案用 `/grill-with-docs`。
+`/to-spec` → `/to-tickets` → `/implement` → `/qa-run` 使用行为门 + 层级保真门。
+同会话技术压方案用 `/grill-with-docs`。
 
 QA 可以把已确认且适合 one-context 的 defect 直接发布为 implementation ticket；
 更大或尚未充分诊断的 defect 会保持为 non-runnable `bug-report` intake，并标记
@@ -382,7 +384,8 @@ skills/
 这个仓库当前关注 **轻量、evidence-first 的 coding lifecycle**：
 
 - 初始化可信的 project harness 和共享 agent entrypoint
-- 产品/市场/需求探索放在 companion PM 工作区
+- 不强制 wen-pm；接受任意 settled 产品输入
+- 支持仅前端 / 仅后端 / 全栈的层级门禁
 - 默认跨会话路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
 - 可选技术 `/wayfinder` 仅用于多会话工程雾
 - 用 non-runnable specs 和可追踪 ticket DAGs 保存 intent

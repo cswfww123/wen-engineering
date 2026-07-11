@@ -33,7 +33,8 @@ question at a time.
 
 **Product / market / need fog:** if material uncertainty is about worth-doing,
 target user, stakeholder inner need, market, or unvalidated product bets, stop
-with evidence gathered and recommend `/pm-intake` (PM workspace). Do not invent
+with evidence gathered and hand to the product/design owner or the team's
+product process (optional `/pm-intake` only if `wen-pm` is in use). Do not invent
 product answers or open an engineering Wayfinder map.
 
 **Technical multi-session fog:** if product is settled (or work is pure

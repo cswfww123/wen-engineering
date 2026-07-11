@@ -9,7 +9,7 @@ WEN Engineering Skills is a local engineering-skills workspace for building conc
 ## Core Directives
 
 - **Plan first**: for non-trivial work, start with a concise bullet plan and unresolved questions. Proceed on clear, reversible implementation steps; ask only when the decision is genuinely user-owned or destructive.
-- **Persistent work**: use the session todo list only for tactical, same-session steps. Default multi-session path is `/to-spec` then `/to-tickets`. Use technical `/wayfinder` only when product intent is settled (or work is pure engineering) and the engineering route is still multi-session fog. Product/market/need fog goes to the team's product process (optional `/pm-intake` if they use `wen-pm`) — not Wayfinder. Scope FE/BE gates to the ticket layer. Implement one implementation-frontier ticket at a time in a fresh context.
+- **Persistent work**: use the session todo list only for tactical, same-session steps. Default multi-session coding path is `/to-spec` then `/to-tickets` then `/implement`. System test plan/QA live in optional companion `wen-test` (`/to-test-plan`, `/qa-run`), not this pack. Use technical `/wayfinder` only for multi-session engineering fog. Product fog → team's product process (optional `/pm-intake`). Scope FE/BE gates to the ticket layer. Implement one frontier ticket at a time in a fresh context.
 - **Use skills**: prefer project skills such as `/setup-project-harness` and `/skill-review` when they fit the task.
 - **Progressive disclosure**: do not pack every rule into this file. Read only the relevant `.agents/rules/**`, `README.md`, and `skills/**` files before editing.
 - **Domain language**: use this repo's terms: skills, harness, progressive disclosure, user bridge, repo evidence, agent judgment, and rules as guardrails.
@@ -43,7 +43,7 @@ PY
 ## Agent Skills
 
 - **Issue tracker**: GitHub issues for `cswfww123/wen-engineering`; use `gh` as described in `docs/agents/issue-tracker.md`.
-- **Lifecycle**: use `docs/lifecycle.md` and `docs/boundaries.md` for routing among implement, specs/tickets, technical Wayfinder, and PM handoff.
+- **Lifecycle**: use `docs/lifecycle.md` and `docs/boundaries.md` for coding routes; optional `wen-pm` / `wen-test` are external layers.
 - **Triage labels**: use the canonical labels in `docs/agents/triage-labels.md`: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`.
 - **Domain docs**: single-context layout; read `CONTEXT.md` and relevant ADRs when they exist, following `docs/agents/domain.md`.
 

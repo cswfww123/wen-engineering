@@ -121,18 +121,18 @@ completion reporting.
 ### 2. Settled, Multi-Slice Work (default multi-session path)
 
 ```text
-settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
+settled product package -> /to-spec -> /to-tickets -> /implement
 ```
 
 Prefer a settled delivery package from any source (optional `wen-pm`, other
 PRD, in-repo docs). Scope FE/BE gates to the ticket layer — backend-only does
 not need UI pins; frontend-only does not require implementing the API.
 See [docs/handoff-package.md](docs/handoff-package.md).
-`/to-spec` → `/to-tickets` → `/implement` → `/qa-run` with behavior +
-layer-scoped fidelity. Use `/grill-with-docs` for same-session technical
+`/to-spec` → `/to-tickets` → `/implement` with developer behavior +
+layer-scoped fidelity. System QA is optional companion `wen-test`. Use `/grill-with-docs` for same-session technical
 sharpening and `/alignment-review` when intent or slicing is risky.
 
-QA may publish a confirmed one-context defect directly as an implementation
+Optional system QA (`wen-test` `/qa-run`) may publish a confirmed one-context defect as an implementation
 ticket. Broader or under-diagnosed defects remain non-runnable `bug-report`
 intake with `needs-triage` until explicitly converted or specified and sliced.
 
@@ -169,7 +169,6 @@ Common skills:
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
-- `/qa-run` executes approved QA cases, records evidence, judges completion, and files confirmed defects.
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 - `/setup-project-harness` initializes a project-level agent harness.
@@ -177,7 +176,6 @@ Common skills:
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
-- `/to-test-plan` designs traceable test cases from specs or tickets without executing them.
 - `/wayfinder` (advanced) clears multi-session **technical** fog until an honest engineering spec is writable.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
@@ -235,7 +233,6 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
-- [`to-test-plan`](skills/to-test-plan/SKILL.md) — designs traceable test plans and cases from specs or tickets.
 - [`implement`](skills/implement/SKILL.md) — takes one bounded task or implementation-frontier ticket through testing or compatibility evidence, review, and verification.
 - [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
@@ -244,7 +241,6 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
-- [`qa-run`](skills/qa-run/SKILL.md) — executes QA cases, records evidence, judges completion, and files confirmed defects.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
 ### Architecture
@@ -306,27 +302,25 @@ scripts/
   test-sync-skills.sh
 skills/
   alignment-review/
-    SKILL.md
     CHECKLIST.md
-  codebase-design/
     SKILL.md
-    DEEPENING.md
-    DESIGN-IT-TWICE.md
   code-review/
     AGENT-BRIEFS.md
-    SKILL.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
-  diagnosing-bugs/
     SKILL.md
+  codebase-design/
+    DEEPENING.md
+    DESIGN-IT-TWICE.md
+    SKILL.md
+  diagnosing-bugs/
     ATTRIBUTION.md
+    SKILL.md
     scripts/
       hitl-loop.template.sh
   domain-modeling/
-    SKILL.md
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
-  implement/
     SKILL.md
   grill-with-docs/
     SKILL.md
@@ -334,33 +328,32 @@ skills/
     SKILL.md
   handoff/
     SKILL.md
+  implement/
+    SKILL.md
   improve-codebase-architecture/
-    SKILL.md
     HTML-REPORT.md
+    SKILL.md
   prototype/
-    SKILL.md
     LOGIC.md
-    UI.md
-  qa-run/
     SKILL.md
-    TEMPLATES.md
+    UI.md
   research/
     SKILL.md
   setup-project-harness/
-    SKILL.md
-    HARNESS_FLOW.md
-    SECTIONS.md
-    TRACKER_CONTRACT.md
     AGENTS_TEMPLATE.md
+    HARNESS_FLOW.md
     RULE_TEMPLATE.md
+    SECTIONS.md
+    SKILL.md
+    TRACKER_CONTRACT.md
     domain.md
     issue-tracker-github.md
     issue-tracker-gitlab.md
     issue-tracker-local.md
     triage-labels.md
-  skill-review/
-    SKILL.md
   simplify/
+    SKILL.md
+  skill-review/
     SKILL.md
   tdd/
     SKILL.md
@@ -370,19 +363,16 @@ skills/
   to-spec/
     SKILL.md
     TEMPLATE.md
-  to-test-plan/
-    SKILL.md
-    TEMPLATES.md
   to-tickets/
+    EXPAND-CONTRACT.md
     SKILL.md
     TEMPLATE.md
-    EXPAND-CONTRACT.md
   wayfinder/
     SKILL.md
     TEMPLATES.md
   writing-great-skills/
-    SKILL.md
     GLOSSARY.md
+    SKILL.md
 ```
 
 ## Current Focus
@@ -392,12 +382,13 @@ This repo currently focuses on a **lightweight, evidence-first coding lifecycle*
 - initialize a trustworthy project harness and shared agent entrypoint
 - stay PM-optional; accept delivery inputs from any settled product source
 - support frontend-only, backend-only, and full-stack layer scope
-- default multi-session path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- default multi-session coding path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- system test/QA via optional companion `wen-test`
 - optional technical `/wayfinder` only for multi-session engineering fog
 - preserve intent in non-runnable specs and traceable ticket DAGs
 - implement one isolated implementation-frontier ticket through the right evidence loop, simplification, review, and verification
 - use research and prototypes as bounded **engineering** evidence
-- connect requirements to test design, QA evidence, and confirmed defects
+- leave system test design/QA to optional companion `wen-test`
 - keep Codex, Claude, ZCode, and Kimi aligned through `~/.agents/skills`
 
 The design stays tracker-neutral and context-aware: small work stays small;

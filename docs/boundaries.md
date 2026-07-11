@@ -1,83 +1,54 @@
-# Engineering Boundaries And Adaptability
+# Engineering Boundaries (Coding Layer)
 
-Companion to [lifecycle.md](lifecycle.md) and
-[handoff-package.md](handoff-package.md). This pack is **coding-first** and
-**PM-optional**.
+Companion to [lifecycle.md](lifecycle.md) and [handoff-package.md](handoff-package.md).
 
-## Ownership
+## Three optional layers
 
-| Layer | Owns | Does not own |
+| Layer | Pack | Owns |
 | --- | --- | --- |
-| **Product / design** (any process) | Worth-doing, intent, acceptance, UI rules, delivery design pins | Shipping production code in this pack |
-| **Engineering** (this repo) | Specs, technical discovery, FE and/or BE implementation, review, QA gates scoped to layer | Inventing user value or Expected behavior |
-| **wen-pm** (optional companion) | One possible product process (`/pm-intake` …) | Required dependency of this pack |
+| Product | optional `wen-pm` or any PM process | intent, delivery contract, product scenarios |
+| **Coding** | **this repo** | specs, tickets, implement, TDD, code-review, technical wayfinder |
+| Test | optional `wen-test` | system test plans, QA execution, completion judgment, defect filing |
 
-## Two kinds of fog
+This pack must work **alone**. It does not require `wen-pm` or `wen-test`.
 
-| Fog | Examples | Route |
-| --- | --- | --- |
-| **Product fog** | Worth doing? Who? Outcome? What they really meant? | Stop inventing answers; use the team's product process (optional: `/pm-intake`) |
-| **Technical fog** | Migration, ownership, contracts, dual-write, test seams | `/grill-with-docs` or slim `/wayfinder` after intent is settled |
+## Coding owns / does not own
 
-## Admission
-
-Enter coding skills when at least one holds:
-
-1. **Settled delivery inputs** for the **layer in scope** (see
-   [handoff-package.md](handoff-package.md)) — not necessarily a wen-pm PRD.
-2. **Pure engineering** — migration, reliability, performance, platform, or
-   defect fix with product behavior defined or unchanged.
-3. **Explicit user authority** for a named technical change with a clear
-   acceptance boundary.
-
-Otherwise: name the gap and stop. Recommend product/design owners — not
-engineering Wayfinder for product discovery.
-
-## Layer-scoped work (FE / BE / full-stack)
-
-| Scope | Default gates |
+| Owns | Does not own |
 | --- | --- |
-| Frontend-only | Behavior + **UI fidelity** (when UI changes); pin API/mocks at the boundary |
-| Backend-only | Behavior + **API/contract fidelity**; no UI pin required |
-| Full-stack | Both, for the surfaces the ticket actually changes |
+| `/to-spec`, `/to-tickets`, `/implement` | Product discovery |
+| `/tdd`, `/simplify`, `/code-review` (dev quality) | System `/to-test-plan`, `/qa-run` (moved to `wen-test`) |
+| Technical `/wayfinder`, `/research`, `/prototype` | Inventing Expected product behavior |
+| FE/BE layer-scoped implementer fidelity checks | Independent acceptance QA sign-off |
 
-Do not force backend tickets through UI prototype gates. Do not force
-frontend-only tickets to implement backend. Record out-of-scope layers and
-integration owners on the ticket.
+## Product fog
 
-## Delivery inputs (any source)
+Stop inventing. Hand to product/design owner (optional `/pm-intake`).
 
-Prefer durable inputs over chat paraphrase. Full checklist:
-[handoff-package.md](handoff-package.md).
+## After implement
 
 ```text
-settled inputs (PM optional)
-  -> /to-spec -> /to-tickets -> /implement
-  -> /qa-run   # gates match layer scope
+/implement done (dev green + layer fidelity)
+  -> optional wen-test /to-test-plan + /qa-run
+  -> or human QA / CI policy
+  -> defects back to /implement or product rework
 ```
 
-Human boards are never the agent execution frontier.
+Do not hard-chain coding skills into `/qa-run` as a mandatory next step inside
+this pack. Recommend the test pack when system verification is needed.
 
-**UI admission** applies only when **this work** changes user-visible UI.
-**API admission** applies when **this work** changes published contracts.
+## Layer scope (FE / BE)
 
-## Completion gates
-
-| Gate | When |
-| --- | --- |
-| Behavior | every ticket |
-| UI fidelity | ticket changes user-visible UI |
-| Contract fidelity | ticket changes published API/events |
-
-Contract/product errors return to the product/design owner (optional PM).
-Implementation errors stay in eng.
+Unchanged: frontend-only, backend-only, full-stack gates for **implementation**
+admission and developer fidelity. See [handoff-package.md](handoff-package.md).
 
 ## Skill map
 
 | Need | Skill |
 | --- | --- |
-| Bounded coding task | `/implement` |
-| Settled multi-slice | `/to-spec` → `/to-tickets` → `/implement` |
-| Same-session tech plan sharpen | `/grill-with-docs` |
-| Multi-session **technical** fog | `/wayfinder` (rare) |
-| Product/market/need fog | **Stop** → team's product process (optional `/pm-intake`) |
+| Bounded coding | `/implement` |
+| Multi-slice coding | `/to-spec` → `/to-tickets` → `/implement` |
+| Tech plan sharpen | `/grill-with-docs` |
+| Tech multi-session fog | `/wayfinder` (rare) |
+| System test design/exec | **`wen-test`**: `/to-test-plan`, `/qa-run` |
+| Product fog | team's product process (optional `/pm-intake`) |

@@ -24,19 +24,23 @@ When product/market/need is still foggy, stop inventing Expected behavior.
 Recommend **whatever product process the team uses** (optional pointer:
 `/pm-intake` if they use `wen-pm`). Do not hard-depend on it.
 
-## Default engineering spine
+## Default coding spine
 
 ```text
 settled delivery inputs (any source above)
   -> /to-spec -> /to-tickets -> /implement
-  -> /qa-run   # gates match layer scope
+  -> (optional) wen-test: /to-test-plan -> /qa-run
 ```
 
 One-context work with a clear acceptance boundary may skip to `/implement`.
 
-Human planning boards (Jira/Linear/PM `to-issues`) are never the agent
-execution frontier. Runnable work is `Kind: implementation-ticket` under an
-accepted eng spec, or an explicit one-context `/implement`.
+System test design and acceptance QA are **not** owned by `wen-engineering`
+when the team uses `wen-test`. Developer fidelity checks during `/implement`
+remain (layer-scoped UI/API match to the delivery package).
+
+Human planning boards are never the agent execution frontier. Runnable work is
+`Kind: implementation-ticket` under an accepted eng spec, or one-context
+`/implement`.
 
 ## Delivery inputs by layer
 
@@ -94,23 +98,27 @@ When one side is out of scope for this agent/ticket:
 - for FE-only: pin mock/fixture or published API version; fidelity is vs UI pin
 - for BE-only: contract tests or API scenarios; no UI fidelity gate
 
-## Two completion gates (scoped)
+## Completion gates
+
+### Coding layer (`/implement`) — developer proof
 
 | Gate | When | Evidence |
 | --- | --- | --- |
-| **Behavior** | every ticket | tests/verification match acceptance for **this layer** |
-| **UI fidelity** | ticket changes user-visible UI | fields, labels, linkage, empty/error/loading match UI contract + pin |
-| **Contract fidelity** | ticket changes published API/events | responses/errors/compat match stated contract |
+| **Behavior** | every ticket | TDD/verification match acceptance for **this layer** |
+| **UI fidelity** | ticket changes user-visible UI | checklist/compare vs UI contract + pin |
+| **Contract fidelity** | ticket changes published API/events | contract checks |
 
-Backend-only tickets: behavior + contract fidelity; UI fidelity = `n/a`.  
-Frontend-only tickets: behavior + UI fidelity; do not claim full-stack done
-if BE is out of scope.
+Not a substitute for independent system QA (`wen-test` `/qa-run` or human QA).
 
-Failures:
+### Test layer (optional `wen-test`)
+
+System test plan + execution + Complete/Incomplete judgment + defects. See
+that pack's `docs/boundaries.md`.
+
+Failures during coding:
 
 - **implementation drift** → fix in eng
-- **contract/product wrong** → return to product/design owner (optional PM),
-  with failing IDs — do not invent Expected
+- **contract/product wrong** → product/design owner (optional PM)
 
 ## ID spine (when IDs exist)
 

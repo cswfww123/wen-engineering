@@ -144,7 +144,7 @@ When every in-scope implementation/human ticket is resolved, every child bug
 report is resolved/converted or explicitly moved out of scope with evidence,
 and every in-scope replacement is complete, a `Complete` QA run may record
 requirement-level evidence, set the accepted spec to `delivered`, and close it.
-If the lifecycle does not require `/qa-run`, an explicit human closeout performs
+If the project does not require system `/qa-run` (optional `wen-test`), an explicit human closeout performs
 that same evidence gate; `/implement` never closes the parent.
 
 When an existing spec covers a report, replacement tickets keep that spec as

@@ -8,9 +8,10 @@ disable-model-invocation: true
 
 Review generated planning artifacts before implementation or QA so the next agent does not drift from user intent, requirement coverage, repo evidence, or executable scope.
 
-Use this after `/to-spec`, `/to-tickets`, or `/to-test-plan` when intent,
+Use this after `/to-spec`, `/to-tickets`, or an external test plan (`wen-test`
+`/to-test-plan` when present) when intent,
 coverage, slicing, or repo fit is risky. It may precede `/to-tickets`,
-`/implement`, TDD, or `/qa-run` according to the artifact under review.
+`/implement`, TDD, or external `/qa-run` (`wen-test`) according to the artifact.
 
 See [CHECKLIST.md](CHECKLIST.md) for detailed review questions.
 
@@ -62,7 +63,7 @@ For test plans, confirm each case ties to user-visible behavior or a documented 
 
 When the source or repo risk calls for non-functional coverage, check security, observability, compatibility, data retention/export, accessibility, performance, migration, and operational acceptance. Do not invent these as universal requirements.
 
-If a material requirement has no runnable case, explicit blocker, or out-of-scope decision, the verdict cannot be `Pass`. If the test plan is correct but execution is still unknown, hand that completion judgment to `/qa-run`.
+If a material requirement has no runnable case, explicit blocker, or out-of-scope decision, the verdict cannot be `Pass`. If the test plan is correct but execution is still unknown, hand completion judgment to companion `/qa-run` (`wen-test`) or human QA.
 
 For any generated plan, confirm dependencies, blockers, rollout order, config or manual steps, monitoring/alert checks, rollback boundaries, and user-owned decisions are explicit when they affect execution.
 

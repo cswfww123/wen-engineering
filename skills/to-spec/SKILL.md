@@ -100,4 +100,6 @@ material requirement has a stable ID, and `/to-tickets` can slice it without
 recovering decisions from chat history.
 
 Recommend `/alignment-review` when independent intent review is valuable, then
-`/to-tickets` for an approved spec and `/to-test-plan` for delivery coverage.
+`/to-tickets` for an approved spec. For system test design/execution, recommend
+optional companion **`wen-test`** skills `/to-test-plan` and `/qa-run` (not part
+of this pack).

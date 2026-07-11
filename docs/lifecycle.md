@@ -1,176 +1,99 @@
 # WEN Engineering Lifecycle
 
-This is the routing source of truth for WEN skills. The route follows the shape
-of the work; it is not a form every request must complete.
+This is the routing source of truth for WEN **coding** skills. The route follows
+the shape of the work; it is not a form every request must complete.
 
 This repo is for **production coding**: settled product intent becomes
-verifiable engineering work. It **does not require** companion `wen-pm`. Product,
-market, and inner-need discovery belong to the team's product process (optional
-`/pm-intake` if they use `wen-pm`). Work may be **frontend-only**,
-**backend-only**, or full-stack — gates follow layer scope. See
-[boundaries.md](boundaries.md) and [handoff-package.md](handoff-package.md).
+verifiable implementation work. It does **not** require companion `wen-pm` or
+`wen-test`. Product discovery and system QA are optional external layers.
+
+- Product / market / need → team's product process (optional `wen-pm`)
+- System test design / QA execution → optional `wen-test` (`/to-test-plan`, `/qa-run`)
+- Developer proof (TDD, verification, code-review) → **this pack**
+
+See [boundaries.md](boundaries.md) and [handoff-package.md](handoff-package.md).
 
 ## Choose The Entry
 
 ### Product or market fog (stop inventing)
 
-Stop the engineering lifecycle when material uncertainty is about:
-
-- whether the work is worth doing, for whom, or what outcome to optimize
-- customer or stakeholder inner need, interviews, opportunity framing
-- market positioning, pricing, GTM, or unvalidated product bets
-- "what they really meant" after a rejected implementation, when intended
-  behavior is still product-ambiguous
-
-Do not open `/wayfinder`, `/to-spec`, or `/implement` to invent product answers.
-Hand the gap to the **product/design owner** or the team's product process
-(optional pointer: `/pm-intake` only if that pack is in use).
+Stop when material uncertainty is about worth-doing, target user, inner need,
+market bets, or unspecified Expected after rejection. Hand to the product/design
+owner (optional `/pm-intake`). Do not invent product answers in coding skills.
 
 ### Clear, bounded work
 
-Use `/implement` directly when product intent is settled enough to code and one
-context can hold the task and its acceptance boundary. Do not create a spec or
-tickets just to satisfy the lifecycle.
+Use `/implement` when intent is settled enough and one context holds the task
+and acceptance boundary. Includes developer evidence (TDD or compatibility
+baseline), simplify, verification, `/code-review`. Does **not** require system
+`/qa-run` inside this pack.
 
-### Settled, multi-slice work (default multi-session path)
-
-Use this route when the destination is understood but implementation needs more
-than one independently verifiable slice:
+### Settled, multi-slice work (default multi-session coding path)
 
 ```text
-settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
+settled delivery inputs -> /to-spec -> /to-tickets -> /implement
+  -> (optional) wen-test: /to-test-plan -> /qa-run
 ```
 
-Prefer a settled **delivery package** from any source (optional `wen-pm`
-contract, other PRD, in-repo docs, or clear AC). Scope FE/BE gates to the
-ticket's layer. See [handoff-package.md](handoff-package.md).
-
-- `/to-spec` records stable requirements and technical/testing decisions;
-  preserves source IDs; refuses incomplete **UI** packages only when UI is in
-  scope; refuses incomplete **API** contracts when BE contracts change.
-- `/to-tickets` creates one-context tracer bullets with layer scope and the
-  right subset fields (UI and/or API).
-- `/implement` claims one runnable ticket, runs behavior + layer-scoped fidelity
-  gates, and stops unless the user requested a bounded multi-ticket loop.
-- `/qa-run` judges completion with the same gates for the surfaces under test.
-
-Use `/grill-with-docs` first when the plan needs same-session technical
-sharpening (seams, terms, ADRs) but is not multi-session fog.
-Use `/alignment-review` before implementation when intent, coverage, slicing,
-or repo fit is risky. Use `/to-test-plan` while requirements are fresh when QA
-needs a durable coverage artifact. Use `/qa-run` after implementation when
-release completion needs runtime evidence.
+- `/to-spec` / `/to-tickets` / `/implement` own coding artifacts and developer
+  completion gates (behavior + layer-scoped fidelity for the implementer).
+- System-level test planning and acceptance QA live in **`wen-test`** when the
+  team uses that pack; otherwise human QA or project CI policy applies.
+- `/implement` never closes the parent **spec**; release/closeout is project
+  policy, human closeout, or optional external `/qa-run` evidence.
 
 ### Technical multi-session fog (advanced, rare)
-
-Use `/wayfinder` **only** when product intent is already settled (or the work is
-purely engineering: migration, platform, performance, reliability) and the
-**technical route** is still too foggy for an honest `/to-spec` in one session:
 
 ```text
 settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
 ```
 
-Wayfinder maps **engineering** discovery, not product discovery and not
-destination implementation. Each session resolves at most one research,
-prototype, grilling, or prerequisite ticket, gated by that ticket's Resolution
-Signal. If the opening breadth-first pass finds no real technical fog, skip the
-map and use the settled route. If the fog is product/market/need, stop and
-route to PM instead.
+Engineering discovery only. Not product discovery; not system QA.
 
 ### Bugs and regressions
 
-Use `/diagnosing-bugs` to build a tight reproducer and prove the root cause.
-Diagnosis-only requests leave tracked production files unchanged. An explicitly
-authorized direct fix uses a fixed point, regression coverage, verification,
-and code review. A named non-runnable bug report remains diagnosis-only until a
-user-invoked workflow converts it.
-
-After diagnosis, use explicit `/implement` when one context fits. When an
-accepted parent spec already covers a broader defect, use `/to-tickets` and keep
-that spec as every replacement's parent. Use `/to-spec` followed by
-`/to-tickets` only for genuinely new/out-of-scope work, recording that scope
-disposition before resolving the intake. If the "bug" is really rejected product
-intent, route to PM discovery rather than inventing Expected behavior here.
+Use `/diagnosing-bugs` for hard diagnosis. Explicit fix authority uses the same
+implement evidence loop. Confirmed defects from external QA should enter as
+tickets or `bug-report` intake per the tracker adapter.
 
 ## Artifact Model
 
-- **Spec** (`Kind: spec`) is a non-runnable parent artifact. It may be stored as
-  a tracker issue, but it is not an implementation ticket.
-- **Implementation ticket** (`Kind: implementation-ticket`) is normally one
-  vertical slice. The named expand-contract exception permits a mechanical,
-  behavior-preserving enabling ticket with compatibility evidence.
-  `Mode: AFK` tickets may enter the implementation frontier.
-- **Wayfinder map** (`Kind: wayfinder-map`) indexes technical discovery decisions.
-- **Wayfinder ticket** (`Kind: wayfinder-ticket`) resolves engineering uncertainty
-  and is never consumed by `/implement` as a code ticket.
-- **Bug report** (`Kind: bug-report`) is a confirmed but not yet one-context
-  defect intake. It stays `needs-triage` and outside every execution frontier
-  until an explicit `/implement` run converts a bounded, settled report or the
-  work is specified and sliced. Conversion claims the report, reuses exact
-  `Origin` matches, and records canonical replacements before resolution.
-- **Implementation frontier** is the open, unblocked, unclaimed `AFK` set.
-- **Human frontier** is the open, unblocked, unclaimed `HITL` set. A human may
-  resolve a manual-only gate directly with evidence. Only a code-bearing HITL
-  ticket may explicitly pair with `/implement`, using the evidence loop for its
-  actual change plus verification and review. Once the gate is settled, the
-  adapter may reclassify remaining work to `AFK`.
-- **Discovery frontier** is the open, unblocked, unclaimed child-ticket set of
-  one technical Wayfinder map. It never uses `ready-for-agent`.
+- **Spec** (`Kind: spec`) — non-runnable parent
+- **Implementation ticket** — one vertical slice; `AFK` may enter implementation frontier
+- **Wayfinder map / ticket** — technical discovery only; never implement as code work
+- **Bug report** — non-runnable intake until converted
+- **Implementation / human / discovery frontiers** — as before
 
-GitHub and GitLab still store tracker objects as issues. Ticket is the neutral
-workflow term above those adapters.
+System test plans and QA reports are **not** owned by this pack when `wen-test`
+is used; they may still be stored in the app repo via tracker conventions.
 
 ## One Ticket, One Reviewable Delta
-
-Before editing a ticket, claim it and record a baseline that can isolate its
-delta. A dirty or shared working tree is acceptable only when the ticket's diff
-can still be proven independently. Otherwise use an isolated worktree or stop.
-
-The implementation completion gate is:
 
 ```text
 claim -> behavior test or compatibility baseline -> simplify -> verification -> code review -> close
 ```
 
-`/code-review` remains independently useful; `/implement` loads it as a shared
-discipline instead of duplicating its review rules. Blocking findings must be
-resolved and verification rerun before the ticket closes. Commits remain
-controlled by the user or project workflow.
+Layer-scoped **UI fidelity** or **API contract fidelity** during `/implement`
+is the **developer** check that the slice matches the delivery package — not a
+substitute for independent system QA.
 
-The parent spec remains accepted and open while its child graph runs. After all
-in-scope implementation and human tickets and converted replacements resolve,
-and every child bug report is resolved or explicitly out of scope with evidence,
-a `Complete` `/qa-run` records requirement evidence, marks the spec `delivered`,
-and closes it. When a project does not require QA, an explicit human closeout
-applies the same evidence gate. `/implement` never closes the parent spec.
+Parent **spec** stays open until project closeout (human, CI policy, or optional
+external `/qa-run` Complete + child resolution). `/implement` never closes the
+parent spec.
 
 ## Context And Concurrency
 
-- Keep the alignment-to-ticket conversation together while it remains inside
-  the model's useful context window.
-- Start implementation tickets in fresh contexts. A parent orchestrator may
-  run several only when every ticket has an isolated delta and fresh worker.
-- A claim coordinates workers; it is not automatically an atomic lock. If the
-  tracker cannot distinguish workers or provide safe claiming, work serially.
-- Bug-report conversion uses the same read/claim/re-read discipline plus an
-  exact `Origin` lookup; non-atomic or shared-identity conversions run serially.
-- Recompute affected frontiers after every resolution, mode transition, or
-  completed implementation.
+- Fresh context per implementation ticket when multi-ticket.
+- Claims coordinate; serial if not atomic.
+- Recompute frontiers after resolutions.
 
 ## Support Disciplines
 
-`/research` and `/prototype` may run from an explicit matching request or an
-active Wayfinder ticket. They may create bounded, reversible evidence artifacts
-inside the authorized scope. They do not mutate tracker state, dependencies,
-manifests, production persistence, or existing production behavior; the parent
-orchestration owns claims, publication, and closure.
-
-Use them for **engineering** questions (contracts, APIs, disposable seam
-probes). Product prototypes that test market or user value belong in PM.
+`/research` and `/prototype` remain evidence-only for engineering questions.
+`/tdd`, `/simplify`, `/code-review` compose under `/implement`.
 
 ## Legacy Compatibility
 
-New local artifacts use `SPEC.md`, `tickets/`, and `bugs/`. Existing `PRD.md`,
-`issues/`, PRD links, and issue sets remain valid inputs. Never rename
-historical artifacts in place merely to adopt the new vocabulary.
+`SPEC.md`, `tickets/`, `bugs/` remain. Historical PRDs/issues stay valid inputs.
+Retired from this pack (now optional external packs): `to-prd`, `to-issues`
+(product), `to-test-plan`, `qa-run` (test).

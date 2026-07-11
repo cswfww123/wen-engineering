@@ -118,16 +118,16 @@ simplification、项目 verification、独立的 `/code-review` gate，以及完
 ### 2. 已沉淀的多切片工作（默认跨会话路径）
 
 ```text
-settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
+settled product package -> /to-spec -> /to-tickets -> /implement
 ```
 
 优先使用任意已 settled 的交付输入（可选 wen-pm、其他 PRD、仓库文档）。
 按 ticket 的 **Layer** 定门禁：纯后端不要求 UI 钉死；纯前端不要求实现 API。
 见 [docs/handoff-package.md](docs/handoff-package.md)。
-`/to-spec` → `/to-tickets` → `/implement` → `/qa-run` 使用行为门 + 层级保真门。
+`/to-spec` → `/to-tickets` → `/implement` 使用开发者行为门 + 层级保真门。系统 QA 为可选 companion `wen-test`。
 同会话技术压方案用 `/grill-with-docs`。
 
-QA 可以把已确认且适合 one-context 的 defect 直接发布为 implementation ticket；
+可选系统 QA（`wen-test` `/qa-run`）可把已确认 one-context defect 发布为 implementation ticket；
 更大或尚未充分诊断的 defect 会保持为 non-runnable `bug-report` intake，并标记
 `needs-triage`，直到被显式转换，或进入 spec/ticket 切片流程。
 
@@ -163,7 +163,6 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
 - `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic/state 或 UI evidence artifact。
-- `/qa-run` 执行已批准的 QA cases，记录 evidence，判断完成度，并提交 confirmed defects。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
 - `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 - `/setup-project-harness` 初始化项目级 agent harness。
@@ -171,7 +170,6 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/tdd` 通过 public behavior tests 引导 Red-Green-Refactor 实现。
 - `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
-- `/to-test-plan` 从 specs 或 tickets 设计可追踪 test cases，但不执行它们。
 - `/wayfinder`（高级）将跨会话 **技术** 雾清到可写 honest engineering spec 为止。
 - `/writing-great-skills` 提供写作和编辑 predictable skills 的 reference。
 
@@ -229,7 +227,6 @@ AI agents 会以很可预测的方式失败。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
-- [`to-test-plan`](skills/to-test-plan/SKILL.md) - 从 specs 或 tickets 设计可追踪 test plans 和 cases。
 - [`implement`](skills/implement/SKILL.md) - 把一个 bounded task 或 implementation-frontier ticket 推进到 testing 或 compatibility evidence、review 和 verification。
 - [`tdd`](skills/tdd/SKILL.md) - 通过 vertical Red-Green-Refactor cycles 和 public behavior tests 引导实现。
 - [`handoff`](skills/handoff/SKILL.md) - 为新的 agent 写一份紧凑 handoff document，并保存在 repo 外。
@@ -238,7 +235,6 @@ AI agents 会以很可预测的方式失败。
 
 - [`code-review`](skills/code-review/SKILL.md) - 审查本地 diffs 或 PRs，关注意图对齐、bug、ponytail 复杂度、性能、安全和规范。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
-- [`qa-run`](skills/qa-run/SKILL.md) - 执行 QA cases，记录 evidence，判断完成度，并提交 confirmed defects。
 - [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 
 ### Architecture
@@ -300,27 +296,25 @@ scripts/
   test-sync-skills.sh
 skills/
   alignment-review/
-    SKILL.md
     CHECKLIST.md
-  codebase-design/
     SKILL.md
-    DEEPENING.md
-    DESIGN-IT-TWICE.md
   code-review/
     AGENT-BRIEFS.md
-    SKILL.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
-  diagnosing-bugs/
     SKILL.md
+  codebase-design/
+    DEEPENING.md
+    DESIGN-IT-TWICE.md
+    SKILL.md
+  diagnosing-bugs/
     ATTRIBUTION.md
+    SKILL.md
     scripts/
       hitl-loop.template.sh
   domain-modeling/
-    SKILL.md
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
-  implement/
     SKILL.md
   grill-with-docs/
     SKILL.md
@@ -328,33 +322,32 @@ skills/
     SKILL.md
   handoff/
     SKILL.md
+  implement/
+    SKILL.md
   improve-codebase-architecture/
-    SKILL.md
     HTML-REPORT.md
+    SKILL.md
   prototype/
-    SKILL.md
     LOGIC.md
-    UI.md
-  qa-run/
     SKILL.md
-    TEMPLATES.md
+    UI.md
   research/
     SKILL.md
   setup-project-harness/
-    SKILL.md
-    HARNESS_FLOW.md
-    SECTIONS.md
-    TRACKER_CONTRACT.md
     AGENTS_TEMPLATE.md
+    HARNESS_FLOW.md
     RULE_TEMPLATE.md
+    SECTIONS.md
+    SKILL.md
+    TRACKER_CONTRACT.md
     domain.md
     issue-tracker-github.md
     issue-tracker-gitlab.md
     issue-tracker-local.md
     triage-labels.md
-  skill-review/
-    SKILL.md
   simplify/
+    SKILL.md
+  skill-review/
     SKILL.md
   tdd/
     SKILL.md
@@ -364,19 +357,16 @@ skills/
   to-spec/
     SKILL.md
     TEMPLATE.md
-  to-test-plan/
-    SKILL.md
-    TEMPLATES.md
   to-tickets/
+    EXPAND-CONTRACT.md
     SKILL.md
     TEMPLATE.md
-    EXPAND-CONTRACT.md
   wayfinder/
     SKILL.md
     TEMPLATES.md
   writing-great-skills/
-    SKILL.md
     GLOSSARY.md
+    SKILL.md
 ```
 
 ## Current Focus
@@ -386,12 +376,13 @@ skills/
 - 初始化可信的 project harness 和共享 agent entrypoint
 - 不强制 wen-pm；接受任意 settled 产品输入
 - 支持仅前端 / 仅后端 / 全栈的层级门禁
-- 默认跨会话路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- 默认跨会话编码路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- 系统测试/QA 由可选 companion `wen-test` 负责
 - 可选技术 `/wayfinder` 仅用于多会话工程雾
 - 用 non-runnable specs 和可追踪 ticket DAGs 保存 intent
 - 让一个 isolated implementation-frontier ticket 完整经过正确的 evidence loop、simplification、review 和 verification
 - 把 research 和 prototypes 用作 bounded **工程** evidence
-- 把 requirements 连接到 test design、QA evidence 和 confirmed defects
+- 系统测试设计/QA 交给可选 companion `wen-test`
 - 通过 `~/.agents/skills` 保持 Codex、Claude、ZCode 和 Kimi 对齐
 
 设计保持 tracker-neutral 和 context-aware：小任务维持小规模；产品雾离开本包；

@@ -270,6 +270,23 @@ is_managed_retired_skill() {
   return 1
 }
 
+# Skills owned by a companion pack (e.g. .wen-pm-managed) must not be retired
+# when this repo no longer ships names like to-prd / to-issues.
+is_foreign_managed_skill() {
+  local dest="$1"
+  local marker
+
+  [ -d "$dest" ] || return 1
+  for marker in "$dest"/.wen-*-managed; do
+    [ -f "$marker" ] || continue
+    case "$(basename "$marker")" in
+      "$marker_file"|'.wen-engineering-third-party-notice-managed') continue ;;
+    esac
+    return 0
+  done
+  return 1
+}
+
 is_known_agent_skill_link() {
   local link_target="$1"
   local root root_physical
@@ -514,6 +531,8 @@ check_retired_skill_conflicts() {
   for name in "${retired_skill_names[@]}"; do
     dest="$target/$name"
     [ -e "$dest" ] || [ -L "$dest" ] || continue
+    # Leave companion-pack skills (e.g. wen-pm to-prd/to-issues) untouched.
+    is_foreign_managed_skill "$dest" && continue
     is_managed_retired_skill "$name" "$dest" && continue
     [ "$force" -eq 1 ] || conflicts+=("$name")
   done
@@ -536,6 +555,10 @@ retire_canonical_skills() {
   for name in "${retired_skill_names[@]}"; do
     dest="$target/$name"
     [ -e "$dest" ] || [ -L "$dest" ] || continue
+    if is_foreign_managed_skill "$dest"; then
+      echo "Keeping foreign-managed skill (not retiring): $dest"
+      continue
+    fi
     if is_managed_retired_skill "$name" "$dest"; then
       run rm -rf "$dest"
       echo "Removed retired managed skill: $dest"

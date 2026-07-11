@@ -116,15 +116,14 @@ simplification、项目 verification、独立的 `/code-review` gate，以及完
 ### 2. 已沉淀的多切片工作（默认跨会话路径）
 
 ```text
-settled product + engineering context -> /to-spec -> /to-tickets -> /implement
+settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
 ```
 
-`/to-spec` 发布带稳定 requirement IDs 的 non-runnable parent；
-`/to-tickets` 通常创建带显式 blocking edges 的 one-context vertical slices；
-其命名的 expand-contract 分支处理大范围 mechanical migration，而不会假装它新增了行为。
-同会话技术压方案用 `/grill-with-docs`；intent 或切片风险较高时用
-`/alignment-review`；需要持久 coverage design 时用 `/to-test-plan`；需要
-runtime evidence 判断 release completion 时用 `/qa-run`。
+优先使用 PM 交接包（Delivery Contract、SCN、有 UI 时的 UI 契约 + 钉死原型）。
+见 [docs/handoff-package.md](docs/handoff-package.md)。
+`/to-spec` 发布带稳定 requirement IDs 的 parent 并保留 PM UI IDs；
+`/to-tickets` 做 one-context 切片；`/implement` 要求行为门 +（有 UI 时）保真门；
+`/qa-run` 复查双门。同会话技术压方案用 `/grill-with-docs`。
 
 QA 可以把已确认且适合 one-context 的 defect 直接发布为 implementation ticket；
 更大或尚未充分诊断的 defect 会保持为 non-runnable `bug-report` intake，并标记
@@ -293,6 +292,7 @@ docs/
     triage-labels.md
   lifecycle.md
   boundaries.md
+  handoff-package.md
 scripts/
   sync-skills.sh
   test-sync-skills.sh

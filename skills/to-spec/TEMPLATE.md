@@ -43,6 +43,22 @@ Origin: <bug-report reference | none>
 
 <Ordered flows and material failure or recovery paths.>
 
+## Product Sources
+
+- **PRD / Delivery Contract:** <path or URL, version>
+- **Scenarios:** <SCN file or none>
+- **UI Contract:** none | present — SCR/FLD/RULE ids preserved from PM
+- **Delivery Prototype Pin:** none | <path/URL@version, frames>
+
+## UI Scope (omit if none)
+
+Preserve PM IDs. Engineering does not invent fields or linkage.
+
+- **Screens:** SCR-...
+- **Fields covered:** FLD-...
+- **Rules covered:** RULE-...
+- **Fidelity gate:** checklist vs pin + linkage SCN paths on UI tickets
+
 ## Implementation Decisions
 
 ### DEC-001 — <short decision name, only when tickets need a stable reference>

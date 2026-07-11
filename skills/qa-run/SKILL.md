@@ -85,10 +85,16 @@ criterion instead. Do not invent new requirements during QA; if execution
 reveals a missing requirement or case, mark it as a plan gap and recommend
 `/alignment-review`.
 
+When the surface is visual and a PM UI contract / delivery prototype pin is in
+the handoff package (`docs/handoff-package.md`), also run a **fidelity pass**:
+field set/labels, requiredness, RULE show/hide paths, and listed UI states
+against the pin. Behavior-green alone is not `Complete` for UI scope.
+
 Classify the feature:
 
-- `Complete`: every material requirement has passing evidence, and no required P0/P1 case is failed, blocked, or not run.
-- `Incomplete`: at least one material requirement failed or lacks passing evidence because of product/code behavior.
+- `Complete`: every material requirement has passing evidence, UI fidelity
+  passes when applicable, and no required P0/P1 case is failed, blocked, or not run.
+- `Incomplete`: at least one material requirement failed or lacks passing evidence because of product/code behavior, or UI fidelity fails against the contract/pin.
 - `Blocked`: completion cannot be judged because the environment, data, permissions, or dependency access is unavailable.
 - `Not Assessable`: the source/test plan is missing or misaligned enough that QA cannot fairly judge completion.
 
@@ -97,6 +103,9 @@ Classify the feature:
 For each failed or blocked case, classify the cause:
 
 - confirmed product or code defect: create or link a bug issue
+- UI **implementation** drift vs pin/contract: defect (fix in eng)
+- UI **contract** gap (missing/wrong FLD/RULE/pin vs real intent): do not invent
+  Expected; mark blocked/incomplete and recommend PM `/pm-intake` or `to-prd` update
 - unclear requirement: mark `Blocked` and ask the smallest product question
 - environment or data problem: keep it in the QA report unless it needs engineering work
 - test case problem: note the correction needed; do not hide the failed run

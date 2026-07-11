@@ -34,7 +34,17 @@ Resolution: pending
 
 ## Verification
 
-- <The public seam and evidence that will prove completion>
+- **Behavior gate:** <public seam / SCN / tests that prove AC>
+- **Fidelity gate:** n/a | checklist vs Delivery Prototype pin + RULE/SCN paths
+
+## UI Subset (omit if none)
+
+Preserve PM IDs from the parent spec / PRD. Do not invent fields.
+
+- **SCR:** ...
+- **FLD:** ...
+- **RULE:** ...
+- **Prototype pin:** <versioned frame refs for this slice>
 
 ## Out Of Scope
 

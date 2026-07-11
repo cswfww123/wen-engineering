@@ -36,13 +36,19 @@ Use this route when the destination is understood but implementation needs more
 than one independently verifiable slice:
 
 ```text
-settled product + engineering context -> /to-spec -> /to-tickets -> /implement
+settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
 ```
 
-- `/to-spec` records stable requirements and technical/testing decisions.
-- `/to-tickets` creates one-context tracer bullets with blocking edges.
-- `/implement` claims one runnable ticket, runs its code-quality loop, and stops
-  unless the user explicitly requested a bounded multi-ticket orchestration.
+Prefer the PM handoff package (Product Delivery Contract, `SCN-*`, UI contract +
+pin when visual). See [handoff-package.md](handoff-package.md).
+
+- `/to-spec` records stable requirements and technical/testing decisions;
+  preserves PM IDs; refuses incomplete UI packages.
+- `/to-tickets` creates one-context tracer bullets with blocking edges and UI
+  subset fields when needed.
+- `/implement` claims one runnable ticket, runs behavior (+ UI fidelity) gates,
+  and stops unless the user explicitly requested a bounded multi-ticket loop.
+- `/qa-run` judges completion with the same dual gates when UI is in scope.
 
 Use `/grill-with-docs` first when the plan needs same-session technical
 sharpening (seams, terms, ADRs) but is not multi-session fog.

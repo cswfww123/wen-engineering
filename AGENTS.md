@@ -68,6 +68,7 @@ Agents must read the relevant files under `.agents/rules/` before editing matchi
 - `README.md` — project philosophy, skill index, and repository layout
 - `docs/lifecycle.md` — canonical work routing, artifact model, completion gates, and legacy compatibility
 - `docs/boundaries.md` — engineering vs PM fog ownership and handoff contract
+- `docs/handoff-package.md` — PM delivery package, UI admission, dual completion gates
 - `docs/agents/*.md` — issue tracker, triage label, and domain documentation contracts
 - `scripts/sync-skills.sh` — batch sync all repo skills into `~/.agents/skills` and link local agent skill directories
 - `skills/**/SKILL.md` — project skills

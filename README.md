@@ -119,17 +119,16 @@ completion reporting.
 ### 2. Settled, Multi-Slice Work (default multi-session path)
 
 ```text
-settled product + engineering context -> /to-spec -> /to-tickets -> /implement
+settled product package -> /to-spec -> /to-tickets -> /implement -> /qa-run
 ```
 
-`/to-spec` publishes a non-runnable parent with stable requirement IDs.
-`/to-tickets` normally creates one-context vertical slices with explicit
-blocking edges; its named expand-contract branch handles wide mechanical
-migrations without pretending they add behavior.
-Use `/grill-with-docs` for same-session technical sharpening,
-`/alignment-review` when intent or slicing is risky, `/to-test-plan` for a
-durable coverage design, and `/qa-run` when release completion needs runtime
-evidence.
+Prefer the PM handoff package (Delivery Contract, scenarios, UI contract + pin).
+See [docs/handoff-package.md](docs/handoff-package.md).
+`/to-spec` publishes a non-runnable parent with stable requirement IDs and
+preserves PM UI IDs. `/to-tickets` creates one-context vertical slices;
+`/implement` requires behavior and (when UI) fidelity gates; `/qa-run` rechecks
+both. Use `/grill-with-docs` for same-session technical sharpening and
+`/alignment-review` when intent or slicing is risky.
 
 QA may publish a confirmed one-context defect directly as an implementation
 ticket. Broader or under-diagnosed defects remain non-runnable `bug-report`
@@ -299,6 +298,7 @@ docs/
     triage-labels.md
   lifecycle.md
   boundaries.md
+  handoff-package.md
 scripts/
   sync-skills.sh
   test-sync-skills.sh

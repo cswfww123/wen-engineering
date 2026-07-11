@@ -26,6 +26,10 @@ If material product fog remains (worth-doing, target user, stakeholder inner
 need, or unspecified Expected after rejection), stop and recommend `/pm-intake`
 instead of inventing product intent. See `docs/boundaries.md`.
 
+If the work is UI-scoped and the ticket/spec lacks a PM UI contract (`FLD`/
+`RULE`) or delivery prototype pin when one is required, stop and report the
+package gap (`docs/handoff-package.md`). Do not invent UI copy or linkage.
+
 ## Select The Frontier
 
 For tracked work, choose only a ticket that is:
@@ -88,7 +92,8 @@ diff.
 
 1. Mark the ticket in progress using adapter-specific state.
 2. Trace the relevant entrypoint when behavior crosses callers, persistence,
-   permissions, async paths, conversions, or side effects.
+   permissions, async paths, conversions, or side effects. Load covered `REQ`/
+   `AC`/`SCN` and any `SCR`/`FLD`/`RULE` subset from the ticket or parent spec.
 3. Choose the evidence loop from the actual change:
    - observable behavior: load `/tdd`, derive a public-behavior test, confirm
      RED, implement the smallest behavior, and confirm GREEN
@@ -97,11 +102,20 @@ diff.
      an expand-contract ticket also records the caller inventory and runs its
      compatibility/static checks
 4. Load `/simplify` for non-trivial changes; keep tiny mechanical diffs direct.
-5. Run the project's exact verification commands.
-6. Load `/code-review` against the recorded fixed point. Resolve every blocking
-   finding or user-owned decision, then rerun affected verification.
-7. Re-check every acceptance criterion. Update comments/evidence and complete
-   the ticket through the adapter only when tests, verification, and review pass.
+5. Run the project's exact verification commands (**behavior gate**).
+6. **Fidelity gate (UI-scoped tickets only):** against the PM UI contract and
+   pinned delivery prototype, verify covered fields/labels, requiredness,
+   show/hide/enable linkage (`RULE-*`), and listed empty/error/loading states.
+   Use a structured checklist and/or screenshot compare vs the pin; exercise
+   linkage `SCN-*` paths. Do not close on behavior-green alone.
+7. Load `/code-review` against the recorded fixed point. Include AC coverage and
+   (when UI) FLD/RULE fidelity in the review. Resolve every blocking finding or
+   user-owned decision, then rerun affected verification.
+8. Re-check every acceptance criterion. If fidelity fails because the **contract
+   is wrong**, stop and hand back to PM with IDs — do not invent Expected UI.
+   If fidelity fails because **implementation** drifts, fix or leave open.
+   Update comments/evidence and complete the ticket only when behavior gate,
+   fidelity gate (if UI), verification, and review pass.
 
 Keep unverified criteria open. Commit only when the user or project workflow
 authorizes it.
@@ -130,5 +144,6 @@ silently invoke another user-invoked skill.
 ## Done
 
 Report the task/ticket, source spec or legacy source, fixed point, changed files,
-tests and verification, code-review verdict, tracker update, commit status, and
-the next implementation/human frontiers or blocker.
+behavior-gate evidence, fidelity-gate evidence (or `n/a`), code-review verdict,
+tracker update, commit status, and the next implementation/human frontiers or
+blocker.

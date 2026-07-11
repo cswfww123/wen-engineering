@@ -31,9 +31,14 @@ Treat a missing or contradictory user-owned decision as a readiness gap.
 - **Engineering gap** (seams, contracts, migration, testability): recommend
   `/grill-with-docs`, technical `/wayfinder` when multi-session, or targeted
   `/research` / `/prototype`; resume `/to-spec` after it is settled.
+- **UI package gap** (user-visible surface without `SCR`/`FLD`/`RULE` or without
+  a pinned delivery prototype version): stop and list missing IDs/sections;
+  recommend PM `to-prd` UI contract completion. Do not invent fields, copy, or
+  linkage from screenshots alone. See `docs/handoff-package.md`.
 
-Prefer PM Build/Bet handoff artifacts (PRD, `REQ-*` / `AC-*`, evidence IDs)
-over chat paraphrase when available. See `docs/boundaries.md`.
+Prefer the PM handoff package (Product Delivery Contract, `REQ-*` / `AC-*`,
+`SCN-*`, UI contract + pin) over chat paraphrase. Preserve PM IDs; do not
+renumber product requirements without an explicit note.
 
 ## Bug Report Source
 
@@ -61,9 +66,11 @@ original parent remains blocked.
    behavior and an acceptance boundary. Give a stable `DEC-###` identifier to
    any implementation decision an enabling ticket must reference.
 5. Sketch the fewest useful test seams. Prefer the highest existing public seam
-   and record why any new seam is necessary.
-6. Load [TEMPLATE.md](TEMPLATE.md) and draft the spec. Include only
-   decision-rich prototype excerpts and link the full evidence artifact.
+   and record why any new seam is necessary. Map material `SCN-*` and UI
+   `RULE-*` onto verification notes when present.
+6. Load [TEMPLATE.md](TEMPLATE.md) and draft the spec. Link the PM PRD, UI
+   contract, delivery prototype pin, and scenario file; inline only decision-
+   rich excerpts. Do not expand UI beyond the PM UI contract.
 7. Present the draft, assumptions, and evidence gaps. Treat explicit approval
    already given in the current discussion as approval; otherwise wait for it.
 8. Immediately before publication, claim and re-read a bug-report source through

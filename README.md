@@ -78,21 +78,31 @@ That is the fast path. After setup, agents know where project instructions live,
 
 ### Empty Project Routing
 
-For an empty project, choose `/setup-project-harness` or `/grill-with-docs` based on what is already known:
+For an empty project, choose `/setup-project-harness` or a short technical grill based on what is already known:
 
 - If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `.agents/rules/**`, and local scratch space.
-- If you only have a goal and the stack is unclear, run a short `/grill-with-docs` pass first. Resolve only enough to know the project type, target user, core constraints, and which stack choices are still open.
-- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue grilling product, architecture, or stack details after the harness exists.
+- If only a product goal is known and value/user/outcome are still open, run product discovery in the PM workspace (`/pm-intake`) first — not engineering Wayfinder.
+- If product intent is settled enough but stack choices are open, run a short `/grill-with-docs` pass for engineering constraints only, then `/setup-project-harness`.
+- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue technical grilling after the harness exists.
 
-Rule of thumb: no workbench means setup; no direction means micro-grill; once there is enough direction to create the workbench, setup immediately and keep refining from there.
+Rule of thumb: no workbench means setup; open product value means PM; open stack means micro-grill; once there is enough direction to create the workbench, setup immediately and keep refining from there.
 
 In empty repos, the harness must record facts and user decisions only. Leave package manager, framework, build, lint, typecheck, and test commands undefined until scaffold evidence exists.
 
 ## Lifecycle
 
 The route follows the shape of the work; it is not a form every request must
-complete. See [docs/lifecycle.md](docs/lifecycle.md) for the full artifact,
-frontier, review, and concurrency contract.
+complete. This pack stays **coding-light**: product/market/need discovery lives
+in the companion PM workspace. See [docs/lifecycle.md](docs/lifecycle.md) and
+[docs/boundaries.md](docs/boundaries.md).
+
+### 0. Product Fog → PM (not here)
+
+```text
+product / market / need fog -> /pm-intake (wen-pm)
+```
+
+Do not use Wayfinder or `/to-spec` to invent user value or Expected behavior.
 
 ### 1. Clear, Bounded Work
 
@@ -100,22 +110,24 @@ frontier, review, and concurrency contract.
 bounded task -> /implement
 ```
 
-Use `/implement` directly when one fresh context can hold the task and its
-acceptance boundary. It owns the evidence loop (TDD for behavior, an exact
-GREEN baseline for behavior-preserving work), simplification, project
-verification, the independent `/code-review` gate, and completion reporting.
+Use `/implement` directly when product intent is settled enough and one fresh
+context can hold the task and its acceptance boundary. It owns the evidence
+loop (TDD for behavior, an exact GREEN baseline for behavior-preserving work),
+simplification, project verification, the independent `/code-review` gate, and
+completion reporting.
 
-### 2. Settled, Multi-Slice Work
+### 2. Settled, Multi-Slice Work (default multi-session path)
 
 ```text
-settled context -> /to-spec -> /to-tickets -> /implement per implementation-frontier ticket
+settled product + engineering context -> /to-spec -> /to-tickets -> /implement
 ```
 
 `/to-spec` publishes a non-runnable parent with stable requirement IDs.
 `/to-tickets` normally creates one-context vertical slices with explicit
 blocking edges; its named expand-contract branch handles wide mechanical
 migrations without pretending they add behavior.
-Use `/alignment-review` when intent or slicing is risky, `/to-test-plan` for a
+Use `/grill-with-docs` for same-session technical sharpening,
+`/alignment-review` when intent or slicing is risky, `/to-test-plan` for a
 durable coverage design, and `/qa-run` when release completion needs runtime
 evidence.
 
@@ -123,16 +135,15 @@ QA may publish a confirmed one-context defect directly as an implementation
 ticket. Broader or under-diagnosed defects remain non-runnable `bug-report`
 intake with `needs-triage` until explicitly converted or specified and sliced.
 
-### 3. Huge, Foggy, Multi-Session Work
+### 3. Technical Multi-Session Fog (advanced, rare)
 
 ```text
-foggy effort -> /wayfinder -> settled decisions -> /to-spec -> /to-tickets
+settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
 ```
 
-`/wayfinder` clears foggy multi-session coding work into a discovery map and
-resolves at most one discovery ticket per session until an honest spec is
-writable. `/research` and `/prototype` produce bounded evidence only; the
-user-invoked orchestration retains tracker publication and closure.
+`/wayfinder` is optional engineering discovery only: multi-session technical
+fog (migrations, contracts, seams) after product is settled. One discovery
+ticket per session. `/research` and `/prototype` produce bounded evidence only.
 
 ### v1.1 Command Migration
 
@@ -153,7 +164,7 @@ Common skills:
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
-- `/grill-with-docs` stress-tests a plan while maintaining glossary and ADR docs.
+- `/grill-with-docs` stress-tests an engineering plan while maintaining glossary and ADR docs.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
@@ -166,7 +177,7 @@ Common skills:
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
 - `/to-test-plan` designs traceable test cases from specs or tickets without executing them.
-- `/wayfinder` clears foggy multi-session coding work until an honest spec is writable.
+- `/wayfinder` (advanced) clears multi-session **technical** fog until an honest engineering spec is writable.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
 The harness skill creates:
@@ -218,7 +229,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
 - [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
-- [`wayfinder`](skills/wayfinder/SKILL.md) — clears foggy multi-session coding work into a discovery map until an honest spec is writable.
+- [`wayfinder`](skills/wayfinder/SKILL.md) — advanced technical multi-session discovery until an honest engineering spec is writable.
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
@@ -287,6 +298,7 @@ docs/
     issue-tracker.md
     triage-labels.md
   lifecycle.md
+  boundaries.md
 scripts/
   sync-skills.sh
   test-sync-skills.sh
@@ -373,19 +385,21 @@ skills/
 
 ## Current Focus
 
-This repo currently focuses on an evidence-first engineering lifecycle:
+This repo currently focuses on a **lightweight, evidence-first coding lifecycle**:
 
 - initialize a trustworthy project harness and shared agent entrypoint
-- route bounded, settled, and foggy work through distinct paths
+- keep product/market/need discovery in the companion PM workspace
+- default multi-session path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- optional technical `/wayfinder` only for multi-session engineering fog
 - preserve intent in non-runnable specs and traceable ticket DAGs
 - implement one isolated implementation-frontier ticket through the right evidence loop, simplification, review, and verification
-- use research and prototypes as bounded evidence rather than hidden production changes
+- use research and prototypes as bounded **engineering** evidence
 - connect requirements to test design, QA evidence, and confirmed defects
 - keep Codex, Claude, ZCode, and Kimi aligned through `~/.agents/skills`
 
-The design stays tracker-neutral and context-aware: small work stays small, while
-large work earns durable artifacts, explicit dependencies, and fresh execution
-contexts.
+The design stays tracker-neutral and context-aware: small work stays small;
+product fog leaves this pack; technical large work earns durable artifacts and
+fresh execution contexts.
 
 ## Upstream Attribution
 

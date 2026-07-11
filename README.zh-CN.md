@@ -77,20 +77,30 @@ git pull --ff-only
 
 ### 空项目路由
 
-空项目里，先用 `/setup-project-harness` 还是先用 `/grill-with-docs`，取决于已经知道什么：
+空项目里，按「已经知道什么」选择入口：
 
 - 如果技术栈或仓库形态已经确定，先运行 `/setup-project-harness`。它会先建立工作台：`AGENTS.md`、`CLAUDE.md`、`docs/agents/`、`.agents/rules/**` 和本地 scratch 空间。
-- 如果你只有一个目标，技术栈还不清楚，先做一轮很短的 `/grill-with-docs`。只问到足够判断项目类型、目标用户、核心约束，以及哪些技术栈决策仍然开放。
-- 一旦方向足够清楚，可以写出诚实的项目指令，就切到 `/setup-project-harness`；harness 建好后，再继续 grill 产品、架构或技术选型细节。
+- 如果只有产品目标，价值/用户/outcome 仍开放，先在 PM 工作区做 `/pm-intake`，不要用 engineering Wayfinder 编造产品答案。
+- 如果产品意图已够 settled，但技术栈仍开放，做一轮很短的 `/grill-with-docs`（只压工程约束），再 `/setup-project-harness`。
+- 一旦方向足够清楚，可以写出诚实的项目指令，就切到 `/setup-project-harness`；harness 建好后，再继续技术 grill。
 
-口诀：没工作台，先 setup；没方向，先 micro-grill；方向够建立工作台了，立刻 setup，然后继续细化。
+口诀：没工作台，先 setup；产品价值未清，先 PM；栈未清，先 micro-grill；方向够建立工作台了，立刻 setup，然后继续细化。
 
 在空仓库中，harness 只能记录事实和用户决策。package manager、framework、build、lint、typecheck、test 命令都应该等到 scaffold 有证据之后再补，不能提前编造。
 
 ## Lifecycle
 
-流程由工作形态决定，不是每个请求都必须填写的固定表单。完整的 artifact、
-frontier、review 和 concurrency 契约见 [docs/lifecycle.md](docs/lifecycle.md)。
+流程由工作形态决定，不是每个请求都必须填写的固定表单。本仓库保持 **coding
+轻量**：产品/市场/内心需求探索在 companion PM 工作区。完整契约见
+[docs/lifecycle.md](docs/lifecycle.md) 与 [docs/boundaries.md](docs/boundaries.md)。
+
+### 0. 产品雾 → PM（不在这里）
+
+```text
+product / market / need fog -> /pm-intake (wen-pm)
+```
+
+不要用 Wayfinder 或 `/to-spec` 编造用户价值或 Expected 行为。
 
 ### 1. 清晰且有边界的工作
 
@@ -98,37 +108,37 @@ frontier、review 和 concurrency 契约见 [docs/lifecycle.md](docs/lifecycle.m
 bounded task -> /implement
 ```
 
-当一个 fresh context 足以容纳任务和 acceptance boundary 时，直接使用
-`/implement`。它负责匹配工作形态的 evidence loop（行为变更使用 TDD，
-behavior-preserving work 使用精确的 GREEN baseline）、simplification、项目
-verification、独立的 `/code-review` gate，以及完成情况汇报。
+当产品意图足够 settled，且一个 fresh context 足以容纳任务和 acceptance
+boundary 时，直接使用 `/implement`。它负责匹配工作形态的 evidence loop
+（行为变更使用 TDD，behavior-preserving work 使用精确的 GREEN baseline）、
+simplification、项目 verification、独立的 `/code-review` gate，以及完成情况汇报。
 
-### 2. 已沉淀的多切片工作
+### 2. 已沉淀的多切片工作（默认跨会话路径）
 
 ```text
-settled context -> /to-spec -> /to-tickets -> /implement per implementation-frontier ticket
+settled product + engineering context -> /to-spec -> /to-tickets -> /implement
 ```
 
 `/to-spec` 发布带稳定 requirement IDs 的 non-runnable parent；
 `/to-tickets` 通常创建带显式 blocking edges 的 one-context vertical slices；
 其命名的 expand-contract 分支处理大范围 mechanical migration，而不会假装它新增了行为。
-当 intent 或切片风险较高时使用 `/alignment-review`；需要持久 coverage design
-时使用 `/to-test-plan`；需要 runtime evidence 判断 release completion 时使用
-`/qa-run`。
+同会话技术压方案用 `/grill-with-docs`；intent 或切片风险较高时用
+`/alignment-review`；需要持久 coverage design 时用 `/to-test-plan`；需要
+runtime evidence 判断 release completion 时用 `/qa-run`。
 
 QA 可以把已确认且适合 one-context 的 defect 直接发布为 implementation ticket；
 更大或尚未充分诊断的 defect 会保持为 non-runnable `bug-report` intake，并标记
 `needs-triage`，直到被显式转换，或进入 spec/ticket 切片流程。
 
-### 3. 巨大、模糊、跨会话的工作
+### 3. 技术多会话雾（高级、少用）
 
 ```text
-foggy effort -> /wayfinder -> settled decisions -> /to-spec -> /to-tickets
+settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
 ```
 
-`/wayfinder` 将跨会话、仍模糊的 coding 工作清成 discovery map，每个 session 最多解决一个 discovery
-ticket。`/research` 和 `/prototype` 可以为 map 产出 bounded evidence；tracker
-发布和 closure 仍由 user-invoked orchestration 负责。
+`/wayfinder` 只做可选的 **工程** discovery：产品已 settled 后的迁移、契约、
+seams 等多会话技术雾。每个 session 最多一张 discovery ticket。`/research` 与
+`/prototype` 只产 bounded evidence。
 
 ### v1.1 命令迁移
 
@@ -148,7 +158,7 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归。
 - `/domain-modeling` 在设计决策结晶时打磨 glossary terms 并记录 ADRs。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
-- `/grill-with-docs` 在维护 glossary 和 ADR docs 的同时 stress-test 一个 plan。
+- `/grill-with-docs` 在维护 glossary 和 ADR docs 的同时 stress-test **工程** plan。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
 - `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic/state 或 UI evidence artifact。
@@ -161,7 +171,7 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
 - `/to-test-plan` 从 specs 或 tickets 设计可追踪 test cases，但不执行它们。
-- `/wayfinder` 将跨会话、仍模糊的 coding 工作清到可写 honest spec 为止。
+- `/wayfinder`（高级）将跨会话 **技术** 雾清到可写 honest engineering spec 为止。
 - `/writing-great-skills` 提供写作和编辑 predictable skills 的 reference。
 
 Harness skill 会创建：
@@ -213,7 +223,7 @@ AI agents 会以很可预测的方式失败。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 打磨 domain language，更新 `CONTEXT.md`，并在决策结晶时少量记录 ADRs。
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) - 运行 `/grilling` 并同时激活 `/domain-modeling`，作为常规 plan-sharpening 入口。
 - [`grilling`](skills/grilling/SKILL.md) - 提供 grill skills 使用的一次一个问题的核心访谈协议。
-- [`wayfinder`](skills/wayfinder/SKILL.md) - 将跨会话、仍模糊的 coding 工作清到可写 honest spec 为止。
+- [`wayfinder`](skills/wayfinder/SKILL.md) - 高级技术多会话 discovery，直到可写 honest engineering spec。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec。
@@ -282,6 +292,7 @@ docs/
     issue-tracker.md
     triage-labels.md
   lifecycle.md
+  boundaries.md
 scripts/
   sync-skills.sh
   test-sync-skills.sh
@@ -368,18 +379,20 @@ skills/
 
 ## Current Focus
 
-这个仓库当前关注 evidence-first engineering lifecycle：
+这个仓库当前关注 **轻量、evidence-first 的 coding lifecycle**：
 
 - 初始化可信的 project harness 和共享 agent entrypoint
-- 为 bounded、settled 和 foggy work 选择不同路径
+- 产品/市场/需求探索放在 companion PM 工作区
+- 默认跨会话路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- 可选技术 `/wayfinder` 仅用于多会话工程雾
 - 用 non-runnable specs 和可追踪 ticket DAGs 保存 intent
 - 让一个 isolated implementation-frontier ticket 完整经过正确的 evidence loop、simplification、review 和 verification
-- 把 research 和 prototypes 用作 bounded evidence，而不是隐藏的 production changes
+- 把 research 和 prototypes 用作 bounded **工程** evidence
 - 把 requirements 连接到 test design、QA evidence 和 confirmed defects
 - 通过 `~/.agents/skills` 保持 Codex、Claude、ZCode 和 Kimi 对齐
 
-设计保持 tracker-neutral 和 context-aware：小任务维持小规模；大型工作才获得
-durable artifacts、显式 dependencies 和 fresh execution contexts。
+设计保持 tracker-neutral 和 context-aware：小任务维持小规模；产品雾离开本包；
+技术大型工作才获得 durable artifacts 与 fresh execution contexts。
 
 ## Upstream Attribution
 

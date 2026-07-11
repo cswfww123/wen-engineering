@@ -69,9 +69,10 @@ Resolution: pending
 
 ## Question
 
-<One precise uncertainty whose answer moves toward the destination.
-Sized to one agent session. Prefer coding-shaped questions: ownership boundary,
-contract, migration path, failure mode, test seam, or user-owned trade-off.>
+<One precise **engineering** uncertainty whose answer moves toward the
+destination. Sized to one agent session. Prefer: ownership boundary, contract,
+migration path, failure mode, test seam, or user-owned technical trade-off.
+Do not ticket product/market/need questions — route those to PM.>
 
 ## Resolution Signal
 

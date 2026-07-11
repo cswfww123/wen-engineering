@@ -3,20 +3,40 @@
 This is the routing source of truth for WEN skills. The route follows the shape
 of the work; it is not a form every request must complete.
 
+This repo is for **production coding**: settled product intent becomes
+verifiable engineering work. Product, market, and inner-need discovery belong
+in the companion PM workspace (`wen-pm` / `/pm-intake`). See
+[boundaries.md](boundaries.md).
+
 ## Choose The Entry
+
+### Product or market fog (reject into PM)
+
+Stop the engineering lifecycle and recommend PM discovery when material
+uncertainty is about:
+
+- whether the work is worth doing, for whom, or what outcome to optimize
+- customer or stakeholder inner need, interviews, opportunity framing
+- market positioning, pricing, GTM, or unvalidated product bets
+- "what they really meant" after a rejected implementation, when intended
+  behavior is still product-ambiguous
+
+Do not open `/wayfinder`, `/to-spec`, or `/implement` to invent product answers.
+Hand off to `/pm-intake` (or the project's PM process) with the gap named.
 
 ### Clear, bounded work
 
-Use `/implement` directly when one context can hold the task and its acceptance
-boundary. Do not create a spec or tickets just to satisfy the lifecycle.
+Use `/implement` directly when product intent is settled enough to code and one
+context can hold the task and its acceptance boundary. Do not create a spec or
+tickets just to satisfy the lifecycle.
 
-### Settled, multi-slice work
+### Settled, multi-slice work (default multi-session path)
 
 Use this route when the destination is understood but implementation needs more
 than one independently verifiable slice:
 
 ```text
-settled context -> /to-spec -> /to-tickets -> /implement per implementation-frontier ticket
+settled product + engineering context -> /to-spec -> /to-tickets -> /implement
 ```
 
 - `/to-spec` records stable requirements and technical/testing decisions.
@@ -24,24 +44,29 @@ settled context -> /to-spec -> /to-tickets -> /implement per implementation-fron
 - `/implement` claims one runnable ticket, runs its code-quality loop, and stops
   unless the user explicitly requested a bounded multi-ticket orchestration.
 
+Use `/grill-with-docs` first when the plan needs same-session technical
+sharpening (seams, terms, ADRs) but is not multi-session fog.
 Use `/alignment-review` before implementation when intent, coverage, slicing,
 or repo fit is risky. Use `/to-test-plan` while requirements are fresh when QA
 needs a durable coverage artifact. Use `/qa-run` after implementation when
 release completion needs runtime evidence.
 
-### Huge, foggy, multi-session work
+### Technical multi-session fog (advanced, rare)
 
-Use `/wayfinder` when the destination or route is too uncertain to write an
-honest spec in one session:
+Use `/wayfinder` **only** when product intent is already settled (or the work is
+purely engineering: migration, platform, performance, reliability) and the
+**technical route** is still too foggy for an honest `/to-spec` in one session:
 
 ```text
-foggy effort -> /wayfinder -> cleared decisions -> /to-spec -> /to-tickets
+settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
 ```
 
-Wayfinder maps discovery for production coding work, not destination
-implementation. Each session resolves at most one research, prototype, grilling,
-or prerequisite ticket, gated by that ticket's Resolution Signal. If the opening
-breadth-first pass finds no real fog, skip the map and use the settled route.
+Wayfinder maps **engineering** discovery, not product discovery and not
+destination implementation. Each session resolves at most one research,
+prototype, grilling, or prerequisite ticket, gated by that ticket's Resolution
+Signal. If the opening breadth-first pass finds no real technical fog, skip the
+map and use the settled route. If the fog is product/market/need, stop and
+route to PM instead.
 
 ### Bugs and regressions
 
@@ -55,7 +80,8 @@ After diagnosis, use explicit `/implement` when one context fits. When an
 accepted parent spec already covers a broader defect, use `/to-tickets` and keep
 that spec as every replacement's parent. Use `/to-spec` followed by
 `/to-tickets` only for genuinely new/out-of-scope work, recording that scope
-disposition before resolving the intake.
+disposition before resolving the intake. If the "bug" is really rejected product
+intent, route to PM discovery rather than inventing Expected behavior here.
 
 ## Artifact Model
 
@@ -65,9 +91,9 @@ disposition before resolving the intake.
   vertical slice. The named expand-contract exception permits a mechanical,
   behavior-preserving enabling ticket with compatibility evidence.
   `Mode: AFK` tickets may enter the implementation frontier.
-- **Wayfinder map** (`Kind: wayfinder-map`) indexes discovery decisions.
-- **Wayfinder ticket** (`Kind: wayfinder-ticket`) resolves uncertainty and is
-  never consumed by `/implement` as a code ticket.
+- **Wayfinder map** (`Kind: wayfinder-map`) indexes technical discovery decisions.
+- **Wayfinder ticket** (`Kind: wayfinder-ticket`) resolves engineering uncertainty
+  and is never consumed by `/implement` as a code ticket.
 - **Bug report** (`Kind: bug-report`) is a confirmed but not yet one-context
   defect intake. It stays `needs-triage` and outside every execution frontier
   until an explicit `/implement` run converts a bounded, settled report or the
@@ -80,7 +106,7 @@ disposition before resolving the intake.
   actual change plus verification and review. Once the gate is settled, the
   adapter may reclassify remaining work to `AFK`.
 - **Discovery frontier** is the open, unblocked, unclaimed child-ticket set of
-  one Wayfinder map. It never uses `ready-for-agent`.
+  one technical Wayfinder map. It never uses `ready-for-agent`.
 
 GitHub and GitLab still store tracker objects as issues. Ticket is the neutral
 workflow term above those adapters.
@@ -129,6 +155,9 @@ active Wayfinder ticket. They may create bounded, reversible evidence artifacts
 inside the authorized scope. They do not mutate tracker state, dependencies,
 manifests, production persistence, or existing production behavior; the parent
 orchestration owns claims, publication, and closure.
+
+Use them for **engineering** questions (contracts, APIs, disposable seam
+probes). Product prototypes that test market or user value belong in PM.
 
 ## Legacy Compatibility
 

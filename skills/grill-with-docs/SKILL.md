@@ -8,22 +8,41 @@ disable-model-invocation: true
 
 Run `/grilling` with `/domain-modeling` active.
 
-Use this as the normal user entrypoint for sharpening a plan or design. Ask one question at a time, provide a recommended answer, check repo evidence instead of asking when the repo can answer, and update glossary or ADR docs only when domain terms or durable decisions crystallize.
+Use this as the normal **engineering** entrypoint for sharpening a plan or
+design when product intent is already settled enough to talk about code. Ask one
+question at a time, provide a recommended answer, check repo evidence instead of
+asking when the repo can answer, and update glossary or ADR docs only when domain
+terms or durable **technical** decisions crystallize.
 
 ## What "Active" Means
 
-"Run `/grilling` with `/domain-modeling` active" means: load both skills' instructions and follow them together. During the interview, apply `/domain-modeling` rules whenever domain terms appear — challenge fuzzy terms, propose precise alternatives, update `CONTEXT.md` inline. Do not treat them as separate phases.
+"Run `/grilling` with `/domain-modeling` active" means: load both skills'
+instructions and follow them together. During the interview, apply
+`/domain-modeling` rules whenever domain terms appear — challenge fuzzy terms,
+propose precise alternatives, update `CONTEXT.md` inline. Do not treat them as
+separate phases.
 
-When a plan or design question depends on current code behavior, trace the relevant entrypoint so repo evidence answers what it can before the user is asked.
+When a plan or design question depends on current code behavior, trace the
+relevant entrypoint so repo evidence answers what it can before the user is asked.
 
 ## Boundary
 
-Keep this skill as instruction for a docs-backed grilling session, not a router. For broad ideas, narrow the active scope one question at a time. Do not route by estimated context size or create a separate multi-session grill path.
+Keep this skill as instruction for a docs-backed grilling session, not a
+product-discovery router. For broad ideas, narrow the **engineering** scope one
+question at a time.
 
-If breadth-first questioning shows the destination is still foggy and the work
-cannot fit one honest planning session, stop with the evidence gathered and
-recommend `/wayfinder`. Do not create its map implicitly; Wayfinder is a
-user-invoked shared-state workflow.
+**Product / market / need fog:** if material uncertainty is about worth-doing,
+target user, stakeholder inner need, market, or unvalidated product bets, stop
+with evidence gathered and recommend `/pm-intake` (PM workspace). Do not invent
+product answers or open an engineering Wayfinder map.
+
+**Technical multi-session fog:** if product is settled (or work is pure
+engineering) but the technical destination still cannot fit one honest planning
+session, stop and recommend `/wayfinder`. Do not create its map implicitly.
+
+**Settled enough:** recommend `/to-spec` or `/implement`.
+
+Read `docs/boundaries.md` when the layer is unclear.
 
 ## Done
 
@@ -34,4 +53,6 @@ When the interview stops, return a compact summary:
 - repo evidence checked
 - glossary or ADR docs changed
 - remaining user-owned questions
-- recommended next skill: `/to-spec` when settled, or `/wayfinder` when material fog remains
+- recommended next skill: `/to-spec` or `/implement` when settled;
+  `/wayfinder` when **technical** multi-session fog remains;
+  `/pm-intake` when **product** fog remains

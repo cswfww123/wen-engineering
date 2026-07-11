@@ -22,6 +22,10 @@ candidates instead of silently merging them.
 A clear bounded request needs no harness, invented spec, or ticket. Implement
 it directly and skip tracker-only steps.
 
+If material product fog remains (worth-doing, target user, stakeholder inner
+need, or unspecified Expected after rejection), stop and recommend `/pm-intake`
+instead of inventing product intent. See `docs/boundaries.md`.
+
 ## Select The Frontier
 
 For tracked work, choose only a ticket that is:

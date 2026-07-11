@@ -23,9 +23,17 @@ Confirm every item before drafting:
 - implementation and testing decisions are supported by repo evidence
 - remaining unknowns are explicitly non-blocking
 
-Treat a missing or contradictory user-owned decision as a readiness gap. Report
-the exact gap and recommend `/grill-with-docs` or targeted evidence gathering;
-resume `/to-spec` after it is settled.
+Treat a missing or contradictory user-owned decision as a readiness gap.
+
+- **Product / market / need gap** (worth-doing, target user, stakeholder inner
+  need, unvalidated product intent): stop and recommend `/pm-intake` (PM
+  workspace). Do not invent Expected behavior or product value here.
+- **Engineering gap** (seams, contracts, migration, testability): recommend
+  `/grill-with-docs`, technical `/wayfinder` when multi-session, or targeted
+  `/research` / `/prototype`; resume `/to-spec` after it is settled.
+
+Prefer PM Build/Bet handoff artifacts (PRD, `REQ-*` / `AC-*`, evidence IDs)
+over chat paraphrase when available. See `docs/boundaries.md`.
 
 ## Bug Report Source
 

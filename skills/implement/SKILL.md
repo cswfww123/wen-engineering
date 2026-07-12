@@ -38,14 +38,16 @@ Parent keeps: find-work, tracker claim/state, route decisions, final Done report
 
 For steps that edit code or run the evidence loop (items 2–6 below):
 
-1. **Try** project agent `Executor` with a brief: goal, scope, AC/source pins,
-   constraints, verify commands, layer, **no tracker authority** (default).
-2. If missing / spawn fails → try built-in `general-purpose` with the same brief.
-3. If that fails or Agent tool absent → parent performs the work in-session.
+1. **Try** pack role `Executor` (`agents/Executor.md`) with a brief: goal, scope,
+   AC/source pins, constraints, verify commands, layer, **no tracker authority**
+   (default).
+2. If missing / spawn fails → try the host’s general multi-step worker with the
+   same brief.
+3. If that fails or no subagent runtime → parent performs the work in-session.
 4. **Never** abort implement because `Executor` is undefined.
 
 Tiny one-line mechanical edits may stay in parent when cheaper; non-trivial
-implementation **must** attempt `Executor` first when Agent tool exists.
+implementation **must** attempt `Executor` first when a subagent runtime exists.
 
 ### Steps
 

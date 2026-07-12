@@ -1,39 +1,49 @@
-# Claude Code subagents (WEN) — incremental only
+# Subagents (WEN) — portable workers
 
-**Canonical location in this repo:** `agents/` (this directory).
+**Canonical location:** `agents/` (this directory).
 
-Claude Code loads project agents from `.claude/agents/`, which in this repo is
-symlinked to these files so definitions are not duplicated.
+These are **host-agnostic role briefs** for orchestration: a strong parent routes;
+workers run a bounded job and return a short report. They are not Claude-only.
 
-**Do not override built-ins.** Leave Claude Code’s `Explore`, `Plan`, and
-`general-purpose` alone. This folder only adds WEN-shaped workers.
-
-| name | Role | Default model | Mutates tree? |
-| --- | --- | --- | --- |
-| `Executor` | Execution / Coder + authorized review fixes | `sonnet` | Yes (inherits tools) |
-| `Reviewer` | Report-only review (axis via brief) | `sonnet` | No |
-| `Verifier` | Critical-path verdict gate | `opus` | No |
-
-`name` uses **Capitalized** identifiers (e.g. `Executor`). Override `model` per
-file (`haiku` / `sonnet` / `opus` / `inherit`).
-
-## Hard dispatch (skills)
-
-Skills that mutate or gate code **must** follow the ladder in
-`docs/agents/orchestration.md` (not “maybe if you feel like it”):
-
-| Step | Try first | Fallback (no error) |
+| name | Role | Mutates tree? |
 | --- | --- | --- |
-| Implement / authorized fix | `Executor` | `general-purpose` → parent |
+| `Executor` | One bounded implement/fix task | Yes |
+| `Reviewer` | Read-only review (axis optional via brief) | No |
+| `Verifier` | Read-only verdict gate | No |
+
+## Body vs frontmatter
+
+- **Markdown body** = portable system prompt. Any coding agent that supports
+  subagents / task workers can paste or load it.
+- **YAML frontmatter** = optional host adapters (e.g. Claude Code `name` /
+  `model` / `disallowedTools`). Other hosts may ignore unknown fields.
+
+Do **not** re-implement a host’s built-in explore/plan/general workers under the
+same names. This pack only adds the three roles above.
+
+## Discovery (examples)
+
+| Host | How these load |
+| --- | --- |
+| Claude Code | `.claude/agents/` → symlinks here |
+| Codex / other | Point subagent config at `agents/*.md`, or inject the body as the worker system prompt |
+| Manual | Parent pastes the body + a task brief |
+
+## Dispatch (skills)
+
+Skills that implement, review, verify, or apply authorized fixes **must try** the
+mapped role when a subagent runtime exists, then fall back — never hard-fail.
+See `docs/agents/orchestration.md`.
+
+| Step | Try first | Fallback |
+| --- | --- | --- |
+| Implement / authorized fix | `Executor` | host general worker → parent |
 | Review axes | `Reviewer` × axis | parent + `AGENT-BRIEFS` |
 | Verdict gate | `Verifier` | parent Verification Reviewer |
-| Research | built-in `Explore` | parent |
-
-Missing definition, Agent tool absent, or spawn failure → **continue on the next
-fallback**. Never abort a skill because a project subagent is missing.
+| Research | host explore/search worker | parent |
 
 ## Parent responsibilities
 
-- Route, authority, and HITL stay in the main session.
-- Brief: goal, scope, constraints, verify; Reviewer adds **axis**; fix runs list
-  eligible findings + behavior contract.
+- Route, authority, and user decisions stay with the parent.
+- Every spawn needs a brief: goal, scope, constraints, verify; Reviewer adds
+  **axis**; fix runs list eligible findings + behavior contract.

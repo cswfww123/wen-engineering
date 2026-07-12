@@ -1,37 +1,41 @@
 # Orchestration (subagents)
 
-Companion to [lifecycle.md](../lifecycle.md) and [agents/README.md](../../agents/README.md)
-(`.claude/agents/` symlinks to `agents/` for Claude Code discovery).
+Companion to [lifecycle.md](../lifecycle.md) and [agents/README.md](../../agents/README.md).
+Portable role briefs live in `agents/`; host adapters (e.g. Claude Code
+`.claude/agents/` symlinks) are optional discovery, not a lock-in.
 
 ## Rules
 
-1. **Built-ins stay built-in.** Do not ship project agents named `Explore`,
-   `Plan`, or `general-purpose`.
-2. **Incremental only.** Project agents: `Executor`, `Reviewer`, `Verifier`
-   (Capitalized `name` in frontmatter).
-3. **Hard try, soft fail.** When a skill step maps to a project agent, the parent
-   **must attempt** that agent if the Agent tool and definition exist. If missing
-   or spawn fails, **fall back** — never hard-fail the flow.
+1. **Host built-ins stay host-owned.** Do not shadow explore / plan / general
+   workers with pack-owned names on that host.
+2. **Incremental roles only.** Pack workers: `Executor`, `Reviewer`, `Verifier`
+   (Capitalized `name` when the host uses frontmatter).
+3. **Hard try, soft fail.** When a skill step maps to a pack role, the parent
+   **must attempt** that worker if a subagent runtime can load it. If missing or
+   spawn fails, **fall back** — never hard-fail the flow.
 4. **Parent owns** route, authority, tracker, and user HITL.
+5. **Prompts are portable.** The markdown body is the contract; YAML frontmatter
+   is host-optional metadata.
 
 ## Dispatch ladder (required)
 
 ```text
 Parent (strong model) — route, authority, HITL, final ownership
-  ├─ built-in Explore / Plan     → research (never project-overridden)
-  ├─ Executor (required try)     → implement, authorized review fixes
-  │     └─ else general-purpose → else parent
-  ├─ Reviewer (required try)     → each review axis (parallel OK)
+  ├─ host explore / plan / search   → research (use host built-in when present)
+  ├─ Executor (required try)        → implement, authorized review fixes
+  │     └─ else host general worker → else parent
+  ├─ Reviewer (required try)        → each review axis (parallel OK)
   │     └─ else parent + AGENT-BRIEFS
-  └─ Verifier (required try)     → Pass / Changes Required / Needs User Decision
+  └─ Verifier (required try)        → Pass / Changes Required / Needs User Decision
         └─ else parent Verification Reviewer
 ```
 
 ### How to “try”
 
-1. If Agent tool is unavailable → parent does the step (or built-in only).
-2. Else if project agent `name` is in the registry → spawn it with a full brief.
-3. Else if step is execution-like → try built-in `general-purpose` with the same brief.
+1. If no subagent/tool runtime → parent does the step.
+2. Else if pack worker `name` (or body) is loadable → spawn with a full brief.
+3. Else if step is execution-like → try the host’s general multi-step worker with
+   the same brief.
 4. Else → parent runs the step in-session using the same briefs/checklists.
 5. **Never** stop a skill with “agent not found” / “Executor missing”.
 
@@ -47,12 +51,12 @@ Parent (strong model) — route, authority, HITL, final ownership
 
 | Skill / moment | Must try | Then |
 | --- | --- | --- |
-| `/implement` Execute (evidence loop, fidelity prep, verification runs that need edits) | `Executor` | GP → parent |
-| `/implement` after `/code-review` when verdict is not Pass and fixes are authorized | `Executor` (fix list) | GP → parent |
+| `/implement` Execute (evidence loop, fidelity prep, verification runs that need edits) | `Executor` | host general → parent |
+| `/implement` after `/code-review` when verdict is not Pass and fixes are authorized | `Executor` (fix list) | host general → parent |
 | `/code-review` axis passes | `Reviewer` × 6 (parallel if possible) | parent sequential briefs |
 | `/code-review` validation gate | `Verifier` | parent Verification Reviewer |
-| `/code-review` Auto-fix (user or `/implement` authorized) | `Executor` with eligible findings + fix contract | GP → parent (same per-fix verify/revert rules) |
-| Research before edit | built-in Explore | parent |
+| `/code-review` Auto-fix (user or `/implement` authorized) | `Executor` with eligible findings + fix contract | host general → parent (same per-fix verify/revert rules) |
+| Research before edit | host explore/search worker | parent |
 
 Standalone `/code-review` without fix authority stays report-only (no `Executor`).
 User says “fix these” / “修一下” / equivalent → treat as fix authority for listed
@@ -63,4 +67,5 @@ or eligible findings, then dispatch `Executor`.
 - Agents do not replace skills; skills remain process owners.
 - Agents do not own tracker state by default.
 - Do not proliferate agent types per review axis.
-- Do not override built-in agent type names.
+- Do not shadow host built-in worker type names.
+- Do not hardcode a single product (Claude Code / Codex / …) into role bodies.

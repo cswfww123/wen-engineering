@@ -33,7 +33,7 @@ Build one review packet (diff commands, files, commits, standards, intent, shape
 
 For each axis:
 
-1. **Try** project agent `Reviewer` with the full packet + that axis brief (launch all six in parallel when the Agent tool allows).
+1. **Try** pack role `Reviewer` (`agents/Reviewer.md`) with the full packet + that axis brief (launch all six in parallel when the host allows).
 2. If `Reviewer` missing / spawn fails → parent runs that axis brief in-session (or sequential).
 3. **Never** abort review because `Reviewer` is undefined.
 
@@ -41,7 +41,7 @@ For each axis:
 
 After candidates are collected:
 
-1. **Try** project agent `Verifier` with candidates + same fixed point / packet.
+1. **Try** pack role `Verifier` (`agents/Verifier.md`) with candidates + same fixed point / packet.
 2. If missing / spawn fails → parent runs the Verification Reviewer brief from [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
 3. Keep a finding only when it: touches the diff (or is a direct consequence); cites rule/spec/code/history/runtime evidence; is not pre-existing, intentional scope, tooling noise, or a low-impact nit; scores confidence `>=80` per [REVIEW-AXES.md](REVIEW-AXES.md).
 4. Re-check PR eligibility before posting comments.
@@ -60,8 +60,8 @@ Prefer auto-fixing eligible Ponytail and Standards. Correctness/Performance/Secu
 
 **Dispatch:**
 
-1. **Try** project agent `Executor` with: fixed point, eligible findings (file/line, fix direction), fix contract above, verify commands, **no tracker authority**.
-2. Else built-in `general-purpose` with the same brief.
+1. **Try** pack role `Executor` (`agents/Executor.md`) with: fixed point, eligible findings (file/line, fix direction), fix contract above, verify commands, **no tracker authority**.
+2. Else host general multi-step worker with the same brief.
 3. Else parent applies fixes in-session.
 4. **Never** abort because `Executor` is missing.
 

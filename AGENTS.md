@@ -13,7 +13,7 @@ WEN Engineering Skills pack. Standalone or linked with optional `wen-pm` / `wen-
 - Tracker / labels / domain: `docs/agents/issue-tracker.md`, `triage-labels.md`, `domain.md`
 - Domain habit: when terms matter, read `CONTEXT.md` / `docs/adr/` (see `docs/agents/domain.md` and formats in `docs/domain/`). On conflict, ask. When a term or hard-to-reverse decision crystallizes, update glossary/ADR inline — no invented language, no batch-at-end dumps.
 - Project constraints: `.agents/rules/**` (read only when the edit matches)
-- Subagents (Claude Code): `.claude/agents/` incremental only — `Executor`, `Reviewer`, `Verifier` (Capitalized names). Do not override built-ins (`Explore` / `Plan` / `general-purpose`). Skills **must try** the mapped agent, then fall back (GP/parent); never hard-fail if missing. Details: `.claude/agents/README.md`, `docs/agents/orchestration.md`
+- Subagents (Claude Code): canonical defs in `Agents/` (`Executor`, `Reviewer`, `Verifier`; Capitalized names); `.claude/agents/` symlinks there for Claude Code. Do not override built-ins (`Explore` / `Plan` / `general-purpose`). Skills **must try** the mapped agent, then fall back (GP/parent); never hard-fail if missing. Details: `Agents/README.md`, `docs/agents/orchestration.md`
 - Keep this file short. Permanent instructions depreciate — prune what the current model already does.
 
 ## Mistakes

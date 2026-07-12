@@ -82,7 +82,7 @@ For an empty project, choose `/setup-project-harness` or a short technical grill
 
 - If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `.agents/rules/**`, and local scratch space.
 - If only a product goal is known and value/user/outcome are still open (**HEAVY**), start full PM (`wen-pm` `/pm-intake` or team process) — never invent answers; then enter LIGHT coding.
-- If stack choices are open, run a short `/grill-with-docs` pass, then `/setup-project-harness`.
+- If stack choices are open, run a short `/grilling` pass, then `/setup-project-harness`.
 - Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue grilling after the harness exists.
 
 Rule of thumb: no workbench → setup; daily coding → LIGHT from `/implement` up; fuzzy product need → HEAVY PM first; multi-session eng fog → Wayfinder.
@@ -106,7 +106,7 @@ Full detail: [docs/lifecycle.md](docs/lifecycle.md),
 ```text
 L1  bug | clear AC        → /implement
 L2  settled multi-slice   → /to-spec → /to-tickets → /implement
-G   same-session pin      → /grill-with-docs   (in the flow)
+G   same-session pin      → /grilling   (in the flow)
 L3  mild intent gap       → /product-fog → one next (often G)
 L4  multi-session eng fog → /wayfinder → L2     (try G first)
 ```
@@ -145,9 +145,9 @@ Common skills:
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
-- `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
+- Domain language lives in `CONTEXT.md` / `docs/adr/` (see `docs/agents/domain.md`); update inline when terms crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
-- `/grill-with-docs` stress-tests an engineering plan while maintaining glossary and ADR docs.
+- `/grilling` stress-tests an engineering plan (same-session pin); domain docs update via AGENTS habit.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
@@ -208,9 +208,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Planning And Alignment
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs, tickets, and test plans for intent, coverage, evidence, and execution fit.
-- [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
-- [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
+- [`grilling`](skills/grilling/SKILL.md) — one-question-at-a-time interview protocol for same-session plan pins (LIGHT G); domain glossary/ADR via AGENTS habit.
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
 - [`wayfinder`](skills/wayfinder/SKILL.md) — multi-session discovery map until an honest coding spec is writable.
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
@@ -279,6 +277,9 @@ docs/
     domain.md
     issue-tracker.md
     triage-labels.md
+  domain/
+    ADR-FORMAT.md
+    CONTEXT-FORMAT.md
   lifecycle.md
   boundaries.md
   handoff-package.md
@@ -303,12 +304,6 @@ skills/
     SKILL.md
     scripts/
       hitl-loop.template.sh
-  domain-modeling/
-    ADR-FORMAT.md
-    CONTEXT-FORMAT.md
-    SKILL.md
-  grill-with-docs/
-    SKILL.md
   grilling/
     SKILL.md
   handoff/

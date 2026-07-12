@@ -12,7 +12,7 @@ This workflow uses:
 
 - `/codebase-design` for module, interface, depth, seam, adapter, leverage, and locality vocabulary
 - repo tracing for representative entrypoints, call chains, queries, conversions, and side effects
-- `/domain-modeling` for glossary and ADR awareness
+- domain habit (`docs/agents/domain.md` / `CONTEXT.md` / ADRs) for glossary awareness
 - `/grilling` after the user picks a candidate
 
 ## Process
@@ -73,9 +73,6 @@ Do not propose interfaces yet. After the file is written, ask which candidate th
 
 Once the user picks a candidate, run `/grilling` to walk the design tree: constraints, dependencies, module shape, what sits behind the seam, and what tests survive.
 
-Run `/domain-modeling` inline as decisions crystallize:
-
-- add new domain terms to `CONTEXT.md`
-- sharpen fuzzy terms immediately
-- offer ADRs only for load-bearing, future-relevant decisions
-- load `/codebase-design` and use its design-it-twice branch when exploring alternative interfaces
+As decisions crystallize, follow the domain habit (update `CONTEXT.md` / ADRs
+inline when terms or hard-to-reverse choices settle). Load `/codebase-design`
+and use its design-it-twice branch when exploring alternative interfaces.

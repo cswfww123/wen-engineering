@@ -44,11 +44,13 @@ in place or reinitialize. Never silently overwrite user-authored content.
 - Prefer small, boring, reversible changes.
 - Read repo evidence before asking. Ask only when the repo cannot answer.
 - Record exact commands only when found in repo evidence or supplied by the user.
-- Keep `AGENTS.md` short. Move detail into `.agents/rules/**` or `docs/agents/**`.
-- Create rules only for drift risks agents are likely to get wrong.
+- Keep `AGENTS.md` short: wiring + failure-driven Mistakes only (see `AGENTS_TEMPLATE.md`).
+- Do not paste generic best practices into `AGENTS.md` or rules; models already do those.
+- Create rules only for drift risks proven by real failures or hard repo boundaries.
 - Use `[MUST]` and `[FORBID]` sparingly; prefer `[SHOULD]` when judgment may win.
 - Trace real call paths before encoding behavior that depends on them.
 - Treat deterministic lifecycle enforcement as CI, hook, or platform work; do not rely on memory text for it.
+- Permanent instructions depreciate: prune what the current model already does; empty-rewrite when the file bloats.
 
 ## Workflow
 

@@ -11,12 +11,12 @@ Source: `README.md`, `docs/lifecycle.md`, `docs/boundaries.md`, `skills/setup-pr
 - [SHOULD] Proceed on clear, reversible edits after a concise plan; ask only for destructive changes, genuine ambiguity, or user-owned taste decisions.
 - [SHOULD] Prefer repo evidence over assumptions, and mark harmless unknowns as open decisions instead of blocking work.
 - [FORBID] Adding broad, generic best-practice rules that do not prevent a concrete drift risk in this repo.
-- [SHOULD] Keep `AGENTS.md` short; put durable detail in `.agents/rules/**` and docs. Prefer empty-rewrite over accretion when permanent instructions go stale.
+- [SHOULD] Keep `AGENTS.md` as wiring + Mistakes only; put durable detail in `.agents/rules/**` and docs. Prefer empty-rewrite over accretion; prune Mistakes the current model no longer trips on.
 - [MUST] Keep this pack coding-focused and **composable**: works alone or linked with optional `wen-pm` / `wen-test`. Never fail a coding task solely because another pack is missing.
 - [MUST] Do not own system QA here (`to-test-plan` / `qa-run` are `wen-test` when used).
 - [MUST] Never invent product value, Expected behavior after rejection, or market bets; record user decisions (HITL grilling) and repo evidence only.
 - [MUST] Scope gates to ticket layer: frontend-only UI fidelity when UI changes; backend-only API fidelity without UI pins; do not implement out-of-scope layers without authority.
-- [SHOULD] Prefer the **LIGHT** track by default: bounded → `/implement`; multi-slice → `/to-spec` → `/to-tickets` → `/implement`; same-session pin → `/grill-with-docs`; mild coding-adjacent intent gap → `/product-fog`; multi-session eng fog → `/wayfinder` (prefer grill if one session is enough).
+- [SHOULD] Prefer the **LIGHT** track by default: bounded → `/implement`; multi-slice → `/to-spec` → `/to-tickets` → `/implement`; same-session pin → `/grilling`; mild coding-adjacent intent gap → `/product-fog`; multi-session eng fog → `/wayfinder` (prefer grill if one session is enough).
 - [SHOULD] Prefer the **HEAVY** track when the product need itself is fuzzy (worth-doing, target user, market, unvalidated idea): full PM (`wen-pm` `/pm-intake` or team process) before coding skills. Recommend `wen-test` for system QA when installed.
 - [MUST] Implement one ready implementation-frontier ticket at a time in a fresh context, and load `/code-review` before closing it.
 - [FORBID] Planning persistent work as "Phase 1/2/3" items inside the session todo list when it should instead become a spec, ticket graph, or Wayfinder decision map.

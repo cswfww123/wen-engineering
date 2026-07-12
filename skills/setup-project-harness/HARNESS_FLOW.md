@@ -96,9 +96,9 @@ user-authored sections.
 
 ### `AGENTS.md`
 
-- Keep it under 150 lines where practical.
-- Include project identity, repo-specific rules, exact commands, and reference files.
-- Link to `docs/agents/*.md` and `.agents/rules/**`.
+- Wiring + mistakes only (see `AGENTS_TEMPLATE.md`). Prefer under ~40 lines.
+- Include: one-line identity, short Route, Wiring pointers, empty Mistakes, proven Commands.
+- Do not paste generic best practices or a long References list.
 - Do not duplicate detailed rule content from `.agents/rules/**`.
 
 ### `.agents/rules/**`

@@ -7,65 +7,23 @@ disable-model-invocation: true
 
 # Handoff
 
-Write a handoff document summarizing the current conversation so a fresh agent can continue the work.
+Write a compact handoff so a fresh agent can continue. Save under OS temp
+(`$TMPDIR` / `/tmp` / `%TEMP%`): `<tmpdir>/handoff-<timestamp>.md`. Open it and
+return the absolute path.
 
-Save it to the OS temp directory, not the current workspace.
+User arguments = next-session focus. **Reference** specs, tickets, maps, ADRs,
+commits, diffs by path/URL — do not restate them. Redact secrets and PII.
+Target **under 1500 words**.
 
-Resolve temp dir from `$TMPDIR`, then `/tmp`, or `%TEMP%` on Windows. Write to:
-
-```text
-<tmpdir>/handoff-<timestamp>.md
-```
-
-Open it for the user and provide the absolute path.
-
-## Content
-
-Do not duplicate content already captured in specs, tickets, Wayfinder maps,
-legacy PRDs/issues, plans, ADRs, commits, or diffs. Reference those artifacts by
-path or URL instead.
-
-Redact sensitive information such as API keys, passwords, tokens, and personally identifiable information.
-
-If the user passed arguments, treat them as the next session focus and tailor the document accordingly.
-
-## Output Template
+## Fields
 
 ```markdown
 # Handoff
-
-## Objective
-
-<One sentence: what was being built, fixed, or discussed.>
-
-## Repo Context
-
-- **Branch**: <name>
-- **Recent commits**: <2-3 most relevant, with short hash and message>
-- **Changed files**: <list only files modified in this session>
-
-## Decisions Made
-
-- <Decisions locked in this session, with rationale. Skip if none.>
-- Reference existing specs/tickets, legacy PRDs/issues, and ADRs by path; do not repeat their content.
-
-## Open Questions And Blockers
-
-- <Unresolved questions that the next agent needs to know about. Skip if none.>
-
-## Verification Already Run
-
-- <Exact commands and results. "None" if nothing was run.>
-
+## Objective          # one sentence
+## Repo Context       # branch, 2–3 commits, session-changed files
+## Decisions Made     # session-only; else skip
+## Open Questions     # blockers for next agent; else skip
+## Verification Run   # exact commands + results, or None
 ## Recommended Next Step
-
-<One concrete action the next agent should take.>
-
-## Suggested Skills
-
-- `<skill-name>` — <why>
+## Suggested Skills   # skill — why
 ```
-
-## Size Guidance
-
-Target under 1500 words. If the handoff exceeds that, the session probably covered too much — narrow the scope and suggest the user invoke `/handoff` once per work area.

@@ -41,7 +41,7 @@ Start at the **smallest** honest step. Escalate only when that step fails.
 ```text
 L1  clear work        → /implement
 L2  multi-slice       → /to-spec → /to-tickets → /implement
-G   same-session pin  → /grill-with-docs   ← still in the flow
+G   same-session pin  → /grilling          ← still in the flow
 L3  mild intent gap   → /product-fog → one next (often G or L2/L4)
 L4  multi-session fog → /wayfinder → L2
 ```
@@ -73,7 +73,7 @@ spec. Slice risk: `/alignment-review`.
 
 ```text
 plan/design still fuzzy, but one interview can clear it
-  → /grill-with-docs   (= /grilling + /domain-modeling)
+  → /grilling   (+ domain habit in AGENTS / docs/agents/domain.md)
 ```
 
 **In the flow**, not optional fluff. Use when:
@@ -83,8 +83,8 @@ plan/design still fuzzy, but one interview can clear it
 - L3 routed `Align` for same-session trade-offs
 
 One question at a time, recommended answers, repo evidence first. Updates
-glossary/ADR when terms crystallize. If one session is not enough → L4
-`/wayfinder`. If product need itself is fuzzy → **HEAVY** PM, not grill.
+glossary/ADR when terms crystallize (domain habit). If one session is not enough
+→ L4 `/wayfinder`. If product need itself is fuzzy → **HEAVY** PM, not grill.
 
 ### L3 — Light product intent gap (still coding-adjacent)
 
@@ -94,7 +94,7 @@ rework / mild Expected gap / "not quite what I meant"
 ```
 
 Mini docket only. Never invent Expected. Common next hops: **G**
-`/grill-with-docs`, L2 `/to-spec`, L4 `/wayfinder`, stop, or **Escalate-PM**.
+`/grilling`, L2 `/to-spec`, L4 `/wayfinder`, stop, or **Escalate-PM**.
 
 Use when already in a coding context — **not** as market discovery.
 
@@ -105,7 +105,7 @@ product settled enough, technical route still foggy
   → /wayfinder → /to-spec → /to-tickets
 ```
 
-One discovery ticket per session. Prefer **G** `/grill-with-docs` first if one
+One discovery ticket per session. Prefer **G** `/grilling` first if one
 interview would clear it. Plan only — never ship the destination.
 
 ### Support (compose under the above)
@@ -116,8 +116,8 @@ interview would clear it. Plan only — never ship the destination.
 | Cleanup | `/simplify` |
 | Diff review | `/code-review` |
 | Evidence only | `/research`, `/prototype` |
-| Domain terms | `/domain-modeling` (also active under G) |
-| Core interview protocol | `/grilling` (loaded by G; rarely bare) |
+| Domain terms / ADRs | AGENTS Wiring + `docs/agents/domain.md` (formats in `docs/domain/`) |
+| Same-session interview | `/grilling` (LIGHT G) |
 
 ---
 
@@ -151,7 +151,7 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | --- | --- | --- |
 | Fix this bug / do this AC | LIGHT L1 | `/implement` |
 | Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` |
-| Few open decisions; one session can pin them | LIGHT **G** | `/grill-with-docs` |
+| Few open decisions; one session can pin them | LIGHT **G** | `/grilling` |
 | Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G) |
 | Migration/contracts too big for one session | LIGHT L4 | `/wayfinder` (try G first) |
 | Vague idea, no validated need | **HEAVY** | `wen-pm` `/pm-intake` |

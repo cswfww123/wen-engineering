@@ -81,7 +81,7 @@ git pull --ff-only
 
 - 如果技术栈或仓库形态已经确定，先运行 `/setup-project-harness`。它会先建立工作台：`AGENTS.md`、`CLAUDE.md`、`docs/agents/`、`.agents/rules/**` 和本地 scratch 空间。
 - 如果只有产品目标，价值/用户/outcome 仍开放（**HEAVY**），先走完整 PM（`wen-pm` `/pm-intake` 或团队流程）——禁止编造答案；settled 后再进 LIGHT 编码。
-- 如果技术栈仍开放，做一轮很短的 `/grill-with-docs`，再 `/setup-project-harness`。
+- 如果技术栈仍开放，做一轮很短的 `/grilling`，再 `/setup-project-harness`。
 - 一旦方向足够清楚，可以写出诚实的项目指令，就切到 `/setup-project-harness`；harness 建好后，再继续 grill。
 
 口诀：没工作台先 setup；日常开发默认 LIGHT（从 `/implement` 起最小步）；模糊产品需求走 HEAVY PM；多会话工程雾走 Wayfinder。
@@ -105,7 +105,7 @@ git pull --ff-only
 ```text
 L1  bug | 清晰 AC        → /implement
 L2  已 settled 多切片     → /to-spec → /to-tickets → /implement
-G   同会话压方案          → /grill-with-docs   （在主流程里）
+G   同会话压方案          → /grilling   （在主流程里）
 L3  轻度意图缺口          → /product-fog → 一条下一跳（常进 G）
 L4  多会话工程雾          → /wayfinder → L2     （能一会话先 G）
 ```
@@ -142,9 +142,9 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
 - `/code-review` 独立审查一个 fixed delta 的 intent、correctness、ponytail 复杂度、性能、安全和规范。
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归。
-- `/domain-modeling` 在设计决策结晶时打磨 glossary terms 并记录 ADRs。
+- 领域语言在 `CONTEXT.md` / `docs/adr/`（见 `docs/agents/domain.md`）；术语结晶时就地更新。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
-- `/grill-with-docs` 在维护 glossary 和 ADR docs 的同时 stress-test **工程** plan。
+- `/grilling` stress-test **工程** plan（同会话钉住）；领域文档按 AGENTS 习惯更新。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
 - `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic/state 或 UI evidence artifact。
@@ -205,9 +205,7 @@ AI agents 会以很可预测的方式失败。
 ### Planning And Alignment
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) - 审查 specs、tickets 和 test plans 的 intent、coverage、evidence 和 execution fit。
-- [`domain-modeling`](skills/domain-modeling/SKILL.md) - 打磨 domain language，更新 `CONTEXT.md`，并在决策结晶时少量记录 ADRs。
-- [`grill-with-docs`](skills/grill-with-docs/SKILL.md) - 运行 `/grilling` 并同时激活 `/domain-modeling`，作为常规 plan-sharpening 入口。
-- [`grilling`](skills/grilling/SKILL.md) - 提供 grill skills 使用的一次一个问题的核心访谈协议。
+- [`grilling`](skills/grilling/SKILL.md) - 一次一个问题的访谈协议，用于同会话 plan pin（LIGHT G）；glossary/ADR 走 AGENTS domain 习惯。
 - [`product-fog`](skills/product-fog/SKILL.md) - LIGHT 意图钉：编码邻域迷你 docket + 一条下一跳（非完整 PM）。
 - [`wayfinder`](skills/wayfinder/SKILL.md) - 多会话 discovery map，直到可写诚实 coding spec。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
@@ -276,6 +274,9 @@ docs/
     domain.md
     issue-tracker.md
     triage-labels.md
+  domain/
+    ADR-FORMAT.md
+    CONTEXT-FORMAT.md
   lifecycle.md
   boundaries.md
   handoff-package.md
@@ -300,12 +301,6 @@ skills/
     SKILL.md
     scripts/
       hitl-loop.template.sh
-  domain-modeling/
-    ADR-FORMAT.md
-    CONTEXT-FORMAT.md
-    SKILL.md
-  grill-with-docs/
-    SKILL.md
   grilling/
     SKILL.md
   handoff/

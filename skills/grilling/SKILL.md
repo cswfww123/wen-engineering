@@ -1,11 +1,19 @@
 ---
 name: grilling
-description: One-question-at-a-time interview protocol. Use when grill-with-docs loads grilling or for bare grilling.
+description: One-question-at-a-time interview protocol. Use for plan sharpening, design pins, or same-session decisions.
 ---
 
 # Grilling
 
-Interview until shared understanding: one question at a time, wait for feedback, walk design-tree branches and resolve decision dependencies. Always include a recommended answer.
+Interview until shared understanding: one question at a time, wait for feedback,
+walk design-tree branches and resolve decision dependencies. Always include a
+recommended answer.
+
+Domain habit (glossary/ADR): follow `AGENTS.md` Wiring and `docs/agents/domain.md`
+— challenge fuzzy terms, update inline when they crystallize. Formats:
+`docs/domain/CONTEXT-FORMAT.md`, `docs/domain/ADR-FORMAT.md`.
+
+Routing / anti-invention: `docs/lifecycle.md`.
 
 ## Layers (in order)
 
@@ -32,4 +40,10 @@ If unconfident, say what evidence would resolve it and whether it lives in the r
 
 - Repo can answer → explore, report findings; do not ask. Trace entrypoints when behavior (not names) matters.
 - Contradiction with earlier decisions or code → state it, cite evidence, ask which way — never silent pick.
+- HEAVY fuzzy product need → full PM, not deep technical grilling. Mild unpinned intent → `/product-fog`. Multi-session fog → `/wayfinder` (do not create its map). Settled → `/to-spec` or `/implement`.
 - Stop when an implementer can start without guessing material decisions: constraints stated/deferred, core behavior specified, edges covered or out of scope, remaining unknowns marked user-owned, or the user says stop. Do not stop merely because questions ran out.
+
+## Done
+
+Summary: decisions, scope/out-of-scope, repo evidence checked, glossary/ADR
+changes, remaining user-owned questions, one recommended next skill.

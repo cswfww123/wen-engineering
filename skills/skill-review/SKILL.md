@@ -1,43 +1,31 @@
 ---
 name: skill-review
-description: Reviews SKILL.md files for discovery, trigger clarity, progressive disclosure, and agent judgment.
+description: Review a SKILL.md for discovery, triggers, progressive disclosure, and judgment.
+disable-model-invocation: true
 ---
 
 # Skill Review
 
-Review a skill like an engineering artifact.
-
-The goal is not to make every skill follow one rigid template. The goal is to keep skills short, useful, triggerable, and aligned with this repo's belief that skills are bridges between user intent, repo evidence, and LLM judgment.
+Review a skill like an engineering artifact: short, useful, triggerable, and a bridge between user intent, repo evidence, and agent judgment.
 
 ## Process
 
 ### 1. Read
 
-Read only what matters:
-
-- the target `SKILL.md`
-- sibling reference files, examples, or scripts if the skill links to them
-- this repo's `README.md`
-- related existing skills when they set local precedent
-
-Do not review from memory when the files are available.
+Read the target `SKILL.md`, linked sibling references/scripts, this repo's `README.md`, and related skills when they set local precedent.
 
 ### 2. Check
 
-Look for issues in this order:
+In order:
 
-- **Description**: short enough for discovery, usually under 120 characters and never padded past 180. It says what the skill does and when to use it.
-- **Trigger**: the description contains concrete trigger words an agent can match, not a long list of loosely related cases.
-- **Invocation**: user-invoked orchestration carries `disable-model-invocation: true`; model-invoked disciplines have a concrete autonomous trigger and do not open a new shared workflow on their own.
-- **Shape**: treat `SKILL.md` length as a signal, not a verdict. Keep core workflow in `SKILL.md`; move templates, examples, schemas, and rarely needed detail to one-level sibling references.
-- **Progressive disclosure**: skills load in three layers — metadata (name + description, always in context) → SKILL.md body (loaded on trigger) → references/scripts/assets (loaded only when needed). For each layer ask: does the body carry the minimum useful context for one run, with detail blocks (templates, schemas, large examples) extracted rather than inline? Does every reference link say *when* to read it, not just what it is? For multi-domain skills, is each domain its own reference file so only the relevant one loads? Are scripts reserved for deterministic repeatable work that prose alone does less reliably? For reference files over ~300 lines, is there a table of contents?
-- **Judgment**: rules guide the agent without replacing reasoning, taste, or user-owned decisions.
-- **User bridge**: the skill helps the agent ask, recommend, and clarify instead of silently assuming.
-- **Evidence**: instructions tell the agent to read repo/files before making claims or edits.
-- **Outputs**: the skill says what artifact, decision, review, or action should result.
-- **Side effects**: every mutation stays inside explicit or already-authorized scope. Model-invoked research/prototype skills are evidence-only and leave trackers, canonical plans, manifests, deployments, external systems, and production behavior unchanged. Code-editing disciplines carry their own verification plus rollback or behavior-preservation boundary. Destructive or high-impact work requires explicit user authority.
-- **Structure**: frontmatter is valid, references are one level deep, scripts are only for deterministic repeated work.
-- **Language**: concise English, active verbs, no generic best-practice dumps.
+- **Description**: under 120 preferred, never past 180; states what and when.
+- **Trigger / invocation**: model-invoked needs concrete trigger words and must not open a new shared workflow; user-invoked carries `disable-model-invocation: true` and a human-facing description.
+- **Progressive disclosure**: metadata always → body on trigger → references only when needed. Body holds core workflow; templates/schemas/examples in one-level siblings with *when to read* pointers. Multi-domain → separate references. Scripts only for deterministic work prose cannot match.
+- **Judgment / user bridge**: guide without replacing reasoning; ask/clarify instead of silent assumption.
+- **Evidence / outputs**: read repo before claims/edits; name the resulting artifact, decision, review, or action.
+- **Side effects**: mutations stay in authorized scope. Research/prototype are evidence-only (no tracker/canonical/deploy/production mutation). Code disciplines verify + rollback or behavior-preservation. Destructive work needs explicit authority.
+- **Structure / language**: valid frontmatter; one-level references; concise English; no generic best-practice dumps or no-ops the current model already obeys.
+
 
 ### 3. Report
 

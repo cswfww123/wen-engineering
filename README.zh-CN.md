@@ -80,72 +80,51 @@ git pull --ff-only
 空项目里，按「已经知道什么」选择入口：
 
 - 如果技术栈或仓库形态已经确定，先运行 `/setup-project-harness`。它会先建立工作台：`AGENTS.md`、`CLAUDE.md`、`docs/agents/`、`.agents/rules/**` 和本地 scratch 空间。
-- 如果只有产品目标，价值/用户/outcome 仍开放，先在 PM 工作区做 `/pm-intake`，不要用 engineering Wayfinder 编造产品答案。
-- 如果产品意图已够 settled，但技术栈仍开放，做一轮很短的 `/grill-with-docs`（只压工程约束），再 `/setup-project-harness`。
-- 一旦方向足够清楚，可以写出诚实的项目指令，就切到 `/setup-project-harness`；harness 建好后，再继续技术 grill。
+- 如果只有产品目标，价值/用户/outcome 仍开放（**HEAVY**），先走完整 PM（`wen-pm` `/pm-intake` 或团队流程）——禁止编造答案；settled 后再进 LIGHT 编码。
+- 如果技术栈仍开放，做一轮很短的 `/grill-with-docs`，再 `/setup-project-harness`。
+- 一旦方向足够清楚，可以写出诚实的项目指令，就切到 `/setup-project-harness`；harness 建好后，再继续 grill。
 
-口诀：没工作台，先 setup；产品价值未清，先 PM；栈未清，先 micro-grill；方向够建立工作台了，立刻 setup，然后继续细化。
+口诀：没工作台先 setup；日常开发默认 LIGHT（从 `/implement` 起最小步）；模糊产品需求走 HEAVY PM；多会话工程雾走 Wayfinder。
 
 在空仓库中，harness 只能记录事实和用户决策。package manager、framework、build、lint、typecheck、test 命令都应该等到 scaffold 有证据之后再补，不能提前编造。
 
 ## Lifecycle
 
-流程由工作形态决定，不是每个请求都必须填写的固定表单。本仓库是 **纯 coding 层**，
-与 `wen-pm` / `wen-test` **可单独用也可联动**，互不硬依赖：
+**两条轨。** 日常默认 **LIGHT**；模糊产品需求走 **HEAVY**。
+完整契约见 [docs/lifecycle.md](docs/lifecycle.md)、
+[docs/boundaries.md](docs/boundaries.md)、
+[docs/handoff-package.md](docs/handoff-package.md)。
 
-| 模式 | 含义 |
-| --- | --- |
-| **单独使用** | 只要 AC/工单已 settled，或纯工程任务，只装本仓库即可 |
-| **联动使用** | 可选 `wen-pm` 做产品发现；可选 `wen-test` 做系统 QA |
+| 轨 | 何时 | 入口 |
+| --- | --- | --- |
+| **LIGHT**（默认） | 意图够诚实编码 | 本包最小步 |
+| **HEAVY** | 需求/用户/市场仍模糊 | 完整 PM，再交接编码 |
 
-工作可仅为前端、仅为后端或全栈。完整契约见
-[docs/lifecycle.md](docs/lifecycle.md)、[docs/boundaries.md](docs/boundaries.md)
-与 [docs/handoff-package.md](docs/handoff-package.md)。
-
-### 0. 产品雾 → 产品负责人（不在这里编造）
+### LIGHT — 日常编码
 
 ```text
-product / market / need fog -> 团队产品流程（可选 /pm-intake）
+L1  bug | 清晰 AC        → /implement
+L2  已 settled 多切片     → /to-spec → /to-tickets → /implement
+G   同会话压方案          → /grill-with-docs   （在主流程里）
+L3  轻度意图缺口          → /product-fog → 一条下一跳（常进 G）
+L4  多会话工程雾          → /wayfinder → L2     （能一会话先 G）
 ```
 
-不要用 Wayfinder 或 `/to-spec` 编造用户价值或 Expected 行为。
+- **L1：** 一 context、evidence loop、`/code-review`。不编造 ticket。
+- **L2：** 任意 settled 输入（PM handoff、PRD、文档、chat AC）。FE/BE 门在 ticket 层。系统 QA 可选 `wen-test`。
+- **G：** 同会话 grilling + domain docs——LIGHT 一等工具；几条用户决策能一次问清时用；**不是** HEAVY PM 替代品。
+- **L3：** 仅 coding 邻域钉意图（返工 / 轻度 Expected）。禁止编造 Expected。常路由到 **G**。
+- **L4：** 产品已够 settled，技术路线仍跨会话雾。
 
-### 1. 清晰且有边界的工作
+### HEAVY — 模糊需求
 
 ```text
-bounded task -> /implement
+模糊想法 | 未知用户 | 「该不该做」
+  → wen-pm /pm-intake（或团队 PM）→ Build|Bet → to-prd
+  → LIGHT L2: /to-spec → /to-tickets → /implement
 ```
 
-当产品意图足够 settled，且一个 fresh context 足以容纳任务和 acceptance
-boundary 时，直接使用 `/implement`。它负责匹配工作形态的 evidence loop
-（行为变更使用 TDD，behavior-preserving work 使用精确的 GREEN baseline）、
-simplification、项目 verification、独立的 `/code-review` gate，以及完成情况汇报。
-
-### 2. 已沉淀的多切片工作（默认跨会话路径）
-
-```text
-settled product package -> /to-spec -> /to-tickets -> /implement
-```
-
-优先使用任意已 settled 的交付输入（可选 wen-pm、其他 PRD、仓库文档）。
-按 ticket 的 **Layer** 定门禁：纯后端不要求 UI 钉死；纯前端不要求实现 API。
-见 [docs/handoff-package.md](docs/handoff-package.md)。
-`/to-spec` → `/to-tickets` → `/implement` 使用开发者行为门 + 层级保真门。系统 QA 为可选 companion `wen-test`。
-同会话技术压方案用 `/grill-with-docs`。
-
-可选系统 QA（`wen-test` `/qa-run`）可把已确认 one-context defect 发布为 implementation ticket；
-更大或尚未充分诊断的 defect 会保持为 non-runnable `bug-report` intake，并标记
-`needs-triage`，直到被显式转换，或进入 spec/ticket 切片流程。
-
-### 3. 技术多会话雾（高级、少用）
-
-```text
-settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
-```
-
-`/wayfinder` 只做可选的 **工程** discovery：产品已 settled 后的迁移、契约、
-seams 等多会话技术雾。每个 session 最多一张 discovery ticket。`/research` 与
-`/prototype` 只产 bounded evidence。
+禁止用 `/implement`、`/to-spec`、Wayfinder 编造产品价值。无 PM 时：停下并写清证据缺口；可选 `/product-fog` 仅记录 Discovery/Pause/Kill。
 
 ### v1.1 命令迁移
 
@@ -176,7 +155,8 @@ skill，普通同步会安全阻断，`--force` 则会先把它备份到 active 
 - `/tdd` 通过 public behavior tests 引导 Red-Green-Refactor 实现。
 - `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
-- `/wayfinder`（高级）将跨会话 **技术** 雾清到可写 honest engineering spec 为止。
+- `/product-fog` LIGHT 意图钉（编码邻域迷你 docket + 一条下一跳；非完整 PM）。
+- `/wayfinder` 将跨会话雾清成 discovery map，直到可写诚实 coding spec。
 - `/writing-great-skills` 提供写作和编辑 predictable skills 的 reference。
 
 Harness skill 会创建：
@@ -228,7 +208,8 @@ AI agents 会以很可预测的方式失败。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 打磨 domain language，更新 `CONTEXT.md`，并在决策结晶时少量记录 ADRs。
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) - 运行 `/grilling` 并同时激活 `/domain-modeling`，作为常规 plan-sharpening 入口。
 - [`grilling`](skills/grilling/SKILL.md) - 提供 grill skills 使用的一次一个问题的核心访谈协议。
-- [`wayfinder`](skills/wayfinder/SKILL.md) - 高级技术多会话 discovery，直到可写 honest engineering spec。
+- [`product-fog`](skills/product-fog/SKILL.md) - LIGHT 意图钉：编码邻域迷你 docket + 一条下一跳（非完整 PM）。
+- [`wayfinder`](skills/wayfinder/SKILL.md) - 多会话 discovery map，直到可写诚实 coding spec。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec。
@@ -261,6 +242,7 @@ AI agents 会以很可预测的方式失败。
 - 先读 repo evidence，再提问。
 - 只在用户意图或品味起决定作用时提问。
 - 优先使用 progressive disclosure，而不是一个巨大的 prompt。
+- 把永久指令当作会折旧的资产：剪掉 no-op、过时就 empty-rewrite、从真实失败再加护栏。
 - 用 rules 捕获边界，不写泛泛建议。
 - 把 verification 放进 workflow。
 - 在 divergence 不危险的地方保留 model judgment。
@@ -330,6 +312,7 @@ skills/
     SKILL.md
   implement/
     SKILL.md
+    TRACKED-WORK.md
   improve-codebase-architecture/
     HTML-REPORT.md
     SKILL.md
@@ -367,7 +350,11 @@ skills/
     EXPAND-CONTRACT.md
     SKILL.md
     TEMPLATE.md
+  product-fog/
+    DOCKET.md
+    SKILL.md
   wayfinder/
+    FOG.md
     SKILL.md
     TEMPLATES.md
   writing-great-skills/
@@ -384,16 +371,17 @@ skills/
 - 接受任意 settled 产品输入
 - 支持仅前端 / 仅后端 / 全栈的层级门禁
 - 默认跨会话编码路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- 日常默认 LIGHT；模糊产品需求 HEAVY（可选 `wen-pm` 先做）
+- 多会话工程雾：`/wayfinder` → `/to-spec` → …
 - 系统测试/QA 由可选 `wen-test` 或人工/CI 负责
-- 可选技术 `/wayfinder` 仅用于多会话工程雾
 - 用 non-runnable specs 和可追踪 ticket DAGs 保存 intent
 - 让一个 isolated implementation-frontier ticket 完整经过正确的 evidence loop、simplification、review 和 verification
-- 把 research 和 prototypes 用作 bounded **工程** evidence
+- 把 research 和 prototypes 用作 bounded evidence
 - 系统测试设计/QA 交给可选 companion `wen-test`
 - 通过 `~/.agents/skills` 保持 Codex、Claude、ZCode 和 Kimi 对齐
 
-设计保持 tracker-neutral 和 context-aware：小任务维持小规模；产品雾离开本包；
-技术大型工作才获得 durable artifacts 与 fresh execution contexts。
+设计保持 tracker-neutral 和 context-aware：小任务维持小规模；雾状大型工作用
+Wayfinder map 与 fresh execution contexts；无用户授权不编造产品答案。
 
 ## Upstream Attribution
 

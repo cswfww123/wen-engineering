@@ -23,9 +23,10 @@ uses, for example:
 | Direct user authority | Named task + explicit acceptance boundary for one-context work |
 | Pure engineering | Bug fix, migration, platform work with unchanged product behavior |
 
-When product/market/need is still foggy, stop inventing Expected behavior.
-Recommend **whatever product process the team uses** (optional pointer:
-`/pm-intake` if they use `wen-pm`). Do not hard-depend on it.
+When product/market/need is **fundamentally fuzzy** (HEAVY), stop inventing and
+use full product discovery (`wen-pm` `/pm-intake` or team PM) before this pack.
+When intent is only mildly unclear in a coding context (LIGHT), use
+`/product-fog` then grill/wayfinder as routed. Do not hard-depend on PM.
 
 ## Default coding spine
 

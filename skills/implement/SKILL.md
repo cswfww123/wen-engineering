@@ -6,154 +6,43 @@ disable-model-invocation: true
 
 # Implement
 
-Implement one bounded task or one runnable implementation ticket. One ticket
-gets one claim, one fresh working context, one reviewable delta, and one
-completion decision.
+One bounded task or one runnable implementation ticket: one claim, one fresh context, one reviewable delta, one completion decision.
 
 ## Find The Work
 
-Read the repo's `CONTEXT.md` or context map when present, plus the source spec,
-ticket, legacy PRD/issue, bug report, or task brief. For tracked work, also read
-`docs/agents/issue-tracker.md` and `docs/agents/triage-labels.md`; the tracker
-doc owns list, frontier, claim, update, and close mechanics. An explicit user
-reference wins. If canonical and legacy active sets conflict, show both
-candidates instead of silently merging them.
+Read `CONTEXT.md` or the context map when present, plus the source spec, ticket, legacy PRD/issue, bug report, or task brief. For tracked work, also read `docs/agents/issue-tracker.md` and `docs/agents/triage-labels.md`. An explicit user reference wins. If canonical and legacy active sets conflict, show both candidates.
 
-A clear bounded request needs no harness, invented spec, or ticket. Implement
-it directly and skip tracker-only steps.
+A clear bounded request needs no harness, invented spec, or ticket — implement directly and skip tracker-only steps.
 
-If material product fog remains (worth-doing, target user, stakeholder inner
-need, or unspecified Expected after rejection), stop and hand to the
-product/design owner or the team's product process (optional `/pm-intake` only
-if `wen-pm` is in use). Do not invent product intent. See `docs/boundaries.md`.
+If **HEAVY** product fog remains (worth-doing, target user, market, unvalidated idea), stop and recommend full PM (`wen-pm` `/pm-intake` or team process) — do not invent intent. If only a **LIGHT** coding-adjacent gap remains (mild Expected/rework), recommend `/product-fog`; multi-session eng fog → `/wayfinder`. See `docs/lifecycle.md`.
 
-Read **Layer** on the ticket/spec (`frontend` | `backend` | `full-stack` |
-`non-UI`). If UI-scoped work lacks field/rule structure or a design pin when
-required, stop and report the package gap (`docs/handoff-package.md`). If
-backend contract work lacks API/event expectations, stop similarly. Do not
-force UI pins on backend-only tickets or force BE implementation on FE-only
-tickets.
+Read **Layer** on the ticket/spec (`frontend` | `backend` | `full-stack` | `non-UI`). If UI-scoped work lacks field/rule structure or a required design pin, or backend contract work lacks API/event expectations, stop and report the package gap (`docs/handoff-package.md`). Do not force UI pins on backend-only tickets or BE implementation on FE-only tickets.
 
-## Select The Frontier
+For tracked work (frontier selection, bug-report conversion, HITL, claim/isolate), load [TRACKED-WORK.md](TRACKED-WORK.md) before edits.
 
-For tracked work, choose only a ticket that is:
+## Execute
 
-- `Kind: implementation-ticket`, or an unmistakable legacy implementation issue
-- `Mode: AFK`, or otherwise free of unresolved human judgment
-- open and incomplete
-- unblocked: every `Blocked by` edge is complete
-- unclaimed by another worker
-
-Never implement a `spec`, `wayfinder-map`, or `wayfinder-ticket`. Prefer explicit
-priority, then configured tracker/map order. If no implementation frontier
-ticket exists, report the blockers and human frontier rather than taking a
-nearby task.
-
-Never select a `bug-report` from a frontier. When the user explicitly names one,
-use the adapter's intake-conversion protocol: read it, claim it for conversion,
-and re-read ownership. Search exact `Origin` fields and its `Converted to`
-pointer before creating anything; reuse an existing replacement. If it is a
-runnable ticket, finish any missing report pointer/read-back and claim that
-ticket normally. If it is a spec or another non-runnable artifact, report the
-canonical route and stop. When claiming is not atomic or workers share one
-identity, convert serially.
-
-Only when no replacement exists, verify under that claim that diagnosis, fix,
-regression test, verification, and review fit one context. If so, create one
-`Kind: implementation-ticket`,
-`Subtype: bug`, `Runnable: yes`, with `Origin` pointing to the report. Reuse its
-spec parent or use the report as parent when no spec exists. Read the ticket
-back, write its canonical reference to `Converted to`, resolve the report as
-converted, and read the report back. Then claim the runnable ticket normally.
-If it does not fit, release the conversion claim, leave it `needs-triage`, and
-recommend `/diagnosing-bugs` or the explicit spec/ticket route.
-
-For a specifically named `HITL` ticket, distinguish the work before claiming it:
-
-- a manual-only action or decision resolves directly through the adapter after
-  the human action and evidence are recorded; `/implement` does not manufacture
-  a code delta, TDD result, or code-review verdict
-- code-bearing paired work requires the user to remain available for the named
-  judgment; claim it from the human frontier, never infer the decision, and use
-  the evidence loop that matches the actual change plus verification and review
-
-If the decision is settled before work starts, record it and reclassify the
-ticket to `AFK` through the adapter instead of carrying a false HITL marker.
-
-## Claim And Isolate
-
-Claim through the configured adapter before repo exploration or edits, then
-re-read ownership. If another worker won the claim, release yours and choose
-again. A claim coordinates work; it is not assumed to be an atomic lock.
-
-Record a review fixed point that isolates this ticket's delta. Use a clean
-working tree, isolated worktree, authorized checkpoint/commit, or another
-project-proven boundary. If pre-existing changes make the delta ambiguous, stop
-before editing. Do not complete this ticket or start another on an unreviewable
-diff.
-
-## Execute The Ticket
-
-1. Mark the ticket in progress using adapter-specific state.
-2. Trace the relevant entrypoint when behavior crosses callers, persistence,
-   permissions, async paths, conversions, or side effects. Load covered `REQ`/
-   `AC`/`SCN` and any `SCR`/`FLD`/`RULE` subset from the ticket or parent spec.
+1. Mark the ticket in progress when tracked (adapter-specific state).
+2. Trace the relevant entrypoint when behavior crosses callers, persistence, permissions, async paths, conversions, or side effects. Load covered `REQ`/`AC`/`SCN` and any `SCR`/`FLD`/`RULE` subset from the ticket or parent spec.
 3. Choose the evidence loop from the actual change:
-   - observable behavior: load `/tdd`, derive a public-behavior test, confirm
-     RED, implement the smallest behavior, and confirm GREEN
-   - authorized behavior-preserving docs, config, or mechanical work: establish
-     a GREEN baseline and exact verification, make one increment, and rerun it;
-     an expand-contract ticket also records the caller inventory and runs its
-     compatibility/static checks
+   - observable behavior: load `/tdd`, public-behavior test → RED → smallest implement → GREEN
+   - authorized behavior-preserving docs/config/mechanical work: GREEN baseline + exact verification → one increment → rerun; expand-contract also records caller inventory and compatibility/static checks
 4. Load `/simplify` for non-trivial changes; keep tiny mechanical diffs direct.
-5. Run the project's exact verification commands (**behavior gate** for this
-   layer).
-6. **Layer fidelity gates:**
-   - **UI** (frontend or full-stack UI delta): against the UI contract and
-     pinned design source, verify fields/labels, requiredness, show/hide/
-     enable linkage, and empty/error/loading states. Checklist and/or
-     screenshot vs pin; exercise linkage scenarios. Not required for
-     backend-only / non-UI.
-   - **API/contract** (backend or full-stack contract delta): verify
-     request/response/error/authz/compat against the stated contract. Not
-     required for pure UI tickets that only consume a pinned external API.
-   Do not close on behavior-green alone when a fidelity gate applies.
-7. Load `/code-review` against the recorded fixed point. Include AC coverage and
-   applicable fidelity (UI and/or contract). Resolve every blocking finding or
-   user-owned decision, then rerun affected verification.
-8. Re-check every acceptance criterion. If fidelity fails because the
-   **product/design contract is wrong**, stop and hand to the product/design
-   owner with IDs — do not invent Expected. If **implementation** drifts, fix
-   or leave open. Complete only when behavior gate, applicable fidelity gates,
-   verification, and review pass.
+5. Run the project's exact verification commands (**behavior gate** for this layer).
+6. **Layer fidelity gates** (do not close on behavior-green alone when either applies):
+   - **UI** (frontend or full-stack UI delta): fields/labels, requiredness, show/hide/enable linkage, empty/error/loading vs UI contract and pinned design; checklist and/or screenshot. Not required for backend-only / non-UI.
+   - **API/contract** (backend or full-stack contract delta): request/response/error/authz/compat vs stated contract. Not required for pure UI that only consumes a pinned external API.
+7. Load `/code-review` against the recorded fixed point. Include AC coverage and applicable fidelity. Resolve every blocking finding or user-owned decision, then rerun affected verification.
+8. Re-check every acceptance criterion. If fidelity fails because the **product/design contract is wrong**, hand to product/design with IDs — do not invent Expected. If **implementation** drifts, fix or leave open. Complete only when behavior gate, applicable fidelity gates, verification, and review pass.
 
-Keep unverified criteria open. Commit only when the user or project workflow
-authorizes it.
+Keep unverified criteria open. Commit only when the user or project workflow authorizes it.
 
 ## Stop Or Continue
 
-Default to one ticket, then stop with the next implementation/human frontiers
-and review evidence. If the user explicitly requested a bounded multi-ticket
-loop, dispatch a fresh worker and isolated delta for each ticket, then recompute
-affected frontiers. Never run two dependent tickets in one context.
+Default: one ticket, then stop with next frontiers and review evidence. Bounded multi-ticket loops only when the user explicitly requested them — fresh worker and isolated delta per ticket. Never run two dependent tickets in one context.
 
-If an unexpected user-owned gate appears at any point, update the ticket through
-the adapter to `Mode: HITL` plus the configured human-readiness role, record the
-named decision, and read both fields back. Reconcile any partial update before
-continuing. With no unfinished delta, release the claim and recompute both
-frontiers. With unfinished changes, preserve the claim so the delta keeps one
-owner; the HITL ticket remains outside the unclaimed human frontier until its
-handoff resumes. Never release it unchanged into the AFK frontier.
-
-If work otherwise stops before edits, release the claim. Whenever unfinished
-changes exist, record the human or external blocker on the ticket and write a
-compact handoff in the OS temp directory with the ticket, fixed point, changed
-files, verification state, and blocker. Return its absolute path; do not
-silently invoke another user-invoked skill.
+Mid-flight HITL, claim release, and temp handoffs: [TRACKED-WORK.md](TRACKED-WORK.md).
 
 ## Done
 
-Report the task/ticket, source spec or legacy source, fixed point, changed files,
-behavior-gate evidence, fidelity-gate evidence (or `n/a`), code-review verdict,
-tracker update, commit status, and the next implementation/human frontiers or
-blocker.
+Report: task/ticket, source, fixed point, changed files, behavior-gate evidence, fidelity-gate evidence (or `n/a`), code-review verdict, tracker update, commit status, next frontiers or blocker.

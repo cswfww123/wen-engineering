@@ -21,6 +21,8 @@ Source: `README.md`, `docs/invocation.md`, `/writing-great-skills`, `skills/setu
 - [SHOULD] Use hard setup pointers only when the skill cannot work correctly without `/setup-project-harness` output.
 - [SHOULD] Make evidence support disciplines return the artifact path and keep/delete/promote disposition; the user-invoked caller owns publication or closure.
 - [FORBID] Generic best-practice dumps, repeated philosophy, or rules that restate normal LLM competence.
+- [SHOULD] Treat permanent instructions as depreciating assets: add a guardrail only after a repeated real failure; when pruning, empty-rewrite and keep only lines that still change behavior on current models.
+- [SHOULD] Prefer user-invoked for deliberate review/setup/orchestration; keep model-invoked only when the agent must auto-trigger or another skill must load the discipline.
 
 ## Verify
 

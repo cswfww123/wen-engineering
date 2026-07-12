@@ -1,101 +1,42 @@
 ---
 name: tdd
-description: Guides Red-Green-Refactor development. Use for TDD, test-first work, regression tests, or bug fixes.
+description: Vertical Red-Green-Refactor through public-behavior tests. Use for TDD, test-first, regressions, or bug fixes.
 ---
 
 # Test-Driven Development
 
-## Philosophy
+Tests verify **observable behavior through public interfaces**, not implementation. Prefer vertical tracer bullets over horizontal "all tests then all code."
 
-Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests should not.
-
-Good tests are integration-style: they exercise real code paths through public APIs. They describe what the system does, not how it does it. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists.
-
-Bad tests are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means instead of the public interface.
-
-See [tests.md](tests.md), [mocking.md](mocking.md), and [refactoring.md](refactoring.md).
-
-## Anti-Pattern: Horizontal Slices
-
-Do not write all tests first, then all implementation. That treats RED as "write all tests" and GREEN as "write all code."
-
-Correct approach: vertical slices via tracer bullets.
-
-```text
-WRONG:
-  RED:   test1, test2, test3
-  GREEN: impl1, impl2, impl3
-
-RIGHT:
-  RED -> GREEN: test1 -> impl1
-  RED -> GREEN: test2 -> impl2
-  RED -> GREEN: test3 -> impl3
-```
+Detail: [tests.md](tests.md), [mocking.md](mocking.md), [refactoring.md](refactoring.md).
 
 ## Workflow
 
-### 0. Receive Context
+### 0. Context
 
-When invoked by another skill (e.g., `/implement`), use the calling skill's context — the current issue, its acceptance criteria, and the public interface to test. Do not start fresh from `CONTEXT.md` when the calling skill already provided a focus.
+When `/implement` or another skill loads this, use its ticket, AC, and public surface — do not restart from `CONTEXT.md`. Otherwise read relevant context/ADRs, confirm the public interface and prioritized behaviors (behaviors, not impl steps). Trace the entrypoint before the first RED when changing existing behavior or picking a seam in unfamiliar code. Ask only for user-owned or undiscoverable decisions.
 
-### 1. Planning
-
-Before writing code:
-
-- read `CONTEXT.md` or relevant context docs when present
-- respect ADRs in the area you are touching
-- confirm the public interface change
-- confirm the behaviors to test and their priority
-- list behaviors, not implementation steps
-
-If you are changing existing behavior or selecting a seam in unfamiliar code, trace the relevant entrypoint before writing the first RED test.
-
-Ask only for decisions that are user-owned or not discoverable from the repo.
-
-### 2. Tracer Bullet
-
-Write one test that confirms one behavior:
+### 1. Tracer Bullet
 
 ```text
-RED:   Write test for first behavior -> test fails
-GREEN: Write minimal code to pass -> test passes
+RED  → one test for one behavior → fails
+GREEN → minimal code to pass
 ```
 
-This proves the path works end to end.
+Proves the path end to end.
 
-### 3. Incremental Loop
+### 2. Incremental Loop
 
-For each remaining behavior:
+For each remaining behavior: same RED → GREEN. One test at a time; only enough code for the current test; no anticipating future tests.
 
-```text
-RED:   Write next test -> fails
-GREEN: Minimal code to pass -> passes
-```
+### 3. Refactor
 
-Rules:
+Only after GREEN. Refactor, re-run tests after each step. Never refactor while RED.
 
-- one test at a time
-- only enough code to pass the current test
-- do not anticipate future tests
-- keep tests focused on observable behavior
+## Per Cycle
 
-### 4. Refactor
+- behavior-named test via public interface (survives internal refactor)
+- minimal code for this test; no speculative features
 
-After all tests pass, look for refactor candidates. Run tests after each refactor step.
+## Done
 
-Never refactor while RED. Get to GREEN first.
-
-## Checklist Per Cycle
-
-- test describes behavior, not implementation
-- test uses public interface only
-- test would survive internal refactor
-- code is minimal for this test
-- no speculative features added
-
-## Done Means
-
-- all planned behaviors have a passing test
-- tests describe behavior through the public interface
-- code is minimal — no speculative features
-- refactor step is complete and tests still pass
+Planned behaviors have passing public-behavior tests; code is minimal; refactor done with tests still green.

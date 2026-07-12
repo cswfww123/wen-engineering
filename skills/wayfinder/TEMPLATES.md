@@ -69,10 +69,10 @@ Resolution: pending
 
 ## Question
 
-<One precise **engineering** uncertainty whose answer moves toward the
-destination. Sized to one agent session. Prefer: ownership boundary, contract,
-migration path, failure mode, test seam, or user-owned technical trade-off.
-Do not ticket product/market/need questions — route those to PM.>
+<One precise uncertainty whose answer moves toward the destination.
+Sized to one agent session. Prefer coding-shaped questions: ownership boundary,
+contract, migration path, failure mode, test seam, or user-owned product/scope/
+trade-off decision. Never invent the answer — HITL disciplines record the user.>
 
 ## Resolution Signal
 
@@ -103,7 +103,7 @@ Choose the smallest discipline that can satisfy the Resolution Signal:
 read-only inspection, authorized disposable setup). It is never a disguised
 implementation ticket.
 
-## Resolution Signal Patterns (coding)
+## Resolution Signal Patterns
 
 Write signals as checkable outcomes, not effort:
 
@@ -113,6 +113,7 @@ Write signals as checkable outcomes, not effort:
 - **AuthZ:** "Who can do what, on which resource, with the denial path named."
 - **Failure:** "Partial failure, retry, and idempotency expectations stated for the critical path."
 - **Test seam:** "Public behavior or concurrency seam named so `/to-tickets` can require a test."
+- **Product / scope trade-off:** "User chose Recommended or an alternative after one framed question; Expected/out-of-scope recorded."
 - **User trade-off:** "User picked Recommended or an alternative after one framed question."
 - **Research:** "Primary sources cited; version/date noted; applicability limits listed."
 - **Prototype:** "User reacted to the disposable artifact; keep/change decision recorded."
@@ -121,6 +122,8 @@ Reject weak signals such as "look into X", "research options", or "discuss with 
 without a stated sufficiency bar.
 
 ## Fog Graduation
+
+Full model: [FOG.md](FOG.md).
 
 - **Ticket when** the question can be stated precisely now — even if blocked.
 - **Not yet specified when** only a dim area is visible. One fog line may later

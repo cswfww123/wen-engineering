@@ -81,76 +81,52 @@ That is the fast path. After setup, agents know where project instructions live,
 For an empty project, choose `/setup-project-harness` or a short technical grill based on what is already known:
 
 - If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `.agents/rules/**`, and local scratch space.
-- If only a product goal is known and value/user/outcome are still open, run product discovery in the PM workspace (`/pm-intake`) first — not engineering Wayfinder.
-- If product intent is settled enough but stack choices are open, run a short `/grill-with-docs` pass for engineering constraints only, then `/setup-project-harness`.
-- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue technical grilling after the harness exists.
+- If only a product goal is known and value/user/outcome are still open (**HEAVY**), start full PM (`wen-pm` `/pm-intake` or team process) — never invent answers; then enter LIGHT coding.
+- If stack choices are open, run a short `/grill-with-docs` pass, then `/setup-project-harness`.
+- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue grilling after the harness exists.
 
-Rule of thumb: no workbench means setup; open product value means PM; open stack means micro-grill; once there is enough direction to create the workbench, setup immediately and keep refining from there.
+Rule of thumb: no workbench → setup; daily coding → LIGHT from `/implement` up; fuzzy product need → HEAVY PM first; multi-session eng fog → Wayfinder.
 
 In empty repos, the harness must record facts and user decisions only. Leave package manager, framework, build, lint, typecheck, and test commands undefined until scaffold evidence exists.
 
 ## Lifecycle
 
-The route follows the shape of the work; it is not a form every request must
-complete. This pack is **coding-only** and **composable**:
-
-| Mode | Meaning |
-| --- | --- |
-| **Standalone** | Use only `wen-engineering` when AC/tickets are already settled, or for pure eng work |
-| **Linked** | Optional `wen-pm` for product discovery; optional `wen-test` for system QA |
-
-No hard dependency on the other packs. Work may be frontend-only, backend-only,
-or full-stack. See [docs/lifecycle.md](docs/lifecycle.md),
-[docs/boundaries.md](docs/boundaries.md), and
+**Two tracks.** Daily work stays **LIGHT**. Fuzzy product need starts **HEAVY**.
+Full detail: [docs/lifecycle.md](docs/lifecycle.md),
+[docs/boundaries.md](docs/boundaries.md),
 [docs/handoff-package.md](docs/handoff-package.md).
 
-### 0. Product Fog → Product Owner (not inventing here)
+| Track | When | Start |
+| --- | --- | --- |
+| **LIGHT** (default) | Intent good enough to code | Smallest coding step in this pack |
+| **HEAVY** | Need / user / market still fuzzy | Full PM (`wen-pm` or team process), then hand off |
+
+### LIGHT — daily coding
 
 ```text
-product / market / need fog -> team's product process (optional /pm-intake)
+L1  bug | clear AC        → /implement
+L2  settled multi-slice   → /to-spec → /to-tickets → /implement
+G   same-session pin      → /grill-with-docs   (in the flow)
+L3  mild intent gap       → /product-fog → one next (often G)
+L4  multi-session eng fog → /wayfinder → L2     (try G first)
 ```
 
-Do not use Wayfinder or `/to-spec` to invent user value or Expected behavior.
+- **L1:** one context, evidence loop, `/code-review`. No invented ticket.
+- **L2:** settled package from any source (PM handoff, PRD, docs, chat AC). FE/BE gates at ticket layer. Optional `wen-test` for system QA.
+- **G:** same-session grilling + domain docs — first-class LIGHT tool when a few user-owned decisions remain; not a substitute for HEAVY PM.
+- **L3:** coding-adjacent pin only (rework / mild Expected). Never invent Expected. Often routes to **G**.
+- **L4:** product settled enough; technical route still multi-session foggy.
 
-### 1. Clear, Bounded Work
+### HEAVY — fuzzy requirements
 
 ```text
-bounded task -> /implement
+vague idea | unknown user | "should we build this?"
+  → wen-pm /pm-intake (or team PM) → Build|Bet → to-prd
+  → LIGHT L2: /to-spec → /to-tickets → /implement
 ```
 
-Use `/implement` directly when product intent is settled enough and one fresh
-context can hold the task and its acceptance boundary. It owns the evidence
-loop (TDD for behavior, an exact GREEN baseline for behavior-preserving work),
-simplification, project verification, the independent `/code-review` gate, and
-completion reporting.
-
-### 2. Settled, Multi-Slice Work (default multi-session path)
-
-```text
-settled product package -> /to-spec -> /to-tickets -> /implement
-```
-
-Prefer a settled delivery package from any source (optional `wen-pm`, other
-PRD, in-repo docs). Scope FE/BE gates to the ticket layer — backend-only does
-not need UI pins; frontend-only does not require implementing the API.
-See [docs/handoff-package.md](docs/handoff-package.md).
-`/to-spec` → `/to-tickets` → `/implement` with developer behavior +
-layer-scoped fidelity. System QA is optional companion `wen-test`. Use `/grill-with-docs` for same-session technical
-sharpening and `/alignment-review` when intent or slicing is risky.
-
-Optional system QA (`wen-test` `/qa-run`) may publish a confirmed one-context defect as an implementation
-ticket. Broader or under-diagnosed defects remain non-runnable `bug-report`
-intake with `needs-triage` until explicitly converted or specified and sliced.
-
-### 3. Technical Multi-Session Fog (advanced, rare)
-
-```text
-settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
-```
-
-`/wayfinder` is optional engineering discovery only: multi-session technical
-fog (migrations, contracts, seams) after product is settled. One discovery
-ticket per session. `/research` and `/prototype` produce bounded evidence only.
+Do not open `/implement`, `/to-spec`, or Wayfinder to invent product value.
+If PM is missing: stop, name the evidence gap — optional `/product-fog` only to record Discovery/Pause/Kill.
 
 ### v1.1 Command Migration
 
@@ -182,7 +158,8 @@ Common skills:
 - `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
-- `/wayfinder` (advanced) clears multi-session **technical** fog until an honest engineering spec is writable.
+- `/product-fog` LIGHT intent pin in coding context (mini docket, one next route).
+- `/wayfinder` clears multi-session fog into a discovery map until an honest coding spec is writable.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
 The harness skill creates:
@@ -234,7 +211,8 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md) — runs `/grilling` with `/domain-modeling` as the normal plan-sharpening entrypoint.
 - [`grilling`](skills/grilling/SKILL.md) — provides the core one-question-at-a-time interview protocol used by grill skills.
-- [`wayfinder`](skills/wayfinder/SKILL.md) — advanced technical multi-session discovery until an honest engineering spec is writable.
+- [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
+- [`wayfinder`](skills/wayfinder/SKILL.md) — multi-session discovery map until an honest coding spec is writable.
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
@@ -267,6 +245,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - Read repo evidence before asking questions.
 - Ask only where user intent or taste is decisive.
 - Prefer progressive disclosure over one giant prompt.
+- Treat permanent instructions as depreciating assets: prune no-ops, empty-rewrite when stale, add guardrails from real failures.
 - Capture boundaries in rules, not generic advice.
 - Make verification part of the workflow.
 - Preserve model judgment wherever divergence is not dangerous.
@@ -336,6 +315,7 @@ skills/
     SKILL.md
   implement/
     SKILL.md
+    TRACKED-WORK.md
   improve-codebase-architecture/
     HTML-REPORT.md
     SKILL.md
@@ -373,7 +353,11 @@ skills/
     EXPAND-CONTRACT.md
     SKILL.md
     TEMPLATE.md
+  product-fog/
+    DOCKET.md
+    SKILL.md
   wayfinder/
+    FOG.md
     SKILL.md
     TEMPLATES.md
   writing-great-skills/
@@ -390,17 +374,18 @@ This repo currently focuses on a **lightweight, evidence-first coding lifecycle*
 - accept delivery inputs from any settled product source
 - support frontend-only, backend-only, and full-stack layer scope
 - default multi-session coding path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- LIGHT daily path by default; HEAVY fuzzy need via optional `wen-pm` first
+- multi-session eng fog: `/wayfinder` → `/to-spec` → …
 - system test/QA via optional companion `wen-test` (or human/CI)
-- optional technical `/wayfinder` only for multi-session engineering fog
 - preserve intent in non-runnable specs and traceable ticket DAGs
 - implement one isolated implementation-frontier ticket through the right evidence loop, simplification, review, and verification
-- use research and prototypes as bounded **engineering** evidence
+- use research and prototypes as bounded evidence
 - leave system test design/QA to optional companion `wen-test`
 - keep Codex, Claude, ZCode, and Kimi aligned through `~/.agents/skills`
 
 The design stays tracker-neutral and context-aware: small work stays small;
-product fog leaves this pack; technical large work earns durable artifacts and
-fresh execution contexts.
+foggy large work earns durable Wayfinder maps and fresh execution contexts;
+never invent product answers without user authority.
 
 ## Upstream Attribution
 

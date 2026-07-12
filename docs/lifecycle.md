@@ -1,101 +1,186 @@
 # WEN Engineering Lifecycle
 
-This is the routing source of truth for WEN **coding** skills. The route follows
-the shape of the work; it is not a form every request must complete.
+Routing source of truth. Follow the **shape of the work** — not every request
+fills every form.
 
-This repo is for **production coding**: settled product intent becomes
-verifiable implementation work. The three WEN packs are **standalone or
-linked** — this pack never requires `wen-pm` or `wen-test` to function.
+This pack is **standalone or linked** with optional `wen-pm` / `wen-test` — never
+hard-require those packs.
 
 | Layer | Pack | Role |
 | --- | --- | --- |
-| Product | optional `wen-pm` or any PM process | intent / delivery contract |
-| Coding | **this pack** | specs, tickets, implement, TDD, code-review |
+| Product (heavy) | optional `wen-pm` | fuzzy need / market / discovery → Delivery Contract |
+| Coding (this pack) | **wen-engineering** | light daily coding + thin intent bridge + wayfinder |
 | Test | optional `wen-test` | system test plan + QA |
 
 See [boundaries.md](boundaries.md) and [handoff-package.md](handoff-package.md).
 
-## Choose The Entry
+---
 
-### Product or market fog (stop inventing)
-
-Stop when material uncertainty is about worth-doing, target user, inner need,
-market bets, or unspecified Expected after rejection. Hand to the product/design
-owner (optional `/pm-intake`). Do not invent product answers in coding skills.
-
-### Clear, bounded work
-
-Use `/implement` when intent is settled enough and one context holds the task
-and acceptance boundary. Includes developer evidence (TDD or compatibility
-baseline), simplify, verification, `/code-review`. Does **not** require system
-`/qa-run` inside this pack.
-
-### Settled, multi-slice work (default multi-session coding path)
+## Choose track first (one question)
 
 ```text
-settled delivery inputs -> /to-spec -> /to-tickets -> /implement
-  -> (optional) wen-test: /to-test-plan -> /qa-run
+Is the product need itself fuzzy?
+  (worth-doing, target user, market, unvalidated idea, "what should we build?")
+    → HEAVY: full product discovery (wen-pm / team PM)
+    → then hand settled package into this pack
+
+Is the product intent good enough to code against?
+  (named AC, bug, settled multi-slice, pure eng)
+    → LIGHT: start in this pack at the smallest step that fits
 ```
 
-- `/to-spec` / `/to-tickets` / `/implement` own coding artifacts and developer
-  completion gates (behavior + layer-scoped fidelity for the implementer).
-- System-level test planning and acceptance QA live in **`wen-test`** when the
-  team uses that pack; otherwise human QA or project CI policy applies.
-- `/implement` never closes the parent **spec**; release/closeout is project
-  policy, human closeout, or optional external `/qa-run` evidence.
+**Default bias for daily work: LIGHT.** Do not open PM, Wayfinder, or multi-skill
+pipelines when `/implement` is enough.
 
-### Technical multi-session fog (advanced, rare)
+---
+
+## LIGHT — daily coding (default)
+
+Start at the **smallest** honest step. Escalate only when that step fails.
 
 ```text
-settled product + technical fog -> /wayfinder -> /to-spec -> /to-tickets
+L1  clear work        → /implement
+L2  multi-slice       → /to-spec → /to-tickets → /implement
+G   same-session pin  → /grill-with-docs   ← still in the flow
+L3  mild intent gap   → /product-fog → one next (often G or L2/L4)
+L4  multi-session fog → /wayfinder → L2
 ```
 
-Engineering discovery only. Not product discovery; not system QA.
-
-### Bugs and regressions
-
-Use `/diagnosing-bugs` for hard diagnosis. Explicit fix authority uses the same
-implement evidence loop. Confirmed defects from external QA should enter as
-tickets or `bug-report` intake per the tracker adapter.
-
-## Artifact Model
-
-- **Spec** (`Kind: spec`) — non-runnable parent
-- **Implementation ticket** — one vertical slice; `AFK` may enter implementation frontier
-- **Wayfinder map / ticket** — technical discovery only; never implement as code work
-- **Bug report** — non-runnable intake until converted
-- **Implementation / human / discovery frontiers** — as before
-
-System test plans and QA reports are **not** owned by this pack when `wen-test`
-is used; they may still be stored in the app repo via tracker conventions.
-
-## One Ticket, One Reviewable Delta
+### L1 — One-context settled work
 
 ```text
-claim -> behavior test or compatibility baseline -> simplify -> verification -> code review -> close
+bug | clear AC | pure eng slice  →  /implement
 ```
 
-Layer-scoped **UI fidelity** or **API contract fidelity** during `/implement`
-is the **developer** check that the slice matches the delivery package — not a
-substitute for independent system QA.
+Evidence loop (TDD or GREEN baseline), `/simplify` when non-trivial, project
+checks, `/code-review`, done. No invented spec or ticket.
 
-Parent **spec** stays open until project closeout (human, CI policy, or optional
-external `/qa-run` Complete + child resolution). `/implement` never closes the
-parent spec.
+Hard diagnosis first: `/diagnosing-bugs`. Fix authority uses the same implement
+loop.
 
-## Context And Concurrency
+### L2 — Settled multi-slice (default multi-session coding)
 
-- Fresh context per implementation ticket when multi-ticket.
-- Claims coordinate; serial if not atomic.
-- Recompute frontiers after resolutions.
+```text
+settled package (PRD / docs / chat AC / PM handoff)
+  → /to-spec → /to-tickets → /implement
+  → (optional) wen-test: /to-test-plan → /qa-run
+```
 
-## Support Disciplines
+Scope FE/BE fidelity to the ticket layer. `/implement` never closes the parent
+spec. Slice risk: `/alignment-review`.
 
-`/research` and `/prototype` remain evidence-only for engineering questions.
-`/tdd`, `/simplify`, `/code-review` compose under `/implement`.
+### G — Same-session grill (first-class LIGHT tool)
 
-## Legacy Compatibility
+```text
+plan/design still fuzzy, but one interview can clear it
+  → /grill-with-docs   (= /grilling + /domain-modeling)
+```
 
-`SPEC.md`, `tickets/`, `bugs/` remain. Historical PRDs/issues stay valid inputs.
-Retired from this pack (now optional external packs): `to-prd`, `to-issues`
-(product), `to-test-plan`, `qa-run` (test).
+**In the flow**, not optional fluff. Use when:
+
+- Before `/to-spec` or `/implement`, a few user-owned decisions are open
+- L4 would be overkill (no multi-session map yet)
+- L3 routed `Align` for same-session trade-offs
+
+One question at a time, recommended answers, repo evidence first. Updates
+glossary/ADR when terms crystallize. If one session is not enough → L4
+`/wayfinder`. If product need itself is fuzzy → **HEAVY** PM, not grill.
+
+### L3 — Light product intent gap (still coding-adjacent)
+
+```text
+rework / mild Expected gap / "not quite what I meant"
+  → /product-fog  →  one next skill in this pack
+```
+
+Mini docket only. Never invent Expected. Common next hops: **G**
+`/grill-with-docs`, L2 `/to-spec`, L4 `/wayfinder`, stop, or **Escalate-PM**.
+
+Use when already in a coding context — **not** as market discovery.
+
+### L4 — Multi-session engineering fog
+
+```text
+product settled enough, technical route still foggy
+  → /wayfinder → /to-spec → /to-tickets
+```
+
+One discovery ticket per session. Prefer **G** `/grill-with-docs` first if one
+interview would clear it. Plan only — never ship the destination.
+
+### Support (compose under the above)
+
+| Need | Skill |
+| --- | --- |
+| Public-behavior tests | `/tdd` |
+| Cleanup | `/simplify` |
+| Diff review | `/code-review` |
+| Evidence only | `/research`, `/prototype` |
+| Domain terms | `/domain-modeling` (also active under G) |
+| Core interview protocol | `/grilling` (loaded by G; rarely bare) |
+
+---
+
+## HEAVY — fuzzy product requirements
+
+When the **need / market / user / worth-doing** is the open problem, do **not**
+start with `/implement`, `/to-spec`, or a technical Wayfinder map.
+
+```text
+fuzzy idea | unknown user | market bet | "should we build this?"
+  → full product discovery
+  → preferred: wen-pm /pm-intake → … → Build|Bet → to-prd
+  → then LIGHT L2: /to-spec → /to-tickets → /implement
+```
+
+| Heavy owns | Light must not do |
+| --- | --- |
+| Customer interviews, experiments, OST | Invent Expected or market bets |
+| Four-risk deep evidence, Kill/Pause/Pivot | Pretend mini docket = discovery complete |
+| Product Delivery Contract | Open eng map to invent product value |
+
+If `wen-pm` is **not** installed: stop inventing; name the missing human/PM
+process and the evidence still required. Optional: `/product-fog` only to record
+`Discovery` / `Pause` / `Kill` and refuse to code.
+
+---
+
+## Quick chooser
+
+| Situation | Track | Entry |
+| --- | --- | --- |
+| Fix this bug / do this AC | LIGHT L1 | `/implement` |
+| Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` |
+| Few open decisions; one session can pin them | LIGHT **G** | `/grill-with-docs` |
+| Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G) |
+| Migration/contracts too big for one session | LIGHT L4 | `/wayfinder` (try G first) |
+| Vague idea, no validated need | **HEAVY** | `wen-pm` `/pm-intake` |
+| System QA of a build | optional test | `wen-test` |
+
+---
+
+## Artifact model (coding)
+
+- **Spec** — non-runnable parent  
+- **Implementation ticket** — one vertical slice; AFK → implementation frontier  
+- **Wayfinder map / ticket** — multi-session discovery; never implement as code  
+- **Bug report** — non-runnable until converted  
+- **Product-fog docket** — session pin only; not a PRD  
+
+## One ticket, one reviewable delta
+
+```text
+claim → behavior test or compatibility baseline → simplify → verify → code-review → close
+```
+
+## Context and concurrency
+
+- Fresh context per implementation ticket when multi-ticket  
+- Claims coordinate; serial if not atomic  
+- Recompute frontiers after resolutions  
+
+## Legacy
+
+`SPEC.md`, `tickets/`, `bugs/` remain. Historical PRDs stay valid inputs.
+Retired from this pack: product `to-prd` / `to-issues` (optional `wen-pm`);
+system `to-test-plan` / `qa-run` (optional `wen-test`).

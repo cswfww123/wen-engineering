@@ -7,30 +7,27 @@ and `docs/agents/`.
 ```markdown
 # AGENTS.md
 
-This repo uses agents for real engineering work. Keep changes small, boring,
-reversible, and grounded in repo evidence.
-
-## Project
-
 [One sentence: what this repo is, main stack, and workspace shape.]
+
+## Route
+
+**LIGHT (default):** clear bug/AC → `/implement`; settled multi-slice → `/to-spec` → `/to-tickets` → `/implement`; same-session pin → `/grill-with-docs`; mild coding-adjacent intent gap → `/product-fog`; multi-session eng fog → `/wayfinder` (try grill first).
+
+**HEAVY:** fuzzy product need (worth-doing, user, market, vague idea) → full PM (`wen-pm` `/pm-intake` or team process) before coding skills.
+
+- Never invent Expected, user value, or market bets.
+- Tracked work: only open, `AFK`, unblocked, unclaimed implementation-frontier tickets via `docs/agents/issue-tracker.md`.
+- Scope FE/BE fidelity gates to the ticket layer.
 
 ## Rules
 
-- Make the smallest sufficient change: reuse platform behavior, standard library, and existing code before adding new code.
-- Do not add abstractions, dependencies, files, workflows, or rule directories without repo evidence or user direction.
-- Keep `AGENTS.md` short; put detailed standards in `.agents/rules/**`.
-- Read the relevant `.agents/rules/**` file before editing matching work.
+- Smallest sufficient change; reuse platform, stdlib, and existing code first.
+- No new abstractions, dependencies, files, or workflows without repo evidence or user direction.
+- Keep this file short; detail in `.agents/rules/**`. Read the relevant rule before matching edits.
 - Record only exact commands proven by repo evidence or supplied by the user.
-- Send clear bounded work directly to `/implement`; it needs no invented spec or ticket.
-- Route settled multi-slice work through `/to-spec` then `/to-tickets`.
-- Use technical `/wayfinder` only when product intent is settled (or work is
-  pure engineering) and multi-session technical fog remains; send product,
-  market, or need discovery to the team's product process (optional `/pm-intake`
-  if they use wen-pm), not Wayfinder. Scope FE/BE gates to the ticket layer.
-- For tracked work, implement only an implementation-frontier ticket: open, `AFK`, unblocked, and unclaimed.
-  Claim and resolve it through `docs/agents/issue-tracker.md`.
-- Put deterministic lifecycle requirements in CI, hooks, or platform settings, not only in agent memory.
+- Put deterministic lifecycle requirements in CI, hooks, or platform settings — not only agent memory.
 - Do not skip input validation, security, data-loss prevention, accessibility, or explicit user requirements.
+- Treat permanent instructions as depreciating: add guardrails from real failures; prune what current models already do.
 
 ## Commands
 

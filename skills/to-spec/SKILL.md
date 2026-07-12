@@ -23,14 +23,19 @@ Confirm every item before drafting:
 - implementation and testing decisions are supported by repo evidence
 - remaining unknowns are explicitly non-blocking
 
-Treat a missing or contradictory user-owned decision as a readiness gap.
+Treat a missing or contradictory user-owned decision as a readiness gap. Do not
+invent Expected behavior or product value.
 
-- **Product / market / need gap**: stop and hand to the product/design owner or
-  the team's product process (optional `/pm-intake` only if `wen-pm` is in use).
-  Do not invent Expected behavior or product value here.
+- **HEAVY product fog** (worth-doing, market, unvalidated need): recommend full
+  PM (`wen-pm` `/pm-intake` or team process); do not force a coding docket to
+  replace discovery.
+- **LIGHT intent gap** (mild Expected/rework in coding context): recommend
+  `/product-fog`, then the one skill it routes to.
+- **User-owned gap** (scope or trade-off after intent is pinned): recommend
+  `/grill-with-docs` or multi-session `/wayfinder`.
 - **Engineering gap** (seams, contracts, migration, testability): recommend
-  `/grill-with-docs`, technical `/wayfinder` when multi-session, or targeted
-  `/research` / `/prototype`; resume `/to-spec` after it is settled.
+  `/grill-with-docs`, `/wayfinder` when multi-session, or targeted `/research` /
+  `/prototype`; resume `/to-spec` after it is settled.
 - **UI package gap** (this work changes user-visible UI without field/rule
   structure or a pinned delivery design version): stop and list gaps for the
   product/design owner. Do not invent fields or copy from screenshots alone.

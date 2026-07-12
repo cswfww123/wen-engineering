@@ -8,11 +8,10 @@ disable-model-invocation: true
 
 Run `/grilling` with `/domain-modeling` active.
 
-Use this as the normal **engineering** entrypoint for sharpening a plan or
-design when product intent is already settled enough to talk about code. Ask one
+Use this as the normal user entrypoint for sharpening a plan or design. Ask one
 question at a time, provide a recommended answer, check repo evidence instead of
 asking when the repo can answer, and update glossary or ADR docs only when domain
-terms or durable **technical** decisions crystallize.
+terms or durable decisions crystallize.
 
 ## What "Active" Means
 
@@ -27,23 +26,23 @@ relevant entrypoint so repo evidence answers what it can before the user is aske
 
 ## Boundary
 
-Keep this skill as instruction for a docs-backed grilling session, not a
-product-discovery router. For broad ideas, narrow the **engineering** scope one
-question at a time.
+Keep this skill as instruction for a docs-backed grilling session, not a router.
+For broad ideas, narrow the active scope one question at a time. Do not invent
+product value, market bets, or Expected after rejection — record user decisions.
 
-**Product / market / need fog:** if material uncertainty is about worth-doing,
-target user, stakeholder inner need, market, or unvalidated product bets, stop
-with evidence gathered and hand to the product/design owner or the team's
-product process (optional `/pm-intake` only if `wen-pm` is in use). Do not invent
-product answers or open an engineering Wayfinder map.
+If the product need itself is fuzzy (HEAVY: worth-doing, market, unvalidated
+idea), stop and recommend full PM — not deep technical grilling. If only a mild
+coding-adjacent intent gap remains (LIGHT), recommend `/product-fog`.
 
-**Technical multi-session fog:** if product is settled (or work is pure
-engineering) but the technical destination still cannot fit one honest planning
-session, stop and recommend `/wayfinder`. Do not create its map implicitly.
+If breadth-first questioning shows the destination is still foggy and the work
+cannot fit one honest planning session, stop with the evidence gathered and
+recommend `/wayfinder`. Do not create its map implicitly; Wayfinder is a
+user-invoked shared-state workflow.
+
+Optional: when the team uses `wen-pm` and wants a full product discovery stack
+(interviews, OST, to-prd), recommend `/pm-intake` — never hard-fail if missing.
 
 **Settled enough:** recommend `/to-spec` or `/implement`.
-
-Read `docs/boundaries.md` when the layer is unclear.
 
 ## Done
 
@@ -55,5 +54,6 @@ When the interview stops, return a compact summary:
 - glossary or ADR docs changed
 - remaining user-owned questions
 - recommended next skill: `/to-spec` or `/implement` when settled;
-  `/wayfinder` when **technical** multi-session fog remains;
-  `/pm-intake` when **product** fog remains
+  `/wayfinder` when multi-session fog remains;
+  `/product-fog` when product intent is still unpinned;
+  optional `/pm-intake` when the team prefers the full PM pack

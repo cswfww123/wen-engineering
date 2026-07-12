@@ -2,60 +2,59 @@
 
 Companion to [lifecycle.md](lifecycle.md) and [handoff-package.md](handoff-package.md).
 
-## Composition contract: standalone **or** linked
+## Composition: standalone **or** linked
 
 `wen-pm` · `wen-engineering` · `wen-test` are **three independent packs**.
 
 | Mode | Meaning |
 | --- | --- |
-| **Standalone** | This pack alone is enough for coding work when the user brings settled AC, a ticket, or pure eng tasks. Do **not** require `wen-pm` or `wen-test` to be installed. |
-| **Linked** | When those packs exist and the user routes across layers, prefer their durable artifacts; recommend them — never hard-fail if missing. |
+| **Standalone** | Daily coding on settled AC, tickets, bugs, light intent pins, eng wayfinder — no PM/test required |
+| **Linked** | Fuzzy product work uses `wen-pm`; system QA uses `wen-test`; hand off durable artifacts — never hard-fail if missing |
 
 ```text
-# linked (all optional except the layer you actually run)
-wen-pm ──► wen-engineering ──► wen-test
+# linked (only the layers you run)
+HEAVY  wen-pm ──handoff──► LIGHT wen-engineering ──build──► wen-test
 
-# standalone coding
-user AC / ticket / bug → /implement
-or settled multi-slice → /to-spec → /to-tickets → /implement
+# light-only daily
+AC / bug / ticket → /implement
+settled multi-slice → /to-spec → /to-tickets → /implement
 ```
+
+## Two tracks
+
+| Track | When | Entry |
+| --- | --- | --- |
+| **LIGHT** (default) | Product intent good enough to code | This pack — smallest step (`/implement` first) |
+| **HEAVY** | Product need / market / user still fuzzy | Full PM (`wen-pm` `/pm-intake` or team PM) — not coding skills |
 
 ## Ownership
 
 | Layer | Pack | Owns |
 | --- | --- | --- |
-| Product | optional any PM process / `wen-pm` | intent, delivery contract, product SCN |
-| **Coding** | **this repo** | specs, tickets, implement, TDD, code-review, technical wayfinder |
-| Test | optional `wen-test` | system test plans, QA execution, completion judgment |
+| Product (heavy) | optional `wen-pm` | discovery, evidence, Build/Bet, Delivery Contract |
+| **Coding (light)** | **this repo** | implement, to-spec/tickets, product-fog pin, wayfinder, TDD, review |
+| Test | optional `wen-test` | system test plans, QA |
 
 ## Coding owns / does not own
 
 | Owns | Does not own |
 | --- | --- |
-| `/to-spec`, `/to-tickets`, `/implement` | Product discovery |
-| `/tdd`, `/simplify`, `/code-review` | System `/to-test-plan`, `/qa-run` |
-| Technical `/wayfinder`, `/research`, `/prototype` | Inventing Expected product behavior |
-| Layer-scoped implementer fidelity (FE/BE) | Independent acceptance QA sign-off |
+| LIGHT L1–L4 routes | Inventing Expected / market bets |
+| `/product-fog` as **thin** intent pin | Full interviews, OST, experiment design |
+| `/wayfinder` multi-session eng fog | Mandatory `wen-pm` installation |
+| Layer-scoped implementer fidelity | System `/to-test-plan` / `/qa-run` |
 
-## Standalone coding
+## Skill map
 
-Valid without PM or test packs:
-
-- clear bugfix or named AC → `/implement`  
-- multi-slice with settled intent from **any** PRD/docs/chat-approved AC → `/to-spec` → …  
-- human or CI performs QA outside this pack  
-
-Product fog → stop inventing; hand to product owner (mention `/pm-intake` **only if** the team uses `wen-pm`).
-
-## Linked spine (when other packs are used)
-
-```text
-(optional PM package) → /to-spec → /to-tickets → /implement
-  → (optional) wen-test /to-test-plan → /qa-run
-  → defects → /implement or product rework
-```
-
-Do not hard-chain coding skills into `/qa-run` inside this pack.
+| Need | Track | Where |
+| --- | --- | --- |
+| Daily bug / clear AC | LIGHT | `/implement` |
+| Settled multi-slice | LIGHT | `/to-spec` → `/to-tickets` → `/implement` |
+| Same-session plan pin (in-flow) | LIGHT **G** | `/grill-with-docs` |
+| Mild intent gap in coding context | LIGHT | `/product-fog` (often → grill) |
+| Multi-session eng fog | LIGHT | `/wayfinder` (prefer grill if one session) |
+| Fuzzy need / market / "should we build" | **HEAVY** | `wen-pm` `/pm-intake` … |
+| System QA | test | optional `wen-test` |
 
 ## Layer scope (FE / BE)
 
@@ -63,16 +62,6 @@ Do not hard-chain coding skills into `/qa-run` inside this pack.
 | --- | --- |
 | Frontend-only | Behavior + UI fidelity when UI changes; pin API/mocks at boundary |
 | Backend-only | Behavior + API/contract fidelity; no UI pin |
-| Full-stack | Only for surfaces this ticket changes |
+| Full-stack | Only surfaces this ticket changes |
 
 See [handoff-package.md](handoff-package.md).
-
-## Skill map
-
-| Need | Where |
-| --- | --- |
-| Bounded coding | `/implement` |
-| Multi-slice coding | `/to-spec` → `/to-tickets` → `/implement` |
-| Tech multi-session fog | `/wayfinder` (rare) |
-| System test/QA | optional **`wen-test`** |
-| Product fog | team's product process (optional `/pm-intake`) |

@@ -1,55 +1,36 @@
 ---
 name: prototype
-description: Prototype logic, state, or UI for an explicit question or active Wayfinder ticket.
+description: Bounded throwaway logic/state or UI evidence for an explicit question or active Wayfinder ticket.
 ---
 
 # Prototype
 
-Build one bounded, throwaway evidence artifact that answers a concrete question.
-Run only for an explicit matching request or an active, authorized Wayfinder
-ticket.
+One disposable artifact that answers one concrete question. Only for an explicit request or active authorized Wayfinder ticket. Caller keeps tracker claims, relationships, comments, and closure.
 
-## Bound The Question
+## Bound
 
-State the question, the reaction or observation that will answer it, and the
-production surface that must remain unchanged. A Wayfinder caller retains all
-tracker claims, relationships, comments, and closure.
+State the question, the observation that answers it, and the production surface that must stay unchanged.
 
-## Pick A Branch
+## Branch
 
-Choose the branch from the question being tested:
+- Logic/state → [LOGIC.md](LOGIC.md)
+- UI/product surface → [UI.md](UI.md)
 
-- Logic/state question: load [LOGIC.md](LOGIC.md).
-- UI/product surface question: load [UI.md](UI.md).
-
-If the branch is ambiguous, infer from repo evidence. Backend services,
-state machines, data shapes, pricing rules, quotas, and permissions usually use
-the logic branch. Pages, components, dashboards, forms, and workflows usually
-use the UI branch. State an evidence-backed assumption when the user is not
-available.
+If ambiguous: services, state machines, data shapes, pricing, quotas, permissions → logic; pages, components, dashboards, forms, workflows → UI. State the assumption when the user is AFK.
 
 ## Shared Rules
 
-- Put the artifact in the repo's prototype convention or
-  `.scratch/<effort-slug>/prototype/<question-slug>/` fallback.
-- Mark its path and README as disposable, and reuse installed runtimes and
-  dependencies without changing manifests.
-- Keep production persistence and existing production behavior unchanged.
-  When persistence is the question, confine it to a disposable local file or
-  scratch database inside the artifact.
-- Build only enough interaction to answer the question. Provide one exact
-  command or URL and record the observation in the artifact's `RESULTS.md`.
-- Leave tracker state, dependency relationships, canonical specs/ADRs, and
-  production promotion to the user-invoked caller.
+- Path: project prototype convention or `.scratch/<effort-slug>/prototype/<question-slug>/`
+- Mark path + README disposable; reuse installed runtimes — no manifest changes
+- Production persistence and behavior unchanged; if persistence is the question, confine to disposable local file/DB inside the artifact
+- Only enough interaction to answer; one exact command or URL; record observation in `RESULTS.md`
+- No tracker, dependency, canonical spec/ADR, or production promotion from this skill
 
 ## Return
 
-Report:
-
-- `Artifact`: prototype directory and `RESULTS.md`
+- `Artifact`: directory + `RESULTS.md`
 - `Try it`: exact command or URL
-- `Answer`: what the prototype proved and what remains uncertain
-- `Disposition`: `keep`, `delete`, or `promote`, with a reason
+- `Answer`: proved vs still uncertain
+- `Disposition`: `keep` | `delete` | `promote` (+ reason)
 
-`Promote` recommends extracting the validated decision later; it does not
-authorize production edits, tracker mutation, or canonical publication.
+`Promote` recommends later extraction; it does not authorize production edits, tracker mutation, or canonical publication.

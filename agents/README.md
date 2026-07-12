@@ -1,6 +1,6 @@
 # Claude Code subagents (WEN) — incremental only
 
-**Canonical location in this repo:** `Agents/` (this directory).
+**Canonical location in this repo:** `agents/` (this directory).
 
 Claude Code loads project agents from `.claude/agents/`, which in this repo is
 symlinked to these files so definitions are not duplicated.

@@ -1,1 +1,1 @@
-../../Agents/Verifier.md
+../../agents/Verifier.md

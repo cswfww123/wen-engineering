@@ -1,7 +1,7 @@
 # Orchestration (subagents)
 
-Companion to [lifecycle.md](../lifecycle.md) and [Agents/README.md](../../Agents/README.md)
-(`.claude/agents/` symlinks to `Agents/` for Claude Code discovery).
+Companion to [lifecycle.md](../lifecycle.md) and [agents/README.md](../../agents/README.md)
+(`.claude/agents/` symlinks to `agents/` for Claude Code discovery).
 
 ## Rules
 

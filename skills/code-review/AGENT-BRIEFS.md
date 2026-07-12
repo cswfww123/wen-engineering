@@ -1,8 +1,8 @@
 # Agent Briefs
 
-Use these prompts as written when sub-agents are available. Pass each reviewer the same review packet: scope, diff commands or diff text, changed files, commit list, standards sources, intent evidence, project shape, and relevant project lenses.
+Use these prompts as written with the orchestration ladder in `docs/agents/orchestration.md`. **Hard try** project `Reviewer` (one instance per axis) and `Verifier` (after candidates); if missing or spawn fails, run the same brief yourself or via built-in `general-purpose`. Missing agents must not abort review. Pass each Reviewer the same review packet: scope, diff commands or diff text, changed files, commit list, standards sources, intent evidence, project shape, and relevant project lenses.
 
-Preferred execution: launch the six axis reviewers in parallel in one message so their contexts stay independent. Fallback: run the same six reviewers sequentially, preserving their labels and outputs. If no agent tool exists, run the briefs yourself one at a time. Run the Verification Reviewer only after collecting candidate findings.
+Preferred execution: launch the six axis Reviewers in parallel in one message so their contexts stay independent. Fallback: sequential axis briefs in the parent. Run the Verification Reviewer / `Verifier` only after collecting candidate findings. Authorized fixes after review use project `Executor` (see code-review skill Auto-fix), not a second Reviewer.
 
 ## Intent Reviewer
 

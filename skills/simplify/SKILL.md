@@ -23,3 +23,5 @@ Do **not** change intended behavior, public contracts, auth, validation, migrati
 ## Fix
 
 Small behavior-preserving fixes only. Skip product choices, broad refactors, correctness bugs, security decisions. Run smallest relevant verification. Report fixed / skipped / verification.
+
+Multi-file or non-trivial cleanup: **hard try** project `Executor` per `docs/agents/orchestration.md` (then general-purpose → parent). Never abort simplify if `Executor` is missing.

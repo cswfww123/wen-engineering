@@ -72,18 +72,18 @@ For a new project, run **`/setup-project-harness`** in the target project after 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
 - the five triage roles used by `/to-tickets`, `/implement`, and tracker adapters
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
-- `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and focused `.agents/rules/**`
+- `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and failure pins only when justified (Checklist first; long classifiers under `.agents/rules/` rarely)
 
-That is the fast path. After setup, agents know where project instructions live, which rules to load, and which commands prove their work.
+That is the fast path. After setup, agents know where project wiring lives; prove-work commands stay in README/scripts/CI.
 
 ### Empty Project Routing
 
 For an empty project, choose `/setup-project-harness` or a short technical grill based on what is already known:
 
-- If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `.agents/rules/**`, and local scratch space.
+- If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and local scratch space.
 - If only a product goal is known and value/user/outcome are still open (**HEAVY**), start full PM (`wen-pm` `/pm-intake` or team process) — never invent answers; then enter LIGHT coding.
-- If stack choices are open, run a short `/grilling` pass, then `/setup-project-harness`.
-- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue grilling after the harness exists.
+- If stack choices are open, run a short `/grill-me` pass, then `/setup-project-harness`.
+- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue `/grill-me` after the harness exists.
 
 Rule of thumb: no workbench → setup; daily coding → LIGHT from `/implement` up; fuzzy product need → HEAVY PM first; multi-session eng fog → Wayfinder.
 
@@ -106,14 +106,14 @@ Full detail: [docs/lifecycle.md](docs/lifecycle.md),
 ```text
 L1  bug | clear AC        → /implement
 L2  settled multi-slice   → /to-spec → /to-tickets → /implement
-G   same-session pin      → /grilling   (in the flow)
+G   same-session pin      → /grill-me   (in the flow)
 L3  mild intent gap       → /product-fog → one next (often G)
 L4  multi-session eng fog → /wayfinder → L2     (try G first)
 ```
 
 - **L1:** one context, evidence loop, `/code-review`. No invented ticket.
 - **L2:** settled package from any source (PM handoff, PRD, docs, chat AC). FE/BE gates at ticket layer. Optional `wen-test` for system QA.
-- **G:** same-session grilling + domain docs — first-class LIGHT tool when a few user-owned decisions remain; not a substitute for HEAVY PM.
+- **G:** same-session `/grill-me` with `/domain-modeling` active — first-class LIGHT tool when a few user-owned decisions remain; not a substitute for HEAVY PM.
 - **L3:** coding-adjacent pin only (rework / mild Expected). Never invent Expected. Often routes to **G**.
 - **L4:** product settled enough; technical route still multi-session foggy.
 
@@ -133,21 +133,22 @@ If PM is missing: stop, name the evidence gap — optional `/product-fog` only t
 `/to-spec` replaces `/to-prd`, and `/to-tickets` replaces `/to-issues`. The old
 slash commands are retired, while existing `PRD.md`, `issues/`, links, and
 tracker objects remain valid legacy inputs and are never renamed in place.
-Sync removes managed copies of the retired commands; an unmarked same-name
-canonical skill blocks normal sync, while `--force` backs it up outside the
-active skills root before removal.
+`/grill-me` replaces `/grilling` (same interview protocol). Sync removes managed
+copies of the retired commands; an unmarked same-name canonical skill blocks
+normal sync, while `--force` backs it up outside the active skills root before
+removal.
 
 ## Local Workspace
 
 Common skills:
 
-- `/alignment-review` reviews specs, tickets, and test plans for intent, coverage, repo evidence, and execution fit.
+- `/alignment-review` reviews specs and tickets for intent, coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
-- Domain language lives in `CONTEXT.md` / `docs/adr/` (see `docs/agents/domain.md`); update inline when terms crystallize.
+- `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
-- `/grilling` stress-tests an engineering plan (same-session pin); domain docs update via AGENTS habit.
+- `/grill-me` stress-tests an engineering plan (same-session pin) with `/domain-modeling` active.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
@@ -164,10 +165,10 @@ Common skills:
 
 The harness skill creates:
 
-- `AGENTS.md` as the shared entrypoint and source of truth
+- `AGENTS.md` as the shared entrypoint: path wiring + optional failure Checklist
 - `CLAUDE.md` linked to `AGENTS.md`
-- detailed standards under `.agents/rules/`
-- rule files split by language or domain, such as `typescript/`, `java/`, `frontend/`, `backend/`, `api/`, `database/`, `testing/`, `invariants/`, or `skills/`
+- tracker / labels / domain docs under `docs/agents/`
+- `.agents/rules/**` only when a real failure needs more than a Checklist line (e.g. `invariants/`)
 
 ## Why This Exists
 
@@ -177,7 +178,7 @@ AI agents fail in predictable ways.
 
 Most projects do not fail because the model cannot write code. They fail because the model does not know the local boundary: which layer owns the logic, which naming convention matters, which command proves success, which tradeoff the team already made.
 
-The fix is a project harness: a small `AGENTS.md` entrypoint plus focused `.agents/rules/**` files that capture the decisions future agents would otherwise rediscover or contradict.
+The fix is a project harness: a small `AGENTS.md` entrypoint (wiring + depreciating Checklist pins) plus docs for tracker/domain detail — not a growing rules constitution.
 
 ### #2: The User And Agent Did Not Align
 
@@ -185,30 +186,29 @@ Users often know what good feels like before they can state it as a spec. Agents
 
 The fix is an interview-driven setup. The skill reads the repo first, brings recommended defaults when evidence supports them, then grills only the decisions the repo cannot answer.
 
-### #3: Rules Became A Cage
+### #3: Permanent Instructions Became Noise
 
-Too many harnesses overcorrect. They replace judgment with checklists and make the agent worse.
+Too many harnesses overcorrect. They dump generic best practices into always-loaded context and make the agent worse.
 
-The fix is severity-aware rules:
+The fix is failure-driven, depreciating pins:
 
-- `[MUST]` for real correctness, consistency, safety, or maintainability boundaries
-- `[SHOULD]` for strong defaults where judgment may beat the rule
-- `[FORBID]` for known harmful choices
-
-The best rule files prevent predictable drift while leaving room for human taste and agent intelligence.
+- After a real failure → one Checklist item (or a long classifier under `.agents/rules/` only when needed)
+- When current models stop tripping → remove the pin
+- Never restate model-default competence
 
 ### #4: The Codebase Lost Its Language
 
 When agents do not share the project's vocabulary, they write verbose explanations, inconsistent names, and awkward abstractions.
 
-The fix is progressive disclosure: keep `AGENTS.md` short, put domain language in `CONTEXT.md`, architectural decisions in `docs/adr/`, and detailed standards in `.agents/rules/**`.
+The fix is progressive disclosure: keep `AGENTS.md` short, put domain language in `CONTEXT.md`, architectural decisions in `docs/adr/`, and load long boundaries only when work matches (e.g. invariants).
 
 ## Skills
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs, tickets, and test plans for intent, coverage, evidence, and execution fit.
-- [`grilling`](skills/grilling/SKILL.md) — one-question-at-a-time interview protocol for same-session plan pins (LIGHT G); domain glossary/ADR via AGENTS habit.
+- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs and tickets for intent, coverage, evidence, and execution fit.
+- [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
+- [`grill-me`](skills/grill-me/SKILL.md) — one-question-at-a-time interview protocol for same-session plan pins (LIGHT G); runs with `/domain-modeling` active.
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
 - [`wayfinder`](skills/wayfinder/SKILL.md) — multi-session discovery map until an honest coding spec is writable.
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
@@ -259,11 +259,6 @@ AGENTS.md
 CLAUDE.md -> AGENTS.md
 .agents/
   rules/
-    project/
-      agent-workflow.md
-    skills/
-      authoring.md
-      review.md
     invariants/
       invariants.md
 docs/
@@ -277,9 +272,6 @@ docs/
     domain.md
     issue-tracker.md
     triage-labels.md
-  domain/
-    ADR-FORMAT.md
-    CONTEXT-FORMAT.md
   lifecycle.md
   boundaries.md
   handoff-package.md
@@ -304,7 +296,11 @@ skills/
     SKILL.md
     scripts/
       hitl-loop.template.sh
-  grilling/
+  domain-modeling/
+    ADR-FORMAT.md
+    CONTEXT-FORMAT.md
+    SKILL.md
+  grill-me/
     SKILL.md
   handoff/
     SKILL.md

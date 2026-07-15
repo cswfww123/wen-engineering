@@ -53,7 +53,7 @@ Subtype: n/a
 ID: <stable tracker reference or local ID>
 Runnable: no
 Mode: AFK | HITL
-Discipline: research | prototype | grilling | task
+Discipline: research | prototype | grill-me | task
 Origin: none
 Parent: <map reference>
 Blocked by: None | <discovery ticket references>
@@ -96,7 +96,7 @@ Choose the smallest discipline that can satisfy the Resolution Signal:
 | --- | --- | --- | --- |
 | `research` | AFK | Cited primary-source artifact via `/research` | Settling taste, UX feel, or user-owned trade-offs |
 | `prototype` | HITL | Disposable artifact + user reaction via `/prototype` | Production code, shared schema, or permanent UI |
-| `grilling` | HITL | Recorded user decision (repo evidence first) | Questions the codebase already answers |
+| `grill-me` | HITL | Recorded user decision (repo evidence first) | Questions the codebase already answers |
 | `task` | AFK/HITL | Facts from a prerequisite action that unblocks a decision | Delivering the destination or shipping a slice |
 
 `task` earns its place only by unblocking a later decision (access, sample data,

@@ -1,6 +1,6 @@
 ---
 name: setup-project-harness
-description: Strictly set up AGENTS.md, CLAUDE.md, docs/agents, and .agents/rules for Codex or Claude projects.
+description: Strictly set up AGENTS.md, CLAUDE.md, and docs/agents for Codex or Claude projects.
 disable-model-invocation: true
 ---
 
@@ -16,12 +16,12 @@ then write after the user accepts the draft.
 
 Create or update only the harness files the repo actually needs:
 
-- `AGENTS.md` as the shared project instruction entrypoint
+- `AGENTS.md` as the shared project instruction entrypoint (wiring + optional failure Checklist)
 - `CLAUDE.md` as a symlink to `AGENTS.md`, or a one-line pointer when symlinks are unavailable
 - `docs/agents/issue-tracker.md`
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
-- focused `.agents/rules/**` files for concrete project boundaries
+- `.agents/rules/**` only when a real failure needs more than a Checklist line
 
 Do not add rule directories, commands, dependencies, abstractions, or docs that
 repo evidence or a user decision does not justify.
@@ -43,14 +43,14 @@ in place or reinitialize. Never silently overwrite user-authored content.
 
 - Prefer small, boring, reversible changes.
 - Read repo evidence before asking. Ask only when the repo cannot answer.
-- Record exact commands only when found in repo evidence or supplied by the user.
-- Keep `AGENTS.md` short: wiring + failure-driven Mistakes only (see `AGENTS_TEMPLATE.md`).
+- Record exact commands in README / scripts / CI when proven; do not dump defaults into `AGENTS.md`.
+- Keep `AGENTS.md` short: path Wiring + optional failure Checklist only (see `AGENTS_TEMPLATE.md`).
+- Checklist pins depreciate: add after a real failure; remove when current models stop tripping.
 - Do not paste generic best practices into `AGENTS.md` or rules; models already do those.
-- Create rules only for drift risks proven by real failures or hard repo boundaries.
+- Prefer Checklist over rule files; create `.agents/rules/**` only when a failure needs a long classifier.
 - Use `[MUST]` and `[FORBID]` sparingly; prefer `[SHOULD]` when judgment may win.
 - Trace real call paths before encoding behavior that depends on them.
 - Treat deterministic lifecycle enforcement as CI, hook, or platform work; do not rely on memory text for it.
-- Permanent instructions depreciate: prune what the current model already does; empty-rewrite when the file bloats.
 
 ## Workflow
 
@@ -60,7 +60,7 @@ in place or reinitialize. Never silently overwrite user-authored content.
 4. **Draft** - prepare all target file contents before writing. Use [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md), [RULE_TEMPLATE.md](RULE_TEMPLATE.md), [TRACKER_CONTRACT.md](TRACKER_CONTRACT.md), and the tracker/domain templates.
 5. **Confirm** - show the complete draft and merge plan. Let the user edit it before writing.
 6. **Write** - preserve useful existing content, make the smallest file changes, and keep `CLAUDE.md` aligned with `AGENTS.md`.
-7. **Verify** - run the harness checks and any exact repo commands recorded in `AGENTS.md`.
+7. **Verify** - run the harness checks and any exact repo commands from README / scripts / user.
 8. **Report** - list changed files, decisions, verification evidence, and remaining open questions.
 
 ## References

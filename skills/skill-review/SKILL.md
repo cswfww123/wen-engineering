@@ -24,7 +24,7 @@ In order:
 - **Judgment / user bridge**: guide without replacing reasoning; ask/clarify instead of silent assumption.
 - **Evidence / outputs**: read repo before claims/edits; name the resulting artifact, decision, review, or action.
 - **Side effects**: mutations stay in authorized scope. Research/prototype are evidence-only (no tracker/canonical/deploy/production mutation). Code disciplines verify + rollback or behavior-preservation. Destructive work needs explicit authority.
-- **Structure / language**: valid frontmatter; one-level references; concise English; no generic best-practice dumps or no-ops the current model already obeys.
+- **Structure / language**: valid frontmatter; description length (prefer ≤120, hard ≤180); one-level references; README/index consistency when the pack lists the skill; concise English; no generic best-practice dumps or no-ops the current model already obeys.
 
 
 ### 3. Report

@@ -23,7 +23,7 @@ Subagent dispatch: `docs/agents/orchestration.md` (required try / soft fail).
 
 ### 2. Evidence
 
-Collect only what the changed files need: standards (`AGENTS.md`, `.agents/rules/**`, `CONTEXT.md`, ADRs, machine config), intent (spec/ticket/legacy source/user decisions), project shape for touched paths, and nearby comments/history. When behavior crosses entrypoints, Mapper/DAO, converters, permissions, async, or side effects, trace the entrypoint first.
+Collect only what the changed files need: `AGENTS.md` Checklist if present, matching path docs (`CONTEXT.md`, ADRs, machine config, failure-driven `.agents/rules/**` only when the diff matches), intent (spec/ticket/legacy source/user decisions), project shape for touched paths, and nearby comments/history. When behavior crosses entrypoints, Mapper/DAO, converters, permissions, async, or side effects, trace the entrypoint first.
 
 Treat formatters, linters, typecheckers, and tests as verification tools — do not re-report what CI plainly catches unless the user asked.
 

@@ -86,8 +86,8 @@ When a live ticket turns out past the destination:
 
 ## HITL means human
 
-For `grilling` and `prototype`, the agent never stands in for the human. A
-grilling agent that answers its own questions has broken the contract. AFK
+For `grill-me` and `prototype`, the agent never stands in for the human. A
+grill-me agent that answers its own questions has broken the contract. AFK
 `research` / `task` may run alone inside the ticket bound.
 
 Never invent market bets, user value, or Expected after rejection — only record

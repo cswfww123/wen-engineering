@@ -41,19 +41,6 @@ Use this only when the core workflow needs sharper review prompts.
 - The reported human frontier contains only open, unblocked, unclaimed HITL tickets with a named judgment or manual gate.
 - Acceptance criteria are observable and do not depend on reading the agent's mind.
 
-## Test Plan Review
-
-- Each test case maps to a requirement, contract, regression, or risk.
-- Traceability is stable enough to follow `source requirement -> issue/test case -> QA evidence`.
-- Every material requirement is covered by at least one case, explicitly blocked, or explicitly out of scope.
-- Positive, negative, boundary, permission, error, async, migration, performance, and regression coverage are present where the source or repo risk calls for them.
-- Tests use the highest stable seam available in the repo.
-- The plan avoids brittle checks of private implementation details unless that is the actual contract.
-- Expected results and evidence types are concrete enough for system QA
-  (`wen-test` `/qa-run` or human QA) to decide pass, fail, blocked, or not run
-  without rereading the whole planning thread.
-- Missing test data, fixtures, permissions, or environment assumptions are called out.
-
 ## Verdict Calibration
 
 - Use `Pass` only when remaining risk is ordinary implementation risk.

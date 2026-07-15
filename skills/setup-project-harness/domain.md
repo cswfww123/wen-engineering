@@ -8,7 +8,7 @@ How agents should consume and maintain this repo's domain documentation.
 - **`CONTEXT-MAP.md`** at the repo root if it exists — it points at one `CONTEXT.md` per context. Read each one relevant to the topic.
 - **`docs/adr/`** — read ADRs that touch the area you're about to work in. In multi-context repos, also check `src/<context>/docs/adr/` for context-scoped decisions.
 
-If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. Create them **lazily** when a term or hard-to-reverse decision crystallizes. Formats (when present in this pack or project): `docs/domain/CONTEXT-FORMAT.md`, `docs/domain/ADR-FORMAT.md`.
+If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. Create them **lazily** when a term or hard-to-reverse decision crystallizes. Active sharpening → `/domain-modeling`. Formats (when present in this pack or project): `skills/domain-modeling/CONTEXT-FORMAT.md`, `skills/domain-modeling/ADR-FORMAT.md`.
 
 ## File structure
 

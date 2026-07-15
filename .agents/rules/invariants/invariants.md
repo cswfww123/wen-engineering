@@ -1,7 +1,7 @@
 # Shared Mutable Invariants
 
 Applies to: any work — spec, ticket, legacy PRD/issue, code, or test — that reads or writes a shared mutable invariant
-Source: billing under-charge postmortem (concurrent message billing skipped charges under fast send); `.agents/rules/project/agent-workflow.md` `[FORBID]` on broad generic rules
+Source: billing under-charge postmortem (concurrent message billing skipped charges under fast send). Failure-driven only — not a generic always-on constitution.
 
 ## Recognize — The Trigger
 

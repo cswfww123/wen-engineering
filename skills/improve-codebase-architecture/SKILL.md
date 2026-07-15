@@ -13,7 +13,7 @@ This workflow uses:
 - `/codebase-design` for module, interface, depth, seam, adapter, leverage, and locality vocabulary
 - repo tracing for representative entrypoints, call chains, queries, conversions, and side effects
 - domain habit (`docs/agents/domain.md` / `CONTEXT.md` / ADRs) for glossary awareness
-- `/grilling` after the user picks a candidate
+- `/grill-me` after the user picks a candidate
 
 ## Process
 
@@ -71,7 +71,7 @@ Do not propose interfaces yet. After the file is written, ask which candidate th
 
 ### 3. Grill The Picked Candidate
 
-Once the user picks a candidate, run `/grilling` to walk the design tree: constraints, dependencies, module shape, what sits behind the seam, and what tests survive.
+Once the user picks a candidate, run `/grill-me` to walk the design tree: constraints, dependencies, module shape, what sits behind the seam, and what tests survive.
 
 As decisions crystallize, follow the domain habit (update `CONTEXT.md` / ADRs
 inline when terms or hard-to-reverse choices settle). Load `/codebase-design`

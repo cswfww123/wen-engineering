@@ -41,7 +41,7 @@ third_party_notice_src="$repo_root/THIRD_PARTY_NOTICES.md"
 manifest_names=()
 # Names this pack no longer ships. Foreign-managed copies (e.g. .wen-pm-managed,
 # .wen-test-managed) are left untouched; only this pack's old managed copies retire.
-retired_skill_names=("to-prd" "to-issues" "to-test-plan" "qa-run" "grill-with-docs" "domain-modeling")
+retired_skill_names=("to-prd" "to-issues" "to-test-plan" "qa-run" "grill-with-docs" "grilling")
 canonical_skills_dir="${AGENTS_SKILLS_DIR:-$HOME/.agents/skills}"
 codex_skills_dir="${CODEX_SKILLS_DIR:-$HOME/.codex/skills}"
 claude_skills_dir="${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}"

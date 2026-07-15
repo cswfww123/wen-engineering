@@ -9,8 +9,10 @@ How agents should consume and maintain this repo's domain documentation.
 
 If these files do not exist, proceed silently. Do not flag their absence or
 suggest creating them upfront. Create them **lazily** when a term or hard-to-
-reverse decision actually crystallizes. Formats: `docs/domain/CONTEXT-FORMAT.md`,
-`docs/domain/ADR-FORMAT.md`.
+reverse decision actually crystallizes. Active sharpening (challenge terms,
+write glossary/ADR) → `/domain-modeling`. Formats:
+`skills/domain-modeling/CONTEXT-FORMAT.md`,
+`skills/domain-modeling/ADR-FORMAT.md`.
 
 ## File structure
 

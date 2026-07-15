@@ -81,25 +81,32 @@ Decide how to handle existing files:
 - If `CLAUDE.md` is already the correct symlink, leave it
 - If symlinks are unsupported, create a one-line stub that points to `AGENTS.md`
 
-## E — Rule Harness
+## E — Failure Pins (Checklist first)
 
-Explainer: Detailed standards do not belong in `AGENTS.md`. They live under `.agents/rules/` so agents load only the relevant boundaries.
+Explainer: Do not build a rules constitution. Prefer a short Checklist item in
+`AGENTS.md` after a real failure; prune when current models stop tripping.
+Create `.agents/rules/**` only when a pin needs a long classifier that cannot
+fit one checklist line.
 
-Decide which rule directories apply:
+Default: **no** rule directories.
 
-- `project/` — project identity, workflow, dependency policy, verification, and routing persistent multi-slice work to specs/tickets rather than the session todo
-- `skills/` — skill authoring/review rules for engineering-skills repos
-- `typescript/`, `javascript/`, `java/`, `python/` — language-specific rules
-- `frontend/`, `backend/`, `api/`, `database/`, `testing/`, `cli/`, `library/`, `monorepo/` — layer/workflow rules
-- `invariants/` — shared mutable state (balance/quota/counter/inventory/state machine). Copy or adapt this repo's `.agents/rules/invariants/` as the reference; it requires an invariant, a concurrency contract, and a concurrency test seam on any matching change
+Only when evidence justifies (postmortem / repeated failure):
 
-Use [RULE_TEMPLATE.md](RULE_TEMPLATE.md). Use `[MUST]` and `[FORBID]` only for real boundaries; use `[SHOULD]` for defaults where judgment may beat the rule.
+- `invariants/` — shared mutable state (balance/quota/counter/inventory/state machine).
+  Copy or adapt this repo's `.agents/rules/invariants/` as the reference; it requires
+  an invariant, a concurrency contract, and a concurrency test seam on matching change.
+- Language/layer rule files — only after a concrete, recurring drift risk in this repo;
+  never generic best practices the model already knows.
+
+Use [RULE_TEMPLATE.md](RULE_TEMPLATE.md) when a file is justified. Prefer Checklist
+over rule files. Do not invent project workflow routers or skill pipelines as rules.
 
 ## F — Project Commands And Verification
 
-Explainer: Agents need exact commands that prove work is correct. Only record commands found in repo evidence or supplied by the user.
+Explainer: Exact prove-work commands belong in README / scripts / CI, not in
+always-loaded `AGENTS.md`. Only record what repo evidence or the user supplies.
 
-Confirm:
+Confirm (write to README or harness notes, not AGENTS unless non-inferable):
 
 - install command
 - dev command

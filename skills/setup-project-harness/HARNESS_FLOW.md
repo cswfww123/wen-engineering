@@ -96,18 +96,18 @@ user-authored sections.
 
 ### `AGENTS.md`
 
-- Wiring + mistakes only (see `AGENTS_TEMPLATE.md`). Prefer under ~40 lines.
-- Include: one-line identity, short Route, Wiring pointers, empty Mistakes, proven Commands.
+- Path Wiring + optional Checklist only (see `AGENTS_TEMPLATE.md`). Prefer under ~15 lines.
+- Include: one-line identity, non-inferable path pointers. Omit Route, Commands, Rules, Mistakes essays.
+- Checklist only for real failure pins; omit when empty; prune when current models stop tripping.
 - Do not paste generic best practices or a long References list.
-- Do not duplicate detailed rule content from `.agents/rules/**`.
 
 ### `.agents/rules/**`
 
-- Create only directories that apply.
-- Use `RULE_TEMPLATE.md`.
-- Include source evidence or user decision.
-- Include verification when a rule can be checked.
-- Split unrelated languages, layers, or workflows into separate files.
+- Default: create **nothing**. Most competence is model-default.
+- Add a rule file only for a concrete failure that cannot fit a one-line Checklist
+  (e.g. shared mutable invariants with a long classifier). Prefer Checklist first.
+- Use `RULE_TEMPLATE.md` when a file is justified. Include source evidence (postmortem).
+- Do not invent workflow constitutions, LIGHT/HEAVY routers, or generic best-practice dumps.
 
 ### `CLAUDE.md`
 
@@ -153,10 +153,10 @@ Report:
 - issue tracker choice
 - triage labels
 - domain doc layout
-- rule directories created
+- Checklist pins / any rare rule files created
 - verification evidence
 - remaining open decisions
 
-Mention that users can later edit `docs/agents/*.md`, `.agents/rules/**`, and
-`AGENTS.md` directly. Re-run this skill only when switching trackers, changing
-domain layout, or reinitializing the harness.
+Mention that users can later edit `docs/agents/*.md` and `AGENTS.md` Checklist
+directly. Re-run this skill only when switching trackers, changing domain layout,
+or reinitializing the harness.

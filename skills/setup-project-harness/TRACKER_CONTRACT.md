@@ -11,7 +11,7 @@ all five artifact kinds as issues; the workflow still treats them differently.
   vertical slice; expand-contract permits the named behavior-preserving
   mechanical exception
 - `Kind: wayfinder-map` — durable index of discovery decisions
-- `Kind: wayfinder-ticket` — one research, prototype, grilling, or prerequisite task
+- `Kind: wayfinder-ticket` — one research, prototype, grill-me, or prerequisite task
 - `Kind: bug-report` — confirmed defect intake that is not yet one-context executable
 
 Only an open `implementation-ticket` with `Mode: AFK` may enter the

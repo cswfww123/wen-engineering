@@ -33,7 +33,7 @@ full PM (or disposition `Escalate-PM` / `Discovery` / `Pause` / `Kill` only).
 | Disposition | Next |
 | --- | --- |
 | `pure-eng` | `/implement` or `/to-spec` |
-| `Align` | `/grilling` or `/wayfinder` |
+| `Align` | `/grill-me` or `/wayfinder` |
 | `Build-ready` | `/to-spec` |
 | `Discovery` / `Pause` / `Kill` / `Escalate-PM` | stop with named reason or PM |
 

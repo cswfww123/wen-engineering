@@ -1,43 +1,28 @@
 # AGENTS.md Template
 
-Stable shape for generated `AGENTS.md`. **Wiring + mistakes only** — not a coding
-constitution. Prefer empty-rewrite over accretion. Put detail in `docs/agents/`
-and (only when failure-driven) `.agents/rules/`.
+Stable shape for generated `AGENTS.md`. **Path wiring + optional checklist only** —
+not a coding constitution, not a skill router, not a rules dump.
 
-Do **not** paste generic best practices (small diffs, security, a11y, reuse
-stdlib). Models already do those. Add permanent lines only when:
+Prefer empty-rewrite over accretion. Failure pins go in Checklist; if a pin stays
+green for a while on current models, remove it. Detail lives in docs/skills when
+needed — not in the always-loaded entrypoint.
 
-1. the repo proved a fact the model cannot infer (tracker, route, exact command), or
-2. the model already failed here and the fix is a short, checkable checklist item.
+Do **not** paste generic best practices, skill pipelines, default shell commands,
+or "read all rules" pointers. Add a line only when the repo proved a non-inferable
+fact or a real failure needs a short checkable item.
 
 ```markdown
 # AGENTS.md
 
 [One sentence: what this repo is, main stack, and workspace shape.]
 
-## Route
-
-- **LIGHT (default):** clear bug/AC → `/implement`; multi-slice → `/to-spec` → `/to-tickets` → `/implement`; same-session pin → `/grilling`; mild coding intent gap → `/product-fog`; multi-session eng fog → `/wayfinder` (prefer grill first).
-- **HEAVY:** fuzzy product need → full PM (`wen-pm` `/pm-intake` or team process) first. Never invent Expected, user value, or market bets.
-- Durable work lives in specs, tickets, or Wayfinder maps — not session todos.
-
 ## Wiring
 
-- Tracker / labels / domain: `docs/agents/issue-tracker.md`, `triage-labels.md`, `domain.md`
-- Domain habit: when terms matter, read `CONTEXT.md` / `docs/adr/` (see `docs/agents/domain.md`). On conflict, ask. When a term or hard-to-reverse decision crystallizes, update glossary/ADR inline — no invented language, no batch-at-end dumps.
-- Project constraints: `.agents/rules/**` (read only when the edit matches)
-- Keep this file short. Permanent instructions depreciate — prune what the current model already does.
+- Tracker / labels / domain: `docs/agents/`
 
-## Mistakes
+## Checklist
 
-Failure-driven only. Add a line when the model already failed here and will likely fail again; delete when a newer model no longer trips. Prefer a checkable command or a hard forbid.
-
-- [ ] [empty at setup — fill from real failures only]
-
-## Commands
-
-[List only exact commands proven by repo evidence or supplied by the user.
-If none: "No package/build/test commands are configured."]
+- [ ] [omit this section when empty — add only from real failures; prune when stable]
 ```
 
 ## Section notes
@@ -45,10 +30,11 @@ If none: "No package/build/test commands are configured."]
 | Section | Purpose | Default |
 | --- | --- | --- |
 | Identity | One-line project fact | Always |
-| Route | Wen pack product boundary (not general coding advice) | Always when this pack is installed |
-| Wiring | Pointers skills hard-depend on | Always; no prose essays |
-| Mistakes | Error notebook / checklist | Empty at setup; grow from failures only |
-| Commands | Exact prove-work commands | Proven only; omit inventing |
+| Wiring | Non-inferable path pointers only | Always if paths exist; no process essays |
+| Checklist | Failure pins that change behavior | Omit when empty; prune when models stop tripping |
 
-Omit a long `## References` list — link paths inside Wiring/Route when needed.
-When `triage` is not installed, omit `triage-labels.md` from Wiring.
+Omit `## Route`, `## Commands`, `## Mistakes`, `## Rules`, and long `## References`.
+Commands belong in README / scripts / CI. Optional long boundaries (e.g. shared
+mutable invariants) live under `.agents/rules/invariants/` only when failure-driven
+and are discovered by matching skills — not listed as always-load constitution.
+When `triage` is not installed, omit triage labels from Wiring.

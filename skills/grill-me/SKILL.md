@@ -1,17 +1,18 @@
 ---
-name: grilling
+name: grill-me
 description: One-question-at-a-time interview protocol. Use for plan sharpening, design pins, or same-session decisions.
 ---
 
-# Grilling
+# Grill Me
 
 Interview until shared understanding: one question at a time, wait for feedback,
 walk design-tree branches and resolve decision dependencies. Always include a
 recommended answer.
 
-Domain habit (glossary/ADR): follow `AGENTS.md` Wiring and `docs/agents/domain.md`
-— challenge fuzzy terms, update inline when they crystallize. Formats:
-`docs/domain/CONTEXT-FORMAT.md`, `docs/domain/ADR-FORMAT.md`.
+Run with `/domain-modeling` active: load both skills and follow them together.
+Whenever domain terms appear, apply `/domain-modeling` — challenge fuzzy
+language, propose precise terms, update `CONTEXT.md` / ADRs inline as they
+crystallize. Not a separate phase.
 
 Routing / anti-invention: `docs/lifecycle.md`.
 
@@ -38,9 +39,9 @@ If unconfident, say what evidence would resolve it and whether it lives in the r
 
 ## Rules
 
-- Repo can answer → explore, report findings; do not ask. Trace entrypoints when behavior (not names) matters.
+- Repo can answer → explore via host explore worker (else parent), report findings; do not ask. Trace entrypoints when behavior (not names) matters. Pure research only — do not edit.
 - Contradiction with earlier decisions or code → state it, cite evidence, ask which way — never silent pick.
-- HEAVY fuzzy product need → full PM, not deep technical grilling. Mild unpinned intent → `/product-fog`. Multi-session fog → `/wayfinder` (do not create its map). Settled → `/to-spec` or `/implement`.
+- HEAVY fuzzy product need → full PM, not deep technical grill-me. Mild unpinned intent → `/product-fog`. Multi-session fog → `/wayfinder` (do not create its map). Settled → `/to-spec` or `/implement`.
 - Stop when an implementer can start without guessing material decisions: constraints stated/deferred, core behavior specified, edges covered or out of scope, remaining unknowns marked user-owned, or the user says stop. Do not stop merely because questions ran out.
 
 ## Done

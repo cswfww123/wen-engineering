@@ -34,7 +34,7 @@ Stop and list gaps (do not invent) when:
   (**skip** if pure UI on a pinned external contract)
 
 If not ready: route per `docs/lifecycle.md` (HEAVY PM, `/product-fog`,
-`/grilling`, `/wayfinder`, `/research`, `/prototype`).
+`/grill-me`, `/wayfinder`, `/research`, `/prototype`).
 
 Bug-report source: [BUG-REPORT-CONVERSION.md](BUG-REPORT-CONVERSION.md)
 before drafting (scope disposition + Origin reuse).

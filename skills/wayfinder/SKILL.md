@@ -10,7 +10,7 @@ Find a route to a named coding destination when the route is too foggy for an
 honest `/to-spec` and too large for one session. Map indexes decisions;
 discovery tickets own detail. **Find the way** — do not ship the destination.
 
-**LIGHT L4.** Prefer `/grilling` for same-session work. Routing /
+**LIGHT L4.** Prefer `/grill-me` for same-session work. Routing /
 anti-invention: `docs/lifecycle.md`. Requires Wayfinder ops from
 `/setup-project-harness` — read `docs/agents/issue-tracker.md` first.
 
@@ -40,12 +40,12 @@ Load [TEMPLATES.md](TEMPLATES.md) when charting or graduating tickets.
 | --- | --- | --- |
 | `research` | AFK | Primary sources outside the tree |
 | `prototype` | HITL | Disposable artifact for reaction |
-| `grilling` | HITL | User-owned product/scope/trade-off (default) |
+| `grill-me` | HITL | User-owned product/scope/trade-off (default) |
 | `task` | AFK or HITL | Prerequisite that unblocks a **decision**, not delivery |
 
 ## Chart
 
-1. Name destination with user. Still fuzzy → short `/grilling` until
+1. Name destination with user. Still fuzzy → short `/grill-me` until
    destination and out-of-scope are stable (domain habit: AGENTS / domain.md).
 2. Breadth-first across coding surface (boundary, seams, data/auth, contracts,
    migration, testability, failures). Precise → candidate tickets; imprecise →
@@ -66,7 +66,7 @@ Load [TEMPLATES.md](TEMPLATES.md) when charting or graduating tickets.
 3. Resolve exactly that ticket:
    - `research` / AFK → `/research`
    - `prototype` / HITL → `/prototype` + user reaction
-   - `grilling` / HITL → one evidence-backed question at a time (repo first)
+   - `grill-me` / HITL → one evidence-backed question at a time (repo first)
    - `task` → only ticket-authorized inspection/disposable setup; never destination delivery
 4. Gate on `Resolution Signal`. Insufficient → partial evidence, keep open,
    release claims, report blocker, stop. Sufficient → one resolution comment,

@@ -1,27 +1,41 @@
 #!/usr/bin/env bash
+# Human-in-the-loop reproduction loop.
+# Copy this file, edit the steps below, and run it.
+# The agent runs the script; the user follows prompts in their terminal.
+#
+# Usage:
+#   bash hitl-loop.template.sh
+#
+# Two helpers:
+#   step "<instruction>"          → show instruction, wait for Enter
+#   capture VAR "<question>"      → show question, read response into VAR
+#
+# At the end, captured values are printed as KEY=VALUE for the agent to parse.
+
 set -euo pipefail
 
 step() {
   printf '\n>>> %s\n' "$1"
-  read -r -p " [Enter when done] " _
+  read -r -p "    [Enter when done] " _
 }
 
 capture() {
-  local var="$1"
-  local question="$2"
-  local answer
+  local var="$1" question="$2" answer
   printf '\n>>> %s\n' "$question"
-  read -r -p " > " answer
+  read -r -p "    > " answer
   printf -v "$var" '%s' "$answer"
 }
 
-# Copy this file, replace the example steps, and run it.
-# The user follows the prompts; the agent parses the captured output.
+# --- edit below ---------------------------------------------------------
 
-step "Open the application and navigate to the failing flow."
-capture REPRODUCED "Did the reported bug reproduce? (y/n)"
-capture SYMPTOM "Paste the exact error message, wrong output, or visible symptom:"
+step "Open the app at http://localhost:3000 and sign in."
+
+capture ERRORED "Click the 'Export' button. Did it throw an error? (y/n)"
+
+capture ERROR_MSG "Paste the error message (or 'none'):"
+
+# --- edit above ---------------------------------------------------------
 
 printf '\n--- Captured ---\n'
-printf 'REPRODUCED=%s\n' "$REPRODUCED"
-printf 'SYMPTOM=%s\n' "$SYMPTOM"
+printf 'ERRORED=%s\n' "$ERRORED"
+printf 'ERROR_MSG=%s\n' "$ERROR_MSG"

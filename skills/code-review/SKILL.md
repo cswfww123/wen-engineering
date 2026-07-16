@@ -1,90 +1,126 @@
 ---
 name: code-review
-description: Reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
+description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
 ---
 
-# Code Review
+Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
-Review changed code against repo evidence. Default to local changes; keep findings high-confidence (`>=80`). Standalone review is report-only. Auto-fix only when the user authorized review fixes or `/implement` supplied an already-authorized code-change scope.
+- **Standards** — does the code conform to this repo's documented coding standards?
+- **Spec** — does the code faithfully implement the originating issue / PRD / spec?
 
-When `/implement` loads this skill, use its recorded ticket fixed point and return a completion verdict; `/implement` owns tracker state.
+Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-Load on demand: [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-AXES.md), [PROJECT-LENSES.md](PROJECT-LENSES.md).
-Subagent dispatch: `docs/agents/orchestration.md` (required try / soft fail).
+The issue tracker should have been provided to you — run `/setup-project-harness` if `docs/agents/issue-tracker.md` is missing.
 
-## Workflow
+## Process
 
-### 1. Scope
+### 1. Pin the fixed point
 
-- Use the user's fixed point when given; otherwise local staged + unstaged (`git diff --cached`, `git diff`) and status.
-- Branch: `git diff <fixed-point>...HEAD` and `git log <fixed-point>..HEAD --oneline`.
-- GitHub PR: follow `docs/agents/issue-tracker.md` when present; prefer `gh` for metadata/diff/comments. Do not post a public review on closed, draft, automated, very small, or already-reviewed-by-this-agent PRs unless the user confirms.
-- If no PR, no local diff, and no fixed point — ask what to review against.
+Whatever the user said is the fixed point — a commit SHA, branch name, tag, `main`, `HEAD~5`, etc. If they didn't specify one, ask for it.
 
-### 2. Evidence
+Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 
-Collect only what the changed files need: `AGENTS.md` Checklist if present, matching path docs (`CONTEXT.md`, ADRs, machine config, failure-driven `.agents/rules/**` only when the diff matches), intent (spec/ticket/legacy source/user decisions), project shape for touched paths, and nearby comments/history. When behavior crosses entrypoints, Mapper/DAO, converters, permissions, async, or side effects, trace the entrypoint first.
+Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here — not inside two parallel sub-agents.
 
-Treat formatters, linters, typecheckers, and tests as verification tools — do not re-report what CI plainly catches unless the user asked.
+### 2. Identify the spec source
 
-### 3. Passes (hard try Reviewer)
+Look for the originating spec, in this order:
 
-Build one review packet (diff commands, files, commits, standards, intent, shape, stack lenses). Axes: **Intent**, **Correctness**, **Ponytail**, **Performance**, **Security**, **Standards** — detail in [REVIEW-AXES.md](REVIEW-AXES.md) and [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
+1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.) — fetch via the workflow in `docs/agents/issue-tracker.md`.
+2. A path the user passed as an argument.
+3. A PRD/spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
+4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
-For each axis:
+### 3. Identify the standards sources
 
-1. **Try** pack role `Reviewer` (`agents/Reviewer.md`) with the full packet + that axis brief (launch all six in parallel when the host allows).
-2. If `Reviewer` missing / spawn fails → parent runs that axis brief in-session (or sequential).
-3. **Never** abort review because `Reviewer` is undefined.
+Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
 
-### 4. Validate (hard try Verifier)
+On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below — a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 
-After candidates are collected:
+- **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation — and, like any standard here, skip anything tooling already enforces.
 
-1. **Try** pack role `Verifier` (`agents/Verifier.md`) with candidates + same fixed point / packet.
-2. If missing / spawn fails → parent runs the Verification Reviewer brief from [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
-3. Keep a finding only when it: touches the diff (or is a direct consequence); cites rule/spec/code/history/runtime evidence; is not pre-existing, intentional scope, tooling noise, or a low-impact nit; scores confidence `>=80` per [REVIEW-AXES.md](REVIEW-AXES.md).
-4. Re-check PR eligibility before posting comments.
+Each smell reads *what it is* → *how to fix*; match it against the diff:
 
-### 5. Auto-fix (hard try Executor when authorized)
+- **Mysterious Name** — a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
+- **Duplicated Code** — the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
+- **Feature Envy** — a method that reaches into another object's data more than its own. → move the method onto the data it envies.
+- **Data Clumps** — the same few fields or params keep travelling together (a type wanting to be born). → bundle them into one type, pass that.
+- **Primitive Obsession** — a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
+- **Repeated Switches** — the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
+- **Shotgun Surgery** — one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
+- **Divergent Change** — one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
+- **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
+- **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
+- **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
+- **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-**Authority required:** user asked to fix (“修一下”, “fix these”, …), or `/implement` authorized in-scope fixes for this fixed point. Without authority → report-only; skip this section.
+### 4. Spawn both sub-agents in parallel
 
-**Contract** — every applied fix must change **how**, never **what**: preserve features, outputs, return values, error modes, and side effects; do not add/remove/reorder business logic, authz, validation, or data transforms; introduce no new external calls, file writes, or state mutations. If any part cannot be verified, stay report-only.
+Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
 
-**Eligible only if all hold:** authority; confidence `>=80`; local to changed lines, single function or smaller; behavior contract satisfied; exact hunk revertible; a test/typecheck/lint can confirm.
+**Standards sub-agent prompt** — include:
 
-Prefer auto-fixing eligible Ponytail and Standards. Correctness/Performance/Security only when mechanical, local, and behavior-preserving.
+- The full diff command and commit list.
+- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full — the sub-agent has no other access to it.
+- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
-**Never auto-fix:** public PR/branch audits; migrations/schema; security architecture; business logic or product behavior; cross-module refactors; public API contracts; ambiguous multi-approach fixes; code outside this session/diff.
+**Spec sub-agent prompt** — include:
 
-**Dispatch:**
+- The diff command and commit list.
+- The path or fetched contents of the spec.
+- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
 
-1. **Try** pack role `Executor` (`agents/Executor.md`) with: fixed point, eligible findings (file/line, fix direction), fix contract above, verify commands, **no tracker authority**.
-2. Else host general multi-step worker with the same brief.
-3. Else parent applies fixes in-session.
-4. **Never** abort because `Executor` is missing.
+If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
-**Per fix (whoever applies):** one finding, one hunk → verify immediately → on failure revert only that hunk → never path-level checkout/reset without user approval. After all eligible fixes, report fixed/skipped/remaining. If fixes landed, re-run Validate (`Verifier` ladder) on the new diff when practical.
+### 5. Aggregate
 
-### 6. Report
+Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate (see _Why two axes_).
 
-Findings first, by severity:
+End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
 
-```markdown
-### <severity>: <one-line summary>
+## Why two axes
 
-- **File**: `path/to/file.ext:line`
-- **Evidence**: <what you saw and where>
-- **Why it matters**: <concrete impact>
-- **Fix direction**: <smallest useful fix>
-- **Status**: auto-fixed / report-only / needs-user-decision
-```
+A change can pass one axis and fail the other:
 
-Verdict:
+- Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
+- Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
 
-- `Pass` — no validated blocking finding; every auto-fix verified
-- `Changes Required` — a validated finding blocks completion
-- `Needs User Decision` — behavior/trade-off evidence cannot decide
+Reporting them separately stops one axis from masking the other.
 
-If nothing survives validation, say so and note skipped axes or unrun verification. Note which agents ran or which fallback was used. This skill never closes a ticket. For GitHub comments, cite full commit SHA links and line ranges.
+## WEN process (required)
+
+Keep Matt's two axes (Standards + Spec) and process steps 1–5 above. This section
+binds **how** subagents are used when the host has a spawn runtime.
+
+### Hard-try Reviewer / Verifier
+
+**Before** step 5 Aggregate, load [DISPATCH.md](DISPATCH.md) and:
+
+1. **Must try** parallel subagents for **Standards** and **Spec** (Matt step 4).
+   Prefer pack role `Reviewer` per axis; else host `general-purpose` / multi-step
+   worker with Matt's prompts **or** [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
+2. Optional extra axes after Standards/Spec when warranted:
+   **Correctness**, **Performance**, **Security**, **Ponytail** — same hard-try;
+   report each under its own heading (no cross-axis renorming). Detail:
+   [REVIEW-AXES.md](REVIEW-AXES.md), [PROJECT-LENSES.md](PROJECT-LENSES.md).
+3. After candidates: **must try** pack `Verifier` (or parent Verification
+   Reviewer). Keep findings only at confidence `>=80`.
+4. Soft fail only after an attempt (or when no subagent runtime exists). Never
+   abort because pack roles are undefined.
+5. **Forbidden:** parent solo-reviews a non-empty diff while a subagent runtime
+   exists without at least one Reviewer (or host-general) attempt.
+
+### Default scope and auto-fix
+
+- If no fixed point is given, review local staged + unstaged (`git diff --cached`,
+  `git diff`) and status; for a branch, use three-dot against the named base.
+- Standalone review is **report-only**. Auto-fix only when the user authorized
+  fixes or `/implement` supplied an already-authorized code scope; preserve
+  **how not what**; prefer small Ponytail/Standards fixes. Hard-try `Executor`
+  for authorized fixes ([DISPATCH.md](DISPATCH.md)). Never auto-fix on public
+  PR audits without explicit ask.
+- This skill never closes a ticket. When loaded from `/implement`, return
+  `Pass` / `Changes Required` / `Needs User Decision`.
+- Final report **must** include **`agents used`** (Reviewer / Verifier /
+  host-general / parent-fallback per axis).

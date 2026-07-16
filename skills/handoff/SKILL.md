@@ -1,29 +1,16 @@
 ---
 name: handoff
-description: Write a compact handoff for a fresh agent.
+description: Compact the current conversation into a handoff document for another agent to pick up.
 argument-hint: "What will the next session be used for?"
 disable-model-invocation: true
 ---
 
-# Handoff
+Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
 
-Write a compact handoff so a fresh agent can continue. Save under OS temp
-(`$TMPDIR` / `/tmp` / `%TEMP%`): `<tmpdir>/handoff-<timestamp>.md`. Open it and
-return the absolute path.
+Include a "suggested skills" section in the document, which suggests skills that the agent should invoke.
 
-User arguments = next-session focus. **Reference** specs, tickets, maps, ADRs,
-commits, diffs by path/URL — do not restate them. Redact secrets and PII.
-Target **under 1500 words**.
+Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
 
-## Fields
+Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
 
-```markdown
-# Handoff
-## Objective          # one sentence
-## Repo Context       # branch, 2–3 commits, session-changed files
-## Decisions Made     # session-only; else skip
-## Open Questions     # blockers for next agent; else skip
-## Verification Run   # exact commands + results, or None
-## Recommended Next Step
-## Suggested Skills   # skill — why
-```
+If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.

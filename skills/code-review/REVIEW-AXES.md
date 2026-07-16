@@ -1,8 +1,14 @@
 # Review Axes
 
+**Primary axes (Matt):** Standards and Spec live in [SKILL.md](SKILL.md) —
+including the Fowler smell baseline. Use this file for optional WEN extra passes
+and for brief text when spawning sub-agents.
+
 Use these focused briefs when running sub-agents or separate review passes. Keep each pass evidence-first and under the review scope.
 
-## Intent
+## Spec (Matt) / Intent
+
+Matt's **Spec** axis: does the diff match the originating issue / PRD / spec?
 
 Read the spec, ticket, legacy PRD/issue, bug report, user-provided path, branch-matching docs, and explicit user decisions before judging the diff.
 
@@ -18,13 +24,37 @@ Report only claims tied to a cited intent source. If no intent source exists, sa
 
 ## Standards
 
-Read the relevant standards docs before reading the diff. Report only places where changed code violates a documented rule.
+Read the relevant standards docs before reading the diff. Report places where changed code violates a documented rule.
+
+On top of whatever the repo documents, always carry the **Fowler smell baseline**
+(_Refactoring_, ch.3) below. Two binding rules:
+
+- **The repo overrides.** A documented repo standard always wins; where it
+  endorses something the baseline would flag, suppress the smell.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible
+  Feature Envy"), never a hard violation — and skip anything tooling already
+  enforces.
+
+Smell baseline (what it is → how to fix):
+
+- **Mysterious Name** — name doesn't reveal what it does or holds → rename; if no honest name, design is murky
+- **Duplicated Code** — same logic shape in more than one hunk/file → extract shared shape
+- **Feature Envy** — method reaches into another object's data more than its own → move method onto the data
+- **Data Clumps** — same few fields/params travel together → bundle into one type
+- **Primitive Obsession** — primitive standing in for a domain concept → small dedicated type
+- **Repeated Switches** — same switch/if-cascade on the same type recurs → polymorphism or shared map
+- **Shotgun Surgery** — one logical change forces scattered edits → gather what changes together
+- **Divergent Change** — one module edited for several unrelated reasons → split by reason
+- **Speculative Generality** — abstraction for needs the spec doesn't have → delete until real need
+- **Message Chains** — long `a.b().c().d()` the caller shouldn't depend on → hide behind one method
+- **Middle Man** — mostly just delegates → cut and call the real target
+- **Refused Bequest** — subclass ignores most of what it inherits → composition instead
 
 Include:
 
 - changed file and line
-- rule source and the applicable rule
-- whether the rule is a hard requirement or a judgment call
+- rule source and the applicable rule (or smell name for baseline)
+- whether the rule is a hard requirement or a judgment call (baseline = always judgement)
 
 Skip issues enforced by automatic tooling unless the documented rule adds context that tooling cannot check.
 

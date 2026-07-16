@@ -1,6 +1,6 @@
 # Wayfinder Templates
 
-Load when charting, graduating fog, or publishing a new discovery ticket.
+Load when charting, graduating fog, or publishing a new decision ticket.
 Use the adapter's native parent, dependency, claim, and status fields when
 available; body fields are the fallback.
 
@@ -45,7 +45,7 @@ One or two lines; every session orients here first.>
 Keep open tickets out of the map body. Query children for the live graph.
 Refer to tickets by name in narration and in `Decisions So Far`.
 
-## Discovery Ticket
+## Decision Ticket
 
 ```markdown
 Kind: wayfinder-ticket
@@ -56,7 +56,7 @@ Mode: AFK | HITL
 Discipline: research | prototype | grill-me | task
 Origin: none
 Parent: <map reference>
-Blocked by: None | <discovery ticket references>
+Blocked by: None | <decision ticket references>
 Covers: none
 Supports: none
 Decision: none
@@ -69,10 +69,11 @@ Resolution: pending
 
 ## Question
 
-<One precise uncertainty whose answer moves toward the destination.
-Sized to one agent session. Prefer coding-shaped questions: ownership boundary,
-contract, migration path, failure mode, test seam, or user-owned product/scope/
-trade-off decision. Never invent the answer — HITL disciplines record the user.>
+<One precise uncertainty whose answer is a *decision* (or facts a later decision
+needs). Sized to one agent session. Prefer coding-shaped questions: ownership
+boundary, contract, migration path, failure mode, test seam, or user-owned
+product/scope/trade-off. Never invent the answer — HITL disciplines record the
+user; research returns cited primary sources.>
 
 ## Resolution Signal
 
@@ -94,9 +95,9 @@ Choose the smallest discipline that can satisfy the Resolution Signal:
 
 | Discipline | Mode | Produce | Do not use for |
 | --- | --- | --- | --- |
-| `research` | AFK | Cited primary-source artifact via `/research` | Settling taste, UX feel, or user-owned trade-offs |
+| `research` | AFK | Cited primary-source artifact via `/research` subagent | Settling taste, UX feel, or user-owned trade-offs |
 | `prototype` | HITL | Disposable artifact + user reaction via `/prototype` | Production code, shared schema, or permanent UI |
-| `grill-me` | HITL | Recorded user decision (repo evidence first) | Questions the codebase already answers |
+| `grill-me` | HITL | Recorded user decision via `/grilling` (repo facts first) | Questions the codebase already answers |
 | `task` | AFK/HITL | Facts from a prerequisite action that unblocks a decision | Delivering the destination or shipping a slice |
 
 `task` earns its place only by unblocking a later decision (access, sample data,

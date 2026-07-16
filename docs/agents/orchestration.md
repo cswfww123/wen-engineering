@@ -35,9 +35,14 @@ Parent (strong model) — route, authority, HITL, final ownership
 1. If no subagent/tool runtime → parent does the step.
 2. Else if pack worker `name` (or body) is loadable → spawn with a full brief.
 3. Else if step is execution-like → try the host’s general multi-step worker with
-   the same brief.
+   the same brief (skills ship self-contained `DISPATCH.md` bodies under
+   `implement/` and `code-review/` so target repos need not clone this pack).
 4. Else → parent runs the step in-session using the same briefs/checklists.
 5. **Never** stop a skill with “agent not found” / “Executor missing”.
+6. **Must attempt:** when a runtime exists, skipping spawn without an attempt is
+   a process bug. Soft fail only after try, or when no runtime exists.
+7. Done reports should record `agents used` (pack role | host-general |
+   parent-fallback).
 
 ### Brief minimum
 

@@ -3,3 +3,6 @@ skills/.DS_Store
 .omx/
 
 .codegraph/
+
+# Upstream snapshots for skill optimization (not committed)
+.upstream/

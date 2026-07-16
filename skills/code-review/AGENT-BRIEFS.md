@@ -18,11 +18,12 @@ Return under 300 words:
 
 ## Standards Reviewer
 
-Read the standards sources, then read the diff. Report only changed code that violates documented repo standards. Cite the standard file and rule. Distinguish hard requirements from judgment calls. Skip anything formatters, linters, typecheckers, or tests plainly enforce.
+Read the standards sources, then read the diff. Report changed code that violates documented repo standards **or** matches the Fowler smell baseline in `REVIEW-AXES.md` (paste that baseline into the review packet). Cite the standard file and rule, or name the smell. Documented repo standards can be hard requirements; baseline smells are always judgment calls. A documented repo standard overrides the baseline. Skip anything formatters, linters, typecheckers, or tests plainly enforce.
 
 Return under 300 words:
 
-- findings with file/line, violated rule, and evidence
+- findings with file/line, violated rule or smell name, and evidence
+- hard violation vs judgment call
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 - likely false positives to discard
 - whether this axis found no issues

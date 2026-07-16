@@ -133,10 +133,11 @@ If PM is missing: stop, name the evidence gap — optional `/product-fog` only t
 `/to-spec` replaces `/to-prd`, and `/to-tickets` replaces `/to-issues`. The old
 slash commands are retired, while existing `PRD.md`, `issues/`, links, and
 tracker objects remain valid legacy inputs and are never renamed in place.
-`/grill-me` replaces `/grilling` (same interview protocol). Sync removes managed
-copies of the retired commands; an unmarked same-name canonical skill blocks
-normal sync, while `--force` backs it up outside the active skills root before
-removal.
+`/to-spec` / `/to-tickets` retired-name note above still applies. `/grill-me` is
+the user-invoked interview entry; `/grilling` is the shared model-invoked loop
+it (and Wayfinder HITL tickets) load. Sync removes managed copies of fully
+retired commands; an unmarked same-name canonical skill blocks normal sync,
+while `--force` backs it up outside the active skills root before removal.
 
 ## Local Workspace
 
@@ -144,23 +145,25 @@ Common skills:
 
 - `/alignment-review` reviews specs and tickets for intent, coverage, repo evidence, and execution fit.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
-- `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards.
+- `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards (including Fowler smell baseline).
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
-- `/grill-me` stress-tests an engineering plan (same-session pin) with `/domain-modeling` active.
+- `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling` with `/domain-modeling` active.
+- `/grilling` is the reusable one-question interview loop (facts vs decisions, confirmation gate).
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
+- `/resolving-merge-conflicts` resolves in-progress git merge/rebase conflicts by intent.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 - `/setup-project-harness` initializes a project-level agent harness.
 - `/skill-review` reviews a new or changed skill before accepting it.
-- `/tdd` guides Red-Green-Refactor implementation through public behavior tests.
+- `/tdd` is the red → green reference (seams, anti-patterns); close to Matt upstream.
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
 - `/product-fog` LIGHT intent pin in coding context (mini docket, one next route).
-- `/wayfinder` clears multi-session fog into a discovery map until an honest coding spec is writable.
+- `/wayfinder` clears multi-session fog into a map of decision tickets until an honest coding spec is writable.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
 The harness skill creates:
@@ -208,20 +211,22 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs and tickets for intent, coverage, evidence, and execution fit.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`grill-me`](skills/grill-me/SKILL.md) — one-question-at-a-time interview protocol for same-session plan pins (LIGHT G); runs with `/domain-modeling` active.
+- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling` with `/domain-modeling` active.
+- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: one question, facts vs decisions, confirmation gate.
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
-- [`wayfinder`](skills/wayfinder/SKILL.md) — multi-session discovery map until an honest coding spec is writable.
+- [`wayfinder`](skills/wayfinder/SKILL.md) — multi-session map of decision tickets until an honest coding spec is writable.
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
 - [`implement`](skills/implement/SKILL.md) — takes one bounded task or implementation-frontier ticket through testing or compatibility evidence, review, and verification.
-- [`tdd`](skills/tdd/SKILL.md) — guides implementation through vertical Red-Green-Refactor cycles and public behavior tests.
+- [`tdd`](skills/tdd/SKILL.md) — red → green at pre-agreed seams (Matt base).
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
+- [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) — resolves in-progress git merge/rebase conflicts from each side's intent.
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards.
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards (Fowler smell baseline).
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
@@ -238,6 +243,9 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ## Skill Design Principles
 
+- **Matt-first:** shared skill bodies stay close to
+  [`mattpocock/skills`](https://github.com/mattpocock/skills); WEN only adds
+  pack deltas (harness name, lifecycle, authority, multi-agent, templates).
 - Small beats comprehensive.
 - Instructions should create better collaboration, not remove autonomy.
 - Read repo evidence before asking questions.
@@ -283,6 +291,7 @@ skills/
     CHECKLIST.md
     SKILL.md
   code-review/
+    DISPATCH.md
     AGENT-BRIEFS.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
@@ -302,9 +311,12 @@ skills/
     SKILL.md
   grill-me/
     SKILL.md
+  grilling/
+    SKILL.md
   handoff/
     SKILL.md
   implement/
+    DISPATCH.md
     SKILL.md
     TRACKED-WORK.md
   improve-codebase-architecture/
@@ -315,6 +327,8 @@ skills/
     SKILL.md
     UI.md
   research/
+    SKILL.md
+  resolving-merge-conflicts/
     SKILL.md
   setup-project-harness/
     AGENTS_TEMPLATE.md
@@ -335,7 +349,6 @@ skills/
   tdd/
     SKILL.md
     mocking.md
-    refactoring.md
     tests.md
   to-spec/
     SKILL.md

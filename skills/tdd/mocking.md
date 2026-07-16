@@ -1,38 +1,59 @@
-# When To Mock
+# When to Mock
 
-Mock at system boundaries only:
+Mock at **system boundaries** only:
 
-- external APIs
-- databases, when a test database is impractical
-- time and randomness
-- file systems, when real files are impractical
+- External APIs (payment, email, etc.)
+- Databases (sometimes - prefer test DB)
+- Time/randomness
+- File system (sometimes)
 
-Do not mock:
+Don't mock:
 
-- your own classes or modules
-- internal collaborators
-- anything you control
+- Your own classes/modules
+- Internal collaborators
+- Anything you control
 
-## Designing For Mockability
+## Designing for Mockability
 
-At system boundaries, design interfaces that are easy to mock.
+At system boundaries, design interfaces that are easy to mock:
 
-Use dependency injection:
+**1. Use dependency injection**
+
+Pass external dependencies in rather than creating them internally:
 
 ```typescript
+// Easy to mock
 function processPayment(order, paymentClient) {
   return paymentClient.charge(order.total);
 }
+
+// Hard to mock
+function processPayment(order) {
+  const client = new StripeClient(process.env.STRIPE_KEY);
+  return client.charge(order.total);
+}
 ```
 
-Prefer SDK-style interfaces over generic fetchers:
+**2. Prefer SDK-style interfaces over generic fetchers**
+
+Create specific functions for each external operation instead of one generic function with conditional logic:
 
 ```typescript
+// GOOD: Each function is independently mockable
 const api = {
   getUser: (id) => fetch(`/users/${id}`),
   getOrders: (userId) => fetch(`/users/${userId}/orders`),
-  createOrder: (data) => fetch("/orders", { method: "POST", body: data }),
+  createOrder: (data) => fetch('/orders', { method: 'POST', body: data }),
+};
+
+// BAD: Mocking requires conditional logic inside the mock
+const api = {
+  fetch: (endpoint, options) => fetch(endpoint, options),
 };
 ```
 
-This keeps mocks specific, simple, and type-safe.
+The SDK approach means:
+- Each mock returns one specific shape
+- No conditional logic in test setup
+- Easier to see which endpoints a test exercises
+- Type safety per endpoint

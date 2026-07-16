@@ -73,7 +73,7 @@ spec. Slice risk: `/alignment-review`.
 
 ```text
 plan/design still fuzzy, but one interview can clear it
-  → /grill-me   (with /domain-modeling active)
+  → /grill-me   (loads /grilling + /domain-modeling)
 ```
 
 **In the flow**, not optional fluff. Use when:
@@ -82,7 +82,8 @@ plan/design still fuzzy, but one interview can clear it
 - L4 would be overkill (no multi-session map yet)
 - L3 routed `Align` for same-session trade-offs
 
-One question at a time, recommended answers, repo evidence first. Runs with
+One question at a time, recommended answers, facts from the repo first (see
+`/grilling`: facts vs decisions, confirmation gate). Runs with
 `/domain-modeling` active so glossary/ADR update as terms crystallize. If one
 session is not enough → L4 `/wayfinder`. If product need itself is fuzzy →
 **HEAVY** PM, not grill.
@@ -106,19 +107,21 @@ product settled enough, technical route still foggy
   → /wayfinder → /to-spec → /to-tickets
 ```
 
-One discovery ticket per session. Prefer **G** `/grill-me` first if one
-interview would clear it. Plan only — never ship the destination.
+At most one non-research **decision ticket** per session (research tickets may
+burn down via parallel `/research` subagents). Prefer **G** `/grill-me` first if
+one interview would clear it. Plan only — never ship the destination.
 
 ### Support (compose under the above)
 
 | Need | Skill |
 | --- | --- |
-| Public-behavior tests | `/tdd` |
-| Cleanup | `/simplify` |
-| Diff review | `/code-review` |
+| Public-behavior tests | `/tdd` (Matt red → green + seams) |
+| Cleanup | `/simplify` (WEN) |
+| Diff review | `/code-review` (Matt Standards+Spec; optional WEN axes) |
 | Evidence only | `/research`, `/prototype` |
-| Domain terms / ADRs | `/domain-modeling` (read habit: AGENTS / `docs/agents/domain.md`) |
-| Same-session interview | `/grill-me` with `/domain-modeling` active (LIGHT G) |
+| Domain terms / ADRs | `/domain-modeling` |
+| Same-session interview | `/grill-me` → `/grilling` (+ `/domain-modeling`) |
+| Merge/rebase conflicts | `/resolving-merge-conflicts` |
 
 ---
 

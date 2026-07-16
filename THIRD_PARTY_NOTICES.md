@@ -3,11 +3,15 @@
 ## Matt Pocock — Skills for Real Engineers
 
 WEN Engineering Skills contains and adapts material from
-[`mattpocock/skills`](https://github.com/mattpocock/skills), including the
-engineering lifecycle vocabulary and several skill designs. The July 2026
-lifecycle migration was compared against release `v1.1.0`, commit
-`d574778f94cf620fcc8ce741584093bc650a61d3`, then adapted to WEN's tracker
-contract, invocation boundaries, verification rules, and multi-agent workflow.
+[`mattpocock/skills`](https://github.com/mattpocock/skills). **Principle:**
+shared skill bodies track Matt's text closely; WEN only layers pack-specific
+deltas (tracker harness name, lifecycle routing, authority gates, multi-agent
+orchestration, optional field templates).
+
+Upstream pin: `main` at
+`e9fcdf95b402d360f90f1db8d776d5dd450f9234` (2026-07-14; after release `v1.1.0`).
+
+Prior WEN pin (v1.1.0-era): `d574778f94cf620fcc8ce741584093bc650a61d3`.
 
 Upstream material is licensed under the MIT License:
 

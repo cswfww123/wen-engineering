@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Plan a huge chunk of work — more than one agent session can hold — as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.
+description: Plan multi-session engineering fog as a decision-ticket map — short pastes, thin HITL, hand off to /to-spec when the route is clear.
 disable-model-invocation: true
 ---
 
@@ -12,6 +12,10 @@ The destination varies per effort, and naming it is the first act of charting �
 
 Wayfinder is **planning** by default: each ticket resolves a decision, and the map is done when the way is clear — nothing left to decide before someone goes and does the thing. The pull to just do the work is usually the signal you've reached the edge of the map and it's time to hand off. An effort can override this in its **Notes** — carrying execution into the map itself — but absent that, produce decisions, not deliverables.
 
+## Prefer not to open a map
+
+Before Charting, ask whether **one same-session `/grill-me`** (or straight `/to-spec` on settled docs) would clear the fog. Open Wayfinder only when decisions truly need **multiple sessions** or a shared frontier. A thick PRD + a few open trade-offs is usually **G then L2**, not L4.
+
 ## Refer by name
 
 Every map and ticket is an issue, so it has a **name** — its title. In everything the human reads — narration, the map's Decisions-so-far — refer to it by that name, never by a bare id, number, or slug. A wall of `#42, #43, #44` is illegible; names read at a glance. The id and URL don't vanish — a name wraps its link — but they ride *inside* the name, never stand in for it.
@@ -22,7 +26,7 @@ The map is a single issue on this repo's issue tracker, labelled `wayfinder:map`
 
 The map is an **index**, not a store. It lists the decisions made and points at the tickets that hold their detail; a decision lives in exactly one place — its ticket — so the map never restates it, only gists it and links.
 
-**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — run `/setup-project-harness` if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker.
+**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — run `/setup-project-harness` if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker (`.scratch/<slug>/`).
 
 ### The map body
 
@@ -35,22 +39,26 @@ The whole map at low resolution, loaded once per session. Open tickets are **not
 
 ## Notes
 
-<domain; skills every session should consult; standing preferences for this effort>
+<domain; tracker root; skills; standing preferences — keep short>
+
+## Session handoff
+
+<!-- machine + human: next paste is one line; agent reads this first on Resolve -->
 
 ## Decisions so far
-
-<!-- the index — one line per closed ticket: enough to judge relevance, then zoom the link for the detail the ticket holds -->
 
 - [<closed ticket title>](link) — <one-line gist of the answer>
 
 ## Not yet specified
 
-<!-- see "Fog of war": in-scope fog you can't ticket yet; graduates as the frontier advances -->
+<!-- fog: in-scope, not sharp enough to ticket -->
 
 ## Out of scope
 
-<!-- see "Out of scope": work ruled beyond the destination; closed, never graduates -->
+<!-- past this destination; never graduates -->
 ```
+
+Full field shapes: [TEMPLATES.md](TEMPLATES.md). Short human pastes: [CONTINUE.md](CONTINUE.md).
 
 ### Tickets
 
@@ -74,10 +82,12 @@ The answer isn't part of the body — it's recorded on resolution (see [Work thr
 
 Every ticket is either **HITL** — human in the loop, worked *with* a human who speaks for themselves — or **AFK**, driven by the agent alone. A HITL ticket only resolves through that live exchange; the agent never stands in for the human's side of it (a grilling agent that answers its own questions has broken this).
 
-- **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a `/research` **subagent**. Use when knowledge outside the current working directory is required.
+- **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a `/research` **subagent**. Use when knowledge outside the current working directory is required — **or** when the codebase/docs already answer the question without a user trade-off.
 - **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to — an outline, a rough take, a stub, or UI/logic code via the /prototype skill. Links the prototype as an asset. Use when "how should it look" or "how should it behave" is the key question.
-- **Grilling** (HITL): Conversation via the /grilling and /domain-modeling skills, one question at a time. The default case.
-- **Task** (HITL or AFK): Manual work that must happen before a *decision* can be made — nothing to decide, prototype, or research, but the discussion is blocked until it's done. Signing up for a service so its API can be judged, provisioning access, moving data so its shape can be seen. This is the one type that *does* rather than decides — and it earns its place by unblocking a decision, not by delivering the destination. The agent drives it alone where it can (AFK); otherwise it hands the human a precise checklist (HITL). Resolved when the work is done; the answer records what was done and any resulting facts (credentials location, new URLs, row counts) later tickets depend on.
+- **Grilling** (HITL): Conversation via the /grilling and /domain-modeling skills. **Only for decisions a human must own.** Prefer **batch/diff grill** for tables and mapping rows (recommended full set; human replies with diffs only). One *decision surface* at a time, not one micro-row per turn when a recommended table exists.
+- **Task** (HITL or AFK): Manual work that must happen before a *decision* can be made — nothing to decide, prototype, or research, but the discussion is blocked until it's done (access, sample data, **production path verification**). Resolved when the work is done; the answer records resulting facts later tickets depend on.
+
+**Discipline bias:** if the codebase, production config, or primary docs can satisfy the Resolution Signal, use `research` or `task` — **not** `grill-me`. HITL is expensive; default thin.
 
 ## Fog of war
 
@@ -100,46 +110,86 @@ Out-of-scope work never graduates — the frontier stops at the destination — 
 
 Ruling something out of scope is a scoping act, not a step on the route. When a ticket that already exists turns out to sit past the destination — mis-scoped in while charting, or exposed by a resolution — **close it** (a closed ticket is unambiguously off the frontier) and leave one line in the **Out of scope** section: the gist plus why it's out of scope, linking the closed ticket. It stays out of **Decisions so far**, which records the route actually walked — a scope boundary isn't a step on it.
 
+**Second themes** (e.g. broad multi-vendor architecture cleanup while the destination is a product display-status spec) default to **Out of scope** or a **separate map**. Only promote a seam into this map when it **blocks** the destination's honesty.
+
 ## Invocation
 
-Two modes. Either way, **never resolve more than one ticket per session** — with the exception of research tickets.
+Two modes. Default: **at most one HITL decision ticket per session**. **Exceptions:** (1) any number of `research` tickets in parallel or sequence in one session; (2) AFK `task` tickets may batch in the same session after or before one HITL ticket if the user asks or the frontier is all AFK; (3) user explicitly says "same session, next ticket".
+
+Human pastes should stay **short** — see [CONTINUE.md](CONTINUE.md). The agent must **not** demand multi-paragraph prompts; recover context from the map's **Session handoff**.
 
 ### Chart the map
 
-User invokes with a loose idea.
+User invokes with a loose idea (or `/wayfinder` + brief goal).
 
-1. **Name the destination.** Run a `/grilling` and `/domain-modeling` session to pin down what this map is finding its way to — the spec, decision, or change. The destination fixes the scope, so it's settled first.
-2. **Map the frontier.** Grill again, **breadth-first** this time: fan out across the whole space rather than deep on any one thread, surfacing the open decisions and the first steps takeable now. **If this surfaces no fog** — the way to the destination is already clear, the whole journey small enough for one session — you don't need a map. Stop and ask the user how they'd like to proceed.
-3. **Create the map** (label `wayfinder:map`): Destination and Notes filled in, Decisions-so-far empty, the fog sketched into **Not yet specified**.
-4. **Create the tickets you can specify now** as child issues of the map — then wire blocking edges in a **second pass** (issues need ids before they can reference each other). Wiring sorts them into the frontier and the blocked; everything you can't yet specify stays in the fog — the **Not yet specified** section.
-5. **Fire the research subagents.** For each `research` ticket you just created, spin up a `/research` subagent to resolve it in parallel, capturing its findings on a throwaway `research/<name>` branch with a context pointer from the ticket.
-6. Stop — charting is one session's work; it hand-resolves nothing.
+1. **Name the destination.** Prefer a short confirmation of Destination from user materials; use `/grilling` only if Destination itself is ambiguous. Destination fixes scope — **one product/engineering outcome**, not a second architecture epic unless the user insists.
+2. **Map the frontier** breadth-first. **If no multi-session fog** — stop; recommend `/grill-me` or `/to-spec` instead of a map.
+3. **Create the map** with Destination, compact Notes (tracker root, domain, skills), empty Decisions, fog in **Not yet specified**, and an initial **Session handoff** block.
+4. **Create only tickets you can specify now** — **Chart budget: ≤5 open tickets** on first publish. Wire blocking in a second pass. Everything else stays fog. Prefer `research`/`task` over `grill-me` when possible.
+5. **Fire research subagents** immediately for every `research` ticket (parallel). Capture findings and close AFK research when the Resolution Signal is met **in this Chart session** when cheap — do not leave pure fact-gathering as HITL homework.
+6. **End Chart with one-line pastes** for the human (next Resolve / optional AFK burn-down). Do **not** hand-resolve HITL tickets in the Chart session unless the user explicitly continues into Resolve.
 
-### Work through the map
+### Work through the map (Resolve)
 
-User invokes with a map (URL or number). A ticket is **optional** — without one, you pick the next decision, not the user.
+User invokes with a **short** line: map path, or "next", or a ticket name — see [CONTINUE.md](CONTINUE.md).
 
-1. Load the **map** — the low-res view, not every ticket body.
-2. Choose the ticket. If the user named one, use it. Otherwise take the first frontier ticket in order. **Claim it**: assign it to yourself before any work.
-3. Resolve it — **zoom as needed**: fetch the full body of any related or closed ticket on demand; invoke the skills the `## Notes` block names. If in doubt, use `/grilling` and `/domain-modeling`.
-4. Record the resolution: post the answer as a **resolution comment**, **close** the issue, and **append a context pointer** to the map's Decisions-so-far.
-5. Add newly-surfaced tickets (create-then-wire); graduate any fog the answer has made specifiable, clearing each graduated patch from **Not yet specified** so it lives only as its new ticket. If the answer reveals a ticket — this one or another — sits beyond the destination, **rule it out of scope** rather than resolving it on the route. If the decision invalidates other parts of the map, update or delete those tickets.
+#### Cold-start (hard cap)
 
-The user may run unblocked tickets in parallel, so expect other sessions to be editing the tracker concurrently.
+On Resolve, **only** load:
+
+1. Map file → **Destination + Session handoff + Decisions so far + Notes** (not every historical comment).
+2. The chosen **ticket** body.
+3. At most **3** evidence paths named on that ticket or in handoff.
+
+**Do not** default-read `FOG.md`, full `TEMPLATES.md`, full this SKILL, or the whole tracker adapter doc on every Resolve. Re-read those only when claim/fields/tracker ops fail or the handoff is missing/corrupt.
+
+**Do not** Glob the whole repo for `WAYFINDER.md` when Notes/handoff already give the path.
+
+Local markdown: map path is `.scratch/<slug>/WAYFINDER.md`; children live under `.scratch/<slug>/wayfinder/`.
+
+#### Resolve steps
+
+1. Read **Session handoff**; pick frontier ticket (user-named or first unblocked open).
+2. **Claim** map + ticket before work.
+3. Resolve by discipline (`research` subagent / `task` / `/grill-me` batch-diff / `prototype`). Zoom related closed tickets **only on demand**.
+4. Record resolution; close ticket; append named gist to Decisions so far; update **Session handoff** (`next_paste`, frontier).
+5. Graduate fog only when now sharp; rule mis-scoped tickets out of scope; fix invalidated tickets.
+
+When the frontier is empty and fog is empty (or only out-of-scope remains): set map `Status: resolved`, clear claim, and **exit Wayfinder** — print the **post-map paste** (`/to-spec …`). Do **not** implement inside the map.
+
+### After the map is clear (simplified exit)
+
+```text
+map Status: resolved
+  → /to-spec   <map or feature slug>
+  → /to-tickets
+  → /implement   (AFK frontier; skip HITL gates until human says so)
+```
+
+No more `/wayfinder` unless new multi-session fog appears. Do not re-grill closed DECs during `/to-spec`; consume Resolutions as sources of truth.
+
+## Resolution Signal
+
+Every decision ticket needs a checkable **Resolution Signal**. Patterns: [TEMPLATES.md](TEMPLATES.md).
+
+**Runtime / production facts** (ingress URL, deployed owner, feature flags, "can actually send"): Signal must require **production or ops evidence** (config path, live route, owner confirmation, or a real probe log) — **never** "a Controller exists in module X" alone.
+
+## Session handoff (required)
+
+Maintain on the map (see [TEMPLATES.md](TEMPLATES.md)). After Chart and every Resolve stop, the human-facing closeout is:
+
+1. One sentence: what closed / what's next by **name**.
+2. A **single copy-paste line** for the next session (from handoff `next_paste`).
+3. If map resolved: the `/to-spec` one-liner instead.
+
+Never ask the human to re-paste Destination, iron rules, or full ticket bodies.
 
 ## WEN additions
 
-- Routing: LIGHT L4 in `docs/lifecycle.md`. Prefer same-session `/grill-me` when
-  one interview would clear the fog. **Never invent** Expected / market / user
-  value; **never implement the destination** (disposable `/prototype` only when
-  the ticket authorizes it).
-- Tracker ops: resolve the issue-tracker doc via the harness pointer written by
-  `/setup-project-harness` (not a hard-coded path). Optional WEN field shapes:
-  [TEMPLATES.md](TEMPLATES.md). Fog model progressive extract: [FOG.md](FOG.md)
-  (must not contradict this file).
-- Prefer a checkable **Resolution Signal** on each decision ticket so later
-  sessions can judge pass/fail without re-arguing. Put the full answer in the
-  resolution comment; map only gets a named gist.
-- Claim map/ticket before work when the adapter supports it; release claims on
-  stop. `/research` and `/prototype` return evidence only — Wayfinder owns
-  comments, closure, and map updates.
+- Routing: LIGHT L4 in `docs/lifecycle.md`. Prefer same-session `/grill-me` when one interview would clear the fog. **Never invent** Expected / market / user value; **never implement the destination** (disposable `/prototype` only when the ticket authorizes it).
+- Tracker ops: resolve the issue-tracker doc via the harness pointer from `/setup-project-harness` (not a hard-coded path). Default without harness: **local-markdown** under `.scratch/`. Field shapes: [TEMPLATES.md](TEMPLATES.md). Fog extract: [FOG.md](FOG.md) (must not contradict this file). Short pastes: [CONTINUE.md](CONTINUE.md).
+- Prefer checkable **Resolution Signal** on each ticket. Full answer in the resolution comment; map only gets a named gist.
+- Claim map/ticket before work when the adapter supports it; release claims on stop. `/research` and `/prototype` return evidence only — Wayfinder owns comments, closure, and map updates.
+- **Chart budget:** ≤5 tickets on first publish; expand only by graduating fog after resolutions.
+- **Architecture scans** (`/improve-codebase-architecture`, etc.) feed **fog or research tickets**, not automatic DECs; Strong findings still need production/runtime Signals when they claim ownership of live paths.
+- Keep narration short; skip honorific filler. Working notes live on the ticket; rewrite CONTEXT/glossary **on ticket close**, not after every micro-answer.

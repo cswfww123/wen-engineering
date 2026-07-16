@@ -104,12 +104,19 @@ Use when already in a coding context — **not** as market discovery.
 
 ```text
 product settled enough, technical route still foggy
-  → /wayfinder → /to-spec → /to-tickets
+  → /wayfinder (thin map) → /to-spec → /to-tickets → /implement
 ```
 
-At most one non-research **decision ticket** per session (research tickets may
-burn down via parallel `/research` subagents). Prefer **G** `/grill-me` first if
-one interview would clear it. Plan only — never ship the destination.
+**Try G first.** Open a map only when decisions need multiple sessions or a
+shared frontier. Chart budget ≤5 tickets; research/task over grill; short
+pastes in `skills/wayfinder/CONTINUE.md` (human should not re-paste the whole
+brief each session).
+
+At most one **HITL** decision ticket per session by default; research and AFK
+tasks may batch. Plan only — never ship the destination inside the map.
+
+**When the map is `resolved`:** stop `/wayfinder`. Go **L2** — `/to-spec` →
+`/to-tickets` → `/implement`. Do not re-grill closed DECs; consume Resolutions.
 
 ### Support (compose under the above)
 
@@ -157,7 +164,8 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` |
 | Few open decisions; one session can pin them | LIGHT **G** | `/grill-me` |
 | Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G) |
-| Migration/contracts too big for one session | LIGHT L4 | `/wayfinder` (try G first) |
+| Migration/contracts too big for one session | LIGHT L4 | `/wayfinder` (try G first; then L2) |
+| Wayfinder map already resolved | LIGHT L2 | `/to-spec` (not more wayfinder) |
 | Vague idea, no validated need | **HEAVY** | `wen-pm` `/pm-intake` |
 | System QA of a build | optional test | `wen-test` |
 

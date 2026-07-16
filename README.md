@@ -115,7 +115,7 @@ L4  multi-session eng fog → /wayfinder → L2     (try G first)
 - **L2:** settled package from any source (PM handoff, PRD, docs, chat AC). FE/BE gates at ticket layer. Optional `wen-test` for system QA.
 - **G:** same-session `/grill-me` with `/domain-modeling` active — first-class LIGHT tool when a few user-owned decisions remain; not a substitute for HEAVY PM.
 - **L3:** coding-adjacent pin only (rework / mild Expected). Never invent Expected. Often routes to **G**.
-- **L4:** product settled enough; technical route still multi-session foggy.
+- **L4:** product settled enough; technical route still multi-session foggy. Prefer G first; thin map (≤5 tickets, research over grill); exit to L2 when resolved. Short pastes: `skills/wayfinder/CONTINUE.md`.
 
 ### HEAVY — fuzzy requirements
 
@@ -163,7 +163,7 @@ Common skills:
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
 - `/product-fog` LIGHT intent pin in coding context (mini docket, one next route).
-- `/wayfinder` clears multi-session fog into a map of decision tickets until an honest coding spec is writable.
+- `/wayfinder` clears multi-session fog into a thin decision map (short pastes, research-first), then hands off to `/to-spec`.
 - `/writing-great-skills` provides a reference for writing and editing predictable skills.
 
 The harness skill creates:
@@ -214,7 +214,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling` with `/domain-modeling` active.
 - [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: one question, facts vs decisions, confirmation gate.
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
-- [`wayfinder`](skills/wayfinder/SKILL.md) — multi-session map of decision tickets until an honest coding spec is writable.
+- [`wayfinder`](skills/wayfinder/SKILL.md) — thin multi-session map + short pastes; exit to `/to-spec` (see `CONTINUE.md`).
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
@@ -361,6 +361,7 @@ skills/
     DOCKET.md
     SKILL.md
   wayfinder/
+    CONTINUE.md
     FOG.md
     SKILL.md
     TEMPLATES.md
@@ -379,7 +380,7 @@ This repo currently focuses on a **lightweight, evidence-first coding lifecycle*
 - support frontend-only, backend-only, and full-stack layer scope
 - default multi-session coding path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
 - LIGHT daily path by default; HEAVY fuzzy need via optional `wen-pm` first
-- multi-session eng fog: `/wayfinder` → `/to-spec` → …
+- multi-session eng fog: `/wayfinder` (thin map + short paste) → `/to-spec` → `/to-tickets` → `/implement`
 - system test/QA via optional companion `wen-test` (or human/CI)
 - preserve intent in non-runnable specs and traceable ticket DAGs
 - implement one isolated implementation-frontier ticket through the right evidence loop, simplification, review, and verification

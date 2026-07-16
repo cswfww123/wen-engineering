@@ -49,3 +49,19 @@ you can answer it.
 For grilling and prototype tickets, the agent never stands in for the human. A
 grilling agent that answers its own *decisions* has broken the contract (facts
 may be looked up). Research tickets prefer a `/research` subagent.
+
+Prefer **research/task** when the repo or production config answers the Signal.
+For mapping tables, use **batch/diff grill** (recommended set; human diffs only)
+instead of one row per turn.
+
+## Chart budget and second themes
+
+First publish: **≤5** open tickets; leave the rest in **Not yet specified**.
+A second epic (e.g. broad architecture cleanup while Destination is a product
+spec) is **Out of scope** or a separate map unless it blocks this Destination.
+
+## After the map is clear
+
+Empty frontier + empty fog → map `Status: resolved` → hand off to `/to-spec`.
+Do not keep wayfinding or re-grilling closed decisions. Short pastes:
+[CONTINUE.md](CONTINUE.md).

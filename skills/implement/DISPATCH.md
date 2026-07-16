@@ -34,16 +34,20 @@ Role: Executor (focused implementation subagent)
 Goal: <one bounded coding outcome>
 Scope: <files/modules allowed; what is out of scope>
 AC / source: <ticket, spec IDs, or user AC>
-Constraints: existing patterns; no speculative refactors; no inventing Expected
+Constraints: existing patterns; no speculative refactors; no inventing Expected;
+  no incomplete production surface (TODO/FIXME deferred logic, stubs, dual-source
+  domain facts, config stand-ins on live paths). Finish the real step or return
+  blocked — never ship a quiet fallback that looks done.
 Verify: <exact commands, e.g. mvn -pl … test>
 Authority: code + local verify only; NO tracker/PR mutation unless granted
 Seams (if TDD): <pre-agreed public seams>
 
 Return:
-- status
+- status (done | blocked | …)
 - files changed
 - what changed
 - verification run + results
+- incomplete-surface: clean | blocked (signal) | n/a
 - remaining risks / unchecked criteria
 ```
 
@@ -64,9 +68,16 @@ Do not invent product requirements, Expected behavior, or market bets. Do not
 expand scope past the brief. Do not change issue-tracker or PR state unless the
 brief explicitly grants that authority (default: no).
 
+Never land an incomplete production surface for claimed AC: deferred markers
+(TODO/FIXME/HACK for real logic), placeholders/stubs on live paths, dual-source
+domain facts across sibling channels, or config constants standing in for a
+domain service a sibling path already uses. If the real step needs a decision
+you do not have, stop and report blocked — do not ship a quiet fallback.
+
 If blocked, unsafe, or missing a required decision, stop and report the blocker.
 Otherwise implement, run the relevant checks, and return: status, files changed,
-what changed, verification run and results, remaining risks or unchecked criteria.
+what changed, verification run and results, incomplete-surface check, remaining
+risks or unchecked criteria.
 ```
 
 ## Slice size

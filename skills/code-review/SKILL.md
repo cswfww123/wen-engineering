@@ -75,9 +75,9 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 
 ### 5. Aggregate
 
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate (see _Why two axes_).
+Present the reports under `## Standards`, `## Spec`, and (when run) `## Correctness` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings across axes (see _Why two axes_).
 
-End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
+End with a one-line summary: total findings per axis, the worst issue _within each axis_ (if any), and **incomplete-surface**: `clean` | findings | `n/a`. Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
 
 ## Why two axes
 
@@ -100,12 +100,16 @@ binds **how** subagents are used when the host has a spawn runtime.
 1. **Must try** parallel subagents for **Standards** and **Spec** (Matt step 4).
    Prefer pack role `Reviewer` per axis; else host `general-purpose` / multi-step
    worker with Matt's prompts **or** [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
-2. Optional extra axes after Standards/Spec when warranted:
-   **Correctness**, **Performance**, **Security**, **Ponytail** — same hard-try;
+2. **Correctness is required** for any diff that touches production-reachable
+   code (not pure docs/comments/config-only renames). Incomplete production
+   surface is a **blocking** Correctness class — see
+   [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). Optional extra axes when
+   warranted: **Performance**, **Security**, **Ponytail** — same hard-try;
    report each under its own heading (no cross-axis renorming). Detail:
    [REVIEW-AXES.md](REVIEW-AXES.md), [PROJECT-LENSES.md](PROJECT-LENSES.md).
 3. After candidates: **must try** pack `Verifier` (or parent Verification
-   Reviewer). Keep findings only at confidence `>=80`.
+   Reviewer). Keep findings only at confidence `>=80`. Incomplete surface that
+   survives verification **blocks** `Pass`.
 4. Soft fail only after an attempt (or when no subagent runtime exists). Never
    abort because pack roles are undefined.
 5. **Forbidden:** parent solo-reviews a non-empty diff while a subagent runtime
@@ -123,4 +127,5 @@ binds **how** subagents are used when the host has a spawn runtime.
 - This skill never closes a ticket. When loaded from `/implement`, return
   `Pass` / `Changes Required` / `Needs User Decision`.
 - Final report **must** include **`agents used`** (Reviewer / Verifier /
-  host-general / parent-fallback per axis).
+  host-general / parent-fallback per axis) and an explicit
+  **incomplete-surface** line: `clean` | findings | `n/a` (docs-only).

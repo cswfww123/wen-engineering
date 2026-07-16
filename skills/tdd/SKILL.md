@@ -33,4 +33,5 @@ Ask: "What's the public interface, and which seams should we test?"
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
+- **Green locks the real domain step.** The minimal code that passes must implement the source of truth the seam claims — not a config constant, stub, or dual path that leaves sibling channels inconsistent. A green that only asserts a hardcoded fallback is not a lock for "uses the shared service/table." If the real step needs a product decision, stop for that decision; do not green via an incomplete production surface (see `code-review/INCOMPLETE-SURFACE.md`).
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.

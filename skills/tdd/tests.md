@@ -43,6 +43,7 @@ Red flags:
 - Test breaks when refactoring without behavior change
 - Test name describes HOW not WHAT
 - Verifying through external means instead of interface
+- **Config-constant lock:** the test only asserts a hardcoded/Nacos fallback while the product claim is "same domain source as sibling path" (e.g. both pay channels use the rate table). That green hides an incomplete production surface.
 
 ```typescript
 // BAD: Bypasses interface to verify

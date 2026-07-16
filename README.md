@@ -226,7 +226,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, ponytail complexity, performance, security, and standards (Fowler smell baseline).
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, incomplete production surface (blocking), ponytail complexity, performance, security, and standards (Fowler smell baseline).
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
@@ -276,6 +276,7 @@ docs/
     0002-invariants-rule.md
     0003-skill-invocation-boundaries.md
     0004-wen-lifecycle.md
+    0005-incomplete-production-surface.md
   agents/
     domain.md
     issue-tracker.md
@@ -293,6 +294,7 @@ skills/
   code-review/
     DISPATCH.md
     AGENT-BRIEFS.md
+    INCOMPLETE-SURFACE.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
     SKILL.md

@@ -51,10 +51,17 @@ Per slice, Executor (or fallback) does:
 
 1. Confirm / record seams with the user or ticket AC.
 2. `/tdd` red → green at those seams (or authorized GREEN baseline for
-   mechanical docs/config).
+   mechanical docs/config). Green must lock the **real** domain step at the
+   seam — not a config constant that sidesteps a sibling path's source of truth
+   (see [incomplete surface](../code-review/INCOMPLETE-SURFACE.md)).
 3. `/simplify` when the delta is non-trivial.
 4. Project verification for this layer (behavior gate).
 5. Fidelity when applicable (UI vs design/contract; API vs stated contract).
+6. **Incomplete-surface self-check** before claiming the slice ready for
+   review: production paths for this AC must be complete. Deferred markers,
+   placeholders, dual-source domain facts, and config stand-ins on live paths
+   are forbidden — finish the real step or **stop and report a blocker**.
+   Classifier: [INCOMPLETE-SURFACE.md](../code-review/INCOMPLETE-SURFACE.md).
 
 Parent re-issues a **new** Executor brief per slice — not one mega-todo dump
 that never dispatches.
@@ -63,15 +70,19 @@ that never dispatches.
 
 1. Record a review fixed point that isolates this ticket/task delta.
 2. Run `/code-review` against that fixed point (AC + fidelity). That skill
-   **must hard-try** Reviewer / Verifier per its own dispatch.
+   **must hard-try** Reviewer / Verifier per its own dispatch, and **must**
+   run the Correctness axis (incomplete surface is a blocking class there).
 3. If verdict is not `Pass` and fixes are in scope (`/implement` authorizes
    in-scope behavior-preserving fixes): hard-try **Executor** again with the
    eligible fix list + fix contract from code-review.
 4. Do not close a parent **spec**; complete only this ticket/task.
+5. **`Pass` is invalid** if an incomplete surface remains for claimed AC —
+   even when Standards looks clean and thin tests are green.
 
 ### 4. Commit
 
-Commit only when authorized, on the current branch.
+Commit only when authorized, on the current branch. Do **not** commit a slice
+that still carries an incomplete production surface for its AC.
 
 ### Done report (mandatory fields)
 
@@ -79,6 +90,7 @@ Commit only when authorized, on the current branch.
 - fixed point
 - files changed
 - behavior-gate + fidelity (or n/a)
+- **incomplete-surface check**: `clean` | `blocked` (cite signal) | `n/a` (docs/config only)
 - code-review verdict
 - **`agents used`**: e.g. `Executor` | `host-general` | `parent-fallback` (and
   for review: `Reviewer` / `Verifier` / fallback) — if parent did the work,

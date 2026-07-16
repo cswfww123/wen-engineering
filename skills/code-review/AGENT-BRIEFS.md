@@ -32,9 +32,12 @@ Return under 300 words:
 
 Read the diff, then pull only nearby context, comments, tests, blame, or prior PR context needed to confirm concrete bugs. Focus on changed invariants, ordering, error handling, persistence, migrations, and regressions caused by the diff.
 
+**Also scan for incomplete production surface** ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)): deferred markers for real logic, stubs on live paths, dual-source domain facts across sibling channels, config stand-ins. Any hit on a production path is **blocking** (confidence often `100` when a comment admits deferral).
+
 Return under 300 words:
 
 - bugs users can hit, with file/line and why
+- incomplete-surface hits (or explicit `clean`)
 - evidence that the issue is introduced by this diff
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 - likely false positives to discard
@@ -77,6 +80,8 @@ Return under 300 words:
 
 Run this after collecting findings. For each candidate, assign a `0-100` confidence score using `REVIEW-AXES.md`. Re-read the exact changed lines and cited evidence. Reject candidates that are invented, pre-existing, outside the diff, contradicted by context, likely intentional, or covered by CI.
 
+**Incomplete production surface is never "likely intentional"** just because a TODO comment exists — shipping deferred real logic on a live path is a **blocking** failure. Completion claims fail while it remains. See [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md).
+
 Return only findings with confidence `>=80`, each with:
 
 - score
@@ -84,3 +89,5 @@ Return only findings with confidence `>=80`, each with:
 - evidence
 - why it is not a false positive
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
+
+Verdict: `Pass` only with zero validated blocking findings (including incomplete surface). Otherwise `Changes Required` or `Needs User Decision`.

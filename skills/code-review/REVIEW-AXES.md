@@ -70,6 +70,7 @@ Look for:
 - regressions suggested by git blame, nearby tests, previous PR comments, or comments in modified files
 - data-loss risks directly introduced by the diff
 - when the diff touches a shared mutable invariant (balance/quota/counter/inventory/state machine), require a concurrency test seam per `.agents/rules/invariants/`; serial-only tests are insufficient
+- **Incomplete production surface (blocking):** deferred markers (`TODO`/`FIXME`/`HACK` for real logic), stubs/placeholders on live paths, dual-source domain facts across sibling channels, or config/hardcoded stand-ins when a sibling path already uses the real service/table. Classifier and confidence: [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). This class is a **hard** Correctness finding, not a style nit — verdict cannot be `Pass` while it remains.
 
 Avoid speculative "could be better" comments. A finding should survive a skeptical second read.
 

@@ -222,7 +222,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs：intent、bug、ponytail、性能、安全、规范（含 Fowler smell 基线）。
+- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs：intent、bug、incomplete production surface（阻断）、ponytail、性能、安全、规范（含 Fowler smell 基线）。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 
@@ -272,6 +272,7 @@ docs/
     0002-invariants-rule.md
     0003-skill-invocation-boundaries.md
     0004-wen-lifecycle.md
+    0005-incomplete-production-surface.md
   agents/
     domain.md
     issue-tracker.md
@@ -289,6 +290,7 @@ skills/
   code-review/
     DISPATCH.md
     AGENT-BRIEFS.md
+    INCOMPLETE-SURFACE.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
     SKILL.md

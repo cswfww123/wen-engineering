@@ -149,8 +149,8 @@ Common skills:
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
-- `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling` with `/domain-modeling` active.
-- `/grilling` is the reusable one-question interview loop (facts vs decisions, confirmation gate).
+- `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling` with `/domain-modeling` active; close gate before ship (decision archive, snippet rule scan, high-risk ack).
+- `/grilling` is the reusable interview loop: default **decision surface / batch table** (not serial micro-Qs), facts vs decisions, anti rubber-stamp, confirmation gate.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
@@ -211,8 +211,8 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs and tickets for intent, coverage, evidence, and execution fit.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling` with `/domain-modeling` active.
-- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: one question, facts vs decisions, confirmation gate.
+- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling`, MVP boundary + close gate + implement handoff.
+- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: decision-surface/batch default, facts vs decisions, anti rubber-stamp, confirmation gate.
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
 - [`wayfinder`](skills/wayfinder/SKILL.md) — thin multi-session map + short pastes; exit to `/to-spec` (see `CONTINUE.md`).
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.

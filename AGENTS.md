@@ -2,6 +2,20 @@
 
 WEN Engineering Skills pack. Optional: `wen-pm` / `wen-test`.
 
+## Code is the environment
+
+> **The code is the environment your agent runs in.**
+
+Every skill, grill, ticket, and review in this pack must uphold that:
+
+- **Authoritative now:** production code, tests, open tracker items, short invariants — not closed process notes or month-old decision docs.
+- **Act inside the environment:** prefer existing wire values, APIs, enums, and identity patterns; treat dangerous legacy as **do-not-copy**, never as a template to spread.
+- **Environment change is explicit:** renaming protocols, relaxing isolation, silent identity fallbacks → only when the user asks for a migration, not as “cleaner” drive-by design.
+- **Process docs are scaffolding:** same-session work defaults to chat; durable archives only for real handoff. After consume/close, do not reload them as law; never invent paperwork for thoroughness.
+- **Conflicts:** code wins over stale docs — resolve from the repo, do not interview the user to pick “which document.”
+
+Routing and hygiene detail: `docs/lifecycle.md` (Environment and artifact hygiene).
+
 ## Wiring
 
 - Tracker / labels / domain: `docs/agents/`

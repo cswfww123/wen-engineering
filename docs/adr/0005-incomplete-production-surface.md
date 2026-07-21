@@ -71,3 +71,5 @@ mechanism does not stop the model from shipping something that *looks* done.
   production AC.
 - Future similar postmortems extend the classifier table in
   `INCOMPLETE-SURFACE.md` rather than scattering new checklists.
+- Extended by ADR 0006: quiet critical path and log-unsafe (forensic
+  observability + fail-open logging) are additional classifier rows.

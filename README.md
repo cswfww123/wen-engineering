@@ -72,9 +72,10 @@ For a new project, run **`/setup-project-harness`** in the target project after 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
 - the five triage roles used by `/to-tickets`, `/implement`, and tracker adapters
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
+- logging **foundation** when the project shape requires it (unified logger, correlation, how-to-read; fail-open logging never breaks business)
 - `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and failure pins only when justified (Checklist first; long classifiers under `.agents/rules/` rarely)
 
-That is the fast path. After setup, agents know where project wiring lives; prove-work commands stay in README/scripts/CI.
+That is the fast path. After setup, agents know where project wiring lives; prove-work commands stay in README/scripts/CI. On integration-heavy repos, foundation comes before AFK feature work.
 
 ### Empty Project Routing
 
@@ -364,7 +365,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, incomplete production surface (blocking), ponytail complexity, performance, security, and standards (Fowler smell baseline).
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, incomplete production surface (blocking, including quiet critical paths and log-unsafe logging), forensic log-chain completeness, ponytail complexity, performance, security, and standards (Fowler smell baseline).
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
@@ -415,6 +416,7 @@ docs/
     0003-skill-invocation-boundaries.md
     0004-wen-lifecycle.md
     0005-incomplete-production-surface.md
+    0006-forensic-observability.md
   agents/
     domain.md
     issue-tracker.md
@@ -432,6 +434,7 @@ skills/
   code-review/
     DISPATCH.md
     AGENT-BRIEFS.md
+    FORENSIC-OBSERVABILITY.md
     INCOMPLETE-SURFACE.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
@@ -473,6 +476,7 @@ skills/
   setup-project-harness/
     AGENTS_TEMPLATE.md
     HARNESS_FLOW.md
+    OBSERVABILITY.md
     RULE_TEMPLATE.md
     SECTIONS.md
     SKILL.md

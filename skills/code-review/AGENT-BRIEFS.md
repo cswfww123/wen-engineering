@@ -32,12 +32,15 @@ Return under 300 words:
 
 Read the diff, then pull only nearby context, comments, tests, blame, or prior PR context needed to confirm concrete bugs. Focus on changed invariants, ordering, error handling, persistence, migrations, and regressions caused by the diff.
 
-**Also scan for incomplete production surface** ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)): deferred markers for real logic, stubs on live paths, dual-source domain facts across sibling channels, config stand-ins. Any hit on a production path is **blocking** (confidence often `100` when a comment admits deferral).
+**Also scan for incomplete production surface** ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)): deferred markers for real logic, stubs on live paths, dual-source domain facts across sibling channels, config stand-ins, **quiet critical path**, **log-unsafe**. Any hit on a production path is **blocking** (confidence often `100` when a comment admits deferral).
+
+**Forensic log chain** ([FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md)): on external/async/webhook/MQ/third-party/state-machine paths the diff touches, check whether correlatable decision-boundary logs cover ingress → branch/skip → external outcome (including empty) → before/after → user-visible why. **Logging must be fail-open** — a log/MDC/metrics failure must never fail or gate business. Quiet path and log-unsafe are blocking, not style.
 
 Return under 300 words:
 
 - bugs users can hit, with file/line and why
 - incomplete-surface hits (or explicit `clean`)
+- observability: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a` | findings
 - evidence that the issue is introduced by this diff
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 - likely false positives to discard
@@ -80,7 +83,9 @@ Return under 300 words:
 
 Run this after collecting findings. For each candidate, assign a `0-100` confidence score using `REVIEW-AXES.md`. Re-read the exact changed lines and cited evidence. Reject candidates that are invented, pre-existing, outside the diff, contradicted by context, likely intentional, or covered by CI.
 
-**Incomplete production surface is never "likely intentional"** just because a TODO comment exists — shipping deferred real logic on a live path is a **blocking** failure. Completion claims fail while it remains. See [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md).
+**Incomplete production surface is never "likely intentional"** just because a TODO comment exists — shipping deferred real logic on a live path is a **blocking** failure. Quiet critical paths and log-unsafe logging are the same class. Completion claims fail while any remain. See [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md) and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md).
+
+**Logging fail-open:** if a log/MDC/metrics path can fail the business, that is blocking — not a style preference.
 
 Return only findings with confidence `>=80`, each with:
 
@@ -90,4 +95,4 @@ Return only findings with confidence `>=80`, each with:
 - why it is not a false positive
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 
-Verdict: `Pass` only with zero validated blocking findings (including incomplete surface). Otherwise `Changes Required` or `Needs User Decision`.
+Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe). Report **observability** when the diff touches applicable paths. Otherwise `Changes Required` or `Needs User Decision`.

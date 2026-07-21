@@ -29,6 +29,9 @@ infer facts from conventions alone.
 - install, dev, build, lint, typecheck, test, and single-test commands found in repo evidence
 - route/API layers, schema/migration layers, database access, generated code, deployment config
 - behavior hidden behind real call paths that requires tracing before becoming a rule
+- **Logging foundation:** unified logger API, level/sink config, correlation/MDC,
+  request or job entry logging, redaction habit, documented how-to-read path.
+  Full bar vs thin bar: [OBSERVABILITY.md](OBSERVABILITY.md).
 
 ### Existing AI Instructions
 
@@ -58,6 +61,8 @@ Present this before decisions:
 - Frameworks: <list>
 - Commands found: <list exact commands>
 - Commands missing: <list>
+- Observability bar: <full / thin / n/a> — evidence: <logger, correlation, sinks, how-to-read>
+- Foundation status: <present / partial / missing>
 
 ### Existing AI Instructions
 - Found: <list files and patterns>
@@ -74,8 +79,15 @@ Draft all artifacts before writing:
 - `docs/agents/issue-tracker.md`
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
+- logging foundation plan when bar is **full** and status is partial/missing
+  (stack-native logger, config, correlation, redaction, how-to-read doc or
+  README section; Checklist pin only if a proven failure needs it)
 - preservation, merge, or replacement plan for existing files
 - tracker capability choice and proof that every operation in `TRACKER_CONTRACT.md` is covered
+
+On **full** bar + **missing** foundation: foundation draft is **in-scope before**
+calling the harness agent-ready for integration work. Do not skip to feature
+AFK setup while logs are unsolvable. Contract: [OBSERVABILITY.md](OBSERVABILITY.md).
 
 Show the full draft and merge plan. Do not silently overwrite surrounding
 user-authored sections.
@@ -153,10 +165,11 @@ Report:
 - issue tracker choice
 - triage labels
 - domain doc layout
+- observability bar + foundation status (and what was added)
 - Checklist pins / any rare rule files created
 - verification evidence
 - remaining open decisions
 
 Mention that users can later edit `docs/agents/*.md` and `AGENTS.md` Checklist
 directly. Re-run this skill only when switching trackers, changing domain layout,
-or reinitializing the harness.
+reinitializing the harness, or upgrading logging foundation.

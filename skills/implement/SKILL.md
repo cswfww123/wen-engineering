@@ -57,11 +57,19 @@ Per slice, Executor (or fallback) does:
 3. `/simplify` when the delta is non-trivial.
 4. Project verification for this layer (behavior gate).
 5. Fidelity when applicable (UI vs design/contract; API vs stated contract).
-6. **Incomplete-surface self-check** before claiming the slice ready for
-   review: production paths for this AC must be complete. Deferred markers,
-   placeholders, dual-source domain facts, and config stand-ins on live paths
-   are forbidden — finish the real step or **stop and report a blocker**.
+6. **Incomplete-surface + forensic observability self-check** before claiming
+   the slice ready for review: production paths for this AC must be complete.
+   Deferred markers, placeholders, dual-source domain facts, config stand-ins,
+   **quiet critical paths**, and **log-unsafe** logging on live paths are
+   forbidden — finish the real step or **stop and report a blocker**.
    Classifier: [INCOMPLETE-SURFACE.md](../code-review/INCOMPLETE-SURFACE.md).
+   On external/async/webhook/MQ/third-party/state-machine paths: instrument
+   decision boundaries (ingress, branch/skip, before→after, external outcome
+   including empty, fan-out) with correlatable field logs; **logging is
+   fail-open** — log/MDC/metrics failure must never fail or gate business.
+   If the project lacks a required logging foundation, report
+   `observability: foundation-missing` and stop rather than shipping quiet
+   paths. Contract: [FORENSIC-OBSERVABILITY.md](../code-review/FORENSIC-OBSERVABILITY.md).
 
 Parent re-issues a **new** Executor brief per slice — not one mega-todo dump
 that never dispatches.
@@ -91,6 +99,7 @@ that still carries an incomplete production surface for its AC.
 - files changed
 - behavior-gate + fidelity (or n/a)
 - **incomplete-surface check**: `clean` | `blocked` (cite signal) | `n/a` (docs/config only)
+- **observability**: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a`
 - code-review verdict
 - **`agents used`**: e.g. `Executor` | `host-general` | `parent-fallback` (and
   for review: `Reviewer` / `Verifier` / fallback) — if parent did the work,

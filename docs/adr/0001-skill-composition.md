@@ -39,8 +39,11 @@ deterministic execution.
    builds, deploys, and signing belong to CI, the project harness
    (`setup-project-harness`), or external tools.
 4. **Enterprise gaps stay inside existing review boundaries.** Security is a
-   `code-review` axis for changed code. Ops, observability, release automation,
-   and data migration stay project-harness concerns, not general skills.
+   `code-review` axis for changed code. Ops, release automation, and data
+   migration stay project-harness concerns, not general skills. **Forensic
+   observability** (logging foundation at setup, decision-boundary logs,
+   fail-open) is a pack gate shared with harness — see ADR 0006; it is not a
+   free-standing "ops skill" dump.
 
 ## Considered Options
 

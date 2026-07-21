@@ -71,9 +71,10 @@ git pull --ff-only
 - issue tracker workflow：GitHub、GitLab、本地 markdown，或其他 tracker
 - `/to-tickets`、`/implement` 和 tracker adapters 使用的五个 triage roles
 - domain documentation layout：单个 `CONTEXT.md`，或多 context 的 `CONTEXT-MAP.md`
+- 项目形态需要时的日志 **foundation**（统一 logger、关联 id、如何查日志；日志 fail-open，永不拖垮业务）
 - `AGENTS.md`、`CLAUDE.md`、`docs/agents/`，以及仅在有依据时的失败钉（优先 Checklist；长分类器才进 `.agents/rules/`）
 
-这是最快路径。setup 之后，agents 知道项目接线在哪里；证明工作的命令放在 README/scripts/CI。
+这是最快路径。setup 之后，agents 知道项目接线在哪里；证明工作的命令放在 README/scripts/CI。集成型仓库应先有日志 foundation，再做 AFK 功能开发。
 
 ### 空项目路由
 
@@ -361,7 +362,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs：intent、bug、incomplete production surface（阻断）、ponytail、性能、安全、规范（含 Fowler smell 基线）。
+- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs：intent、bug、incomplete production surface（阻断，含静默关键路径与 log-unsafe）、取证日志链完整性、ponytail、性能、安全、规范（含 Fowler smell 基线）。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 
@@ -412,6 +413,7 @@ docs/
     0003-skill-invocation-boundaries.md
     0004-wen-lifecycle.md
     0005-incomplete-production-surface.md
+    0006-forensic-observability.md
   agents/
     domain.md
     issue-tracker.md
@@ -429,6 +431,7 @@ skills/
   code-review/
     DISPATCH.md
     AGENT-BRIEFS.md
+    FORENSIC-OBSERVABILITY.md
     INCOMPLETE-SURFACE.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
@@ -470,6 +473,7 @@ skills/
   setup-project-harness/
     AGENTS_TEMPLATE.md
     HARNESS_FLOW.md
+    OBSERVABILITY.md
     RULE_TEMPLATE.md
     SECTIONS.md
     SKILL.md

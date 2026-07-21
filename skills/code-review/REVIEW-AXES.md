@@ -70,7 +70,8 @@ Look for:
 - regressions suggested by git blame, nearby tests, previous PR comments, or comments in modified files
 - data-loss risks directly introduced by the diff
 - when the diff touches a shared mutable invariant (balance/quota/counter/inventory/state machine), require a concurrency test seam per `.agents/rules/invariants/`; serial-only tests are insufficient
-- **Incomplete production surface (blocking):** deferred markers (`TODO`/`FIXME`/`HACK` for real logic), stubs/placeholders on live paths, dual-source domain facts across sibling channels, or config/hardcoded stand-ins when a sibling path already uses the real service/table. Classifier and confidence: [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). This class is a **hard** Correctness finding, not a style nit — verdict cannot be `Pass` while it remains.
+- **Incomplete production surface (blocking):** deferred markers (`TODO`/`FIXME`/`HACK` for real logic), stubs/placeholders on live paths, dual-source domain facts across sibling channels, config/hardcoded stand-ins when a sibling path already uses the real service/table, **quiet critical path** (external/async/state path with no correlatable decision-boundary logs), or **log-unsafe** (logging that can fail or alter the business path). Classifier: [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). Forensic contract: [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md). Hard Correctness — verdict cannot be `Pass` while it remains.
+- **Forensic log chain (blocking on applicable paths):** for each production-reachable external/async/webhook/MQ/third-party/state-machine chain the diff touches, verify logs can answer ingress → branch/skip → external outcome (including empty) → before/after state → user-visible why, under one correlation id — and that **no log path can break business** (fail-open). Pure local pure-function diffs: `observability: n/a`. Checklist: [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md).
 
 Avoid speculative "could be better" comments. A finding should survive a skeptical second read.
 
@@ -89,6 +90,7 @@ Look for:
 - async throughput risks: non-idempotent retries, unbounded queues, missing dead-letter/poison-message handling, lock contention, or task fanout without backpressure
 - missing deadlines, cancellation, retries with backoff, circuit-breaking, or rate limits on external calls
 - observability gaps that hide performance failures: swallowed errors, missing job/request identifiers, missing timing/error metrics, or high-cardinality labels introduced by the diff
+- (Forensic decision-boundary completeness and fail-open logging are **Correctness**, not only Performance — see [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md).)
 
 Tie each finding to the current stack. Do not demand backend mitigations in a pure frontend app or frontend bundle work in a pure backend service.
 

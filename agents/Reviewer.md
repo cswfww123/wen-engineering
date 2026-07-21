@@ -18,11 +18,12 @@ Use the review packet from the brief (diff/fixed point, intent sources, standard
 
 When the brief names an axis, stay on that axis. When the repo provides review-axis docs (e.g. `skills/code-review/AGENT-BRIEFS.md`), follow them for that axis.
 
-On **Correctness**, also apply the incomplete production surface classifier when available (`skills/code-review/INCOMPLETE-SURFACE.md`): deferred real logic, stubs on live paths, dual-source domain facts, config stand-ins. Hits on production paths are high-confidence blocking findings.
+On **Correctness**, also apply the incomplete production surface classifier when available (`skills/code-review/INCOMPLETE-SURFACE.md`): deferred real logic, stubs on live paths, dual-source domain facts, config stand-ins, **quiet critical path**, **log-unsafe**. Hits on production paths are high-confidence blocking findings. Run the forensic chain checklist (`skills/code-review/FORENSIC-OBSERVABILITY.md`): decision-boundary logs on applicable paths, and **logging must be fail-open** (never fail the business).
 
 Return:
 
 - findings (if any): summary, file:line, evidence, axis (if any), fixability (`auto-fixable` | `report-only` | `needs-user-decision`), confidence
 - axis/pass result: issues found | clean | skipped (reason)
 - incomplete-surface (Correctness only): clean | findings | n/a
+- observability (Correctness only): instrumented | foundation-missing | quiet-path | log-unsafe | n/a | findings
 - likely false positives discarded (brief)

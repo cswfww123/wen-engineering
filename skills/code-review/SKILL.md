@@ -103,13 +103,18 @@ binds **how** subagents are used when the host has a spawn runtime.
 2. **Correctness is required** for any diff that touches production-reachable
    code (not pure docs/comments/config-only renames). Incomplete production
    surface is a **blocking** Correctness class — see
-   [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). Optional extra axes when
-   warranted: **Performance**, **Security**, **Ponytail** — same hard-try;
+   [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). That class includes **quiet
+   critical path** and **log-unsafe** logging. Correctness **must** run the
+   forensic log-chain checklist on applicable paths and require **fail-open**
+   logging (log failure never fails business) —
+   [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md). Optional extra axes
+   when warranted: **Performance**, **Security**, **Ponytail** — same hard-try;
    report each under its own heading (no cross-axis renorming). Detail:
    [REVIEW-AXES.md](REVIEW-AXES.md), [PROJECT-LENSES.md](PROJECT-LENSES.md).
 3. After candidates: **must try** pack `Verifier` (or parent Verification
-   Reviewer). Keep findings only at confidence `>=80`. Incomplete surface that
-   survives verification **blocks** `Pass`.
+   Reviewer). Keep findings only at confidence `>=80`. Incomplete surface
+   (including quiet path / log-unsafe) that survives verification **blocks**
+   `Pass`.
 4. Soft fail only after an attempt (or when no subagent runtime exists). Never
    abort because pack roles are undefined.
 5. **Forbidden:** parent solo-reviews a non-empty diff while a subagent runtime
@@ -128,4 +133,5 @@ binds **how** subagents are used when the host has a spawn runtime.
   `Pass` / `Changes Required` / `Needs User Decision`.
 - Final report **must** include **`agents used`** (Reviewer / Verifier /
   host-general / parent-fallback per axis) and an explicit
-  **incomplete-surface** line: `clean` | findings | `n/a` (docs-only).
+  **incomplete-surface** line: `clean` | findings | `n/a` (docs-only), and
+  **observability** when the diff touches applicable paths.

@@ -83,4 +83,8 @@ Any further notes about the feature.
   `PRD.md` / history in place.
 - Routing / anti-invention: `docs/lifecycle.md`. Never invent Expected, market
   bets, or user value.
+- **Filled `/to-questionnaire` is settled input.** If the user pastes answers or
+  a path (`问卷已填`), synthesize from those choices — do **not** interview or
+  re-confirm answered Q-ids. Only flag blanks / bare `Z` / contradictions before
+  publishing. Prefer citing Q-ids in Implementation / Out of Scope where useful.
 - Optional bug-report path: [BUG-REPORT-CONVERSION.md](BUG-REPORT-CONVERSION.md).

@@ -19,6 +19,9 @@ Use: rework / mild Expected gap / need a written pin before grill, wayfinder, or
 `/to-spec`; multi-session technical fog → `/wayfinder`; **HEAVY** fuzzy need →
 full PM (or disposition `Escalate-PM` / `Discovery` / `Pause` / `Kill` only).
 
+**Do not** open this skill (or write a docket) for a one-line eng question that
+can be answered from code in the same turn — just answer or `/implement`.
+
 ## Steps
 
 1. **Inspect** — conversation, docs, screenshots, repo, runtime. List inaccessible
@@ -33,7 +36,7 @@ full PM (or disposition `Escalate-PM` / `Discovery` / `Pause` / `Kill` only).
 | Disposition | Next |
 | --- | --- |
 | `pure-eng` | `/implement` or `/to-spec` |
-| `Align` | `/grill-me` or `/wayfinder` |
+| `Align` | `/grill-me`, `/to-questionnaire` (stakeholder/meeting), or `/wayfinder` |
 | `Build-ready` | `/to-spec` |
 | `Discovery` / `Pause` / `Kill` / `Escalate-PM` | stop with named reason or PM |
 

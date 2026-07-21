@@ -39,12 +39,28 @@ pipelines when `/implement` is enough.
 Start at the **smallest** honest step. Escalate only when that step fails.
 
 ```text
-L1  clear work        → /implement
-L2  multi-slice       → /to-spec → /to-tickets → /implement
-G   same-session pin  → /grill-me          ← still in the flow
-L3  mild intent gap   → /product-fog → one next (often G or L2/L4)
-L4  multi-session fog → /wayfinder → L2
+L1  clear work              → /implement
+L2  multi-slice             → /to-spec → /to-tickets → /implement
+G   same-session pin        → /grill-me → (chat recap default) → /implement
+                            → durable archive / /to-spec only if cross-session handoff
+Q   stakeholder questionnaire → /to-questionnaire → fill → ingest → /to-spec
+L3  mild intent pin         → /product-fog → one next
+L4  multi-session eng fog   → /wayfinder → (resolved) → L2
 ```
+
+### Environment and artifact hygiene (agent-side — do not interview the user)
+
+These are **automatic**. Prefer code and open tracker state; do not add user steps.
+
+1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates.
+2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater.
+3. **Same-session default = no new process docs.** `/grill-me` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask.
+4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*.
+5. **Hygiene without asking.** After a handoff file is consumed (spec written, ticket closed, implement done), stop citing it; delete or cold-ignore silently. Never prompt the user to approve doc cleanup.
+6. **Ask the user only** for product intent they own or irreversible environment-changing migrations — not for “save this md?” or “trust code or doc?”
+
+Human-facing walkthrough (same flows, longer form): root `README.md` /
+`README.zh-CN.md` **Lifecycle** section.
 
 ### L1 — One-context settled work
 
@@ -73,20 +89,45 @@ spec. Slice risk: `/alignment-review`.
 
 ```text
 plan/design still fuzzy, but one interview can clear it
-  → /grill-me   (loads /grilling + /domain-modeling)
+  → /grill-me   (loads /grilling; domain-modeling only if terms truly change)
 ```
 
-**In the flow**, not optional fluff. Use when:
+**In the flow**, not optional fluff — but **not a documentation factory**. Use when:
 
-- Before `/to-spec` or `/implement`, a few user-owned decisions are open
+- Before `/implement` (or rarely `/to-spec`), a few user-owned decisions are open
 - L4 would be overkill (no multi-session map yet)
 - L3 routed `Align` for same-session trade-offs
 
-One question at a time, recommended answers, facts from the repo first (see
-`/grilling`: facts vs decisions, confirmation gate). Runs with
-`/domain-modeling` active so glossary/ADR update as terms crystallize. If one
+**Default out:** shared understanding **in the chat** + optional short recap.
+Do **not** require `decision-*.md` / `docs/decisions/` for same-session work
+(Matt-upstream `grill-me` is interview-only; durable docs are the exception).
+
+Frontier rounds with recommended answers (batch table / decision surface by
+default — not serial micro-Qs); facts from the repo first, non-blocking where
+lookups can run in parallel (see `/grilling`). Durable archive only for
+cross-session handoff, Wayfinder ticket close, or explicit user ask. If one
 session is not enough → L4 `/wayfinder`. If product need itself is fuzzy →
-**HEAVY** PM, not grill.
+**HEAVY** PM, not grill. If answers live with another person / a clarification
+meeting → **Q** `/to-questionnaire`, then resume G.
+
+### Q — Stakeholder questionnaire (meeting or async)
+
+```text
+user is not the product/domain owner for open decisions
+  → /to-questionnaire  (options + 推荐 + 手写)
+  → fill in meeting or async
+  → paste back (问卷已填) → ingest, no re-confirm
+  → default /to-spec
+  → short /grill-me only for eng residual
+```
+
+**In the flow** when grill would only produce "I don't know — ask PM". Use for
+需求澄清会 prep or a single async pass. Grill the *send* (who + what you need
+back), not a fake product discovery. Questions ship with **options + recommended
+answer + free-text override**. Filled answers are **settled** — do not re-ask.
+Default return is **`/to-spec`**; `/grill-me` only for remaining engineering
+frontier. Never invent Expected. Still not a substitute for HEAVY PM when
+worth-doing / market is open.
 
 ### L3 — Light product intent gap (still coding-adjacent)
 
@@ -96,7 +137,8 @@ rework / mild Expected gap / "not quite what I meant"
 ```
 
 Mini docket only. Never invent Expected. Common next hops: **G**
-`/grill-me`, L2 `/to-spec`, L4 `/wayfinder`, stop, or **Escalate-PM**.
+`/grill-me`, **Q** `/to-questionnaire`, L2 `/to-spec`, L4 `/wayfinder`, stop, or
+**Escalate-PM**.
 
 Use when already in a coding context — **not** as market discovery.
 
@@ -128,6 +170,7 @@ tasks may batch. Plan only — never ship the destination inside the map.
 | Evidence only | `/research`, `/prototype` |
 | Domain terms / ADRs | `/domain-modeling` |
 | Same-session interview | `/grill-me` → `/grilling` (+ `/domain-modeling`) |
+| Stakeholder questionnaire | `/to-questionnaire` (meeting or async) |
 | Merge/rebase conflicts | `/resolving-merge-conflicts` |
 
 ---
@@ -163,7 +206,8 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | Fix this bug / do this AC | LIGHT L1 | `/implement` |
 | Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` |
 | Few open decisions; one session can pin them | LIGHT **G** | `/grill-me` |
-| Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G) |
+| Need product answers from another person / 澄清会 | LIGHT **Q** | `/to-questionnaire` → ingest → default `/to-spec` |
+| Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G or Q) |
 | Migration/contracts too big for one session | LIGHT L4 | `/wayfinder` (try G first; then L2) |
 | Wayfinder map already resolved | LIGHT L2 | `/to-spec` (not more wayfinder) |
 | Vague idea, no validated need | **HEAVY** | `wen-pm` `/pm-intake` |

@@ -51,7 +51,8 @@ settled multi-slice → /to-spec → /to-tickets → /implement
 | Daily bug / clear AC | LIGHT | `/implement` |
 | Settled multi-slice | LIGHT | `/to-spec` → `/to-tickets` → `/implement` |
 | Same-session plan pin (in-flow) | LIGHT **G** | `/grill-me` → `/grilling` (+ `/domain-modeling`) |
-| Mild intent gap in coding context | LIGHT | `/product-fog` (often → grill) |
+| Stakeholder / meeting product gaps | LIGHT **Q** | `/to-questionnaire` → fill → ingest (no re-confirm) → default `/to-spec` |
+| Mild intent gap in coding context | LIGHT | `/product-fog` (often → grill or questionnaire) |
 | Multi-session eng fog | LIGHT | `/wayfinder` (prefer grill if one session) |
 | Fuzzy need / market / "should we build" | **HEAVY** | `wen-pm` `/pm-intake` … |
 | System QA | test | optional `wen-test` |

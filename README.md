@@ -78,66 +78,202 @@ That is the fast path. After setup, agents know where project wiring lives; prov
 
 ### Empty Project Routing
 
-For an empty project, choose `/setup-project-harness` or a short technical grill based on what is already known:
-
-- If the stack or repo shape is known, run `/setup-project-harness` first. It creates the workbench: `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and local scratch space.
-- If only a product goal is known and value/user/outcome are still open (**HEAVY**), start full PM (`wen-pm` `/pm-intake` or team process) — never invent answers; then enter LIGHT coding.
-- If stack choices are open, run a short `/grill-me` pass, then `/setup-project-harness`.
-- Once the direction is clear enough to write honest project instructions, switch to `/setup-project-harness`; continue `/grill-me` after the harness exists.
-
-Rule of thumb: no workbench → setup; daily coding → LIGHT from `/implement` up; fuzzy product need → HEAVY PM first; multi-session eng fog → Wayfinder.
-
-In empty repos, the harness must record facts and user decisions only. Leave package manager, framework, build, lint, typecheck, and test commands undefined until scaffold evidence exists.
+See [Lifecycle §4 Empty project](#4-empty-project). Short version: no workbench →
+`/setup-project-harness` (or HEAVY PM first if only a fuzzy product goal exists);
+daily work then follows the LIGHT chooser.
 
 ## Lifecycle
 
-**Two tracks.** Daily work stays **LIGHT**. Fuzzy product need starts **HEAVY**.
-Full detail: [docs/lifecycle.md](docs/lifecycle.md),
-[docs/boundaries.md](docs/boundaries.md),
+**Two tracks.** Default to **LIGHT**. Use **HEAVY** only when the product need
+itself is fuzzy. Source of truth for edge cases:
+[docs/lifecycle.md](docs/lifecycle.md) ·
+[docs/boundaries.md](docs/boundaries.md) ·
 [docs/handoff-package.md](docs/handoff-package.md).
 
-| Track | When | Start |
+### 0. Choose track (one question)
+
+```text
+Is the product need itself fuzzy?
+  (worth-doing, target user, market, "what should we build?")
+    → HEAVY  → full PM, then hand a settled package into LIGHT L2
+
+Is intent good enough to code against?
+  (bug, named AC, settled multi-slice, pure eng)
+    → LIGHT  → smallest step below (prefer L1 when honest)
+```
+
+**Bias:** do not open PM, Wayfinder, or multi-skill pipelines when `/implement` is enough.
+
+### 1. Quick chooser
+
+| Situation | Flow | Entry → exit |
 | --- | --- | --- |
-| **LIGHT** (default) | Intent good enough to code | Smallest coding step in this pack |
-| **HEAVY** | Need / user / market still fuzzy | Full PM (`wen-pm` or team process), then hand off |
+| Bug / clear AC / one eng slice | **L1** | `/implement` → done |
+| Settled multi-slice package | **L2** | `/to-spec` → `/to-tickets` → `/implement` |
+| Few open decisions; *you* can answer this session | **G** | `/grill-me` → chat recap → `/implement` (archive/`/to-spec` only if handoff) |
+| Answers live with PM/业务; 需求澄清会 or async form | **Q** | `/to-questionnaire` → fill → paste back → **`/to-spec`** (no re-confirm) |
+| Shipped wrong / mild Expected gap in coding context | **L3** | `/product-fog` → exactly one next (G / Q / L2 / L4 / stop / PM) |
+| Product OK; technical route needs many sessions | **L4** | try **G** first → else `/wayfinder` → map resolved → **L2** |
+| Vague idea, no validated need | **HEAVY** | `wen-pm` (or team PM) → then **L2** |
+| System QA of a build | optional | `wen-test` |
 
-### LIGHT — daily coding
+### 2. LIGHT flows (detail)
 
-```text
-L1  bug | clear AC        → /implement
-L2  settled multi-slice   → /to-spec → /to-tickets → /implement
-G   same-session pin      → /grill-me   (in the flow)
-L3  mild intent gap       → /product-fog → one next (often G)
-L4  multi-session eng fog → /wayfinder → L2     (try G first)
-```
-
-- **L1:** one context, evidence loop, `/code-review`. No invented ticket.
-- **L2:** settled package from any source (PM handoff, PRD, docs, chat AC). FE/BE gates at ticket layer. Optional `wen-test` for system QA.
-- **G:** same-session `/grill-me` with `/domain-modeling` active — first-class LIGHT tool when a few user-owned decisions remain; not a substitute for HEAVY PM.
-- **L3:** coding-adjacent pin only (rework / mild Expected). Never invent Expected. Often routes to **G**.
-- **L4:** product settled enough; technical route still multi-session foggy. Prefer G first; thin map (≤5 tickets, research over grill); exit to L2 when resolved. Short pastes: `skills/wayfinder/CONTINUE.md`.
-
-### HEAVY — fuzzy requirements
+Map of steps (each flow is independent — pick one):
 
 ```text
-vague idea | unknown user | "should we build this?"
-  → wen-pm /pm-intake (or team PM) → Build|Bet → to-prd
-  → LIGHT L2: /to-spec → /to-tickets → /implement
+L1  clear work              →  /implement
+L2  multi-slice             →  /to-spec → /to-tickets → /implement
+G   same-session pin        →  /grill-me  →  chat recap  →  /implement (| archive → /to-spec if handoff)
+Q   stakeholder questionnaire →  /to-questionnaire  →  fill  →  ingest  →  /to-spec
+L3  mild intent pin         →  /product-fog  →  one next skill
+L4  multi-session eng fog   →  /wayfinder  →  (resolved)  →  L2
 ```
 
-Do not open `/implement`, `/to-spec`, or Wayfinder to invent product value.
-If PM is missing: stop, name the evidence gap — optional `/product-fog` only to record Discovery/Pause/Kill.
+#### L1 — Implement (default daily)
 
-### v1.1 Command Migration
+```text
+bug | clear AC | pure eng slice
+  → /implement
+      (hard bug first: /diagnosing-bugs)
+  → evidence loop (TDD or GREEN baseline)
+  → /simplify when non-trivial
+  → project checks → /code-review → done
+```
 
-`/to-spec` replaces `/to-prd`, and `/to-tickets` replaces `/to-issues`. The old
-slash commands are retired, while existing `PRD.md`, `issues/`, links, and
-tracker objects remain valid legacy inputs and are never renamed in place.
-`/to-spec` / `/to-tickets` retired-name note above still applies. `/grill-me` is
-the user-invoked interview entry; `/grilling` is the shared model-invoked loop
-it (and Wayfinder HITL tickets) load. Sync removes managed copies of fully
-retired commands; an unmarked same-name canonical skill blocks normal sync,
-while `--force` backs it up outside the active skills root before removal.
+- **In:** enough AC or a single ticket; no invented product value.
+- **Out:** reviewable delta closed. No parent spec required.
+- **Do not:** invent tickets or specs to look busy.
+
+#### L2 — Spec → tickets → implement
+
+```text
+settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archive)
+  → /to-spec          (non-runnable parent; no re-interview of settled answers)
+  → /to-tickets       (dependency graph; implementation frontier)
+  → /implement        (one ticket at a time)
+  → (optional) wen-test: /to-test-plan → /qa-run
+```
+
+- **In:** product intent settled enough to write honest requirements.
+- **Out:** slices on the frontier; parent spec stays open until work is done.
+- **Also:** `/alignment-review` when slice risk is high; FE/BE fidelity at ticket layer.
+- **Do not:** close the parent spec from `/implement`.
+
+#### G — Grill (same-session pin)
+
+```text
+plan still fuzzy, but *you* own the decisions and one session can clear them
+  → /grill-me   (loads /grilling; domain-modeling only if terms truly change)
+      frontier rounds: batch table + 推荐; facts first (non-blocking sub-agents)
+      MVP in/out early; anti rubber-stamp on high-risk only
+  → close: chat recap by default (no decision-*.md)
+  → durable archive only for cross-session / Wayfinder / explicit ask
+  → next: usually /implement in-session; /to-spec only if multi-slice handoff
+```
+
+- **In:** a few user-owned product/eng decisions; not multi-session fog.
+- **Out:** shared understanding in chat (Matt-style). Files are the exception, not the rule.
+- **Escalate:** wrong human in the room → **Q**; too big for one session → **L4**; market/worth-doing open → **HEAVY**.
+- **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches.
+
+#### Q — Questionnaire (meeting or async)
+
+```text
+you are not the product/domain owner for open decisions
+  → /to-questionnaire
+      grill the *send* only (who + what you need back)
+      every decision question: options + 推荐 + 手写(Z)
+  → Meeting (需求澄清会) or Async fill-in
+  → paste back: 问卷已填 + path
+  → ingest: answered Q-ids are settled — do not re-confirm
+  → default: /to-spec
+  → only if eng seams remain: short /grill-me on *those* only
+```
+
+- **In:** PM/业务 holds answers; or you want a clarification-meeting agenda.
+- **Out:** filled questionnaire → fold into **L2** (`/to-spec`…); no parallel rotting decision file.
+- **Do not:** re-ask settled options; run full product discovery; use Q as HEAVY PM substitute.
+
+#### L3 — Product fog (thin pin)
+
+```text
+rework / mild Expected gap / "not quite what I meant" (already in coding context)
+  → /product-fog   (mini docket only; never invent Expected)
+  → exactly one next:
+        Align        → G or Q
+        Build-ready  → L2 (/to-spec)
+        pure-eng     → L1 or L2
+        multi-session tech fog → L4
+        Discovery / Pause / Kill / Escalate-PM → stop or HEAVY
+```
+
+- **In:** coding-adjacent intent pin — not market discovery.
+- **Out:** one disposition + one skill (or stop). No production mutations.
+
+#### L4 — Wayfinder (multi-session eng fog)
+
+```text
+product settled enough; technical route still multi-session foggy
+  → prefer G first if one interview would clear it
+  → /wayfinder
+      thin map (≤5 tickets on chart); research/task over grill
+      short pastes: skills/wayfinder/CONTINUE.md
+  → map Status: resolved
+  → L2: /to-spec → /to-tickets → /implement
+```
+
+- **In:** eng decisions that need a shared frontier across sessions.
+- **Out:** resolved map; **stop** Wayfinder; consume resolutions in `/to-spec` (do not re-grill closed DECs).
+- **Do not:** implement the destination inside the map; invent product value with tickets.
+
+### 3. HEAVY — fuzzy product need
+
+```text
+vague idea | unknown user | market bet | "should we build this?"
+  → full product discovery
+      preferred: wen-pm /pm-intake → … → Build|Bet → to-prd
+      or team PM process
+  → hand settled package into LIGHT L2
+      /to-spec → /to-tickets → /implement
+```
+
+- **Do not** open `/implement`, `/to-spec`, or Wayfinder to invent product value.
+- If `wen-pm` is missing: stop inventing; name the evidence gap. Optional `/product-fog` only to record Discovery / Pause / Kill.
+
+### 4. Empty project
+
+```text
+no workbench yet
+  → stack/repo shape known     → /setup-project-harness first
+  → only product goal (fuzzy)  → HEAVY PM first, then harness + L2
+  → stack choices open         → short /grill-me → /setup-project-harness
+  → then daily work            → LIGHT from the chooser above
+```
+
+Harness records **facts and user decisions only**. Leave package manager,
+framework, and prove-work commands undefined until scaffold evidence exists.
+
+### 5. Implement loop (inside L1 / each L2 ticket)
+
+```text
+claim → behavior test or compatibility baseline → simplify → verify → code-review → close
+```
+
+Support skills (compose under any flow): `/tdd`, `/simplify`, `/code-review`,
+`/research`, `/prototype`, `/domain-modeling`, `/alignment-review`,
+`/resolving-merge-conflicts`, `/handoff`.
+
+### 6. Command names (v1.1)
+
+| Current | Retired (still valid as *inputs*) |
+| --- | --- |
+| `/to-spec` | `/to-prd` — existing `PRD.md` stays valid |
+| `/to-tickets` | `/to-issues` — existing `issues/` stays valid |
+| `/grill-me` | user entry; loads model-invoked `/grilling` |
+
+Sync removes managed copies of fully retired command names; unmarked same-name
+skills in the canonical root block normal sync (`--force` backs them up first).
 
 ## Local Workspace
 
@@ -149,8 +285,9 @@ Common skills:
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
-- `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling` with `/domain-modeling` active; close gate before ship (decision archive, snippet rule scan, high-risk ack).
-- `/grilling` is the reusable interview loop: default **decision surface / batch table** (not serial micro-Qs), facts vs decisions, anti rubber-stamp, confirmation gate.
+- `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room.
+- `/grilling` is the reusable interview loop: **frontier rounds** (dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, anti rubber-stamp, confirmation gate.
+- `/to-questionnaire` turns stakeholder gaps into a meeting or async questionnaire (options + 推荐 + 手写); paste back → ingest without re-asking → default `/to-spec`.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
@@ -211,8 +348,9 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs and tickets for intent, coverage, evidence, and execution fit.
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling`, MVP boundary + close gate + implement handoff.
-- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: decision-surface/batch default, facts vs decisions, anti rubber-stamp, confirmation gate.
+- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
+- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: frontier rounds + batch tables, non-blocking facts, anti rubber-stamp, confirmation gate.
+- [`to-questionnaire`](skills/to-questionnaire/SKILL.md) — stakeholder questionnaire (options + 推荐 + 手写); filled answers settle without re-grill; default next `/to-spec` (LIGHT Q).
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
 - [`wayfinder`](skills/wayfinder/SKILL.md) — thin multi-session map + short pastes; exit to `/to-spec` (see `CONTINUE.md`).
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
@@ -352,6 +490,8 @@ skills/
     SKILL.md
     mocking.md
     tests.md
+  to-questionnaire/
+    SKILL.md
   to-spec/
     SKILL.md
     TEMPLATE.md

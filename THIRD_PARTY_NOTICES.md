@@ -13,6 +13,11 @@ Upstream pin: `main` at
 
 Prior WEN pin (v1.1.0-era): `d574778f94cf620fcc8ce741584093bc650a61d3`.
 
+WEN also ships **`to-questionnaire`**, adapted from Matt's upstream
+`skills/in-progress/to-questionnaire` (present at the pin above; still
+in-progress upstream). WEN layers meeting mode, lifecycle route **Q**, and
+routing from stuck `/grill-me`.
+
 Upstream material is licensed under the MIT License:
 
 ```text

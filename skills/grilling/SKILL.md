@@ -30,10 +30,12 @@ One-line replies such as `按推荐` or `按推荐，除第 2 行→无效` are 
 - **Do not block the whole round on fact-finding.** A running exploration is an unsettled prerequisite for *only* the questions that depend on it: ask the rest of the frontier now; hold back only the dependent rows until the sub-agent reports.
 - The **decisions** are mine — put each surface to me and wait.
 - Do **not** implement until I confirm shared understanding. Parent skills may require a durable archive only for **cross-session handoff** — same-session work needs no decision file.
+- **Conflicting live sources** (enum vs write path vs SQL/report vs sibling service) are **decisions**, not auto-resolved “code wins.” Show a short source→value table and recommend; wait for `按推荐` / diff. Never close an open pole with “无需再问.”
+- **Bare `/implement` while frontier open:** recap open recommended rows and wait for `按推荐` / diffs. If I insist without answering, implement only settled rows; do not invent answers for open A/B or alignment targets.
 
 ## Anti rubber-stamp
 
-If I accept the full recommended table **unchanged 2 times in a row** (or keep saying only `按推荐` across surfaces), do **not** open more low-risk rows. Next message: **2–3 high-risk decisions only** (visibility/privacy, transaction boundaries, half-finished surfaces like backend-only SSE, irreversible schema, shared-branch blast radius). Force an explicit choice on those; everything else stays on the last recommended table unless I diff it.
+If I accept the full recommended table **unchanged 2 times in a row** (or keep saying only `按推荐` across surfaces), do **not** open more low-risk rows. Next message: **2–3 high-risk decisions only** (visibility/privacy, transaction boundaries, half-finished surfaces like backend-only SSE, irreversible schema, shared-branch blast radius, **money/stats 口径**, **historical backfill**, **dual write paths across services**). Force an explicit choice on those; everything else stays on the last recommended table unless I diff it.
 
 ## Keep it short
 

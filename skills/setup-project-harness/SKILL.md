@@ -21,7 +21,7 @@ Create or update only the harness files the repo actually needs:
 - `docs/agents/issue-tracker.md`
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
-- logging **foundation** artifacts the project shape requires (config, correlation, how-to-read) — see [OBSERVABILITY.md](OBSERVABILITY.md)
+- observability **bar classification** only (full / thin / partial) — foundation build is `/setup-logging`, see [OBSERVABILITY.md](OBSERVABILITY.md)
 - `.agents/rules/**` only when a real failure needs more than a Checklist line
 
 Do not add rule directories, commands, dependencies, abstractions, or docs that
@@ -69,8 +69,8 @@ in place or reinitialize. Never silently overwrite user-authored content.
 Load only the reference needed for the current step:
 
 - [HARNESS_FLOW.md](HARNESS_FLOW.md) - exploration, draft, write, verify, and done checklists
-- [SECTIONS.md](SECTIONS.md) - issue tracker, labels, domain docs, entrypoint, rules, observability, and command decisions
-- [OBSERVABILITY.md](OBSERVABILITY.md) - logging foundation gate for setup (points at pack forensic contract)
+- [SECTIONS.md](SECTIONS.md) - issue tracker, labels, domain docs, entrypoint, rules, observability pointer, and command decisions
+- [OBSERVABILITY.md](OBSERVABILITY.md) - bar classification + pointer to `/setup-logging` (foundation) and forensic contract
 - [TRACKER_CONTRACT.md](TRACKER_CONTRACT.md) - required lifecycle operations, capability fallback, typed frontiers, and claim semantics
 - [AGENTS_TEMPLATE.md](AGENTS_TEMPLATE.md) - concise generated `AGENTS.md` shape
 - [RULE_TEMPLATE.md](RULE_TEMPLATE.md) - `.agents/rules/**` file shape
@@ -82,6 +82,6 @@ Load only the reference needed for the current step:
 
 The skill is complete when the repo has a verified shared entrypoint, a tracker
 adapter that satisfies `TRACKER_CONTRACT.md`, triage-label mapping, domain-doc
-contract, **logging foundation at the bar required by project shape** (or an
-explicit thin/n/a classification), only the rule files it needs, and no
-unexplained overwrite of existing instructions.
+contract, an **observability bar classification** (and an explicit
+`/setup-logging` handoff when full bar is missing/partial), only the rule files
+it needs, and no unexplained overwrite of existing instructions.

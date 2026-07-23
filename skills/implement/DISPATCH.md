@@ -79,7 +79,8 @@ service a sibling path already uses, quiet critical paths (no correlatable
 decision-boundary logs), or log-unsafe logging. Logging is fail-open: a log
 failure must never fail or gate the business path. If the real step needs a
 decision you do not have, or logging foundation is missing on a full-bar
-project, stop and report blocked — do not ship a quiet fallback.
+project, stop and report blocked (point at /setup-logging) — do not ship a
+quiet fallback.
 
 If blocked, unsafe, or missing a required decision, stop and report the blocker.
 Otherwise implement, run the relevant checks, and return: status, files changed,

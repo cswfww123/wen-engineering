@@ -23,9 +23,10 @@ A second failure mode is the opposite extreme: aggressive logging that can throw
 or gate the domain, turning observability into an outage vector.
 
 Pack history already treated incomplete *domain* surface as blocking (ADR 0005)
-and located generic observability as a project-harness concern (ADR 0001). This
-ADR binds the **forensic** subset into the same refuse-to-pass gates, without
-dumping "log everything" best practices into always-loaded `AGENTS.md`.
+and treated foundation construction as setup-adjacent (ADR 0001). Foundation
+build now lives in `/setup-logging`; harness only classifies. This ADR binds the
+**forensic** subset into the same refuse-to-pass gates, without dumping "log
+everything" best practices into always-loaded `AGENTS.md`.
 
 ## Decision
 
@@ -34,10 +35,10 @@ dumping "log everything" best practices into always-loaded `AGENTS.md`.
    role duties, done vocabulary.
 2. **Classifier extension:** incomplete surface gains **quiet critical path**
    and **log-unsafe** rows pointing at that contract.
-3. **Setup gate:** `/setup-project-harness` explores logging foundation; on
-   full-bar projects (HTTP/jobs/MQ/webhooks/third-party/state machines) without
-   foundation, harness work **builds foundation first** and documents how to
-   read logs.
+3. **Foundation skill:** `/setup-logging` builds the logging foundation
+   (unified API, correlation, fail-open sinks, how-to-read) with stack-native
+   recipes. `/setup-project-harness` only **classifies** full/thin/partial bar
+   and hands off — it does not implement logger modules.
 4. **Implement / Executor:** applicable slices must instrument decision
    boundaries and report `observability`; foundation-missing or log-unsafe is
    not `done`.
@@ -60,9 +61,10 @@ dumping "log everything" best practices into always-loaded `AGENTS.md`.
 
 ## Consequences
 
-- `setup-project-harness`, `implement`, `code-review`, `diagnosing-bugs`, and
-  pack agents gain thin pointers to the contract and classifier.
-- Integration-heavy greenfield repos may have a longer harness phase before
-  AFK feature work — intentional.
+- `setup-logging`, `setup-project-harness`, `implement`, `code-review`,
+  `diagnosing-bugs`, and pack agents gain thin pointers to the contract and
+  classifier.
+- Integration-heavy greenfield repos may need `/setup-logging` before AFK
+  feature work — intentional.
 - Consumer projects still choose stack-specific logger libraries; the pack
   enforces *properties* (foundation, boundaries, fail-open), not a vendor.

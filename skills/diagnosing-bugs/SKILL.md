@@ -117,7 +117,7 @@ Tool preference:
 
 **Tag every debug log** with a unique prefix, e.g. `[DEBUG-a4f2]`. Cleanup at the end becomes a single grep. Untagged logs survive; tagged logs die.
 
-**Temporary probes ≠ permanent forensic logs.** DEBUG tags are for this diagnosis loop only. If the root gap is a missing project logging foundation, or production paths that never had decision-boundary field logs, that is a harness/implement defect — after the bug is understood (or fixed under authorized scope), push durable instrumentation and fail-open logging via the project's patterns and [FORENSIC-OBSERVABILITY.md](../code-review/FORENSIC-OBSERVABILITY.md). Do not leave production "solvable only with DEBUG" forever.
+**Temporary probes ≠ permanent forensic logs.** DEBUG tags are for this diagnosis loop only. If the root gap is a missing project logging foundation, run `/setup-logging`. If production paths never had decision-boundary field logs, that is implement/review debt — after the bug is understood (or fixed under authorized scope), push durable instrumentation and fail-open logging via the project's patterns and [FORENSIC-OBSERVABILITY.md](../code-review/FORENSIC-OBSERVABILITY.md). Do not leave production "solvable only with DEBUG" forever.
 
 **Even temporary probes are fail-open.** A debug log must not change control flow or fail the business path if logging throws.
 

@@ -29,9 +29,9 @@ infer facts from conventions alone.
 - install, dev, build, lint, typecheck, test, and single-test commands found in repo evidence
 - route/API layers, schema/migration layers, database access, generated code, deployment config
 - behavior hidden behind real call paths that requires tracing before becoming a rule
-- **Logging foundation:** unified logger API, level/sink config, correlation/MDC,
-  request or job entry logging, redaction habit, documented how-to-read path.
-  Full bar vs thin bar: [OBSERVABILITY.md](OBSERVABILITY.md).
+- **Observability bar:** full / thin / partial from project shape; note existing
+  logger, correlation, sinks, how-to-read if any. Foundation build is
+  `/setup-logging`, not this skill — [OBSERVABILITY.md](OBSERVABILITY.md).
 
 ### Existing AI Instructions
 
@@ -79,15 +79,15 @@ Draft all artifacts before writing:
 - `docs/agents/issue-tracker.md`
 - `docs/agents/triage-labels.md`
 - `docs/agents/domain.md`
-- logging foundation plan when bar is **full** and status is partial/missing
-  (stack-native logger, config, correlation, redaction, how-to-read doc or
-  README section; Checklist pin only if a proven failure needs it)
+- observability handoff note when bar is **full** and status is partial/missing
+  (recommend `/setup-logging`; do not draft logger modules in this skill)
 - preservation, merge, or replacement plan for existing files
 - tracker capability choice and proof that every operation in `TRACKER_CONTRACT.md` is covered
 
-On **full** bar + **missing** foundation: foundation draft is **in-scope before**
-calling the harness agent-ready for integration work. Do not skip to feature
-AFK setup while logs are unsolvable. Contract: [OBSERVABILITY.md](OBSERVABILITY.md).
+On **full** bar + **missing/partial** foundation: harness done report must
+**name the `/setup-logging` handoff**. Do not claim the repo is agent-ready for
+integration-heavy AFK work until foundation is present or the user explicitly
+defers it. Pointer: [OBSERVABILITY.md](OBSERVABILITY.md).
 
 Show the full draft and merge plan. Do not silently overwrite surrounding
 user-authored sections.
@@ -165,11 +165,11 @@ Report:
 - issue tracker choice
 - triage labels
 - domain doc layout
-- observability bar + foundation status (and what was added)
+- observability bar + foundation status (and `/setup-logging` handoff if needed)
 - Checklist pins / any rare rule files created
 - verification evidence
 - remaining open decisions
 
 Mention that users can later edit `docs/agents/*.md` and `AGENTS.md` Checklist
 directly. Re-run this skill only when switching trackers, changing domain layout,
-reinitializing the harness, or upgrading logging foundation.
+or reinitializing the harness. Logging foundation upgrades use `/setup-logging`.

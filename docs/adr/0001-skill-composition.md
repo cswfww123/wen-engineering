@@ -41,9 +41,9 @@ deterministic execution.
 4. **Enterprise gaps stay inside existing review boundaries.** Security is a
    `code-review` axis for changed code. Ops, release automation, and data
    migration stay project-harness concerns, not general skills. **Forensic
-   observability** (logging foundation at setup, decision-boundary logs,
-   fail-open) is a pack gate shared with harness — see ADR 0006; it is not a
-   free-standing "ops skill" dump.
+   observability** (logging foundation via `/setup-logging`, decision-boundary
+   logs, fail-open) is a pack gate — see ADR 0006. Foundation construction is a
+   dedicated skill, not a free-standing "ops dump" and not harness wiring.
 
 ## Considered Options
 

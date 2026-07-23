@@ -74,4 +74,9 @@ Some skills depend on repo harness configuration seeded by
   but still works without it. Mention project context naturally instead of
   adding a setup gate.
 
+Logging **foundation** is a separate setup surface: `/setup-logging`. Harness
+classifies the observability bar; foundation construction is not harness work.
+Integration-heavy implement work soft-depends on foundation (report
+`foundation-missing` rather than shipping quiet paths).
+
 This keeps setup pointers load-bearing instead of decorative.

@@ -68,8 +68,9 @@ Per slice, Executor (or fallback) does:
    including empty, fan-out) with correlatable field logs; **logging is
    fail-open** — log/MDC/metrics failure must never fail or gate business.
    If the project lacks a required logging foundation, report
-   `observability: foundation-missing` and stop rather than shipping quiet
-   paths. Contract: [FORENSIC-OBSERVABILITY.md](../code-review/FORENSIC-OBSERVABILITY.md).
+   `observability: foundation-missing`, point at `/setup-logging`, and stop
+   rather than shipping quiet paths. Contract:
+   [FORENSIC-OBSERVABILITY.md](../code-review/FORENSIC-OBSERVABILITY.md).
 
 Parent re-issues a **new** Executor brief per slice — not one mega-todo dump
 that never dispatches.

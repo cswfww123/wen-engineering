@@ -72,10 +72,10 @@ For a new project, run **`/setup-project-harness`** in the target project after 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
 - the five triage roles used by `/to-tickets`, `/implement`, and tracker adapters
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
-- logging **foundation** when the project shape requires it (unified logger, correlation, how-to-read; fail-open logging never breaks business)
+- observability **bar classification** (full / thin / partial); foundation build is **`/setup-logging`**
 - `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and failure pins only when justified (Checklist first; long classifiers under `.agents/rules/` rarely)
 
-That is the fast path. After setup, agents know where project wiring lives; prove-work commands stay in README/scripts/CI. On integration-heavy repos, foundation comes before AFK feature work.
+That is the fast path. After harness setup, agents know where project wiring lives; prove-work commands stay in README/scripts/CI. On integration-heavy repos, run **`/setup-logging`** for a stack-native logging foundation (unified API, correlation, fail-open, how-to-read) before AFK feature work.
 
 ### Empty Project Routing
 
@@ -296,6 +296,7 @@ Common skills:
 - `/resolving-merge-conflicts` resolves in-progress git merge/rebase conflicts by intent.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 - `/setup-project-harness` initializes a project-level agent harness.
+- `/setup-logging` builds the project logging foundation when the shape requires it.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` is the red → green reference (seams, anti-patterns); close to Matt upstream.
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
@@ -377,6 +378,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 ### Engineering Harness
 
 - [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds a minimal, evidence-first project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
+- [`setup-logging`](skills/setup-logging/SKILL.md) — builds a project logging foundation (crime-scene replay): unified logger API, correlation, fail-open sinks, redaction, how-to-read; stack recipes for Spring, Next.js, Python, Node, Go.
 - [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
 - [`writing-great-skills`](skills/writing-great-skills/SKILL.md) — provides vocabulary and principles for writing predictable skills.
 
@@ -473,6 +475,11 @@ skills/
     SKILL.md
   resolving-merge-conflicts/
     SKILL.md
+  setup-logging/
+    PRINCIPLES.md
+    SKILL.md
+    STACKS.md
+    VERIFY.md
   setup-project-harness/
     AGENTS_TEMPLATE.md
     HARNESS_FLOW.md

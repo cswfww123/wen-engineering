@@ -101,15 +101,13 @@ Only when evidence justifies (postmortem / repeated failure):
 Use [RULE_TEMPLATE.md](RULE_TEMPLATE.md) when a file is justified. Prefer Checklist
 over rule files. Do not invent project workflow routers or skill pipelines as rules.
 
-## F — Observability Foundation
+## F — Observability Bar (pointer only)
 
-Explainer: Production evidence is often write-once (webhooks, async jobs,
-third-party calls, state machines). Without a logging foundation and a later
-habit of decision-boundary logs, many production issues are forensically
-unsolvable. Setup must classify the bar and **build foundation before** treating
-integration-heavy repos as agent-ready. Full contract:
-[OBSERVABILITY.md](OBSERVABILITY.md) and pack
-`skills/code-review/FORENSIC-OBSERVABILITY.md` when present.
+Explainer: Production evidence is often write-once. A **logging foundation**
+makes later decision-boundary logs solvable; building that foundation is
+**`/setup-logging`**, not harness work. This section only **classifies** and
+**routes**. Details: [OBSERVABILITY.md](OBSERVABILITY.md),
+`skills/setup-logging/`, and `skills/code-review/FORENSIC-OBSERVABILITY.md`.
 
 Default posture from evidence:
 
@@ -119,16 +117,15 @@ Default posture from evidence:
 - **Partial foundation** — logger exists but missing correlation, sinks, or
   how-to-read
 
-Decide with the user only when bar or vendor choice is ambiguous. Otherwise:
+Decide with the user only when bar is ambiguous. Otherwise:
 
-1. If **full** and **missing/partial** → draft and implement **minimum foundation**
-   first (unified logger API, levels/sinks, correlation ids, redaction, documented
-   how to read logs). Prefer stack-native tools already in the repo.
-2. Pin **fail-open** in rules or Checklist when the codebase has a history of
-   log calls that can break business: logging must never fail or gate domain work.
-3. Do **not** dump "log everything" essays into `AGENTS.md`. Optional one-line
-   Checklist after real quiet-path failures; detail in `.agents/rules/**` or docs.
-4. If **thin** → record `observability: n/a` / thin in the done report; skip foundation build.
+1. If **full** and **missing/partial** → record the gap; recommend or hand off
+   to **`/setup-logging`** before treating the repo as agent-ready for
+   integration-heavy AFK work. Do **not** implement logger modules here.
+2. If **full** and **present** → note how-to-read path if already documented;
+   no further harness action.
+3. If **thin** → record `observability: n/a` / thin in the done report.
+4. Do **not** dump "log everything" essays into `AGENTS.md`.
 
 ## G — Project Commands And Verification
 

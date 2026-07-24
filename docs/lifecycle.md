@@ -72,7 +72,10 @@ Evidence loop (TDD or GREEN baseline), `/simplify` when non-trivial, project
 checks, `/code-review`, done. No invented spec or ticket.
 
 Hard diagnosis first: `/diagnosing-bugs`. Fix authority uses the same implement
-loop.
+loop. If diagnosis yields a multi-step fix **proposal**, freeze a design packet and
+hard-try pack `Reviewer` (design axes; prefer another model) before coding —
+[agents/DESIGN-REVIEW-BRIEF.md](agents/DESIGN-REVIEW-BRIEF.md); then user scopes
+MVP and continues `/implement` or L2.
 
 ### L2 — Settled multi-slice (default multi-session coding)
 

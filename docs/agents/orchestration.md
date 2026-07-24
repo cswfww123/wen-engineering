@@ -49,8 +49,8 @@ Parent (strong model) — route, authority, HITL, final ownership
 | Agent | Brief must include |
 | --- | --- |
 | `Executor` | goal, scope, AC or fix list, constraints, verify commands, authority (no tracker unless granted) |
-| `Reviewer` | review packet + **one axis** (or explicit all-axes) |
-| `Verifier` | candidates + same scope fixed point |
+| `Reviewer` | review packet + **one axis** (or explicit all-axes). Packet may be a **code diff** (`skills/code-review/AGENT-BRIEFS.md`) or a **design/plan** (`docs/agents/DESIGN-REVIEW-BRIEF.md`) |
+| `Verifier` | candidates + same scope fixed point (diff fixed point **or** design packet) |
 
 ## Skill mapping
 
@@ -61,11 +61,29 @@ Parent (strong model) — route, authority, HITL, final ownership
 | `/code-review` axis passes | `Reviewer` × 6 (parallel if possible) | parent sequential briefs |
 | `/code-review` validation gate | `Verifier` | parent Verification Reviewer |
 | `/code-review` Auto-fix (user or `/implement` authorized) | `Executor` with eligible findings + fix contract | host general → parent (same per-fix verify/revert rules) |
+| After `/diagnosing-bugs` (or any multi-slice fix **proposal**) before code | `Reviewer` × design axes (`DESIGN-REVIEW-BRIEF.md`); prefer a **different model** than the proposal author | optional `Verifier` → user HITL → `/implement` or `/to-spec` |
 | Research before edit | host explore/search worker | parent |
 
 Standalone `/code-review` without fix authority stays report-only (no `Executor`).
 User says “fix these” / “修一下” / equivalent → treat as fix authority for listed
 or eligible findings, then dispatch `Executor`.
+
+### Design / plan review (no new agent)
+
+Reuse **`Reviewer`** + optional **`Verifier`** on a frozen **design packet** (root
+cause evidence + proposal text), not a diff. Full briefs:
+[DESIGN-REVIEW-BRIEF.md](DESIGN-REVIEW-BRIEF.md).
+
+```text
+diagnosis / proposal frozen
+  → Reviewer (root-cause-fit) + Reviewer (architecture)  [prefer other model]
+  → optional Verifier
+  → user scopes MVP (/grill-me if open)
+  → /implement  or  /to-spec → /to-tickets → /implement
+```
+
+Do **not** invent a fourth pack agent for “architecture review.” Do **not** treat
+same-session self-approval by the proposal author as this step.
 
 ## Non-goals
 

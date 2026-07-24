@@ -129,6 +129,15 @@ Tool preference:
 (`bounded-fix` → `/implement`, `spec-and-slice` → `/to-spec` → `/to-tickets`,
 or `blocked`).
 
+**When diagnosis also emits a multi-step fix architecture (P0/P1/P2, “rebuild
+rate limit”, etc.):** do **not** treat that proposal as approved. Parent freezes a
+**design packet** (root cause evidence separate from the wishlist) and hard-tries
+pack **`Reviewer`** on design axes — preferably a **different model** than the
+one that wrote the plan — then optional **`Verifier`**. Briefs:
+[docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md).
+User scopes MVP (`/grill-me` if open) before `/implement` or `/to-spec`. Skip this
+gate only for a single, evidence-tight bounded fix the user already authorized.
+
 Write the regression test **before the fix** — but only if there is a **correct seam** for it.
 
 A correct seam is one where the test exercises the **real bug pattern** as it occurs at the call site. If the only available seam is too shallow (single-caller test when the bug needs multiple callers, unit test that can't replicate the chain that triggered the bug), a regression test there gives false confidence.

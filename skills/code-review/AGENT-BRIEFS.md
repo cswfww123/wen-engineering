@@ -2,6 +2,8 @@
 
 Use these prompts as written with the orchestration ladder in `docs/agents/orchestration.md`. **Hard try** pack `Reviewer` (one instance per axis) and `Verifier` (after candidates); if missing or spawn fails, run the same brief yourself or via the host’s general worker. Missing agents must not abort review. Pass each Reviewer the same review packet: scope, diff commands or diff text, changed files, commit list, standards sources, intent evidence, project shape, and relevant project lenses.
 
+**Not for design/plan review.** After diagnosis, multi-step fix proposals use the same `Reviewer`/`Verifier` roles with a design packet — see [docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md). This file remains **code-delta** axes only.
+
 Preferred execution: launch the six axis Reviewers in parallel when the host allows. Fallback: sequential axis briefs in the parent. Run the Verification Reviewer / `Verifier` only after collecting candidate findings. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
 
 ## Intent Reviewer

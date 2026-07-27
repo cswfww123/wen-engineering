@@ -19,9 +19,15 @@ uses, for example:
 | --- | --- |
 | Companion PM (optional) | `wen-pm` Product Delivery Contract, `SCN-*`, UI contract |
 | Other PM / design process | Confluence/Notion PRD, Linear epics, RFC, design review notes |
-| In-repo product docs | `docs/prd/*`, `SPEC` precursors, accepted tickets with AC |
+| In-repo product docs | `docs/prd/*`, `docs/requirements/*`, `SPEC` precursors, accepted tickets with AC |
 | Direct user authority | Named task + explicit acceptance boundary for one-context work |
 | Pure engineering | Bug fix, migration, platform work with unchanged product behavior |
+
+**Authority while coding:** when an active product requirements/PRD doc covers
+the surface, it is the product-behavior baseline. Grill/chat may add residual
+eng pins or **labeled** authorized deltas (`相对 PRD`); it must not silently
+replace the product doc as the sole AC. Detailed multi-slice product docs route
+to L2 `/to-spec` before implement — see [lifecycle.md](lifecycle.md).
 
 When product/market/need is **fundamentally fuzzy** (HEAVY), stop inventing and
 use full product discovery (`wen-pm` `/pm-intake` or team PM) before this pack.

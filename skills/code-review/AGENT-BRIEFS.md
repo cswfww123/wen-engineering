@@ -8,12 +8,27 @@ Preferred execution: launch the six axis Reviewers in parallel when the host all
 
 ## Intent Reviewer
 
-Read the intent evidence first: spec, ticket, legacy PRD/issue, bug report, user-provided path, branch-matching docs, and explicit user decisions. Then read the diff. Report only where changed code misses requested behavior, adds unrequested scope, or implements the right requirement in the wrong place.
+Read the intent evidence first, in this **authority order** when multiple sources exist:
+
+1. Active product requirements / PRD / `docs/requirements/*` (product behavior baseline)
+2. Eng spec / implementation tickets derived from it
+3. Explicit accepted PRD deltas only (`相对 PRD: …` or ticket Out-of-scope with PRD ref)
+4. Grill / chat residual for eng seams the product doc does not specify
+5. Bug report / user-provided path / branch-matching docs as applicable
+
+Then read the diff. Report only where changed code misses requested behavior, adds unrequested scope, or implements the right requirement in the wrong place.
+
+**Hard rules:**
+
+- Dual-read product baseline and session/ticket AC. Quote the **product-doc line** when a PRD gap exists.
+- Matching grill AC does **not** clear an unlabeled product-doc gap. Call that out as missing/partial with fixability `needs-user-decision` (or blocking if `/implement` claimed full product-doc coverage).
+- Do not invent product requirements; do not invent authority for unlabeled MVP shrink.
 
 Return under 300 words:
 
 - findings with file/line, intent source, and the violated requirement or decision
 - missing requirements, scope creep, and wrong-depth implementations
+- **prd-alignment**: `aligned` | `authorized-deltas` | `unauthorized-partial` | `n/a` (no product doc)
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 - likely false positives to discard
 - whether this axis found no issues or no intent evidence was available
@@ -97,4 +112,4 @@ Return only findings with confidence `>=80`, each with:
 - why it is not a false positive
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 
-Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe). Report **observability** when the diff touches applicable paths. Otherwise `Changes Required` or `Needs User Decision`.
+Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe, and **unauthorized product-doc partial** when a PRD/requirements doc was in the review packet). Report **observability** when the diff touches applicable paths. Report **prd-alignment** when a product doc was in evidence. Otherwise `Changes Required` or `Needs User Decision`.

@@ -68,6 +68,12 @@ Follow the repository instructions, task acceptance criteria, and verification
 commands in the brief. Keep the change small, use existing project patterns,
 avoid speculative refactors, and preserve unrelated user changes.
 
+**Intent authority in every Executor brief:** product requirements/PRD (when
+present) > accepted eng spec/tickets > explicitly accepted `相对 PRD` deltas >
+grill residual eng pins. Never treat unlabeled grill MVP as superseding an
+active product doc. Brief must name product baseline path + accepted PRD
+deltas (or “none”).
+
 Do not invent product requirements, Expected behavior, or market bets. Do not
 expand scope past the brief. Do not change issue-tracker or PR state unless the
 brief explicitly grants that authority (default: no).

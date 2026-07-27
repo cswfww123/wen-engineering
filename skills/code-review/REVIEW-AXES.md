@@ -10,7 +10,7 @@ Use these focused briefs when running sub-agents or separate review passes. Keep
 
 Matt's **Spec** axis: does the diff match the originating issue / PRD / spec?
 
-Read the spec, ticket, legacy PRD/issue, bug report, user-provided path, branch-matching docs, and explicit user decisions before judging the diff.
+Read intent sources in **authority order** when several exist: active product requirements/PRD → eng spec/tickets → explicit accepted `相对 PRD` deltas → grill/chat residual (eng only) → bug report / user path / branch-matching docs. Then judge the diff.
 
 Look for:
 
@@ -18,9 +18,12 @@ Look for:
 - behavior the diff adds that was not requested
 - implementation that satisfies the words but violates the agreed intent
 - fixes placed at a shallow caller when the issue belongs in a shared owner
-- spec, ticket, legacy PRD/issue, or bugfix acceptance criteria with no matching code path
+- spec, ticket, legacy PRD/issue, or bug report acceptance criteria with no matching code path
+- **unauthorized PRD partial**: product-doc behavior missing/partial with no accepted delta — do **not** clear this because session grill AC matched
 
 Report only claims tied to a cited intent source. If no intent source exists, say so and skip this axis instead of inventing product requirements.
+
+When a product doc is in evidence, state **prd-alignment**: `aligned` | `authorized-deltas` | `unauthorized-partial`. `unauthorized-partial` blocks Pass on implement-driven reviews.
 
 ## Standards
 

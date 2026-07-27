@@ -154,10 +154,10 @@ bug | 清晰 AC | 纯工程切片
   → （可选）wen-test: /to-test-plan → /qa-run
 ```
 
-- **入：** 产品意图够写诚实 requirements。
+- **入：** 产品意图够写诚实 requirements（详细产品文档是主源，走本路径，不要先整包 grill 重写）。
 - **出：** frontier 上的切片；父 spec 在工作完成前保持打开。
 - **补充：** 切片风险高时 `/alignment-review`；FE/BE 保真在 ticket 层。
-- **不要：** 用 `/implement` 关闭父 spec。
+- **不要：** 用 `/implement` 关闭父 spec；不要用会话 grill AC 静默覆盖已有 PRD。
 
 #### G — Grill（同会话钉住）
 
@@ -165,16 +165,17 @@ bug | 清晰 AC | 纯工程切片
 方案仍糊，但决策归你，且一会话问得清
   → /grill-me   （加载 /grilling；仅术语真变时才 domain-modeling）
       frontier 轮次：batch 表 + 推荐；事实优先（非阻塞 sub-agent）
+      已有详细 PRD 时只烤 residual / 工程缝；相对 PRD 的缩 scope 必须标「相对 PRD」
       尽早 MVP 内外；反橡皮图章只压高风险
   → 默认收口：会话内短 recap（不写 decision-*.md）
   → 仅跨会话 / Wayfinder / 你明确要求时才落盘
   → 下一跳：通常同会话 /implement；多切片交接才 /to-spec
 ```
 
-- **入：** 少量用户可拍板的产品/工程决策；尚不需要多会话地图。
-- **出：** 会话内 shared understanding（对齐 Matt 原版）；落盘是例外。
+- **入：** 少量用户可拍板的产品/工程决策；尚不需要多会话地图。已有完整产品文档的多切片需求优先 L2。
+- **出：** 会话内 shared understanding（对齐 Matt 原版）；落盘是例外。AC = 产品文档 − 仅已接受的 `相对 PRD` 偏差。
 - **升级：** 房间里不是决策人 → **Q**；一会话装不下 → **L4**；值不值得做仍开 → **HEAVY**。
-- **不要：** 编造 Expected；简单问题强行产过程文档；把「grill 完」当成可推 shared 分支的授权。
+- **不要：** 编造 Expected；简单问题强行产过程文档；把「grill 完」当成可推 shared 分支的授权；用未标注的 grill MVP 顶替产品文档。
 
 #### Q — 问卷（会中或异步）
 

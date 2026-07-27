@@ -24,12 +24,26 @@ Before going further, confirm the fixed point resolves (`git rev-parse <fixed-po
 
 ### 2. Identify the spec source
 
-Look for the originating spec, in this order:
+Look for the originating intent sources (collect **all** that apply; do not stop at the first hit if a product doc and a session AC both exist):
 
 1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.) — fetch via the workflow in `docs/agents/issue-tracker.md`.
-2. A path the user passed as an argument.
-3. A PRD/spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
-4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
+2. A path the user passed as an argument (product doc, eng spec, ticket).
+3. A product requirements / PRD / eng-spec file under `docs/`, `docs/requirements/`, `docs/prd/`, `specs/`, or `.scratch/` matching the branch name or feature.
+4. Explicit session decisions **only when labeled as accepted PRD deltas** (e.g. grill `相对 PRD: …`) or written ticket Out-of-scope with PRD ref — not unlabeled chat MVP.
+5. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
+
+**Authority when sources conflict:**
+
+| Rank | Source | Role |
+| --- | --- | --- |
+| 1 | Active product requirements / PRD | Product behavior baseline |
+| 2 | Eng spec / implementation tickets derived from it | Slice AC |
+| 3 | Explicit accepted `相对 PRD` deltas | Authorized deviations only |
+| 4 | Grill / chat residual | Eng seams the product doc does not specify |
+
+- Matching grill AC while missing unlabeled product-doc behavior → **Spec finding** (partial/missing). **Not** “non-blocking because grill AC 满足.”
+- Unauthorized product-doc partial → fixability `needs-user-decision` or blocking Spec gap; **cannot** aggregate to Pass by preferring session AC.
+- “Code wins” does **not** apply to product intent vs PRD.
 
 ### 3. Identify the standards sources
 
@@ -68,8 +82,9 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 **Spec sub-agent prompt** — include:
 
 - The diff command and commit list.
-- The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+- The path or fetched contents of **every** intent source from step 2 (product doc + eng spec/tickets + accepted PRD deltas list, or “none”).
+- The authority rank above.
+- The brief: "Dual-read product baseline and session/ticket AC. Report: (a) product-doc / spec requirements missing or partial without an explicit accepted PRD delta; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) any place session AC was used to paper over PRD gaps. Quote the product-doc or spec line for each finding. Do not dismiss PRD gaps as non-blocking solely because grill AC matched. Under 400 words."
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
@@ -131,7 +146,12 @@ binds **how** subagents are used when the host has a spawn runtime.
   PR audits without explicit ask.
 - This skill never closes a ticket. When loaded from `/implement`, return
   `Pass` / `Changes Required` / `Needs User Decision`.
+- **Spec vs product doc:** unauthorized product-doc partial/missing (no accepted
+  `相对 PRD` delta) → verdict cannot be `Pass`; use `Changes Required` or
+  `Needs User Decision`. Do not bury under “known non-blocking / grill AC ok.”
 - Final report **must** include **`agents used`** (Reviewer / Verifier /
   host-general / parent-fallback per axis) and an explicit
   **incomplete-surface** line: `clean` | findings | `n/a` (docs-only), and
-  **observability** when the diff touches applicable paths.
+  **observability** when the diff touches applicable paths. When a product doc
+  was in evidence, also state **prd-alignment**: `aligned` | `authorized-deltas`
+  | `unauthorized-partial` (blocks Pass).

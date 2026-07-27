@@ -12,6 +12,24 @@ Matt-upstream shape: **shared understanding in the conversation is enough.** Do 
 
 If the user already has clear AC, a bug, or a single eng slice → prefer **`/implement`** (L1). Do not open grill (or force docs) to look thorough.
 
+If the user already has a **detailed product requirements / PRD / `docs/requirements/*` package** for a multi-slice feature → prefer **`/to-spec`** (L2) with that doc as the primary source. Do **not** open a full product grill that re-authors what the PRD already settles. Use this skill only for residual open poles the PRD leaves fuzzy (or for eng seams after `/to-spec`).
+
+## Product-doc authority (hard — when a PRD/requirements doc is in play)
+
+Product intent hierarchy for this session:
+
+1. **Product requirements / PRD / in-repo product doc** — primary source of *what* ships (behavior, UX, rules).
+2. **Explicit user-authorized deltas** — only after a clear “relative to PRD: X → Y (MVP/defer)” row is posted **and** the user accepts/diffs it. Silent MVP shrink is forbidden.
+3. **Grill residual** — engineering seams, wire/enum alignment, txn shape, test seams the product doc does not own.
+4. **Code / tests** — facts about *what ships today* after merge; never a license to rewrite product intent mid-grill.
+
+Binding rules:
+
+- **Do not re-open settled PRD behavior** as a fresh recommended pole “for cleanliness” or engineering convenience (e.g. PRD says single-row edit → do not recommend whole-table edit unless you label it as a **PRD delta**).
+- Every recommended row that **narrows, defers, or changes** product-doc behavior must be marked: `相对 PRD: <was> → <now> (<reason>)`. Unmarked deltas are invalid; do not treat `按推荐` as authority over unlabeled PRD overrides.
+- If the user is **not** the product owner for those deltas → park and offer `/to-questionnaire`; do not invent Expected.
+- Close recap (chat or archive) must list **PRD deltas accepted** separately from eng pins. Implement handoff AC = PRD baseline **minus** only those accepted deltas — never “grill AC alone.”
+
 ## Engineering defaults (coding repos)
 
 1. **Facts first (non-blocking)** — map existing tables, bridges, call sites, tests, ADRs/CONTEXT before asking. Prefer code over stale process docs. Non-trivial lookups: dispatch explore/sub-agents; only hold back decisions that depend on those facts — still post the rest of the frontier this round.
@@ -104,9 +122,9 @@ If I type `/implement` (or “直接做 / 开干”) **before** the frontier is 
 
 ### After shared understanding
 
-1. **AC path** — use this conversation’s settled scope (and ticket/spec if any). **Do not require** a decision file for same-session build. Re-state the **alignment target value(s)** in one line before the first production edit.
-2. **`/tdd` (or project equivalent)** — Red → Green → Refactor at agreed seams. **Red evidence required** when claiming behavior change. Green on a **wrong AC** is failure, not progress — if a mid-slice fact flips the target, stop and re-open that frontier row instead of “fixing forward.”
-3. **Reviewer → Verifier** (or project review skill) before commit; incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope).
+1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s).
+2. **`/tdd` (or project equivalent)** — Red → Green → Refactor at agreed seams. **Red evidence required** when claiming behavior change. Green on a **wrong AC** is failure, not progress — if a mid-slice fact flips the target, stop and re-open that frontier row instead of “fixing forward.” Matching grill recap while missing unlabeled PRD behavior is **wrong AC**.
+3. **Reviewer → Verifier** (or project review skill) before commit; incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope). Spec must dual-read product doc and session AC — unauthorized PRD partial cannot Pass.
 4. **Git** — follow repo push protocol.
 
 ## Artifact hygiene (automatic — never ask me)
@@ -116,6 +134,7 @@ If I type `/implement` (or “直接做 / 开干”) **before** the frontier is 
 - **Process files** created only for handoff: after consume (spec written, ticket closed, or same-session implement done), stop citing them; delete or cold-ignore without prompting.
 - Conflicts between old process docs and code → **code wins** for *facts about what ships today*; do not interview me to reconcile docs.
 - **Do not misuse “code wins”** for *which value we should align to* when live code sources disagree — that is a frontier decision (see Conflict-fact table above).
+- **Do not misuse “code wins” or “grill AC wins”** to override an active product requirements doc. Product intent vs live code mismatch is either a deliberate migration (user-owned) or a gap to implement — not auto-resolution in the agent’s favor.
 
 ## Keep it short
 

@@ -156,10 +156,10 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
   → (optional) wen-test: /to-test-plan → /qa-run
 ```
 
-- **In:** product intent settled enough to write honest requirements.
+- **In:** product intent settled enough to write honest requirements (detailed product docs are the primary source — use this path; do not re-author via a full product grill).
 - **Out:** slices on the frontier; parent spec stays open until work is done.
 - **Also:** `/alignment-review` when slice risk is high; FE/BE fidelity at ticket layer.
-- **Do not:** close the parent spec from `/implement`.
+- **Do not:** close the parent spec from `/implement`; do not let session grill AC silently supersede an active PRD.
 
 #### G — Grill (same-session pin)
 
@@ -167,16 +167,17 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
 plan still fuzzy, but *you* own the decisions and one session can clear them
   → /grill-me   (loads /grilling; domain-modeling only if terms truly change)
       frontier rounds: batch table + 推荐; facts first (non-blocking sub-agents)
+      with a detailed PRD: residual / eng seams only; PRD scope cuts must be labeled 相对 PRD
       MVP in/out early; anti rubber-stamp on high-risk only
   → close: chat recap by default (no decision-*.md)
   → durable archive only for cross-session / Wayfinder / explicit ask
   → next: usually /implement in-session; /to-spec only if multi-slice handoff
 ```
 
-- **In:** a few user-owned product/eng decisions; not multi-session fog.
-- **Out:** shared understanding in chat (Matt-style). Files are the exception, not the rule.
+- **In:** a few user-owned product/eng decisions; not multi-session fog. Prefer L2 when a full product doc already covers multi-slice work.
+- **Out:** shared understanding in chat (Matt-style). Files are the exception, not the rule. AC = product doc − only accepted `相对 PRD` deltas.
 - **Escalate:** wrong human in the room → **Q**; too big for one session → **L4**; market/worth-doing open → **HEAVY**.
-- **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches.
+- **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches; use unlabeled grill MVP to replace the product doc.
 
 #### Q — Questionnaire (meeting or async)
 

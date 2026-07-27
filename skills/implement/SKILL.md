@@ -27,6 +27,23 @@ do not replace TDD / typecheck / review / commit.
 - Tracked work (frontier, bug-report conversion, HITL, claim): load
   [TRACKED-WORK.md](TRACKED-WORK.md) **before** edits.
 
+### 0b. Intent authority (hard)
+
+When choosing what AC to build and what Spec review must prove, use this order:
+
+1. **Product requirements / PRD / in-repo product doc** (`docs/requirements/*`, `docs/prd/*`, user-named PRD path) — primary *product behavior* source when present.
+2. **Accepted eng spec / implementation tickets** derived from that product source.
+3. **Explicit user-authorized deltas** only when labeled as relative to the product doc (e.g. grill row `相对 PRD: …` accepted in session, or ticket Out-of-scope with PRD ref). Unlabeled chat “MVP” does **not** override the product doc.
+4. **Grill / chat residual** — eng seams and pins the product doc does not specify.
+5. **Code / tests** — environment facts after ship; not a license to drop product-doc behavior mid-implement.
+
+Binding:
+
+- Multi-slice work with a detailed product doc and no eng spec yet → prefer stop and route **`/to-spec`** (do not invent a parallel “grill AC supersedes PRD” package).
+- Before first production edit: name the **product baseline path** (or “none”) and **accepted PRD deltas** (or “none”) in the working notes / Executor brief.
+- **Forbidden:** treat grill recap alone as full AC when an active product doc covers the same surface; implement to grill while leaving unlabeled PRD gaps, then report “grill AC 满足” as Pass.
+- Done report **source** field must list product doc path when used; if any claimed AC is a PRD delta, list those deltas explicitly under incomplete/deferred or accepted-delta.
+
 ### 1. Hard-try Executor before non-trivial edits
 
 **Before** the first non-trivial production edit (and for each subsequent
@@ -78,15 +95,20 @@ that never dispatches.
 ### 3. Review
 
 1. Record a review fixed point that isolates this ticket/task delta.
-2. Run `/code-review` against that fixed point (AC + fidelity). That skill
-   **must hard-try** Reviewer / Verifier per its own dispatch, and **must**
-   run the Correctness axis (incomplete surface is a blocking class there).
+2. Run `/code-review` against that fixed point (AC + fidelity). Pass the
+   **product baseline path** and any **accepted PRD deltas** into Spec/intent
+   evidence — not grill-only AC. That skill **must hard-try** Reviewer /
+   Verifier per its own dispatch, and **must** run the Correctness axis
+   (incomplete surface is a blocking class there).
 3. If verdict is not `Pass` and fixes are in scope (`/implement` authorizes
    in-scope behavior-preserving fixes): hard-try **Executor** again with the
    eligible fix list + fix contract from code-review.
 4. Do not close a parent **spec**; complete only this ticket/task.
 5. **`Pass` is invalid** if an incomplete surface remains for claimed AC —
    even when Standards looks clean and thin tests are green.
+6. **`Pass` is invalid** when Spec finds product-doc behavior missing/partial
+   **without** an explicit accepted PRD delta for that gap — do not reclassify
+   as “known non-blocking because grill AC matched.”
 
 ### 4. Commit
 
@@ -95,7 +117,9 @@ that still carries an incomplete production surface for its AC.
 
 ### Done report (mandatory fields)
 
-- task / ticket / source
+- task / ticket / source (**include product-doc path when present**; do not list
+  grill AC as the only source alongside a PRD)
+- **PRD deltas**: `none` | list of accepted `相对 PRD` rows used as AC
 - fixed point
 - files changed
 - behavior-gate + fidelity (or n/a)
@@ -106,3 +130,5 @@ that still carries an incomplete production surface for its AC.
   for review: `Reviewer` / `Verifier` / fallback) — if parent did the work,
   say so explicitly and why (no runtime / spawn failed)
 - tracker update, commit status, next frontier or blocker
+- **unauthorized PRD partials** (if any): must force non-Pass or explicit
+  user decision — never bury under “known non-blocking”

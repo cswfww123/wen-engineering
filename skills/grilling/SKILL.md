@@ -31,6 +31,7 @@ One-line replies such as `按推荐` or `按推荐，除第 2 行→无效` are 
 - The **decisions** are mine — put each surface to me and wait.
 - Do **not** implement until I confirm shared understanding. Parent skills may require a durable archive only for **cross-session handoff** — same-session work needs no decision file.
 - **Conflicting live sources** (enum vs write path vs SQL/report vs sibling service) are **decisions**, not auto-resolved “code wins.” Show a short source→value table and recommend; wait for `按推荐` / diff. Never close an open pole with “无需再问.”
+- **Active product requirements / PRD:** when a product doc is in scope, treat its settled behavior as **already decided** — do not re-grill it as open product poles. Only residual gaps and eng seams go on the frontier. Any recommendation that narrows/defers/changes PRD behavior must be labeled `相对 PRD: …` before I can accept it; unlabeled PRD overrides are invalid even if I say `按推荐`.
 - **Bare `/implement` while frontier open:** recap open recommended rows and wait for `按推荐` / diffs. If I insist without answering, implement only settled rows; do not invent answers for open A/B or alignment targets.
 
 ## Anti rubber-stamp

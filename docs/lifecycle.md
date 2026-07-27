@@ -52,12 +52,12 @@ L4  multi-session eng fog   → /wayfinder → (resolved) → L2
 
 These are **automatic**. Prefer code and open tracker state; do not add user steps.
 
-1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates.
-2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater.
-3. **Same-session default = no new process docs.** `/grill-me` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask.
-4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*.
+1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta).
+2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Detailed multi-slice product docs → L2 `/to-spec`, not a full product re-grill.
+3. **Same-session default = no new process docs.** `/grill-me` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask. Grill may pin residual eng seams; it must **not** silently supersede an active PRD — PRD deltas require labeled `相对 PRD` accept.
+4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*. Still load the **active product requirements / eng spec** for the feature under build.
 5. **Hygiene without asking.** After a handoff file is consumed (spec written, ticket closed, implement done), stop citing it; delete or cold-ignore silently. Never prompt the user to approve doc cleanup.
-6. **Ask the user only** for product intent they own or irreversible environment-changing migrations — not for “save this md?” or “trust code or doc?”
+6. **Ask the user only** for product intent they own or irreversible environment-changing migrations — not for “save this md?” or “trust code or doc?” Do not ask them to choose “grill AC vs PRD” when the pack already ranks product doc first; only ask when a **labeled** PRD delta is proposed.
 
 Human-facing walkthrough (same flows, longer form): root `README.md` /
 `README.zh-CN.md` **Lifecycle** section.

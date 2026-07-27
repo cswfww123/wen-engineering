@@ -42,6 +42,9 @@ the map short enough to support judgment.
 Compare the artifact against source and repo map:
 
 - preserves the user's problem, constraints, and explicit out-of-scope boundaries
+- when an active product requirements/PRD is in the handoff, it is the product
+  behavior baseline — grill/chat may add residual eng pins or labeled `相对 PRD`
+  deltas only; unlabeled session MVP must not replace product-doc requirements
 - every material requirement has a stable ID (or legacy source ref) and appears
   in ticket `Covers` or explicit AC/deferral
 - every material risk appears in AC, verification notes, or explicit out-of-scope/blocker

@@ -169,13 +169,17 @@ bug | 清晰 AC | 纯工程切片
       尽早 MVP 内外；反橡皮图章只压高风险
   → 默认收口：会话内短 recap（不写 decision-*.md）
   → 仅跨会话 / Wayfinder / 你明确要求时才落盘
-  → 下一跳：通常同会话 /implement；多切片交接才 /to-spec
+  → 下一跳（择一，不要默认「spec + prototype」）：
+      行为够写 + 无 UI / 已有 design pin → /implement（或多切片 L2）
+      多切片交接 → /to-spec → /to-tickets
+      仅「长什么样」未定 → /prototype → 钉 pin → implement/L2
+      高保真 pin 已定 → ticket 写 pin → /implement + UI fidelity 证据
 ```
 
 - **入：** 少量用户可拍板的产品/工程决策；尚不需要多会话地图。已有完整产品文档的多切片需求优先 L2。
 - **出：** 会话内 shared understanding（对齐 Matt 原版）；落盘是例外。AC = 产品文档 − 仅已接受的 `相对 PRD` 偏差。
 - **升级：** 房间里不是决策人 → **Q**；一会话装不下 → **L4**；值不值得做仍开 → **HEAVY**。
-- **不要：** 编造 Expected；简单问题强行产过程文档；把「grill 完」当成可推 shared 分支的授权；用未标注的 grill MVP 顶替产品文档。
+- **不要：** 编造 Expected；简单问题强行产过程文档；把「grill 完」当成可推 shared 分支的授权；用未标注的 grill MVP 顶替产品文档；有 pin 仍开 multi-variant prototype 当高保真验收。
 
 #### Q — 问卷（会中或异步）
 

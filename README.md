@@ -171,13 +171,17 @@ plan still fuzzy, but *you* own the decisions and one session can clear them
       MVP in/out early; anti rubber-stamp on high-risk only
   → close: chat recap by default (no decision-*.md)
   → durable archive only for cross-session / Wayfinder / explicit ask
-  → next: usually /implement in-session; /to-spec only if multi-slice handoff
+  → next (pick one — do not default to "spec + prototype"):
+      AC enough + no UI / design pin exists → /implement (or L2 if multi-slice)
+      multi-slice handoff → /to-spec → /to-tickets
+      look still open → /prototype → pin winner → implement/L2
+      high-fi pin already versioned → ticket pin → /implement + UI fidelity evidence
 ```
 
 - **In:** a few user-owned product/eng decisions; not multi-session fog. Prefer L2 when a full product doc already covers multi-slice work.
 - **Out:** shared understanding in chat (Matt-style). Files are the exception, not the rule. AC = product doc − only accepted `相对 PRD` deltas.
 - **Escalate:** wrong human in the room → **Q**; too big for one session → **L4**; market/worth-doing open → **HEAVY**.
-- **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches; use unlabeled grill MVP to replace the product doc.
+- **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches; use unlabeled grill MVP to replace the product doc; open multi-variant prototype against a settled high-fi pin as if that were fidelity QA.
 
 #### Q — Questionnaire (meeting or async)
 

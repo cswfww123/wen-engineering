@@ -11,6 +11,14 @@ If the question is about logic/state rather than what something looks like — w
 - "Try a different layout for the settings screen."
 - Any time the user would otherwise spend a day picking between three vague mockups in their head.
 
+## Anti-goal — not high-fidelity delivery
+
+This branch answers **structure and hierarchy**, not pixel replication of a settled design pin.
+
+- **Do not use** multi-variant `/prototype` when a **versioned high-fidelity pin** (Figma frame / export @ version) already exists and the question is “implement this.” Route to ticket/spec **design pin** + `/implement` + UI fidelity evidence (screenshot/checklist) instead.
+- **Skip the polish** still applies: no fidelity score gate, no token extraction requirement, no production error handling. A prototype that “looks close” is **not** a fidelity Pass.
+- After a winner: fold the **decision** (layout/affordance), optionally `/to-design-md` for product-wide look; **rewrite under `/implement`** for production — do not promote throwaway variant code as pin-aligned delivery.
+
 ## Two sub-shapes — strongly prefer sub-shape A
 
 A UI prototype is much easier to judge when it's **butting up against the rest of the app** — real header, real sidebar, real data, real density. A throwaway route on its own is a vacuum: every variant looks fine in isolation. Default to sub-shape A whenever there's a plausible existing page to host the variants. Only reach for sub-shape B if the prototype genuinely has no nearby home.
@@ -112,3 +120,5 @@ If the win is a **product-wide look** (palette, type, density, component feel) a
 - **Sharing too much code between variants.** A shared `<Header>` is fine; a shared `<Layout>` defeats the point. Each variant should be free to throw out the layout.
 - **Wiring variants to real mutations.** Read-only prototypes are fine. If a variant needs to mutate, point it at a stub — the question is "what should this look like", not "does the backend work".
 - **Promoting the prototype directly to production.** The variant code was written under prototype constraints (no tests, minimal error handling). Rewrite it properly when you fold it in.
+- **Using prototype to "match the high-fi."** Pixel / token fidelity belongs to design pin + `/implement` + code-review UI Fidelity — not this skill.
+- **Spec + prototype as the only post-grill package.** After grill, prefer implement (or L2 with pin) when look is settled; see lifecycle G next-hop table.

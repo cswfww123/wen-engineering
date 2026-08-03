@@ -115,7 +115,7 @@ When one side is out of scope for this agent/ticket:
 | Gate | When | Evidence |
 | --- | --- | --- |
 | **Behavior** | every ticket | TDD/verification match acceptance for **this layer** |
-| **UI fidelity** | ticket changes user-visible UI | checklist/compare vs UI contract + pin |
+| **UI fidelity** | ticket changes user-visible UI | checklist/compare vs UI contract + pin; screenshot path(s) preferred; `/code-review` **UI Fidelity** axis blocks Pass without pin+evidence (or checklist-only waiver + checklist) |
 | **Contract fidelity** | ticket changes published API/events | contract checks |
 
 Not a substitute for independent system QA (`wen-test` `/qa-run` or human QA).

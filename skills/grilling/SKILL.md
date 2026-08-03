@@ -38,6 +38,18 @@ One-line replies such as `按推荐` or `按推荐，除第 2 行→无效` are 
 
 If I accept the full recommended table **unchanged 2 times in a row** (or keep saying only `按推荐` across surfaces), do **not** open more low-risk rows. Next message: **2–3 high-risk decisions only** (visibility/privacy, transaction boundaries, half-finished surfaces like backend-only SSE, irreversible schema, shared-branch blast radius, **money/stats 口径**, **historical backfill**, **dual write paths across services**). Force an explicit choice on those; everything else stays on the last recommended table unless I diff it.
 
+## Close → next hop (when frontier is empty)
+
+Parent skills (`grill-me`, wayfinder) own durable archives. Before offering build,
+state **one** next hop — do not default to “spec + prototype”:
+
+| Settled | Next | Avoid |
+| --- | --- | --- |
+| Behavior AC enough; no UI / pin already exists | `/implement` or L2 tickets | Multi-variant `/prototype` |
+| Multi-slice handoff | `/to-spec` → `/to-tickets` | Chat-only package |
+| Only appearance still open | `/prototype` then pin | Prototype as production fidelity |
+| High-fidelity pin already versioned | implement + UI fidelity gate | Re-opening look variants |
+
 ## Keep it short
 
 - One frontier surface per turn (a batch table = one round).

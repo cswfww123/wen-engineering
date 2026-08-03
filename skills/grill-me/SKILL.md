@@ -122,9 +122,19 @@ If I type `/implement` (or “直接做 / 开干”) **before** the frontier is 
 
 ### After shared understanding
 
-1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s).
+**Pick next hop** (do **not** default to “always `/to-spec` + `/prototype`”):
+
+| Settled | Next | Avoid |
+| --- | --- | --- |
+| Behavior AC enough; no UI or UI already has a design pin | Same-session `/implement` (or L2 if multi-slice) | Multi-variant `/prototype` |
+| Multi-slice / other session needs the package | `/to-spec` → `/to-tickets` → `/implement` | Chat-only handoff |
+| Only look-and-feel still open | `/prototype` → pin winner → implement or L2 | Prototype as pixel-perfect delivery |
+| Versioned high-fidelity pin already exists | Put pin on ticket/spec → `/implement` + UI fidelity evidence | Re-exploring variants against a settled pin |
+| Market / worth-doing still open | HEAVY PM | More grill as fake product discovery |
+
+1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s). For UI: name **design pin** or checklist-only waiver before implement.
 2. **`/tdd` (or project equivalent)** — Red → Green → Refactor at agreed seams. **Red evidence required** when claiming behavior change. Green on a **wrong AC** is failure, not progress — if a mid-slice fact flips the target, stop and re-open that frontier row instead of “fixing forward.” Matching grill recap while missing unlabeled PRD behavior is **wrong AC**.
-3. **Reviewer → Verifier** (or project review skill) before commit; incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope). Spec must dual-read product doc and session AC — unauthorized PRD partial cannot Pass.
+3. **Reviewer → Verifier** (or project review skill) before commit; incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope). Spec must dual-read product doc and session AC — unauthorized PRD partial cannot Pass. User-visible UI: UI Fidelity axis needs pin + screenshot/checklist evidence.
 4. **Git** — follow repo push protocol.
 
 ## Artifact hygiene (automatic — never ask me)

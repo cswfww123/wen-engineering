@@ -9,12 +9,14 @@ below. Axis detail: [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-
 1. **Before** writing the final report, if the host can spawn subagents you
    **must attempt** parallel review workers for **Standards**, **Spec**, and
    **Correctness** (Correctness required for production-reachable code;
-   skip only for pure docs/comment/config-rename diffs). Optional extra axes
+   skip only for pure docs/comment/config-rename diffs). When the diff changes
+   user-visible UI, also hard-try **UI Fidelity**. Optional extra axes
    (Performance, Security, Ponytail) when warranted — same hard-try rule.
 2. Prefer pack `Reviewer` per axis; else host general-purpose with the axis
    brief from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) or the Matt prompts in SKILL.md.
    Correctness packet **must** include [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)
-   and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md).
+   and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md). UI Fidelity packet
+   **must** include design pin or checklist-only waiver + fidelity evidence paths.
 3. **Every Reviewer/Verifier spawn uses a full self-contained brief** (see
    templates below). Subagent context is cold/disposable and often a weaker
    model — paste the review packet, axis body, and evidence; do not spawn with
@@ -22,12 +24,15 @@ below. Axis detail: [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-
 4. After candidates are collected, **must try** pack `Verifier` (or parent runs
    Verification Reviewer brief). Confidence bar for kept findings: `>=80`.
    Incomplete production surface (including quiet critical path and log-unsafe)
-   that survives verification blocks `Pass`.
+   that survives verification blocks `Pass`. In-scope UI Fidelity fail or missing
+   evidence blocks `Pass`. Verifier must not rubber-stamp parent summaries alone.
 5. **Never** abort because pack roles are missing. Skipping spawn when a
-   runtime exists, without an attempt, is a process bug.
+   runtime exists, without an attempt, is a process bug — report
+   **confidence: degraded** if parent-fallback ran a required axis; do not present
+   that as a full multi-agent Pass.
 6. Report **`agents used`** (which axes ran on Reviewer / host-general / parent),
-   **incomplete-surface**: `clean` | findings | `n/a`, and **observability**
-   when applicable.
+   **incomplete-surface**: `clean` | findings | `n/a`, **observability** when
+   applicable, and **ui-fidelity** when UI changed.
 
 ## Review packet (shared by every axis worker)
 
@@ -45,6 +50,12 @@ Build once; attach the same packet to each Reviewer spawn:
   - Eng spec/tickets: <paths/IDs + critical quotes>
   - Accepted PRD deltas: <none | list>
   - Grill/session residual (eng seams only):
+- UI fidelity (when user-visible UI changed; else n/a):
+  - Design pin: <Figma/path/URL@version + frames | none>
+  - Checklist-only waiver: <none | written reason>
+  - UI contract subset: <screens/fields/rules or path>
+  - DESIGN.md: <path or none>
+  - Evidence: <screenshot path(s) and/or checklist path | missing>
 - Standards sources: <paths + any non-obvious rules to apply>
 - Project shape / lenses (if Performance/Security): <from PROJECT-LENSES or none>
 - Out of scope / intentional non-goals for this change:
@@ -56,7 +67,7 @@ Build once; attach the same packet to each Reviewer spawn:
 Role: Reviewer (read-only; do not edit files)
 
 ## Axis
-- Axis name: <Intent|Standards|Correctness|Performance|Security|Ponytail|root-cause-fit|architecture>
+- Axis name: <Intent|Standards|Correctness|UI-Fidelity|Performance|Security|Ponytail|root-cause-fit|architecture>
 - Axis brief (paste full body from AGENT-BRIEFS.md or DESIGN-REVIEW-BRIEF.md — do not assume worker can open the pack):
   <PASTE AXIS INSTRUCTIONS HERE>
 
@@ -97,6 +108,8 @@ Role: Verifier (read-only judgment gate; do not edit files)
 - Drop invented, pre-existing, out-of-scope, intentional, CI-noise
 - Incomplete production surface / quiet path / log-unsafe are blocking — not "intentional later"
 - Unauthorized product-doc partial blocks Pass when a PRD was in the packet
+- In-scope UI Fidelity fail / blocked-no-pin / missing screenshot-or-checklist
+  evidence blocks Pass — parent prose "fidelity OK" is not evidence
 - Design-packet gates: Pass is not implement authority; recommend
   implement-minimal | spec-and-slice | blocked
 
@@ -105,6 +118,7 @@ Role: Verifier (read-only judgment gate; do not edit files)
 - surviving findings (file:line, evidence, why not FP, fixability, confidence)
 - incomplete-surface: clean | findings | n/a
 - observability: ...
+- ui-fidelity: pass | fail | blocked-no-pin | n/a | skipped
 - rejected groups (brief)
 - verification gaps
 - design-packet only: recommended next step
@@ -150,13 +164,18 @@ merely because a comment says "later" or "add logs later". Logging must be
 fail-open: log failure must never fail business. Completion claims fail while
 any remain.
 
+When UI Fidelity is in scope: missing pin without checklist-only waiver, missing
+screenshot/checklist evidence, or ui-fidelity fail blocks Pass. Parent prose
+alone is not evidence.
+
 Return exactly one verdict:
 - Pass — no validated blocking finding
 - Changes Required — at least one validated blocking finding
 - Needs User Decision — behavior/trade-off cannot be decided from evidence
 
 Then: surviving findings; incomplete-surface clean|findings|n/a; observability;
-rejected groups (brief); verification gaps.
+ui-fidelity pass|fail|blocked-no-pin|n/a|skipped; rejected groups (brief);
+verification gaps.
 ```
 
 ## Executor (auto-fix only)

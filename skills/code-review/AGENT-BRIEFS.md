@@ -6,7 +6,7 @@ Use these prompts as written with the orchestration ladder in `docs/agents/orche
 
 **Not for design/plan review.** After diagnosis, multi-step fix proposals use the same `Reviewer`/`Verifier` roles with a design packet — see [docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md). This file remains **code-delta** axes only.
 
-Preferred execution: launch the six axis Reviewers in parallel when the host allows. Fallback: sequential axis briefs in the parent. Run the Verification Reviewer / `Verifier` only after collecting candidate findings. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
+Preferred execution: launch required axis Reviewers in parallel when the host allows (Standards, Spec/Intent, Correctness; plus UI Fidelity when user-visible UI changed; Performance/Security/Ponytail when warranted). Fallback: sequential axis briefs in the parent. Run the Verification Reviewer / `Verifier` only after collecting candidate findings. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
 
 ## Intent Reviewer
 
@@ -98,6 +98,27 @@ Return under 300 words:
 - fixability: small local cleanup may be `auto-fixable`; refactors are `report-only`
 - likely false positives to discard
 
+## UI Fidelity Reviewer
+
+**Run when** the review packet says the diff changes user-visible UI (or ticket Layer is frontend / full-stack with UI subset). Otherwise return `skipped` with reason `non-UI`.
+
+Read [REVIEW-AXES.md](REVIEW-AXES.md) **UI Fidelity** (paste that section into the brief if the worker cannot open files). Then read the pin/UI contract evidence from the packet and the UI-related hunks of the diff.
+
+**Hard rules:**
+
+- Do **not** Pass this axis on vibe ("looks close"). Require pin + evidence (screenshot path and/or checklist vs pin).
+- No design pin **and** no explicit checklist-only waiver → blocking delivery gap.
+- Missing empty/error/loading states that the UI contract or pin specifies → findings.
+- Token drift vs package `DESIGN.md` when that file exists → findings unless accepted design delta.
+
+Return under 300 words:
+
+- **ui-fidelity**: `pass` | `fail` | `skipped` | `blocked-no-pin`
+- design pin / checklist-only waiver / DESIGN.md paths used (or missing)
+- evidence cited: screenshot path(s) and/or checklist items
+- findings with concrete visual mismatches (layout, type, color, states) or missing evidence
+- fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
+
 ## Verification Reviewer
 
 Run this after collecting findings. For each candidate, assign a `0-100` confidence score using `REVIEW-AXES.md`. Re-read the exact changed lines and cited evidence. Reject candidates that are invented, pre-existing, outside the diff, contradicted by context, likely intentional, or covered by CI.
@@ -105,6 +126,8 @@ Run this after collecting findings. For each candidate, assign a `0-100` confide
 **Incomplete production surface is never "likely intentional"** just because a TODO comment exists — shipping deferred real logic on a live path is a **blocking** failure. Quiet critical paths and log-unsafe logging are the same class. Completion claims fail while any remain. See [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md) and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md).
 
 **Logging fail-open:** if a log/MDC/metrics path can fail the business, that is blocking — not a style preference.
+
+**UI Fidelity (when that axis was in scope):** empty evidence, missing pin without checklist-only waiver, or `ui-fidelity: fail` / `blocked-no-pin` **blocks** overall `Pass`. Do not accept parent prose alone ("fidelity OK") without pin/screenshot/checklist paths in the packet or candidates.
 
 Return only findings with confidence `>=80`, each with:
 
@@ -114,4 +137,4 @@ Return only findings with confidence `>=80`, each with:
 - why it is not a false positive
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 
-Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe, and **unauthorized product-doc partial** when a PRD/requirements doc was in the review packet). Report **observability** when the diff touches applicable paths. Report **prd-alignment** when a product doc was in evidence. Otherwise `Changes Required` or `Needs User Decision`.
+Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe, **unauthorized product-doc partial** when a PRD/requirements doc was in the review packet, and **in-scope UI Fidelity failure / missing evidence**). Report **observability** when the diff touches applicable paths. Report **prd-alignment** when a product doc was in evidence. Report **ui-fidelity** when that axis ran. Otherwise `Changes Required` or `Needs User Decision`.

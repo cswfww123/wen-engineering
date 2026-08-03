@@ -31,6 +31,8 @@ Reject invented, pre-existing, out-of-scope, likely-intentional, or CI-noise ite
 
 **Forensic completeness + fail-open.** On applicable external/async/state paths, Pass requires correlatable decision-boundary logs **and** that logging cannot break business. Missing foundation when the project bar requires it, or log calls that can abort the domain, block Pass.
 
+**UI Fidelity (when in scope).** User-visible UI changes need design pin (or checklist-only waiver) plus screenshot/checklist evidence. Parent prose "fidelity OK" is not evidence. Fail / blocked-no-pin / missing evidence blocks Pass. See `skills/code-review/REVIEW-AXES.md` UI Fidelity.
+
 Return exactly one verdict:
 
 - `Pass` — no validated blocking finding; completion claims hold when present
@@ -42,6 +44,7 @@ Then:
 - surviving findings (file:line, evidence, why not FP, fixability)
 - incomplete-surface: `clean` | findings | `n/a`
 - observability: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a` | findings
+- ui-fidelity: `pass` | `fail` | `blocked-no-pin` | `n/a` | `skipped` (when axis in packet)
 - rejected groups (optional, brief)
 - verification gaps you could not check
 - for design-packet gates only: recommended next step `implement-minimal` | `spec-and-slice` | `blocked`

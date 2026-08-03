@@ -114,6 +114,32 @@ For security-relevant changes, trace the affected trust boundary or data flow: w
 
 Tie each finding to changed code and stack-specific exploitability. Treat auth, crypto, dependency policy, data exposure, and public contract changes as `report-only` unless exact behavior preservation is proven.
 
+## UI Fidelity
+
+**When required:** the diff changes **user-visible UI** (pages, components, styles, client routes that render UX) and the ticket/spec layer is frontend or full-stack with a UI subset. Skip for backend-only / non-UI / pure docs.
+
+**Authority for "looks right":**
+
+1. **Delivery design pin** (versioned Figma/frame/export path) when present
+2. **UI contract** (screens / fields / rules / states) from ticket or spec
+3. Package-root **`DESIGN.md`** tokens + Do's/Don'ts when present (visual environment; does not replace a screen pin)
+4. Explicit written **checklist-only fidelity** reason when no pin (weaker — note residual risk)
+
+Look for:
+
+- layout hierarchy, spacing rhythm, typography, color, and component styling that diverge from the pin or DESIGN.md tokens without an accepted design delta
+- missing interactive / empty / error / loading states that the UI contract or pin specifies
+- invented fields, copy, or chrome not in the UI contract
+- claims of fidelity with **no evidence** (no pin path, no same-viewport screenshot path, no checklist against pin)
+
+**Evidence bar (blocking when this axis is in scope):**
+
+- Pass on this axis requires **at least one**: (a) same-viewport screenshot path(s) compared to the pin, or (b) a written checklist with pin/frame refs and pass/fail per material item
+- "Looks fine" / "matches spirit of the design" without pin or checklist → **not Pass**
+- Missing pin **and** no checklist-only waiver in the ticket/spec → report as blocking gap (`needs-user-decision` or incomplete delivery package)
+
+Pixel-perfect identity is not required unless the ticket says so; require **visual fidelity** against the pin (layout, hierarchy, tokens, material states). Optional secondary: structured visual-verdict score if the host uses that skill (e.g. target ≥90).
+
 ## Ponytail
 
 Use this pass only for over-engineering and complexity. The diff's best cleanup outcome is getting shorter.

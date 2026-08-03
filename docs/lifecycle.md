@@ -105,6 +105,16 @@ plan/design still fuzzy, but one interview can clear it
 Do **not** require `decision-*.md` / `docs/decisions/` for same-session work
 (Matt-upstream `grill-me` is interview-only; durable docs are the exception).
 
+**Next hop after grill (pick one — do not default to "spec + prototype"):**
+
+| Settled after grill | Next | Do not |
+| --- | --- | --- |
+| Behavior AC enough; no UI / UI already has design pin | `/implement` (or L2 tickets if multi-slice) | Multi-variant `/prototype` |
+| Multi-slice or cross-session handoff | `/to-spec` → `/to-tickets` → `/implement` | Stop at chat-only AC for handoff |
+| Only "what should it look like?" still open | `/prototype` then pin winner → implement or L2 | Treat prototype as production fidelity |
+| Versioned high-fidelity pin already exists | Record pin on ticket/spec → `/implement` + UI fidelity gate | Re-open multi-variant prototype |
+| Product need / market still fuzzy | **HEAVY** PM | Grill as substitute for PM |
+
 Frontier rounds with recommended answers (batch table / decision surface by
 default — not serial micro-Qs); facts from the repo first, non-blocking where
 lookups can run in parallel (see `/grilling`). Durable archive only for

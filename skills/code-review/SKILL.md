@@ -90,9 +90,9 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 
 ### 5. Aggregate
 
-Present the reports under `## Standards`, `## Spec`, and (when run) `## Correctness` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings across axes (see _Why two axes_).
+Present the reports under `## Standards`, `## Spec`, and (when run) `## Correctness` / `## UI Fidelity` / other extra-axis headings, verbatim or lightly cleaned. Do **not** merge or rerank findings across axes (see _Why two axes_).
 
-End with a one-line summary: total findings per axis, the worst issue _within each axis_ (if any), and **incomplete-surface**: `clean` | findings | `n/a`. Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
+End with a one-line summary: total findings per axis, the worst issue _within each axis_ (if any), **incomplete-surface**: `clean` | findings | `n/a`, and **ui-fidelity** when UI changed. Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
 
 ## Why two axes
 
@@ -126,14 +126,24 @@ binds **how** subagents are used when the host has a spawn runtime.
    when warranted: **Performance**, **Security**, **Ponytail** — same hard-try;
    report each under its own heading (no cross-axis renorming). Detail:
    [REVIEW-AXES.md](REVIEW-AXES.md), [PROJECT-LENSES.md](PROJECT-LENSES.md).
-3. After candidates: **must try** pack `Verifier` (or parent Verification
+3. **UI Fidelity is required** when the diff changes user-visible UI (frontend
+   or full-stack UI subset). Hard-try a Reviewer on the **UI Fidelity** axis
+   ([REVIEW-AXES.md](REVIEW-AXES.md), [AGENT-BRIEFS.md](AGENT-BRIEFS.md)). Packet
+   must include design pin path@version (or checklist-only waiver), UI contract
+   subset, optional `DESIGN.md`, and fidelity evidence (screenshot path(s)
+   and/or checklist vs pin). Missing pin without waiver, or no evidence while
+   claiming fidelity, **blocks** `Pass`. Backend-only / non-UI →
+   `ui-fidelity: n/a`.
+4. After candidates: **must try** pack `Verifier` (or parent Verification
    Reviewer). Keep findings only at confidence `>=80`. Incomplete surface
    (including quiet path / log-unsafe) that survives verification **blocks**
-   `Pass`.
-4. Soft fail only after an attempt (or when no subagent runtime exists). Never
+   `Pass`. In-scope UI Fidelity fail / missing evidence **blocks** `Pass`.
+5. Soft fail only after an attempt (or when no subagent runtime exists). Never
    abort because pack roles are undefined.
-5. **Forbidden:** parent solo-reviews a non-empty diff while a subagent runtime
-   exists without at least one Reviewer (or host-general) attempt.
+6. **Forbidden:** parent solo-reviews a non-empty diff while a subagent runtime
+   exists without at least one Reviewer (or host-general) attempt. Skipping
+   spawn without an attempt is a **process-bug**; do not report a clean `Pass`
+   as if independent review ran.
 
 ### Default scope and auto-fix
 
@@ -149,9 +159,14 @@ binds **how** subagents are used when the host has a spawn runtime.
 - **Spec vs product doc:** unauthorized product-doc partial/missing (no accepted
   `相对 PRD` delta) → verdict cannot be `Pass`; use `Changes Required` or
   `Needs User Decision`. Do not bury under “known non-blocking / grill AC ok.”
+- **UI Fidelity:** when in scope, verdict cannot be `Pass` without pin+evidence
+  or checklist-only waiver + checklist evidence. Parent prose alone is invalid.
 - Final report **must** include **`agents used`** (Reviewer / Verifier /
   host-general / parent-fallback per axis) and an explicit
   **incomplete-surface** line: `clean` | findings | `n/a` (docs-only), and
   **observability** when the diff touches applicable paths. When a product doc
   was in evidence, also state **prd-alignment**: `aligned` | `authorized-deltas`
-  | `unauthorized-partial` (blocks Pass).
+  | `unauthorized-partial` (blocks Pass). When UI changed, also state
+  **ui-fidelity**: `pass` | `fail` | `blocked-no-pin` | `n/a`. If review used
+  **parent-fallback** for a required axis, state **confidence: degraded** and
+  do not imply independent multi-agent review.

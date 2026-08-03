@@ -44,13 +44,48 @@ Parent (strong model) — route, authority, HITL, final ownership
 7. Done reports should record `agents used` (pack role | host-general |
    parent-fallback).
 
-### Brief minimum
+### Brief quality (hard)
+
+Subagent context is **cold and disposable**. Workers do not see the parent
+chat, prior decisions, or “what we already looked at.” Many hosts also run
+workers on **weaker / cheaper models**. The spawn prompt is therefore the
+worker’s entire environment — not a polite summary.
+
+1. **Self-contained by default.** A fresh agent must be able to finish (or
+   correctly `blocked`) from the brief alone. No “as we discussed,” no bare
+   ticket IDs without AC text, no “fix the review findings” without the list.
+2. **Minimum is a floor, not the target.** Skipping recommended fields to save
+   tokens is a **process bug** when it forces the worker to guess.
+3. **Paste evidence; do not only point.** Prefer short excerpts the worker can
+   act on: AC quotes, error stacks, key signatures, failing test names, allowed
+   file list, diff fixed-point commands **and** (when small) the diff itself.
+   Paths to long docs are fine *in addition*, not as a substitute for the
+   decision-critical lines.
+4. **One spawn = one vertical slice** (or one authorized fix list). Do not dump
+   a multi-feature roadmap into a single cold context.
+5. **System role short, task brief long.** `agents/*.md` is the portable role
+   contract. Detail lives in the per-spawn user/task brief from skills’
+   `DISPATCH.md` templates.
+6. **Thin brief → expect `blocked`.** Workers are instructed to stop rather
+   than invent product intent, scope, or Expected behavior.
+
+### Brief minimum (must)
 
 | Agent | Brief must include |
 | --- | --- |
 | `Executor` | goal, scope, AC or fix list, constraints, verify commands, authority (no tracker unless granted) |
 | `Reviewer` | review packet + **one axis** (or explicit all-axes). Packet may be a **code diff** (`skills/code-review/AGENT-BRIEFS.md`) or a **design/plan** (`docs/agents/DESIGN-REVIEW-BRIEF.md`) |
 | `Verifier` | candidates + same scope fixed point (diff fixed point **or** design packet) |
+
+### Brief recommended (default for every spawn)
+
+Use the full templates in skill dispatch files. In short:
+
+| Agent | Also include (recommended) |
+| --- | --- |
+| `Executor` | why/context; product baseline path + accepted PRD deltas (or `none`); in/out of scope files; pattern refs (paths + what to copy); seams/APIs/enums to reuse; exact verify commands; blocked conditions; return schema. Full text: `skills/implement/DISPATCH.md` |
+| `Reviewer` | same review packet for every axis worker: fixed-point commands and/or diff text, changed files, commit list, intent/standards sources **with quotes for critical lines**, project shape/lenses when needed, **axis name + axis brief body** from `AGENT-BRIEFS.md` or `DESIGN-REVIEW-BRIEF.md` (paste axis text — do not assume the worker will open the pack). Full text: `skills/code-review/DISPATCH.md` |
+| `Verifier` | full candidate list with file:line + evidence; identical fixed point; confidence bar; Pass rules (incomplete-surface, observability, unauthorized PRD partial). Full text: `skills/code-review/DISPATCH.md` |
 
 ## Skill mapping
 

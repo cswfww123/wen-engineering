@@ -24,35 +24,108 @@ abort the skill because a pack agent file is missing.
 report, commits (when authorized). Parent may do pure research/explore and
 tiny one-line mechanical edits when cheaper.
 
-## Executor brief (minimum)
+## Executor brief quality
 
-Pass all of this into the worker:
+Subagent context is **cold and disposable**; many hosts use a **weaker model**
+for Executor. The brief is the worker’s entire world.
+
+- **Default:** use the **recommended full brief** below on every spawn.
+- **Minimum** fields alone are only acceptable for tiny mechanical edits the
+  parent could have done itself.
+- **Forbidden:** one-liner spawns (“fix login”, “implement the ticket”) with no
+  AC text, scope, verify commands, or pattern refs.
+- If you cannot fill a required field, say so in the brief (`unknown — stop if
+  needed`) rather than omitting it silently.
+
+## Executor brief (minimum — floor only)
+
+Must appear in every spawn:
+
+```text
+Role: Executor
+Goal: <one bounded coding outcome>
+Scope in/out: <allowed files/modules> / <do not touch>
+AC / source: <ticket/spec IDs AND the AC text, not IDs alone>
+Constraints: patterns; no speculative refactors; no inventing Expected; no incomplete surface
+Verify: <exact commands>
+Authority: code + local verify only; NO tracker/PR unless granted
+Return: status, files, what changed, verify results, incomplete-surface, observability, risks
+```
+
+## Executor brief (recommended — default)
+
+Pass **all** of this into the worker (fill every section; use `none` / `n/a`
+when truly empty):
 
 ```text
 Role: Executor (focused implementation subagent)
 
-Goal: <one bounded coding outcome>
-Scope: <files/modules allowed; what is out of scope>
-AC / source: <ticket, spec IDs, or user AC>
-Constraints: existing patterns; no speculative refactors; no inventing Expected;
-  no incomplete production surface (TODO/FIXME deferred logic, stubs, dual-source
-  domain facts, config stand-ins, quiet critical paths, log-unsafe logging on
-  live paths). Finish the real step or return blocked — never ship a quiet
-  fallback that looks done. On critical paths: decision-boundary field logs +
-  fail-open logging (log failure never fails business). See
-  FORENSIC-OBSERVABILITY.md / INCOMPLETE-SURFACE.md when available.
-Verify: <exact commands, e.g. mvn -pl … test>
-Authority: code + local verify only; NO tracker/PR mutation unless granted
-Seams (if TDD): <pre-agreed public seams>
+## Goal
+<one sentence: the user-visible or API-visible outcome that means "done">
 
-Return:
-- status (done | blocked | …)
+## Why / context (short)
+- Symptom or user path:
+- Background the worker cannot see from chat:
+- Related error / log excerpt (paste, truncate if huge):
+
+## Intent authority
+- Product baseline path: <path or none>
+- Accepted PRD deltas: <none | list of 相对 PRD rows>
+- Eng spec / tickets: <paths or IDs + titles>
+- Session AC (only residual eng seams, or full AC if no product doc):
+  1. ...
+  2. ...
+
+## Scope
+- In scope (files/modules/packages allowed):
+- Out of scope (do not touch / do not expand into):
+- Unrelated user changes to preserve:
+
+## Seams and reuse (do not invent parallel designs)
+- Public seams / APIs / enums / wire values to use:
+- Reference implementations (path + what to copy):
+- Tables / messages / identity patterns to match:
+
+## Constraints
+- Follow existing project patterns; no speculative refactors
+- Do not invent product requirements, Expected behavior, or market bets
+- No incomplete production surface for claimed AC (TODO/FIXME deferred logic,
+  stubs, dual-source domain facts, config stand-ins, quiet critical paths,
+  log-unsafe logging). Finish the real step or return blocked.
+- Critical paths: decision-boundary field logs + fail-open logging
+- Other hard constraints:
+
+## Implementation hints (optional but high-value)
+- Suggested approach (non-binding if evidence disagrees):
+- Files likely to edit:
+- Tests to add/update:
+
+## Verify
+- Exact commands (copy-pasteable), e.g.:
+  - <unit / module test command>
+  - <typecheck / lint if required for this layer>
+- What "green" means for this slice:
+
+## Authority
+- code + local verify only
+- NO tracker / PR / commit unless explicitly granted here: <none | grant text>
+
+## Blocked conditions
+Stop and report blocked (do not guess) if:
+- required product/eng decision missing
+- logging foundation missing on a full-bar project for applicable paths
+- scope collides with out-of-scope areas
+- <add any task-specific blockers>
+
+## Return (required shape)
+- status: done | blocked | partial
 - files changed
-- what changed
+- what changed (short)
 - verification run + results
 - incomplete-surface: clean | blocked (signal) | n/a
 - observability: instrumented | foundation-missing | quiet-path | log-unsafe | n/a
 - remaining risks / unchecked criteria
+- if blocked: exact missing decision or evidence needed
 ```
 
 ## Executor system text (if host has no pack role)
@@ -63,6 +136,11 @@ Use as the worker system prompt when spawning a generic agent:
 You are Executor, a focused implementation subagent.
 
 Complete exactly one bounded coding task from the main agent's brief.
+
+Brief is your entire world — you do not inherit the parent chat. Expect a
+self-contained brief (goal, intent authority, scope, seams, verify, authority).
+If required fields are missing and you would have to guess, return blocked with
+exactly what is missing.
 
 Follow the repository instructions, task acceptance criteria, and verification
 commands in the brief. Keep the change small, use existing project patterns,

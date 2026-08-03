@@ -50,7 +50,15 @@ and axis text: [docs/agents/DESIGN-REVIEW-BRIEF.md](../docs/agents/DESIGN-REVIEW
 ## Parent responsibilities
 
 - Route, authority, and user decisions stay with the parent.
-- Every spawn needs a brief: goal, scope, constraints, verify; Reviewer adds
-  **axis**; fix runs list eligible findings + behavior contract.
+- Every spawn needs a **detailed, self-contained brief**. Subagent context is
+  cold/disposable and workers may use weaker models — the prompt is their only
+  world. Minimum fields are a floor; use the **recommended full templates** in
+  `skills/implement/DISPATCH.md` and `skills/code-review/DISPATCH.md` (see also
+  `docs/agents/orchestration.md` Brief quality).
+- Brief must carry goal, scope, constraints, verify, and **pasted evidence**
+  (AC quotes, stacks, key signatures, fix lists) — not vague pointers.
+  Reviewer adds **one axis** (paste axis brief body); fix runs list eligible
+  findings + behavior contract.
+- Thin one-liner spawns (“fix login”, “review this”) are a process bug.
 - After multi-slice fix proposals from diagnosis, freeze a design packet and try
   design-axis Reviewers before `/implement` (see orchestration + DESIGN-REVIEW-BRIEF).

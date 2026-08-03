@@ -261,7 +261,8 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 ```
 
 可组合支持 skill：`/tdd`、`/simplify`、`/code-review`、`/research`、`/prototype`、
-`/domain-modeling`、`/alignment-review`、`/resolving-merge-conflicts`、`/handoff`。
+`/to-design-md`、`/domain-modeling`、`/alignment-review`、`/resolving-merge-conflicts`、
+`/handoff`。
 
 ### 6. 命令名（v1.1）
 
@@ -290,6 +291,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
 - `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic/state 或 UI evidence artifact。
+- `/to-design-md` 为前端包生成或刷新符合 Google Labs 规范的 `DESIGN.md` 视觉身份（可选；从 theme 抽取或综合生成）。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
 - `/resolving-merge-conflicts` 按双方意图解决进行中的 git merge/rebase 冲突。
 - `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
@@ -355,6 +357,7 @@ AI agents 会以很可预测的方式失败。
 - [`wayfinder`](skills/wayfinder/SKILL.md) - 多会话薄 map + 短 paste；结案后 `/to-spec`（见 `CONTINUE.md`）。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
+- [`to-design-md`](skills/to-design-md/SKILL.md) - 可选的前端视觉身份：抽取或综合生成可 lint 的 `DESIGN.md`（Google Labs 格式），供 agent 在 UI 工作中复用。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
 - [`implement`](skills/implement/SKILL.md) - 把一个 bounded task 或 implementation-frontier ticket 推进到 testing 或 compatibility evidence、review 和 verification。
@@ -501,6 +504,11 @@ skills/
     SKILL.md
     mocking.md
     tests.md
+  to-design-md/
+    EXTRACT.md
+    SKILL.md
+    SPEC-BRIEF.md
+    UPSTREAM.md
   to-questionnaire/
     SKILL.md
   to-spec/

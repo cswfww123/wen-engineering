@@ -104,6 +104,8 @@ Once a variant has won, capture the answer — which variant and why — then ca
 
 The full set of variants is the primary source, so it lands on the throwaway branch, not the bin — variant components and the switcher left in the main branch rot fast and confuse the next reader.
 
+If the win is a **product-wide look** (palette, type, density, component feel) and not only a one-page layout experiment, offer **`/to-design-md`** so the settled identity lands in a durable `DESIGN.md` agents can reapply. One-off layout picks do not need that file.
+
 ## Anti-patterns
 
 - **Variants that differ only in colour or copy.** That's a tweak, not a prototype. Real variants disagree about structure.

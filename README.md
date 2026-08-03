@@ -263,8 +263,8 @@ claim → behavior test or compatibility baseline → simplify → verify → co
 ```
 
 Support skills (compose under any flow): `/tdd`, `/simplify`, `/code-review`,
-`/research`, `/prototype`, `/domain-modeling`, `/alignment-review`,
-`/resolving-merge-conflicts`, `/handoff`.
+`/research`, `/prototype`, `/to-design-md`, `/domain-modeling`,
+`/alignment-review`, `/resolving-merge-conflicts`, `/handoff`.
 
 ### 6. Command names (v1.1)
 
@@ -293,6 +293,7 @@ Common skills:
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
 - `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
+- `/to-design-md` generates or refreshes a Google Labs–format `DESIGN.md` visual identity for frontend packages (optional; extract from theme or synthesize).
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/resolving-merge-conflicts` resolves in-progress git merge/rebase conflicts by intent.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
@@ -358,6 +359,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`wayfinder`](skills/wayfinder/SKILL.md) — thin multi-session map + short pastes; exit to `/to-spec` (see `CONTINUE.md`).
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
+- [`to-design-md`](skills/to-design-md/SKILL.md) — optional frontend visual identity: extract or synthesize a lintable `DESIGN.md` (Google Labs format) agents reapply on UI work.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
 - [`implement`](skills/implement/SKILL.md) — takes one bounded task or implementation-frontier ticket through testing or compatibility evidence, review, and verification.
@@ -504,6 +506,11 @@ skills/
     SKILL.md
     mocking.md
     tests.md
+  to-design-md/
+    EXTRACT.md
+    SKILL.md
+    SPEC-BRIEF.md
+    UPSTREAM.md
   to-questionnaire/
     SKILL.md
   to-spec/

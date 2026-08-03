@@ -24,6 +24,7 @@ do not replace TDD / typecheck / review / commit.
 - Clear bounded request **or** one implementation-frontier ticket only.
 - Intent not ready → stop; do not invent Expected (see project lifecycle docs if present).
 - Note layer (`frontend` | `backend` | `full-stack` | `non-UI`) for fidelity later.
+- UI layers: if a package-root `DESIGN.md` exists (Google Labs visual identity), treat it as **visual environment** for fidelity — tokens + Do's/Don'ts. Missing identity with multi-screen UI drift → optional `/to-design-md`, not a blocker for non-UI tickets.
 - Tracked work (frontier, bug-report conversion, HITL, claim): load
   [TRACKED-WORK.md](TRACKED-WORK.md) **before** edits.
 
@@ -53,10 +54,15 @@ per session.
 1. **Must try** spawn pack role `Executor` if the host can load it; else spawn
    the host's general multi-step / coding subagent with the **Executor system
    text + brief** from [DISPATCH.md](DISPATCH.md).
-2. If spawn fails or no subagent runtime exists → parent performs the same
+2. **Spawn with the recommended full brief** (not a one-liner). Subagent
+   context is cold/disposable and often a weaker model — paste AC, scope,
+   pattern refs, verify commands, authority, and decision-critical evidence.
+   Thin briefs are a process bug; see [DISPATCH.md](DISPATCH.md) and
+   orchestration Brief quality.
+3. If spawn fails or no subagent runtime exists → parent performs the same
    bounded slice in-session (soft fail).
-3. **Never** abort because Executor is missing.
-4. **Forbidden:** parent bulk-implements a multi-slice feature while a subagent
+4. **Never** abort because Executor is missing.
+5. **Forbidden:** parent bulk-implements a multi-slice feature while a subagent
    runtime exists **without at least one Executor (or host-general) attempt**
    recorded for that slice.
 

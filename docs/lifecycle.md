@@ -86,7 +86,9 @@ settled package (PRD / docs / chat AC / PM handoff)
 ```
 
 Scope FE/BE fidelity to the ticket layer. `/implement` never closes the parent
-spec. Slice risk: `/alignment-review`.
+spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate —
+default path does **not** run `/alignment-review`. Use `/alignment-review` only
+as a manual audit of handoff or unreviewed artifacts (not after every publish).
 
 ### G — Same-session grill (first-class LIGHT tool)
 

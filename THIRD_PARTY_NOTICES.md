@@ -8,15 +8,21 @@ shared skill bodies track Matt's text closely; WEN only layers pack-specific
 deltas (tracker harness name, lifecycle routing, authority gates, multi-agent
 orchestration, optional field templates).
 
-Upstream pin: `main` at
-`e9fcdf95b402d360f90f1db8d776d5dd450f9234` (2026-07-14; after release `v1.1.0`).
+Upstream pin: **v1.2.2** at
+`8b36d4fb2635b3c21998dcd8144439c9e5ba7302` (2026-08-05).
 
-Prior WEN pin (v1.1.0-era): `d574778f94cf620fcc8ce741584093bc650a61d3`.
+Prior WEN pin (post-v1.1.0): `e9fcdf95b402d360f90f1db8d776d5dd450f9234`
+(2026-07-14). Prior v1.1.0 tag: `d574778f94cf620fcc8ce741584093bc650a61d3`.
 
 WEN also ships **`to-questionnaire`**, adapted from Matt's upstream
-`skills/in-progress/to-questionnaire` (present at the pin above; still
-in-progress upstream). WEN layers meeting mode, lifecycle route **Q**, and
-routing from stuck `/grill-me`.
+(now graduated into the productivity bucket at v1.2). WEN layers meeting mode,
+lifecycle route **Q**, and routing from stuck `/grill-me`.
+
+WEN adopted from v1.2.x without renaming:
+
+- **`writing-for-agents`** (replaces `writing-great-skills`)
+- **`wait-what`**
+- **`wizard`** (plus `template.sh`)
 
 Upstream material is licensed under the MIT License:
 

@@ -1,16 +1,32 @@
 ---
 name: alignment-review
-description: Reviews specs and tickets for intent, coverage, repo evidence, and execution fit.
+description: Optional audit of unreviewed specs/tickets for intent, coverage, repo fit. Not on the default L2 path — to-tickets pre-publish gate covers normal publish.
 disable-model-invocation: true
 ---
 
 # Alignment Review
 
-Review planning artifacts before the next coding step so the next agent does not
-drift from user intent, requirement coverage, repo evidence, or executable scope.
+**Escape hatch, not a lifecycle step.** Default multi-slice path is
+`/to-spec` → `/to-tickets` (with mandatory pre-publish gate) → `/implement`.
+Do **not** insert this skill after every PRD or ticket publish.
 
-Use after `/to-spec` or `/to-tickets` when intent, coverage, slicing, or repo fit
-is risky. May precede `/to-tickets` or `/implement` according to the artifact.
+Manual audit of planning artifacts when the next agent might drift from user
+intent, requirement coverage, repo evidence, or executable scope — typically
+because a human did **not** already approve the graph in-session.
+
+## When to use
+
+- Handoff: PRD/tickets from another session/agent, not re-approved here
+- Unreviewed publish: agent-authored graph without human quiz/approval
+- High-risk re-slice after a large scope or architecture change
+- You explicitly want a second-pass audit before `/implement`
+
+## When not to use
+
+- Same-session HITL already ran: grill (if needed) → approved PRD → approved
+  tickets with `/to-tickets` §5 gate — that **is** alignment
+- Ordinary slice risk that the to-tickets gate already catches (`Covers`,
+  vertical vs horizontal, blockers, frontiers)
 
 System test plans live in optional `wen-test` — out of scope here.
 

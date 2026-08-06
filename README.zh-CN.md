@@ -156,7 +156,7 @@ bug | 清晰 AC | 纯工程切片
 
 - **入：** 产品意图够写诚实 requirements（详细产品文档是主源，走本路径，不要先整包 grill 重写）。
 - **出：** frontier 上的切片；父 spec 在工作完成前保持打开。
-- **补充：** 切片风险高时 `/alignment-review`；FE/BE 保真在 ticket 层。
+- **补充：** `/to-tickets` 发布前硬门闩（覆盖、垂直切片、blocker、frontier）；FE/BE 保真在 ticket 层。`/alignment-review` **不在**默认路径上——仅 handoff / 未经人审的 artifact 时手动审计。
 - **不要：** 用 `/implement` 关闭父 spec；不要用会话 grill AC 静默覆盖已有 PRD。
 
 #### G — Grill（同会话钉住）
@@ -283,18 +283,20 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 
 常用 skills：
 
-- `/alignment-review` 审查 specs 和 tickets 是否对齐 intent、coverage、repo evidence 和执行路径。
+- `/alignment-review` 可选审计：handoff / 无人批准的 PRD·票；默认 L2 用 `/to-tickets` 发布前硬门闩，不强制本 skill。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
 - `/code-review` 独立审查 fixed delta 的 intent、correctness、ponytail、性能、安全与规范（含 Fowler smell 基线）。
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归；若顺带给出多步修复方案，先冻结 design packet，用现有 `Reviewer`（设计轴，宜换模型）对抗评审，见 `docs/agents/DESIGN-REVIEW-BRIEF.md`。
 - `/domain-modeling` 在设计决策结晶时锐化 glossary，并稀疏记录 ADR。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
 - `/grill-me` stress-test **工程** plan（同会话钉住）；加载 `/grilling`；仅术语真变时 domain-modeling；**默认会话内收口、不强制 decision 文件**。房间里不是决策人时路由到 `/to-questionnaire`。
-- `/grilling` 可复用访谈循环：**frontier 轮次**（按依赖批问，非串行微问题）、非阻塞事实 sub-agent、反橡皮图章、确认门。
+- `/grilling` 可复用访谈循环：**frontier 轮次**（`❓`/`➡️` 格式、按依赖批问，非串行微问题）、非阻塞事实 sub-agent、反橡皮图章、确认门。
+- `/wait-what` 在上一句没听懂时要求重讲（简洁 + 领域语言）。
+- `/wizard` 为人机只能点的流程生成交互式 bash 向导（凭证、控制台、一次性切换）。
 - `/to-questionnaire` 把干系人缺口变成会中议程或异步问卷（选项 + 推荐 + 手写）；贴回后 ingest、不重问 → 默认 `/to-spec`。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
-- `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic/state 或 UI evidence artifact。
+- `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic（可分享 HTML demo）或 UI evidence artifact。
 - `/to-design-md` 为前端包生成或刷新符合 Google Labs 规范的 `DESIGN.md` 视觉身份（可选；从 theme 抽取或综合生成）。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
 - `/resolving-merge-conflicts` 按双方意图解决进行中的 git merge/rebase 冲突。
@@ -307,7 +309,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
 - `/product-fog` LIGHT 意图钉（编码邻域迷你 docket + 一条下一跳；非完整 PM）。
 - `/wayfinder` 将跨会话雾清成薄 decision ticket map（短 paste、research 优先），结案后交接 `/to-spec`。
-- `/writing-great-skills` 提供写作和编辑 predictable skills 的 reference。
+- `/writing-for-agents` 是写作任何 agent 会读的文档（skills、AGENTS.md、指针文档）的 reference。
 
 Harness skill 会创建：
 
@@ -352,7 +354,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) - 审查 specs 和 tickets 的 intent、coverage、evidence 和 execution fit。
+- [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 路径上（见 `/to-tickets` 发布前硬门闩）。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `CONTEXT.md`，并在决策结晶时稀疏记录 ADR。
 - [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的同会话 plan pin（LIGHT G）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
 - [`grilling`](skills/grilling/SKILL.md) - model-invoked 访谈循环：frontier 轮次 + batch 表、非阻塞事实、反橡皮图章、确认门。
@@ -385,7 +387,9 @@ AI agents 会以很可预测的方式失败。
 - [`setup-project-harness`](skills/setup-project-harness/SKILL.md) - 为 Codex 和 Claude 构建 minimal、evidence-first 的 project harness。适用于 frontend、backend、full-stack、library、CLI、monorepo、empty starter 或 engineering-skills repos。
 - [`setup-logging`](skills/setup-logging/SKILL.md) - 搭建项目日志 foundation（现场录像）：统一 logger API、关联 id、fail-open sink、脱敏、如何查日志；含 Spring / Next.js / Python / Node / Go 等栈原生日志配方。
 - [`skill-review`](skills/skill-review/SKILL.md) - 审查 skills 的 discovery、trigger clarity、progressive disclosure 和 judgment-preserving guidance。
-- [`writing-great-skills`](skills/writing-great-skills/SKILL.md) - 提供写作 predictable skills 的 vocabulary 和 principles。
+- [`writing-for-agents`](skills/writing-for-agents/SKILL.md) - 写 agent 会消费的文档；skill 打包见 `SKILL-MECHANICS.md`。
+- [`wait-what`](skills/wait-what/SKILL.md) - 上一句没听懂时的一键纠偏；用简化技术英语重讲。
+- [`wizard`](skills/wizard/SKILL.md) - 为人机只能做的 setup/迁移步骤生成交互 bash 向导。
 
 ## Skill Design Principles
 
@@ -530,8 +534,13 @@ skills/
     FOG.md
     SKILL.md
     TEMPLATES.md
-  writing-great-skills/
-    GLOSSARY.md
+  wait-what/
+    SKILL.md
+  wizard/
+    SKILL.md
+    template.sh
+  writing-for-agents/
+    SKILL-MECHANICS.md
     SKILL.md
 ```
 
@@ -559,10 +568,11 @@ Wayfinder map 与 fresh execution contexts；无用户授权不编造产品答�
 ## Upstream Attribution
 
 WEN 借鉴并改造了
-[Matt Pocock's Skills for Real Engineers v1.1.0](https://github.com/mattpocock/skills/tree/v1.1.0)
+[Matt Pocock's Skills for Real Engineers v1.2.2](https://github.com/mattpocock/skills/tree/v1.2.2)
 中的 lifecycle 和 skill-design ideas，再加入 WEN 的 harness、tracker、review、
 verification 和 multi-agent contracts。准确 source revision、改造说明和 MIT license
-见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。同步说明：
+[docs/UPSTREAM-SYNC-v1.2.2.md](docs/UPSTREAM-SYNC-v1.2.2.md)。
 
 ## Contributing Skills
 

@@ -51,7 +51,8 @@ Parent freezes design packet
   └─ optional Verifier           (merge candidates → one verdict)
 User HITL /grill-me if Ask User or scope still open
   → bounded-fix → /implement
-  → multi-slice → /to-spec → (/alignment-review if risky) → /to-tickets → /implement
+  → multi-slice → /to-spec → /to-tickets (pre-publish gate) → /implement
+  → optional /alignment-review only for handoff / unreviewed artifacts
 ```
 
 Hard try `Reviewer` / `Verifier` per `orchestration.md`; soft-fail to parent with

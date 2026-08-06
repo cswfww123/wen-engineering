@@ -3,6 +3,10 @@
 Load only when publishing an approved ticket graph through the tracker adapter
 (`docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`).
 
+**Precondition:** the pre-publish gate in [SKILL.md](SKILL.md) §5 has passed on the
+approved graph (coverage, vertical slices, acyclic blockers, frontiers, no invented
+Expected). Do not publish while that gate fails.
+
 ## Normal Source
 
 1. Create only missing tickets in dependency order so blockers have stable IDs.

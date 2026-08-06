@@ -158,7 +158,7 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
 
 - **In:** product intent settled enough to write honest requirements (detailed product docs are the primary source — use this path; do not re-author via a full product grill).
 - **Out:** slices on the frontier; parent spec stays open until work is done.
-- **Also:** `/alignment-review` when slice risk is high; FE/BE fidelity at ticket layer.
+- **Also:** `/to-tickets` pre-publish gate (coverage, vertical slices, blockers, frontiers); FE/BE fidelity at ticket layer. `/alignment-review` is **not** on the default path — optional manual audit for handoff / unreviewed artifacts only.
 - **Do not:** close the parent spec from `/implement`; do not let session grill AC silently supersede an active PRD.
 
 #### G — Grill (same-session pin)
@@ -285,18 +285,20 @@ skills in the canonical root block normal sync (`--force` backs them up first).
 
 Common skills:
 
-- `/alignment-review` reviews specs and tickets for intent, coverage, repo evidence, and execution fit.
+- `/alignment-review` optional audit of unreviewed specs/tickets (handoff / no human graph approval); default L2 uses `/to-tickets` pre-publish gate instead.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards (including Fowler smell baseline).
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
 - `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room.
-- `/grilling` is the reusable interview loop: **frontier rounds** (dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, anti rubber-stamp, confirmation gate.
+- `/grilling` is the reusable interview loop: **frontier rounds** (`❓`/`➡️` format, dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, anti rubber-stamp, confirmation gate.
+- `/wait-what` re-pitches the last message when it did not land (concise, domain language).
+- `/wizard` generates an interactive bash wizard for steps only a human can perform (credentials, dashboards, one-off cutovers).
 - `/to-questionnaire` turns stakeholder gaps into a meeting or async questionnaire (options + 推荐 + 手写); paste back → ingest without re-asking → default `/to-spec`.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
-- `/prototype` creates a disposable logic/state or UI evidence artifact for an explicit question or Wayfinder ticket.
+- `/prototype` creates a disposable logic (shareable HTML demo) or UI evidence artifact for an explicit question or Wayfinder ticket.
 - `/to-design-md` generates or refreshes a Google Labs–format `DESIGN.md` visual identity for frontend packages (optional; extract from theme or synthesize).
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/resolving-merge-conflicts` resolves in-progress git merge/rebase conflicts by intent.
@@ -309,7 +311,7 @@ Common skills:
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
 - `/product-fog` LIGHT intent pin in coding context (mini docket, one next route).
 - `/wayfinder` clears multi-session fog into a thin decision map (short pastes, research-first), then hands off to `/to-spec`.
-- `/writing-great-skills` provides a reference for writing and editing predictable skills.
+- `/writing-for-agents` is the reference for writing any document an agent consumes (skills, AGENTS.md, pointer docs).
 
 The harness skill creates:
 
@@ -354,7 +356,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) — reviews specs and tickets for intent, coverage, evidence, and execution fit.
+- [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 path (see `/to-tickets` pre-publish gate).
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
 - [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: frontier rounds + batch tables, non-blocking facts, anti rubber-stamp, confirmation gate.
@@ -387,7 +389,9 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds a minimal, evidence-first project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
 - [`setup-logging`](skills/setup-logging/SKILL.md) — builds a project logging foundation (crime-scene replay): unified logger API, correlation, fail-open sinks, redaction, how-to-read; stack recipes for Spring, Next.js, Python, Node, Go.
 - [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
-- [`writing-great-skills`](skills/writing-great-skills/SKILL.md) — provides vocabulary and principles for writing predictable skills.
+- [`writing-for-agents`](skills/writing-for-agents/SKILL.md) — writing documents agents consume; skill packaging in `SKILL-MECHANICS.md`.
+- [`wait-what`](skills/wait-what/SKILL.md) — one-word corrective when a message did not land; re-pitch in plain technical English.
+- [`wizard`](skills/wizard/SKILL.md) — interactive bash wizard for human-only setup/migration steps.
 
 ## Skill Design Principles
 
@@ -532,8 +536,13 @@ skills/
     FOG.md
     SKILL.md
     TEMPLATES.md
-  writing-great-skills/
-    GLOSSARY.md
+  wait-what/
+    SKILL.md
+  wizard/
+    SKILL.md
+    template.sh
+  writing-for-agents/
+    SKILL-MECHANICS.md
     SKILL.md
 ```
 
@@ -562,10 +571,11 @@ never invent product answers without user authority.
 ## Upstream Attribution
 
 WEN adapts lifecycle and skill-design ideas from
-[Matt Pocock's Skills for Real Engineers v1.1.0](https://github.com/mattpocock/skills/tree/v1.1.0),
+[Matt Pocock's Skills for Real Engineers v1.2.2](https://github.com/mattpocock/skills/tree/v1.2.2),
 then extends them with WEN's harness, tracker, review, verification, and
 multi-agent contracts. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for
-the exact source revision, adaptation notes, and MIT license.
+the exact source revision, adaptation notes, and MIT license. Sync notes:
+[docs/UPSTREAM-SYNC-v1.2.2.md](docs/UPSTREAM-SYNC-v1.2.2.md).
 
 ## Contributing Skills
 

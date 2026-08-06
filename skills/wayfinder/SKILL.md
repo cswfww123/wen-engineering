@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Plan multi-session engineering fog as a decision-ticket map — short pastes, thin HITL, hand off to /to-spec when the route is clear.
+description: Plan a huge chunk of work — more than one agent session can hold — as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.
 disable-model-invocation: true
 ---
 
@@ -82,7 +82,7 @@ The answer isn't part of the body — it's recorded on resolution (see [Work thr
 
 Every ticket is either **HITL** — human in the loop, worked *with* a human who speaks for themselves — or **AFK**, driven by the agent alone. A HITL ticket only resolves through that live exchange; the agent never stands in for the human's side of it (a grilling agent that answers its own questions has broken this).
 
-- **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a `/research` **subagent**. Use when knowledge outside the current working directory is required — **or** when the codebase/docs already answer the question without a user trade-off.
+- **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a `/research` **subagent** (not parked for a later human session). Use when knowledge outside the current working directory is required — **or** when the codebase/docs already answer the question without a user trade-off.
 - **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to — an outline, a rough take, a stub, or UI/logic code via the /prototype skill. Links the prototype as an asset. Use when "how should it look" or "how should it behave" is the key question.
 - **Grilling** (HITL): Conversation via the /grilling and /domain-modeling skills. **Only for decisions a human must own.** Prefer **frontier-round batch/diff grill** for tables and mapping rows (recommended frontier set; human replies with diffs only). One *decision surface* per turn, not one micro-row per turn when a recommended table exists.
 - **Task** (HITL or AFK): Manual work that must happen before a *decision* can be made — nothing to decide, prototype, or research, but the discussion is blocked until it's done (access, sample data, **production path verification**). Resolved when the work is done; the answer records resulting facts later tickets depend on.

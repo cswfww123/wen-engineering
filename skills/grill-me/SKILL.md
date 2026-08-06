@@ -4,7 +4,7 @@ description: A relentless interview to sharpen a plan or design.
 disable-model-invocation: true
 ---
 
-Run a `/grilling` session (load `grilling` once; follow its **frontier-round** + batch/surface rules).
+Run a `/grilling` session (load `grilling` once). Use its **frontier-round** rules, question format (`❓` / `➡️`), and batch/surface table shape.
 
 Matt-upstream shape: **shared understanding in the conversation is enough.** Do not invent a paper trail for work that finishes in this session.
 

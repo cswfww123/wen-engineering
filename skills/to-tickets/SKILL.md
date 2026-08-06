@@ -55,7 +55,25 @@ Ask the user:
 
 Iterate until the user approves the breakdown.
 
-### 5. Publish the tickets to the configured tracker
+### 5. Pre-publish gate (required)
+
+Before writing tracker issues or local ticket files, run this gate on the **approved**
+graph. Fail → fix the draft and re-check; do **not** publish half-aligned tickets, and
+do **not** punt the fix to a later `/alignment-review`.
+
+| Check | Pass when |
+| --- | --- |
+| Requirement coverage | Every material parent requirement (stable ID or legacy source ref) appears in some ticket's `Covers`, or is explicitly deferred / out-of-scope on the parent or a ticket comment — not silently dropped |
+| Vertical slices | Behavior tickets are tracer bullets (narrow complete path), not horizontal layer tasks (schema-only / API-only / UI-only / tests-only). Only the named expand–contract branch may be mechanical (`Covers: none` + stable `Supports` + `Decision` + behavior-preservation evidence) |
+| Blockers | `Blocked by` edges are minimal, acyclic, and only real gates |
+| Frontiers | Implementation frontier = open unblocked unclaimed AFK tickets; human frontier = open unblocked unclaimed HITL with a named judgment/manual gate |
+| Product Expected | No invented product Expected / AC that the parent source does not support |
+
+Report a one-line pass (or list failing rows) in the publish recap. Deeper audit of
+handoff / unreviewed artifacts is optional `/alignment-review` — not a substitute for
+this gate.
+
+### 6. Publish the tickets to the configured tracker
 
 Publish the approved tickets. **How** depends on the tracker `/setup-project-harness` configured — the tickets are the same either way, only the shape of the blocking edges changes:
 
@@ -118,4 +136,8 @@ Work the frontier one ticket at a time with `/implement`, clearing context betwe
   frontier; `Mode: HITL` = human gate (outside AFK frontier).
 - Bug-report conversion only when an accepted parent already covers the defect —
   [BUG-REPORT-CONVERSION.md](BUG-REPORT-CONVERSION.md); else stop → `/to-spec`.
-- Do not invent product Expected. Optional: `/alignment-review` after publish.
+- Do not invent product Expected. Pre-publish gate (§5) is mandatory; do not
+  treat `/alignment-review` as the default next step after publish.
+- Optional `/alignment-review` only for handoff or unreviewed artifacts (another
+  agent/session wrote the PRD/tickets; no human approval of the graph; high-risk
+  re-slice). HITL grill → approved PRD → approved tickets already is the alignment.

@@ -139,7 +139,7 @@ bug | clear AC | pure eng slice
       (hard bug first: /diagnosing-bugs)
   → evidence loop (TDD or GREEN baseline)
   → /simplify when non-trivial
-  → project checks → /code-review → done
+  → project checks → /code-review (light or full) → done
 ```
 
 - **In:** enough AC or a single ticket; no invented product value.
@@ -287,7 +287,7 @@ Common skills:
 
 - `/alignment-review` optional audit of unreviewed specs/tickets (handoff / no human graph approval); default L2 uses `/to-tickets` pre-publish gate instead.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
-- `/code-review` independently reviews a fixed delta for intent, correctness, ponytail complexity, performance, security, and standards (including Fowler smell baseline).
+- `/code-review` independently reviews a fixed delta. **light** (default on `/implement` slices): one Slice Reviewer. **full** (standalone branch/PR, or escalate): intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
@@ -375,7 +375,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs for intent, bugs, incomplete production surface (blocking, including quiet critical paths and log-unsafe logging), forensic log-chain completeness, ponytail complexity, performance, security, and standards (Fowler smell baseline).
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs. **light** (default on `/implement` slices): one Slice Reviewer (AC, extra hunks, broken paths, incomplete surface). **full**: intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 

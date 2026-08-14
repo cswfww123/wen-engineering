@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+description: Review a diff since a fixed point. Picks light (one Slice Reviewer) or full (Standards/Spec/Correctness, plus UI Fidelity when a pin or restyle exists). Use when reviewing a branch, PR, implement slice, or "review since X".
 ---
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
@@ -92,7 +92,11 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 
 Present the reports under `## Standards`, `## Spec`, and (when run) `## Correctness` / `## UI Fidelity` / other extra-axis headings, verbatim or lightly cleaned. Do **not** merge or rerank findings across axes (see _Why two axes_).
 
-End with a one-line summary: total findings per axis, the worst issue _within each axis_ (if any), **incomplete-surface**: `clean` | findings | `n/a`, and **ui-fidelity** when UI changed. Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
+End with a one-line summary: **review-weight**, total findings per worker, the
+worst issue _within each heading_ (if any), **incomplete-surface**: `clean` |
+findings | `n/a`, and **ui-fidelity** when that axis ran (else `n/a`). Don't
+pick a single winner across axes — that's the reranking the separation exists
+to prevent. Light reports under `## Slice` instead of Standards/Spec.
 
 ## Why two axes
 
@@ -108,42 +112,81 @@ Reporting them separately stops one axis from masking the other.
 Keep Matt's two axes (Standards + Spec) and process steps 1–5 above. This section
 binds **how** subagents are used when the host has a spawn runtime.
 
+### Diff gate (before any Reviewer)
+
+Read the **full** diff, not only `--stat`. Every hunk must belong to the stated
+AC / review scope. Revert extra hunks first. A dirty tree is not ready for
+review.
+
+### Pick weight
+
+Record **`review-weight`**: `light` | `full`. This table is the only owner of
+which workers run.
+
+| Default | When |
+| --- | --- |
+| **light** | `/implement` of a bounded slice |
+| **full** | standalone `/code-review` of a branch, PR, or named range |
+
+**Escalate light → full** when **any** of these is true:
+
+- New or restyled user-visible chrome, or a design pin exists to compare
+- Money, authz, tenant isolation, state machine, dual-write, migration, or wire/protocol rename
+- External / async / webhook / MQ / third-party path (forensic logs apply)
+- Frontend and backend in one slice, or more than two production modules with distinct control flow
+
+Visibility, default, enablement, or copy of **existing** chrome — no pin, no
+restyle — stays **light**.
+
 ### Hard-try Reviewer / Verifier
 
-**Before** step 5 Aggregate, load [DISPATCH.md](DISPATCH.md) and:
+**Before** step 5 Aggregate, load [DISPATCH.md](DISPATCH.md). Spawn only the
+workers this weight names. Prefer pack `Reviewer` / `Verifier`; else host
+`general-purpose` with [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
 
-1. **Must try** parallel subagents for **Standards** and **Spec** (Matt step 4).
-   Prefer pack role `Reviewer` per axis; else host `general-purpose` / multi-step
-   worker with Matt's prompts **or** [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
-2. **Correctness is required** for any diff that touches production-reachable
-   code (not pure docs/comments/config-only renames). Incomplete production
-   surface is a **blocking** Correctness class — see
-   [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md). That class includes **quiet
-   critical path** and **log-unsafe** logging. Correctness **must** run the
-   forensic log-chain checklist on applicable paths and require **fail-open**
-   logging (log failure never fails business) —
-   [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md). Optional extra axes
-   when warranted: **Performance**, **Security**, **Ponytail** — same hard-try;
-   report each under its own heading (no cross-axis renorming). Detail:
-   [REVIEW-AXES.md](REVIEW-AXES.md), [PROJECT-LENSES.md](PROJECT-LENSES.md).
-3. **UI Fidelity is required** when the diff changes user-visible UI (frontend
-   or full-stack UI subset). Hard-try a Reviewer on the **UI Fidelity** axis
-   ([REVIEW-AXES.md](REVIEW-AXES.md), [AGENT-BRIEFS.md](AGENT-BRIEFS.md)). Packet
-   must include design pin path@version (or checklist-only waiver), UI contract
-   subset, optional `DESIGN.md`, and fidelity evidence (screenshot path(s)
-   and/or checklist vs pin). Missing pin without waiver, or no evidence while
-   claiming fidelity, **blocks** `Pass`. Backend-only / non-UI →
-   `ui-fidelity: n/a`.
-4. After candidates: **must try** pack `Verifier` (or parent Verification
-   Reviewer). Keep findings only at confidence `>=80`. Incomplete surface
-   (including quiet path / log-unsafe) that survives verification **blocks**
-   `Pass`. In-scope UI Fidelity fail / missing evidence **blocks** `Pass`.
-5. Soft fail only after an attempt (or when no subagent runtime exists). Never
-   abort because pack roles are undefined.
-6. **Forbidden:** parent solo-reviews a non-empty diff while a subagent runtime
-   exists without at least one Reviewer (or host-general) attempt. Skipping
-   spawn without an attempt is a **process-bug**; do not report a clean `Pass`
-   as if independent review ran.
+**Light**
+
+1. One `Reviewer` with the **Slice** brief: AC coverage, extra hunks, broken
+   paths, incomplete-surface scan.
+2. Incomplete surface and fail-open logging stay **blocking** on production
+   diffs ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md),
+   [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md)). Light folds that
+   class into the Slice Reviewer — it does not drop the check.
+3. `ui-fidelity: n/a`. No UI Fidelity worker.
+4. Newly shown existing chrome still needs parent evidence of that path (one
+   screenshot or one checklist item) before `/implement` Done.
+5. **Verifier** only when the Slice Reviewer filed a candidate.
+
+**Full**
+
+1. Parallel `Reviewer`s: **Standards** + **Spec** (Matt step 4). Plus
+   **Correctness** on production-reachable code (skip only docs / comment /
+   config-rename). Forensic log-chain on applicable paths; logging is
+   fail-open. Optional extra axes when warranted: **Performance**,
+   **Security**, **Ponytail**. Detail: [REVIEW-AXES.md](REVIEW-AXES.md),
+   [PROJECT-LENSES.md](PROJECT-LENSES.md).
+2. **UI Fidelity** when full **and** (new/restyled chrome **or** a design pin
+   exists). Packet: pin@version or checklist-only waiver, UI contract subset,
+   optional `DESIGN.md`, screenshot and/or checklist. Missing pin without
+   waiver, or no evidence while claiming fidelity, **blocks** `Pass`.
+   Otherwise `ui-fidelity: n/a`.
+3. After candidates: **must try** `Verifier`. Keep findings at confidence
+   `>=80`. Incomplete surface (including quiet path / log-unsafe) and
+   in-scope UI Fidelity fail / missing evidence **block** `Pass`.
+
+Matt step 4 (two parallel axes) applies to **full**. Light uses the single
+Slice Reviewer instead.
+
+**Verifier briefs (both weights):** paste each candidate with file:line and
+evidence. When Reviewers filed none, write `none`. The brief is candidates +
+fixed point — not a verdict, and not a pre-waived evidence bar.
+
+Soft fail only after an attempt (or when no subagent runtime exists). Never
+abort because pack roles are undefined.
+
+Parent solo-reviews a non-empty diff while a runtime exists, without at least
+one Reviewer (or host-general) attempt → process-bug. Do not report a clean
+`Pass` as independent review.
 
 ### Default scope and auto-fix
 
@@ -159,14 +202,16 @@ binds **how** subagents are used when the host has a spawn runtime.
 - **Spec vs product doc:** unauthorized product-doc partial/missing (no accepted
   `相对 PRD` delta) → verdict cannot be `Pass`; use `Changes Required` or
   `Needs User Decision`. Do not bury under “known non-blocking / grill AC ok.”
-- **UI Fidelity:** when in scope, verdict cannot be `Pass` without pin+evidence
-  or checklist-only waiver + checklist evidence. Parent prose alone is invalid.
-- Final report **must** include **`agents used`** (Reviewer / Verifier /
-  host-general / parent-fallback per axis) and an explicit
-  **incomplete-surface** line: `clean` | findings | `n/a` (docs-only), and
-  **observability** when the diff touches applicable paths. When a product doc
-  was in evidence, also state **prd-alignment**: `aligned` | `authorized-deltas`
-  | `unauthorized-partial` (blocks Pass). When UI changed, also state
-  **ui-fidelity**: `pass` | `fail` | `blocked-no-pin` | `n/a`. If review used
-  **parent-fallback** for a required axis, state **confidence: degraded** and
-  do not imply independent multi-agent review.
+- **UI Fidelity:** when that axis is in scope, verdict cannot be `Pass`
+  without pin+evidence or checklist-only waiver + checklist evidence. Parent
+  prose alone is invalid.
+- Final report **must** include **`review-weight`**: `light` | `full`,
+  **`agents used`** (Reviewer / Verifier / host-general / parent-fallback per
+  worker), and **incomplete-surface**: `clean` | findings | `n/a` (docs-only),
+  and **observability** when the diff touches applicable paths. When a product
+  doc was in evidence, also state **prd-alignment**: `aligned` |
+  `authorized-deltas` | `unauthorized-partial` (blocks Pass). When UI Fidelity
+  ran, also state **ui-fidelity**: `pass` | `fail` | `blocked-no-pin`; on light
+  or non-UI, `n/a`. If review used **parent-fallback** for a required worker,
+  state **confidence: degraded** and do not imply independent multi-agent
+  review.

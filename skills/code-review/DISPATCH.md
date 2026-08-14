@@ -6,33 +6,37 @@ below. Axis detail: [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-
 
 ## Hard try (required)
 
-1. **Before** writing the final report, if the host can spawn subagents you
-   **must attempt** parallel review workers for **Standards**, **Spec**, and
-   **Correctness** (Correctness required for production-reachable code;
-   skip only for pure docs/comment/config-rename diffs). When the diff changes
-   user-visible UI, also hard-try **UI Fidelity**. Optional extra axes
-   (Performance, Security, Ponytail) when warranted — same hard-try rule.
-2. Prefer pack `Reviewer` per axis; else host general-purpose with the axis
-   brief from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) or the Matt prompts in SKILL.md.
-   Correctness packet **must** include [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)
-   and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md). UI Fidelity packet
-   **must** include design pin or checklist-only waiver + fidelity evidence paths.
-3. **Every Reviewer/Verifier spawn uses a full self-contained brief** (see
+Parent picks **`review-weight`** first (`light` | `full`) using [SKILL.md](SKILL.md)
+**Pick weight**, after the **Diff gate**. Spawn only the workers that weight
+names.
+
+1. Prefer pack `Reviewer` per worker; else host general-purpose with the brief
+   from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) or the Matt prompts in SKILL.md.
+   **Light:** one Slice Reviewer. **Full:** parallel Standards + Spec, plus
+   Correctness on production-reachable code (skip only docs/comment/config-rename).
+   Full also hard-tries **UI Fidelity** when SKILL.md marks it in scope.
+   Optional extra axes (Performance, Security, Ponytail) when warranted.
+   Correctness / Slice packets include [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)
+   and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md) when the diff can
+   hit those classes. UI Fidelity packet includes design pin or checklist-only
+   waiver + fidelity evidence paths.
+2. **Every Reviewer/Verifier spawn uses a full self-contained brief** (see
    templates below). Subagent context is cold/disposable and often a weaker
    model — paste the review packet, axis body, and evidence; do not spawn with
    only “review the diff on axis X”.
-4. After candidates are collected, **must try** pack `Verifier` (or parent runs
-   Verification Reviewer brief). Confidence bar for kept findings: `>=80`.
-   Incomplete production surface (including quiet critical path and log-unsafe)
-   that survives verification blocks `Pass`. In-scope UI Fidelity fail or missing
-   evidence blocks `Pass`. Verifier must not rubber-stamp parent summaries alone.
-5. **Never** abort because pack roles are missing. Skipping spawn when a
+3. **Verifier:** **full** always must-try after candidates. **Light** only when
+   the Slice Reviewer filed a candidate. Confidence bar `>=80`. Incomplete
+   surface (including quiet path / log-unsafe) that survives verification
+   blocks `Pass`. In-scope UI Fidelity fail or missing evidence blocks `Pass`.
+   The Verifier brief is candidates (or `none`) + the same fixed point — not a
+   parent verdict, and not a pre-waived evidence bar.
+4. **Never** abort because pack roles are missing. Skipping spawn when a
    runtime exists, without an attempt, is a process bug — report
-   **confidence: degraded** if parent-fallback ran a required axis; do not present
-   that as a full multi-agent Pass.
-6. Report **`agents used`** (which axes ran on Reviewer / host-general / parent),
-   **incomplete-surface**: `clean` | findings | `n/a`, **observability** when
-   applicable, and **ui-fidelity** when UI changed.
+   **confidence: degraded** if parent-fallback ran a required worker; do not
+   present that as a full multi-agent Pass.
+5. Report **`review-weight`**, **`agents used`**, **incomplete-surface**:
+   `clean` | findings | `n/a`, **observability** when applicable, and
+   **ui-fidelity** when that axis ran (else `n/a`).
 
 ## Review packet (shared by every axis worker)
 
@@ -50,7 +54,7 @@ Build once; attach the same packet to each Reviewer spawn:
   - Eng spec/tickets: <paths/IDs + critical quotes>
   - Accepted PRD deltas: <none | list>
   - Grill/session residual (eng seams only):
-- UI fidelity (when user-visible UI changed; else n/a):
+- UI fidelity (when that axis is in scope; else n/a):
   - Design pin: <Figma/path/URL@version + frames | none>
   - Checklist-only waiver: <none | written reason>
   - UI contract subset: <screens/fields/rules or path>
@@ -67,7 +71,7 @@ Build once; attach the same packet to each Reviewer spawn:
 Role: Reviewer (read-only; do not edit files)
 
 ## Axis
-- Axis name: <Intent|Standards|Correctness|UI-Fidelity|Performance|Security|Ponytail|root-cause-fit|architecture>
+- Axis name: <Slice|Intent|Standards|Correctness|UI-Fidelity|Performance|Security|Ponytail|root-cause-fit|architecture>
 - Axis brief (paste full body from AGENT-BRIEFS.md or DESIGN-REVIEW-BRIEF.md — do not assume worker can open the pack):
   <PASTE AXIS INSTRUCTIONS HERE>
 
@@ -101,7 +105,8 @@ Role: Verifier (read-only judgment gate; do not edit files)
 <same fixed point / design packet as review workers>
 
 ## Candidates
-<paste each candidate with file:line, evidence, axis, claimed fixability>
+<paste each candidate with file:line, evidence, axis, claimed fixability — or the word none>
+Do not include a parent verdict or a pre-waived evidence bar.
 
 ## Rules
 - Confidence bar to keep: >=80

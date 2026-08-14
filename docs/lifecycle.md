@@ -69,7 +69,8 @@ bug | clear AC | pure eng slice  →  /implement
 ```
 
 Evidence loop (TDD or GREEN baseline), `/simplify` when non-trivial, project
-checks, `/code-review`, done. No invented spec or ticket.
+checks, `/code-review` (that skill picks **light** or **full**), done. No
+invented spec or ticket.
 
 Hard diagnosis first: `/diagnosing-bugs`. Fix authority uses the same implement
 loop. If diagnosis yields a multi-step fix **proposal**, freeze a design packet and

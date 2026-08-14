@@ -79,10 +79,12 @@ Per slice, Executor (or fallback) does:
    (see [incomplete surface](../code-review/INCOMPLETE-SURFACE.md)).
 3. `/simplify` when the delta is non-trivial.
 4. Project verification for this layer (behavior gate).
-5. Fidelity when applicable (UI vs design pin + UI contract; API vs stated
-   contract). For user-visible UI: collect **evidence before review** — design
-   pin@version (or checklist-only waiver), same-viewport screenshot path(s)
-   and/or checklist vs pin. Do not claim UI fidelity without that evidence.
+5. Fidelity when applicable (API vs stated contract; UI vs design pin when
+   `/code-review` will mark UI Fidelity in scope). New/restyled chrome or a
+   pin: collect pin@version (or checklist-only waiver) plus screenshot and/or
+   checklist **before review**. Light visibility/default of existing chrome:
+   one path screenshot or checklist item before Done — not a UI Fidelity
+   worker. Do not claim UI fidelity without that evidence.
 6. **Incomplete-surface + forensic observability self-check** before claiming
    the slice ready for review: production paths for this AC must be complete.
    Deferred markers, placeholders, dual-source domain facts, config stand-ins,
@@ -104,33 +106,38 @@ that never dispatches.
 ### 3. Review
 
 1. Record a review fixed point that isolates this ticket/task delta.
-2. Run `/code-review` against that fixed point (AC + fidelity). Pass the
-   **product baseline path** and any **accepted PRD deltas** into Spec/intent
-   evidence — not grill-only AC. For UI slices, pass **design pin + fidelity
-   evidence paths** into the review packet so the **UI Fidelity** axis can run.
-   That skill **must hard-try** Reviewer / Verifier per its own dispatch, and
-   **must** run Correctness (incomplete surface blocking) and **UI Fidelity**
-   when user-visible UI changed.
+2. Run `/code-review` against that fixed point. That skill picks **light** or
+   **full** and names the workers — do not spawn four axes on a light slice.
+   Pass the **product baseline path** and any **accepted PRD deltas** into
+   intent evidence — not grill-only AC. When UI Fidelity is in scope, pass
+   **design pin + fidelity evidence paths**. On **light**, if existing chrome
+   newly appears on a path, collect one screenshot or one checklist item of
+   that path before Done (parent evidence, not a UI Fidelity worker).
 3. If verdict is not `Pass` and fixes are in scope (`/implement` authorizes
    in-scope behavior-preserving fixes): hard-try **Executor** again with the
    eligible fix list + fix contract from code-review.
 4. Do not close a parent **spec**; complete only this ticket/task.
 5. **`Pass` is invalid** if an incomplete surface remains for claimed AC —
    even when Standards looks clean and thin tests are green.
-6. **`Pass` is invalid** when Spec finds product-doc behavior missing/partial
-   **without** an explicit accepted PRD delta for that gap — do not reclassify
-   as “known non-blocking because grill AC matched.”
-7. **`Pass` is invalid** for user-visible UI when design pin is missing without
-   checklist-only waiver, or fidelity evidence (screenshot/checklist) is missing.
-8. If Executor or required review axes used **parent-fallback** (no independent
-   worker attempt): Done report **confidence: degraded**; do not present as a
-   full multi-agent Pass — prefer a further independent `/code-review` or human
-   gate before merge.
+6. **`Pass` is invalid** when Spec / Slice review finds product-doc behavior
+   missing/partial **without** an explicit accepted PRD delta for that gap —
+   do not reclassify as “known non-blocking because grill AC matched.”
+7. **`Pass` is invalid** when UI Fidelity is in scope and design pin is missing
+   without checklist-only waiver, or fidelity evidence (screenshot/checklist)
+   is missing.
+8. If Executor or a required review worker used **parent-fallback** (no
+   independent worker attempt): Done report **confidence: degraded**; do not
+   present as a full multi-agent Pass — prefer a further independent
+   `/code-review` or human gate before merge.
 
 ### 4. Commit
 
 Commit only when authorized, on the current branch. Do **not** commit a slice
 that still carries an incomplete production surface for its AC.
+
+After the commit, `git status` is clean except files declared unrelated before
+the commit (e.g. local `.scratch/`). Uncommitted leftovers of reverted hunks
+fail Done — do not report a clean slice.
 
 ### Done report (mandatory fields)
 
@@ -139,9 +146,11 @@ that still carries an incomplete production surface for its AC.
 - **PRD deltas**: `none` | list of accepted `相对 PRD` rows used as AC
 - fixed point
 - files changed
+- **review-weight**: `light` | `full` (from `/code-review`)
 - behavior-gate + fidelity (or n/a)
-- **UI fidelity evidence** (when UI changed): pin path@version | checklist-only
-  waiver; screenshot path(s) and/or checklist path; else `n/a`
+- **UI fidelity evidence** (when UI Fidelity ran, or light parent path check):
+  pin path@version | checklist-only waiver | one path screenshot/checklist;
+  else `n/a`
 - **ui-fidelity** (from review): `pass` | `fail` | `blocked-no-pin` | `n/a`
 - **incomplete-surface check**: `clean` | `blocked` (cite signal) | `n/a` (docs/config only)
 - **observability**: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a`

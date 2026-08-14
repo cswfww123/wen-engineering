@@ -6,7 +6,26 @@ Use these prompts as written with the orchestration ladder in `docs/agents/orche
 
 **Not for design/plan review.** After diagnosis, multi-step fix proposals use the same `Reviewer`/`Verifier` roles with a design packet — see [docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md). This file remains **code-delta** axes only.
 
-Preferred execution: launch required axis Reviewers in parallel when the host allows (Standards, Spec/Intent, Correctness; plus UI Fidelity when user-visible UI changed; Performance/Security/Ponytail when warranted). Fallback: sequential axis briefs in the parent. Run the Verification Reviewer / `Verifier` only after collecting candidate findings. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
+Preferred execution: spawn only the workers **Pick weight** in [SKILL.md](SKILL.md) names. **Light** — one Slice Reviewer; Verifier only if that Reviewer filed candidates. **Full** — parallel Standards, Spec/Intent, Correctness; plus UI Fidelity when the packet marks it in scope; Performance/Security/Ponytail when warranted; then Verifier. Fallback: sequential briefs in the parent. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
+
+## Slice Reviewer
+
+**Run when** `review-weight` is `light`. One worker for the whole delta — do not also spawn Standards / Spec / Correctness / UI Fidelity on the same slice.
+
+Read the **full** diff and the intent evidence. Report:
+
+1. Missing AC, or the right requirement implemented in the wrong place
+2. Extra hunks the AC did not ask for (scope creep — blocking on `/implement`)
+3. User-hittable breaks on the changed paths
+4. Incomplete production surface / log-unsafe on production paths ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)). Pure local visibility/default/copy of existing chrome with no async: `incomplete-surface: n/a`, `observability: n/a`
+
+Return under 300 words:
+
+- findings with file:line, evidence, fixability, confidence
+- extra hunks (or `none`)
+- incomplete-surface: `clean` | findings | `n/a`
+- observability: `n/a` | `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | findings
+- axis result: `issues found` | `clean`
 
 ## Intent Reviewer
 
@@ -100,7 +119,7 @@ Return under 300 words:
 
 ## UI Fidelity Reviewer
 
-**Run when** the review packet says the diff changes user-visible UI (or ticket Layer is frontend / full-stack with UI subset). Otherwise return `skipped` with reason `non-UI`.
+**Run when** the review packet marks UI Fidelity in scope (full weight **and** new/restyled chrome or a design pin — see [SKILL.md](SKILL.md) Pick weight). Otherwise return `skipped` with reason `not-in-scope`.
 
 Read [REVIEW-AXES.md](REVIEW-AXES.md) **UI Fidelity** (paste that section into the brief if the worker cannot open files). Then read the pin/UI contract evidence from the packet and the UI-related hunks of the diff.
 

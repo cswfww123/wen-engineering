@@ -116,7 +116,7 @@ Tie each finding to changed code and stack-specific exploitability. Treat auth, 
 
 ## UI Fidelity
 
-**When required:** the diff changes **user-visible UI** (pages, components, styles, client routes that render UX) and the ticket/spec layer is frontend or full-stack with a UI subset. Skip for backend-only / non-UI / pure docs.
+**When required:** the review packet marks UI Fidelity in scope — full weight **and** (new/restyled chrome **or** a design pin). Owner: [SKILL.md](SKILL.md) Pick weight. Skip on **light**, and on backend-only / non-UI / docs.
 
 **Authority for "looks right":**
 

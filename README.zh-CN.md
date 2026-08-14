@@ -137,7 +137,7 @@ bug | 清晰 AC | 纯工程切片
       （难诊 bug 先 /diagnosing-bugs）
   → evidence loop（TDD 或 GREEN 基线）
   → 非琐碎时 /simplify
-  → 项目检查 → /code-review → 完成
+  → 项目检查 → /code-review（light 或 full）→ 完成
 ```
 
 - **入：** 足够 AC 或单 ticket；禁止编造产品价值。
@@ -285,7 +285,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 
 - `/alignment-review` 可选审计：handoff / 无人批准的 PRD·票；默认 L2 用 `/to-tickets` 发布前硬门闩，不强制本 skill。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
-- `/code-review` 独立审查 fixed delta 的 intent、correctness、ponytail、性能、安全与规范（含 Fowler smell 基线）。
+- `/code-review` 独立审查 fixed delta。**light**（`/implement` 切片默认）：一个 Slice Reviewer。**full**（独立审分支/PR，或升级）：intent、correctness、规范；有 pin 或重做视觉时再开 UI Fidelity；ponytail / 性能 / 安全按需。
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归；若顺带给出多步修复方案，先冻结 design packet，用现有 `Reviewer`（设计轴，宜换模型）对抗评审，见 `docs/agents/DESIGN-REVIEW-BRIEF.md`。
 - `/domain-modeling` 在设计决策结晶时锐化 glossary，并稀疏记录 ADR。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
@@ -373,7 +373,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs：intent、bug、incomplete production surface（阻断，含静默关键路径与 log-unsafe）、取证日志链完整性、ponytail、性能、安全、规范（含 Fowler smell 基线）。
+- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs。**light**（`/implement` 切片默认）：一个 Slice Reviewer（AC、多余 hunk、坏路径、incomplete surface）。**full**：intent、correctness、规范；有 pin 或重做视觉时再开 UI Fidelity；ponytail / 性能 / 安全按需。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 

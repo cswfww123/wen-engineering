@@ -130,6 +130,8 @@ agent-specific directory. An unmarked retired canonical copy blocks normal sync;
 
 - The lifecycle covers discovery, specification, slicing, implementation,
   review, testing, and QA without forcing every small task through every step.
+- Product-doc work adds Inventory + last-ticket prd-walk (ADR 0007); grill
+  remains residual-only and must not re-author a settled PRD.
 - Requirement IDs can trace `spec -> ticket -> test case -> QA evidence`.
 - Wayfinder requires a complete tracker capability contract, not only a prompt.
 - Existing downstream artifacts continue working, while old slash commands are

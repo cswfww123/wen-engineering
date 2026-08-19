@@ -14,6 +14,11 @@ Choose only a ticket that is:
 
 Never implement a `spec`, `wayfinder-map`, or `wayfinder-ticket`. Prefer explicit priority, then configured tracker/map order. If no implementation frontier ticket exists, report the blockers and human frontier rather than taking a nearby task.
 
+Do not mark a ticket `complete` while its body still lists 残差 / 下张票收口 /
+partial against a `Covers` SRC (`docs/prd-authority.md` §4). If this is the last
+open ticket of a PRD-sourced spec, `/implement` must run prd-walk before the
+parent can be called delivered.
+
 ## Bug-Report Conversion
 
 Never select a `bug-report` from a frontier. When the user explicitly names one, use the adapter's intake-conversion protocol: read it, claim it for conversion, and re-read ownership. Search exact `Origin` fields and its `Converted to` pointer before creating anything; reuse an existing replacement. If it is a runnable ticket, finish any missing report pointer/read-back and claim that ticket normally. If it is a spec or another non-runnable artifact, report the canonical route and stop. When claiming is not atomic or workers share one identity, convert serially.

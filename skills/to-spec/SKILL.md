@@ -12,11 +12,23 @@ The issue tracker and triage label vocabulary should have been provided to you �
 
 1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
 
-2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
+2. **If the delivery source is an existing product doc** (`docs/requirements/*`,
+   `docs/prd/*`, or a user-named PRD): load `docs/prd-authority.md` and draft the
+   **PRD Inventory** *before* writing REQs. Every numbered 验收 point and each
+   material 场景 row becomes a `SRC` with a surface. Dual surfaces (弹窗 vs 页外,
+   提交剔 vs GET 重验, 选模板 vs 变量编辑器) are two rows. Contradiction /
+   unmapped-term rows stay `HITL` — do not silently fold them into Accepted
+   deltas. **Do not interview** settled PRD behavior.
+
+3. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+4. Write the spec using the template below (include Inventory + Accepted PRD
+   deltas when a product doc is in play), then publish it to the project issue
+   tracker. Apply the `ready-for-agent` triage label - no need for additional
+   triage. **Fail closed:** a PRD-sourced spec without a complete Inventory
+   cannot be `Status: accepted`.
 
 <spec-template>
 
@@ -82,7 +94,8 @@ Any further notes about the feature.
 - Prefer stable requirement IDs when the harness uses them; do not rename legacy
   `PRD.md` / history in place.
 - Routing / anti-invention: `docs/lifecycle.md`. Never invent Expected, market
-  bets, or user value.
+  bets, or user value. PRD-sourced work: [docs/prd-authority.md](../../docs/prd-authority.md)
+  (Inventory required; grill must not re-author the product doc).
 - **Filled `/to-questionnaire` is settled input.** If the user pastes answers or
   a path (`问卷已填`), synthesize from those choices — do **not** interview or
   re-confirm answered Q-ids. Only flag blanks / bare `Z` / contradictions before

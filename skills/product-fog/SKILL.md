@@ -14,6 +14,10 @@ Routing / anti-invention: `docs/lifecycle.md`. Output: [DOCKET.md](DOCKET.md).
 ## When
 
 Use: rework / mild Expected gap / need a written pin before grill, wayfinder, or stop.
+Also use when the user says **按原文** / 收回 delta / 按 PRD 原文 after accepted
+`相对 PRD` rows: docket those **delta ids only**; next hop re-opens their
+inventory `SRC`s (small L2 patch or tickets). Do not full-regrill. Do not
+invent a pack-failure story.
 
 **Skip** (use the other entry): clear AC/bug → `/implement`; build-ready package →
 `/to-spec`; multi-session technical fog → `/wayfinder`; **HEAVY** fuzzy need →

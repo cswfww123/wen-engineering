@@ -41,9 +41,11 @@ When choosing what AC to build and what Spec review must prove, use this order:
 Binding:
 
 - Multi-slice work with a detailed product doc and no eng spec yet → prefer stop and route **`/to-spec`** (do not invent a parallel “grill AC supersedes PRD” package).
-- Before first production edit: name the **product baseline path** (or “none”) and **accepted PRD deltas** (or “none”) in the working notes / Executor brief.
+- Before first production edit: name the **product baseline path** (or “none”) and **accepted PRD deltas** (or “none”) in the working notes / Executor brief. If the parent spec has a PRD Inventory, list the `SRC`s this ticket `Covers`.
 - **Forbidden:** treat grill recap alone as full AC when an active product doc covers the same surface; implement to grill while leaving unlabeled PRD gaps, then report “grill AC 满足” as Pass.
 - Done report **source** field must list product doc path when used; if any claimed AC is a PRD delta, list those deltas explicitly under incomplete/deferred or accepted-delta.
+- **Forbidden complete:** ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC. Split a follow-up ticket or accept a labeled delta — do not `complete`.
+- **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the **original product doc** (`docs/prd-authority.md` §5) before claiming the package delivered. Any `缺` → do not say 已按 PRD 实现; do not mark the parent delivered.
 
 ### 1. Hard-try Executor before non-trivial edits
 
@@ -163,3 +165,5 @@ fail Done — do not report a clean slice.
 - tracker update, commit status, next frontier or blocker
 - **unauthorized PRD partials** (if any): must force non-Pass or explicit
   user decision — never bury under “known non-blocking”
+- **prd-walk** (last ticket of a PRD-sourced spec, or user asked 已按 PRD 实现):
+  `n/a` | table (`SRC` × `过`/`缺`/`有意 delta`). `缺` forces non-delivered.

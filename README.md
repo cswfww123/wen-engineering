@@ -110,7 +110,7 @@ Is intent good enough to code against?
 | Situation | Flow | Entry → exit |
 | --- | --- | --- |
 | Bug / clear AC / one eng slice | **L1** | `/implement` → done |
-| Settled multi-slice package | **L2** | `/to-spec` → `/to-tickets` → `/implement` |
+| Settled multi-slice package | **L2** | `/to-spec` (Inventory) → `/to-tickets` → `/implement` → last-ticket prd-walk |
 | Few open decisions; *you* can answer this session | **G** | `/grill-me` → chat recap → `/implement` (archive/`/to-spec` only if handoff) |
 | Answers live with PM/业务; 需求澄清会 or async form | **Q** | `/to-questionnaire` → fill → paste back → **`/to-spec`** (no re-confirm) |
 | Shipped wrong / mild Expected gap in coding context | **L3** | `/product-fog` → exactly one next (G / Q / L2 / L4 / stop / PM) |
@@ -158,8 +158,8 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
 
 - **In:** product intent settled enough to write honest requirements (detailed product docs are the primary source — use this path; do not re-author via a full product grill).
 - **Out:** slices on the frontier; parent spec stays open until work is done.
-- **Also:** `/to-tickets` pre-publish gate (coverage, vertical slices, blockers, frontiers); FE/BE fidelity at ticket layer. `/alignment-review` is **not** on the default path — optional manual audit for handoff / unreviewed artifacts only.
-- **Do not:** close the parent spec from `/implement`; do not let session grill AC silently supersede an active PRD.
+- **Also:** `/to-spec` PRD Inventory when the source is a product doc; `/to-tickets` pre-publish gate (inventory `SRC` in `Covers`, `Supports` does not count); FE/BE fidelity at ticket layer. `/alignment-review` is **not** on the default path after every publish — **except** a mandatory **prd-walk** against the original product doc when closing the last ticket or answering “已按 PRD 实现” ([docs/prd-authority.md](docs/prd-authority.md)).
+- **Do not:** close the parent spec from `/implement`; do not let session grill AC silently supersede an active PRD; do not `complete` a ticket whose body still lists 残差 for a `Covers` clause.
 
 #### G — Grill (same-session pin)
 
@@ -178,7 +178,7 @@ plan still fuzzy, but *you* own the decisions and one session can clear them
       high-fi pin already versioned → ticket pin → /implement + UI fidelity evidence
 ```
 
-- **In:** a few user-owned product/eng decisions; not multi-session fog. Prefer L2 when a full product doc already covers multi-slice work.
+- **In:** a few user-owned product/eng decisions; not multi-session fog. Prefer L2 when a full product doc already covers multi-slice work. Residual grill only (contradictions, unmapped terms, eng seams); labeled deltas declare `doc-change` vs `eng-read`. **按原文** revokes listed ids via L3 — do not re-grill the package.
 - **Out:** shared understanding in chat (Matt-style). Files are the exception, not the rule. AC = product doc − only accepted `相对 PRD` deltas.
 - **Escalate:** wrong human in the room → **Q**; too big for one session → **L4**; market/worth-doing open → **HEAVY**.
 - **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches; use unlabeled grill MVP to replace the product doc; open multi-variant prototype against a settled high-fi pin as if that were fidelity QA.
@@ -214,7 +214,7 @@ rework / mild Expected gap / "not quite what I meant" (already in coding context
         Discovery / Pause / Kill / Escalate-PM → stop or HEAVY
 ```
 
-- **In:** coding-adjacent intent pin — not market discovery.
+- **In:** coding-adjacent intent pin — not market discovery. **按原文** / revoke delta after accepted `相对 PRD` rows also enters here (ids only; no full re-grill).
 - **Out:** one disposition + one skill (or stop). No production mutations.
 
 #### L4 — Wayfinder (multi-session eng fog)
@@ -285,7 +285,7 @@ skills in the canonical root block normal sync (`--force` backs them up first).
 
 Common skills:
 
-- `/alignment-review` optional audit of unreviewed specs/tickets (handoff / no human graph approval); default L2 uses `/to-tickets` pre-publish gate instead.
+- `/alignment-review` optional audit of unreviewed specs/tickets (handoff / no human graph approval); default L2 uses `/to-tickets` pre-publish gate. **Mandatory prd-walk** at PRD-sourced package close (last ticket / “已按 PRD 实现”) against the original product doc.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` independently reviews a fixed delta. **light** (default on `/implement` slices): one Slice Reviewer. **full** (standalone branch/PR, or escalate): intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
@@ -356,7 +356,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 path (see `/to-tickets` pre-publish gate).
+- [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 publish path. Mandatory **prd-walk** at PRD-sourced package close ([docs/prd-authority.md](docs/prd-authority.md)).
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
 - [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: frontier rounds + batch tables, non-blocking facts, anti rubber-stamp, confirmation gate.
@@ -366,7 +366,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-design-md`](skills/to-design-md/SKILL.md) — optional frontend visual identity: extract or synthesize a lintable `DESIGN.md` (Google Labs format) agents reapply on UI work.
-- [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements.
+- [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements (PRD Inventory required when the source is a product doc).
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
 - [`implement`](skills/implement/SKILL.md) — takes one bounded task or implementation-frontier ticket through testing or compatibility evidence, review, and verification.
 - [`tdd`](skills/tdd/SKILL.md) — red → green at pre-agreed seams (Matt base).

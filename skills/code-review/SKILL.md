@@ -44,6 +44,7 @@ Look for the originating intent sources (collect **all** that apply; do not stop
 - Matching grill AC while missing unlabeled product-doc behavior → **Spec finding** (partial/missing). **Not** “non-blocking because grill AC 满足.”
 - Unauthorized product-doc partial → fixability `needs-user-decision` or blocking Spec gap; **cannot** aggregate to Pass by preferring session AC.
 - “Code wins” does **not** apply to product intent vs PRD.
+- Slice review does **not** replace package **prd-walk** (`docs/prd-authority.md` §5) when the last ticket closes or the user asks 已按 PRD 实现.
 
 ### 3. Identify the standards sources
 

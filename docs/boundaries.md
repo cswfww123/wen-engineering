@@ -49,7 +49,7 @@ settled multi-slice → /to-spec → /to-tickets → /implement
 | Need | Track | Where |
 | --- | --- | --- |
 | Daily bug / clear AC | LIGHT | `/implement` |
-| Settled multi-slice | LIGHT | `/to-spec` → `/to-tickets` → `/implement` |
+| Settled multi-slice | LIGHT | `/to-spec` → `/to-tickets` → `/implement` (PRD Inventory + last-ticket prd-walk when source is a product doc) |
 | Same-session plan pin (in-flow) | LIGHT **G** | `/grill-me` → `/grilling` (+ `/domain-modeling`) |
 | Stakeholder / meeting product gaps | LIGHT **Q** | `/to-questionnaire` → fill → ingest (no re-confirm) → default `/to-spec` |
 | Mild intent gap in coding context | LIGHT | `/product-fog` (often → grill or questionnaire) |

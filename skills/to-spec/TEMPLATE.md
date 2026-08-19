@@ -56,6 +56,25 @@ Origin: <bug-report reference | none>
 - **Delivery design pin:** none | <Figma/path/URL@version, frames>
 - **API / event contract:** none | <OpenAPI/proto/doc@version>
 
+## PRD Inventory (required when Delivery source is a product doc)
+
+Omit this section only when there is no product doc. Protocol:
+`docs/prd-authority.md`. Do not `accepted` without every material `SRC` mapped.
+
+| SRC | Surface | REQ | Notes |
+| --- | --- | --- | --- |
+| ACC-01 / §2.1 … | 创建页 / 弹窗 / 页外 / 提交 / GET … | REQ-001 \| HITL \| OUT | |
+
+Dual surfaces → two rows. Numbered 验收 / ACC ids must appear.
+
+## Accepted PRD deltas
+
+`none`, or a locked table. Implement AC = product doc minus **only** this table.
+
+| ID | 相对 PRD | Class | SRC |
+| --- | --- | --- | --- |
+| S3 | \<was\> → \<now\> (\<reason\>) | doc-change \| eng-read | §2.5 |
+
 ## UI Scope (omit if layer is backend-only or non-UI)
 
 Preserve source IDs when present. Do not invent fields or linkage.

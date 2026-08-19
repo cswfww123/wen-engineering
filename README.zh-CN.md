@@ -108,7 +108,7 @@ git pull --ff-only
 | 场景 | 流程 | 入口 → 出口 |
 | --- | --- | --- |
 | Bug / 清晰 AC / 单一切片 | **L1** | `/implement` → 完成 |
-| 已 settled 的多切片包 | **L2** | `/to-spec` → `/to-tickets` → `/implement` |
+| 已 settled 的多切片包 | **L2** | `/to-spec`（Inventory）→ `/to-tickets` → `/implement` → 末票 prd-walk |
 | 少量开放决策，且**你本人**能同会话拍板 | **G** | `/grill-me` → 会话内收口 → `/implement`（跨会话才归档/`/to-spec`） |
 | 答案在 PM/业务；需求澄清会或异步表单 | **Q** | `/to-questionnaire` → 填写 → 贴回 → **`/to-spec`**（不重确认） |
 | 已上线但不对 / coding 邻域 Expected 轻度缺口 | **L3** | `/product-fog` → 恰好一条下一跳（G / Q / L2 / L4 / 停 / PM） |
@@ -156,8 +156,8 @@ bug | 清晰 AC | 纯工程切片
 
 - **入：** 产品意图够写诚实 requirements（详细产品文档是主源，走本路径，不要先整包 grill 重写）。
 - **出：** frontier 上的切片；父 spec 在工作完成前保持打开。
-- **补充：** `/to-tickets` 发布前硬门闩（覆盖、垂直切片、blocker、frontier）；FE/BE 保真在 ticket 层。`/alignment-review` **不在**默认路径上——仅 handoff / 未经人审的 artifact 时手动审计。
-- **不要：** 用 `/implement` 关闭父 spec；不要用会话 grill AC 静默覆盖已有 PRD。
+- **补充：** 源是产品文档时 `/to-spec` 必须有 PRD Inventory；`/to-tickets` 发布前硬门闩（Inventory `SRC` 进 `Covers`，`Supports` 不算覆盖）；FE/BE 保真在 ticket 层。`/alignment-review` **不在**每次发布后的默认路径上——**例外：** 关最后一张票或回答「已按 PRD 实现」时，必须对**原始产品文档**做 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
+- **不要：** 用 `/implement` 关闭父 spec；不要用会话 grill AC 静默覆盖已有 PRD；票正文仍写残差时不要标 `complete`。
 
 #### G — Grill（同会话钉住）
 
@@ -176,7 +176,7 @@ bug | 清晰 AC | 纯工程切片
       高保真 pin 已定 → ticket 写 pin → /implement + UI fidelity 证据
 ```
 
-- **入：** 少量用户可拍板的产品/工程决策；尚不需要多会话地图。已有完整产品文档的多切片需求优先 L2。
+- **入：** 少量用户可拍板的产品/工程决策；尚不需要多会话地图。已有完整产品文档的多切片需求优先 L2。只烤 residual（原文矛盾 / 对不上库 / 工程缝）；`相对 PRD` 须标 `doc-change` 或 `eng-read`。**按原文** 只经 L3 收回列出的 delta，不整包重烤。
 - **出：** 会话内 shared understanding（对齐 Matt 原版）；落盘是例外。AC = 产品文档 − 仅已接受的 `相对 PRD` 偏差。
 - **升级：** 房间里不是决策人 → **Q**；一会话装不下 → **L4**；值不值得做仍开 → **HEAVY**。
 - **不要：** 编造 Expected；简单问题强行产过程文档；把「grill 完」当成可推 shared 分支的授权；用未标注的 grill MVP 顶替产品文档；有 pin 仍开 multi-variant prototype 当高保真验收。
@@ -212,7 +212,7 @@ bug | 清晰 AC | 纯工程切片
         Discovery / Pause / Kill / Escalate-PM → 停或 HEAVY
 ```
 
-- **入：** coding 邻域的意图钉——不是市场调研。
+- **入：** coding 邻域的意图钉——不是市场调研。**按原文** / 收回已接受的 `相对 PRD` 也走这里（只重开这些 id，不整包重烤）。
 - **出：** 一个 disposition + 一个 skill（或停）。不改 production。
 
 #### L4 — Wayfinder（多会话工程雾）
@@ -354,7 +354,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 路径上（见 `/to-tickets` 发布前硬门闩）。
+- [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 **发布**路径上。PRD 源包关单时强制 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `CONTEXT.md`，并在决策结晶时稀疏记录 ADR。
 - [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的同会话 plan pin（LIGHT G）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
 - [`grilling`](skills/grilling/SKILL.md) - model-invoked 访谈循环：frontier 轮次 + batch 表、非阻塞事实、反橡皮图章、确认门。
@@ -364,7 +364,7 @@ AI agents 会以很可预测的方式失败。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
 - [`to-design-md`](skills/to-design-md/SKILL.md) - 可选的前端视觉身份：抽取或综合生成可 lint 的 `DESIGN.md`（Google Labs 格式），供 agent 在 UI 工作中复用。
-- [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec。
+- [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec（源是产品文档时必须有 PRD Inventory）。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
 - [`implement`](skills/implement/SKILL.md) - 把一个 bounded task 或 implementation-frontier ticket 推进到 testing 或 compatibility evidence、review 和 verification。
 - [`tdd`](skills/tdd/SKILL.md) - red → green + seams（Matt 底）。

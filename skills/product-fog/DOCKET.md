@@ -49,6 +49,12 @@ Leave blanks as `UNKNOWN` or `Unresolved` — never invent.
 - Action: <single skill or stop instruction>
 - Owner: <user | agent | named role>
 - Completion signal: <checkable>
+
+## Revoke deltas (if 按原文)
+
+- Delta ids: <S3, … or none>
+- Inventory SRCs to re-open: <…>
+- Do not re-grill: <settled PRD rows that stay settled>
 ```
 
 ## Weak forms to reject

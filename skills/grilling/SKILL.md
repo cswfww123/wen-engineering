@@ -28,7 +28,7 @@ The session is done when the frontier is empty: every branch of the design tree 
 ### Conflicting live sources & product docs
 
 - **Conflicting live sources** (enum vs write path vs SQL/report vs sibling service) are **decisions**, not auto-resolved “code wins.” Show a short source→value table and recommend; wait for `按推荐` / diff. Never close an open pole with “无需再问.”
-- **Active product requirements / PRD:** settled product-doc behavior is **already decided** — do not re-grill it as open product poles. Only residual gaps and eng seams go on the frontier. Any recommendation that narrows/defers/changes PRD behavior must be labeled `相对 PRD: …` before the user can accept it; unlabeled PRD overrides are invalid even if they say `按推荐`.
+- **Active product requirements / PRD:** settled product-doc behavior is **already decided** — do not re-grill it as open product poles. Only residual gaps and eng seams go on the frontier (contradictions, unmapped terms, eng seams). Any recommendation that narrows/defers/changes PRD behavior must be labeled `相对 PRD: …` **and** `doc-change` | `eng-read` before the user can accept it; unlabeled PRD overrides are invalid even if they say `按推荐`. User **按原文** revokes listed eng-read ids via L3 — do not re-open the whole package (`docs/prd-authority.md`).
 - **Bare `/implement` while frontier open:** recap open recommended rows and wait for `按推荐` / diffs. If they insist without answering, implement only settled rows; do not invent answers for open A/B or alignment targets.
 
 ### Anti rubber-stamp

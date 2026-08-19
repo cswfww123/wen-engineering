@@ -1,6 +1,6 @@
 ---
 name: alignment-review
-description: Optional audit of unreviewed specs/tickets for intent, coverage, repo fit. Not on the default L2 path — to-tickets pre-publish gate covers normal publish.
+description: Optional audit of unreviewed specs/tickets; mandatory prd-walk at PRD-sourced package close. Not on the default L2 publish path.
 disable-model-invocation: true
 ---
 
@@ -20,13 +20,20 @@ because a human did **not** already approve the graph in-session.
 - Unreviewed publish: agent-authored graph without human quiz/approval
 - High-risk re-slice after a large scope or architecture change
 - You explicitly want a second-pass audit before `/implement`
+- **prd-walk (mandatory):** delivery source is an in-repo / named product doc
+  **and** (the last implementation ticket is closing, **or** the user asked
+  已按 PRD 实现 / 对照 PRD 验收 / 是不是做完了, **or** the parent spec is being
+  called `delivered`). Protocol: `docs/prd-authority.md` §5.
 
 ## When not to use
 
 - Same-session HITL already ran: grill (if needed) → approved PRD → approved
-  tickets with `/to-tickets` §5 gate — that **is** alignment
+  tickets with `/to-tickets` §5 gate — that **is** alignment for *publish*
+  (prd-walk is still required at **package close** when a product doc is the
+  delivery source)
 - Ordinary slice risk that the to-tickets gate already catches (`Covers`,
-  vertical vs horizontal, blockers, frontiers)
+  vertical vs horizontal, blockers, frontiers) — except the prd-walk trigger
+  above
 
 System test plans live in optional `wen-test` — out of scope here.
 
@@ -61,6 +68,11 @@ Compare the artifact against source and repo map:
 - when an active product requirements/PRD is in the handoff, it is the product
   behavior baseline — grill/chat may add residual eng pins or labeled `相对 PRD`
   deltas only; unlabeled session MVP must not replace product-doc requirements
+- **prd-walk mode:** compare the **original product doc** (not the eng spec
+  recap). Emit `SRC | Surface | 过|缺|有意 delta <id> | Evidence` for every
+  Inventory row, or every numbered 验收 + material 场景 if Inventory is
+  missing. `缺` → verdict cannot be `Pass`; do not say 已按 PRD 实现.
+  `有意 delta` must already exist on the Accepted deltas table.
 - every material requirement has a stable ID (or legacy source ref) and appears
   in ticket `Covers` or explicit AC/deferral
 - every material risk appears in AC, verification notes, or explicit out-of-scope/blocker

@@ -52,8 +52,8 @@ L4  multi-session eng fog   → /wayfinder → (resolved) → L2
 
 These are **automatic**. Prefer code and open tracker state; do not add user steps.
 
-1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta).
-2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Detailed multi-slice product docs → L2 `/to-spec`, not a full product re-grill.
+1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta). Hard gates: [prd-authority.md](prd-authority.md).
+2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Named multi-slice product docs (`docs/requirements/*`, `docs/prd/*`) → L2 `/to-spec` with a PRD Inventory — **not** a full product re-grill. Grill residual only (contradictions, unmapped terms, eng seams). User **按原文** revokes listed `相对 PRD` ids via L3 — do not re-grill the package.
 3. **Same-session default = no new process docs.** `/grill-me` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask. Grill may pin residual eng seams; it must **not** silently supersede an active PRD — PRD deltas require labeled `相对 PRD` accept.
 4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*. Still load the **active product requirements / eng spec** for the feature under build.
 5. **Hygiene without asking.** After a handoff file is consumed (spec written, ticket closed, implement done), stop citing it; delete or cold-ignore silently. Never prompt the user to approve doc cleanup.
@@ -87,9 +87,14 @@ settled package (PRD / docs / chat AC / PM handoff)
 ```
 
 Scope FE/BE fidelity to the ticket layer. `/implement` never closes the parent
-spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate —
-default path does **not** run `/alignment-review`. Use `/alignment-review` only
-as a manual audit of handoff or unreviewed artifacts (not after every publish).
+spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate
+(inventory `SRC` in `Covers`; `Supports` does not count) —
+default path does **not** run `/alignment-review` after every publish.
+**Exception (mandatory):** PRD-sourced package close — last open ticket, or
+“已按 PRD 实现” — run `/alignment-review` **prd-walk** against the **original
+product doc** ([prd-authority.md](prd-authority.md) §5). Any `缺` blocks
+delivered. Use `/alignment-review` otherwise only as a manual audit of handoff
+or unreviewed artifacts.
 
 ### G — Same-session grill (first-class LIGHT tool)
 
@@ -103,6 +108,9 @@ plan/design still fuzzy, but one interview can clear it
 - Before `/implement` (or rarely `/to-spec`), a few user-owned decisions are open
 - L4 would be overkill (no multi-session map yet)
 - L3 routed `Align` for same-session trade-offs
+- A named PRD exists **and** only residual poles remain (contradiction, unmapped
+  term, eng seam). **Forbidden:** full product grill that re-authors settled PRD
+  rows. Labeled `相对 PRD` deltas must declare `doc-change` vs `eng-read`.
 
 **Default out:** shared understanding **in the chat** + optional short recap.
 Do **not** require `decision-*.md` / `docs/decisions/` for same-session work
@@ -157,6 +165,11 @@ Mini docket only. Never invent Expected. Common next hops: **G**
 **Escalate-PM**.
 
 Use when already in a coding context — **not** as market discovery.
+
+**按原文 / 收回 delta:** treat as this track. Mini docket lists the accepted
+`相对 PRD` ids being revoked; next hop re-opens **only** those inventory `SRC`s
+(usually a small L2 patch or one ticket). Do not open a full product grill and
+do not narrate the revoke as a pack failure.
 
 ### L4 — Multi-session engineering fog
 
@@ -220,7 +233,7 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | Situation | Track | Entry |
 | --- | --- | --- |
 | Fix this bug / do this AC | LIGHT L1 | `/implement` |
-| Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` |
+| Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` (PRD Inventory + last-ticket prd-walk) |
 | Few open decisions; one session can pin them | LIGHT **G** | `/grill-me` |
 | Need product answers from another person / 澄清会 | LIGHT **Q** | `/to-questionnaire` → ingest → default `/to-spec` |
 | Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G or Q) |

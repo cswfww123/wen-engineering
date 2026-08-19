@@ -27,7 +27,8 @@ uses, for example:
 the surface, it is the product-behavior baseline. Grill/chat may add residual
 eng pins or **labeled** authorized deltas (`相对 PRD`); it must not silently
 replace the product doc as the sole AC. Detailed multi-slice product docs route
-to L2 `/to-spec` before implement — see [lifecycle.md](lifecycle.md).
+to L2 `/to-spec` before implement — see [lifecycle.md](lifecycle.md) and
+[prd-authority.md](prd-authority.md) (Inventory, delta lock, prd-walk).
 
 When product/market/need is **fundamentally fuzzy** (HEAVY), stop inventing and
 use full product discovery (`wen-pm` `/pm-intake` or team PM) before this pack.
@@ -119,6 +120,10 @@ When one side is out of scope for this agent/ticket:
 | **Contract fidelity** | ticket changes published API/events | contract checks |
 
 Not a substitute for independent system QA (`wen-test` `/qa-run` or human QA).
+
+PRD-sourced **package** close (last ticket, or “已按 PRD 实现”) also requires a
+prd-walk against the original product doc — [prd-authority.md](prd-authority.md)
+§5. Slice `/code-review` does not replace that walk.
 
 ### Test layer (optional `wen-test`)
 

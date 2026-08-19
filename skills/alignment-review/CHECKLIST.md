@@ -9,6 +9,8 @@ Use this only when the core workflow needs sharper review prompts.
 - Are ambiguous points marked as assumptions or user questions instead of hidden decisions?
 - Does the solution preserve the user's preferred level of backend, frontend, product, or operational scope?
 - Are non-functional constraints such as security, observability, compatibility, accessibility, performance, retention, or migration called out when the source or repo risk requires them?
+- **PRD Inventory:** if the delivery source is a product doc, is every 验收 / 场景 `SRC` mapped to REQ | HITL | OUT? Dual surfaces split?
+- **prd-walk:** against the original product doc, not grill AC. Any `缺` blocks Pass / delivered / “已按 PRD 实现.”
 
 ## Repo Evidence
 
@@ -31,8 +33,9 @@ Use this only when the core workflow needs sharper review prompts.
 
 - Each ticket has `Kind: implementation-ticket` and an explicit AFK/HITL mode.
 - Each behavior ticket delivers a narrow complete path through the system in one fresh context; only the named expand-contract exception may be mechanical.
-- Each ticket's `Covers` field links to stable spec requirements or a legacy source criterion.
+- Each ticket's `Covers` field links to stable spec requirements or a legacy source criterion. Inventory `SRC`s must appear in some `Covers`; `Supports` is not coverage.
 - `Covers: none` appears only on an expand-contract enabling ticket with `Supports`, a stable `Decision` source, and behavior-preservation verification; `Supports` is not counted as requirement coverage.
+- Ticket `Status: complete` is invalid if the body still lists 残差 / 下张票收口 for a covered SRC.
 - Each ticket is demoable or verifiable alone through its named verification seam.
 - Slices are not horizontal tasks such as only schema, only API, only UI, or only tests.
 - Small prefactoring is folded into the first vertical slice; only the named expand-contract exception becomes a separate enabling ticket.

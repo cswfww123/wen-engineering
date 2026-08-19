@@ -64,10 +64,12 @@ do **not** punt the fix to a later `/alignment-review`.
 | Check | Pass when |
 | --- | --- |
 | Requirement coverage | Every material parent requirement (stable ID or legacy source ref) appears in some ticket's `Covers`, or is explicitly deferred / out-of-scope on the parent or a ticket comment — not silently dropped |
-| Vertical slices | Behavior tickets are tracer bullets (narrow complete path), not horizontal layer tasks (schema-only / API-only / UI-only / tests-only). Only the named expand–contract branch may be mechanical (`Covers: none` + stable `Supports` + `Decision` + behavior-preservation evidence) |
+| PRD Inventory coverage | When the parent has a PRD Inventory (`docs/prd-authority.md`): every `SRC` mapped to a `REQ` appears in some ticket **`Covers`**. Numbered 验收 / ACC ids each appear in some `Covers`. **`Supports` does not count.** Dual-surface `SRC`s need two AC bullets or two tickets |
+| Vertical slices | Behavior tickets are tracer bullets (narrow complete path), not horizontal layer tasks (schema-only / API-only / UI-only / tests-only). Only the named expand–contract branch may be mechanical (`Covers: none` + stable `Supports` + `Decision` + behavior-preservation evidence). Prefer one user path through **all listed surfaces** of a clause (勾选 → 页外回显), not “弹窗 now, 页外 later” unless the later surface is its own `Covers` ticket |
 | Blockers | `Blocked by` edges are minimal, acyclic, and only real gates |
 | Frontiers | Implementation frontier = open unblocked unclaimed AFK tickets; human frontier = open unblocked unclaimed HITL with a named judgment/manual gate |
 | Product Expected | No invented product Expected / AC that the parent source does not support |
+| Honest complete (at close, not only publish) | Ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC → cannot `Status: complete` |
 
 Report a one-line pass (or list failing rows) in the publish recap. Deeper audit of
 handoff / unreviewed artifacts is optional `/alignment-review` — not a substitute for
@@ -137,7 +139,10 @@ Work the frontier one ticket at a time with `/implement`, clearing context betwe
 - Bug-report conversion only when an accepted parent already covers the defect —
   [BUG-REPORT-CONVERSION.md](BUG-REPORT-CONVERSION.md); else stop → `/to-spec`.
 - Do not invent product Expected. Pre-publish gate (§5) is mandatory; do not
-  treat `/alignment-review` as the default next step after publish.
+  treat `/alignment-review` as the default next step after **every** publish.
+  PRD-sourced **package close** (last ticket / “已按 PRD 实现”) **does** require
+  `/alignment-review` prd-walk against the original product doc
+  (`docs/prd-authority.md` §5).
 - Optional `/alignment-review` only for handoff or unreviewed artifacts (another
   agent/session wrote the PRD/tickets; no human approval of the graph; high-risk
   re-slice). HITL grill → approved PRD → approved tickets already is the alignment.

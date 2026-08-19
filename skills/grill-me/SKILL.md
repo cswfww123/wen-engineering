@@ -12,7 +12,9 @@ Matt-upstream shape: **shared understanding in the conversation is enough.** Do 
 
 If the user already has clear AC, a bug, or a single eng slice → prefer **`/implement`** (L1). Do not open grill (or force docs) to look thorough.
 
-If the user already has a **detailed product requirements / PRD / `docs/requirements/*` package** for a multi-slice feature → prefer **`/to-spec`** (L2) with that doc as the primary source. Do **not** open a full product grill that re-authors what the PRD already settles. Use this skill only for residual open poles the PRD leaves fuzzy (or for eng seams after `/to-spec`).
+If the user already has a **detailed product requirements / PRD / `docs/requirements/*` package** for a multi-slice feature → prefer **`/to-spec`** (L2) with that doc as the primary source. Do **not** open a full product grill that re-authors what the PRD already settles. Use this skill only for residual open poles the PRD leaves fuzzy (or for eng seams after `/to-spec`). Protocol: `docs/prd-authority.md`.
+
+If they say **按原文** / 收回 delta after a grill already accepted `相对 PRD` rows → **stop grilling the package**. Route **L3** `/product-fog` and re-open **only** those delta ids / inventory `SRC`s.
 
 ## Product-doc authority (hard — when a PRD/requirements doc is in play)
 
@@ -26,7 +28,7 @@ Product intent hierarchy for this session:
 Binding rules:
 
 - **Do not re-open settled PRD behavior** as a fresh recommended pole “for cleanliness” or engineering convenience (e.g. PRD says single-row edit → do not recommend whole-table edit unless you label it as a **PRD delta**).
-- Every recommended row that **narrows, defers, or changes** product-doc behavior must be marked: `相对 PRD: <was> → <now> (<reason>)`. Unmarked deltas are invalid; do not treat `按推荐` as authority over unlabeled PRD overrides.
+- Every recommended row that **narrows, defers, or changes** product-doc behavior must be marked: `相对 PRD: <was> → <now> (<reason>)` and classified **`doc-change`** (edit the product doc) or **`eng-read`** (contradiction / missing mapping; user **按原文** revokes that id only). Unmarked deltas are invalid; do not treat `按推荐` as authority over unlabeled PRD overrides.
 - If the user is **not** the product owner for those deltas → park and offer `/to-questionnaire`; do not invent Expected.
 - Close recap (chat or archive) must list **PRD deltas accepted** separately from eng pins. Implement handoff AC = PRD baseline **minus** only those accepted deltas — never “grill AC alone.”
 

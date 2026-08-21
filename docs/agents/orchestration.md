@@ -83,9 +83,9 @@ Use the full templates in skill dispatch files. In short:
 
 | Agent | Also include (recommended) |
 | --- | --- |
-| `Executor` | why/context; product baseline path + accepted PRD deltas (or `none`); in/out of scope files; pattern refs (paths + what to copy); seams/APIs/enums to reuse; exact verify commands; blocked conditions; return schema. Full text: `skills/implement/DISPATCH.md` |
+| `Executor` | why/context; product baseline path + accepted PRD deltas (or `none`); in/out of scope files; pattern refs (paths + what to copy); seams/APIs/enums to reuse; **same-surface chrome owner** on UI slices; exact verify commands; blocked conditions; return schema. Full text: `skills/implement/DISPATCH.md` |
 | `Reviewer` | same review packet for every axis worker: fixed-point commands and/or diff text, changed files, commit list, intent/standards sources **with quotes for critical lines**, project shape/lenses when needed, **axis name + axis brief body** from `AGENT-BRIEFS.md` or `DESIGN-REVIEW-BRIEF.md` (paste axis text — do not assume the worker will open the pack). Full text: `skills/code-review/DISPATCH.md` |
-| `Verifier` | full candidate list with file:line + evidence; identical fixed point; confidence bar; Pass rules (incomplete-surface, observability, unauthorized PRD partial). Full text: `skills/code-review/DISPATCH.md` |
+| `Verifier` | full candidate list with file:line + evidence; identical fixed point; confidence bar; Pass rules (incomplete-surface, observability, same-surface, unauthorized PRD partial). Full text: `skills/code-review/DISPATCH.md` |
 
 ## Skill mapping
 

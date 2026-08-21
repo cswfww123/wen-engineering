@@ -15,7 +15,7 @@ Do **not** change intended behavior, public contracts, auth, validation, migrati
 
 ## Passes (changed code + nearby helpers only)
 
-- **Reuse** — existing helpers, local types, stdlib, platform features over reimplementation
+- **Reuse** — existing helpers, local types, stdlib, platform features over reimplementation. Same-surface chrome: extra filters/pickers extend the owner; CSS-matched lookalikes are delete-and-plug-in, not restyle (`../code-review/SAME-SURFACE.md`).
 - **Simplification** — redundant state, copy-paste, deep nesting, dead code, narrating comments
 - **Efficiency** — repeated compute/IO, needless sequential work, long-lived closures holding large scopes
 - **Altitude** — fix the shared owner, not a caller bandaid, when sibling callers share the root cause

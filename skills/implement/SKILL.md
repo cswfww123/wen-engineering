@@ -25,6 +25,8 @@ do not replace TDD / typecheck / review / commit.
 - Intent not ready → stop; do not invent Expected (see project lifecycle docs if present).
 - Note layer (`frontend` | `backend` | `full-stack` | `non-UI`) for fidelity later.
 - UI layers: if a package-root `DESIGN.md` exists (Google Labs visual identity), treat it as **visual environment** for fidelity — tokens + Do's/Don'ts. Missing identity with multi-screen UI drift → optional `/to-design-md`, not a blocker for non-UI tickets.
+- Look before you write (ponytail reuse rung): a helper, type, or pattern already on this surface or a few files over → reuse it. Same-surface chrome is the **refuse-to-pass** form of that rung.
+- UI chrome (filter / picker / search / empty-state / chip / toolbar control): load [SAME-SURFACE.md](../code-review/SAME-SURFACE.md) **before** the first control edit. Name the **owner** already on that screen (or `new — no sibling`) in the Executor brief. Extra instances **extend the owner**. User 样式不一样 / 不能复用 / 为什么新写 of sibling controls is a same-surface hit, not a restyle. Shortest new `Select` beside the owner is not lazy.
 - Tracked work (frontier, bug-report conversion, HITL, claim): load
   [TRACKED-WORK.md](TRACKED-WORK.md) **before** edits.
 
@@ -86,7 +88,9 @@ Per slice, Executor (or fallback) does:
    pin: collect pin@version (or checklist-only waiver) plus screenshot and/or
    checklist **before review**. Light visibility/default of existing chrome:
    one path screenshot or checklist item before Done — not a UI Fidelity
-   worker. Do not claim UI fidelity without that evidence.
+   worker. Do not claim UI fidelity without that evidence. Restyling a
+   lookalike to match sibling chrome is **same-surface**, not light
+   visibility ([SAME-SURFACE.md](../code-review/SAME-SURFACE.md)).
 6. **Incomplete-surface + forensic observability self-check** before claiming
    the slice ready for review: production paths for this AC must be complete.
    Deferred markers, placeholders, dual-source domain facts, config stand-ins,
@@ -127,7 +131,10 @@ that never dispatches.
 7. **`Pass` is invalid** when UI Fidelity is in scope and design pin is missing
    without checklist-only waiver, or fidelity evidence (screenshot/checklist)
    is missing.
-8. If Executor or a required review worker used **parent-fallback** (no
+8. **`Pass` is invalid** when a same-surface lookalike remains (new widget +
+   CSS beside the owner of that family). Light `ui-fidelity: n/a` does not
+   waive it. Classifier: [SAME-SURFACE.md](../code-review/SAME-SURFACE.md).
+9. If Executor or a required review worker used **parent-fallback** (no
    independent worker attempt): Done report **confidence: degraded**; do not
    present as a full multi-agent Pass — prefer a further independent
    `/code-review` or human gate before merge.
@@ -153,6 +160,8 @@ fail Done — do not report a clean slice.
 - **UI fidelity evidence** (when UI Fidelity ran, or light parent path check):
   pin path@version | checklist-only waiver | one path screenshot/checklist;
   else `n/a`
+- **same-surface** (UI chrome slices): `owner-extended` | `new-no-sibling` |
+  `n/a` (non-UI) | findings (lookalike — cannot Pass)
 - **ui-fidelity** (from review): `pass` | `fail` | `blocked-no-pin` | `n/a`
 - **incomplete-surface check**: `clean` | `blocked` (cite signal) | `n/a` (docs/config only)
 - **observability**: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a`

@@ -43,10 +43,13 @@ axes in `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 
 On **Correctness**, also apply the incomplete production surface classifier when available (`skills/code-review/INCOMPLETE-SURFACE.md`): deferred real logic, stubs on live paths, dual-source domain facts, config stand-ins, **quiet critical path**, **log-unsafe**. Hits on production paths are high-confidence blocking findings. Run the forensic chain checklist (`skills/code-review/FORENSIC-OBSERVABILITY.md`): decision-boundary logs on applicable paths, and **logging must be fail-open** (never fail the business).
 
+On **Slice / Intent / UI Fidelity**, also apply same-surface (`skills/code-review/SAME-SURFACE.md`) when the diff adds or restyles chrome: extra instances of a family already on that screen must **extend the owner**. A CSS-matched lookalike is a blocking finding.
+
 Return:
 
 - findings (if any): summary, file:line, evidence, axis (if any), fixability (`auto-fixable` | `report-only` | `needs-user-decision`), confidence
 - axis/pass result: issues found | clean | skipped (reason)
 - incomplete-surface (Correctness only): clean | findings | n/a
 - observability (Correctness only): instrumented | foundation-missing | quiet-path | log-unsafe | n/a | findings
+- same-surface (Slice / UI chrome): owner-extended | new-no-sibling | findings | n/a
 - likely false positives discarded (brief)

@@ -16,6 +16,7 @@ Use this only when the core workflow needs sharper review prompts.
 
 - Which existing modules, routes, jobs, tables, contracts, tests, or runtime surfaces prove the current shape?
 - Does the plan reuse established ownership boundaries and vocabulary?
+- Same-surface chrome: do UI tickets name the **Chrome owner** to extend, or justify `new — no sibling`? Extra filters without an owner are incomplete (`skills/code-review/SAME-SURFACE.md`).
 - Are new abstractions justified by repeated complexity or existing local patterns?
 - Are claims about behavior backed by code, docs, tracker comments, runtime evidence, or user-provided facts?
 

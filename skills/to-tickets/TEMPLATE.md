@@ -45,6 +45,7 @@ State integration seams if FE-only or BE-only.>
 Preserve source IDs. Do not invent fields.
 
 - **Screens / fields / rules:** ...
+- **Chrome owner:** <existing control this slice extends | new — no sibling on this surface>
 - **Design pin:** <versioned frame refs for this slice>
 
 ## API Subset (omit if Layer is frontend-only using external pin only)

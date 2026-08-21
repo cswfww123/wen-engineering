@@ -18,6 +18,7 @@ Look for:
 - behavior the diff adds that was not requested
 - implementation that satisfies the words but violates the agreed intent
 - fixes placed at a shallow caller when the issue belongs in a shared owner
+- extra filter/picker/search chrome in a **new** widget beside the owner already on that surface ([SAME-SURFACE.md](SAME-SURFACE.md)) — right fields, wrong place
 - spec, ticket, legacy PRD/issue, or bug report acceptance criteria with no matching code path
 - **unauthorized PRD partial**: product-doc behavior missing/partial with no accepted delta — do **not** clear this because session grill AC matched
 
@@ -131,6 +132,7 @@ Look for:
 - missing interactive / empty / error / loading states that the UI contract or pin specifies
 - invented fields, copy, or chrome not in the UI contract
 - claims of fidelity with **no evidence** (no pin path, no same-viewport screenshot path, no checklist against pin)
+- a restyled **lookalike** (hide-arrow / padding on a second widget) presented as matching the owner — that is a same-surface miss, not fidelity ([SAME-SURFACE.md](SAME-SURFACE.md))
 
 **Evidence bar (blocking when this axis is in scope):**
 
@@ -142,15 +144,24 @@ Pixel-perfect identity is not required unless the ticket says so; require **visu
 
 ## Ponytail
 
-Use this pass only for over-engineering and complexity. The diff's best cleanup outcome is getting shorter.
+Use this pass only for over-engineering and complexity. Climb the ladder; stop
+at the first rung that holds. The diff's best cleanup is usually shorter — but
+a **short lookalike beside an existing owner is not shrink**; it is `reuse`
+missed. Classifier for chrome: [SAME-SURFACE.md](SAME-SURFACE.md).
 
 Look for:
 
 - `delete`: dead code, unused flexibility, speculative feature, or obvious narration.
+- `reuse`: a helper, util, type, or **pattern already in this codebase**
+  (including the same-surface chrome owner). Re-implementing what lives a few
+  files over is the common slop. A CSS-matched second `Select` is `reuse`, not
+  `native`.
 - `stdlib`: hand-rolled code the standard library already ships.
-- `native`: dependency or code doing what the platform already does.
+- `native`: dependency or code doing what the **platform** already does
+  (`<input type="date">`, CSS over JS). Not the project's owner component.
 - `yagni`: abstraction with one implementation, config nobody sets, layer with one caller.
-- `shrink`: same behavior in fewer lines.
+- `shrink`: same behavior in fewer lines — only after the change is in the
+  right owner. Shortest diff in the wrong place is a second bug, not `shrink`.
 
 Name what to cut and what replaces it. Do not report correctness, security, performance, or style findings in this axis; route them to their own axes.
 

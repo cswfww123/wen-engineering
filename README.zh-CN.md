@@ -373,7 +373,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs。**light**（`/implement` 切片默认）：一个 Slice Reviewer（AC、多余 hunk、坏路径、incomplete surface）。**full**：intent、correctness、规范；有 pin 或重做视觉时再开 UI Fidelity；ponytail / 性能 / 安全按需。
+- [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs。**light**（`/implement` 切片默认）：一个 Slice Reviewer（AC、多余 hunk、坏路径、incomplete surface、same-surface chrome）。**full**：intent、correctness、规范；有 pin 或重做视觉时再开 UI Fidelity；ponytail / 性能 / 安全按需。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
 - [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 
@@ -428,6 +428,8 @@ docs/
     0004-wen-lifecycle.md
     0005-incomplete-production-surface.md
     0006-forensic-observability.md
+    0007-prd-authority-gates.md
+    0008-same-surface-chrome.md
   agents/
     domain.md
     issue-tracker.md
@@ -449,6 +451,7 @@ skills/
     AGENT-BRIEFS.md
     FORENSIC-OBSERVABILITY.md
     INCOMPLETE-SURFACE.md
+    SAME-SURFACE.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
     SKILL.md

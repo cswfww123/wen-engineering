@@ -375,7 +375,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs. **light** (default on `/implement` slices): one Slice Reviewer (AC, extra hunks, broken paths, incomplete surface). **full**: intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs. **light** (default on `/implement` slices): one Slice Reviewer (AC, extra hunks, broken paths, incomplete surface, same-surface chrome). **full**: intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 
@@ -430,6 +430,8 @@ docs/
     0004-wen-lifecycle.md
     0005-incomplete-production-surface.md
     0006-forensic-observability.md
+    0007-prd-authority-gates.md
+    0008-same-surface-chrome.md
   agents/
     domain.md
     issue-tracker.md
@@ -451,6 +453,7 @@ skills/
     AGENT-BRIEFS.md
     FORENSIC-OBSERVABILITY.md
     INCOMPLETE-SURFACE.md
+    SAME-SURFACE.md
     PROJECT-LENSES.md
     REVIEW-AXES.md
     SKILL.md

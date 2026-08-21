@@ -95,7 +95,9 @@ Present the reports under `## Standards`, `## Spec`, and (when run) `## Correctn
 
 End with a one-line summary: **review-weight**, total findings per worker, the
 worst issue _within each heading_ (if any), **incomplete-surface**: `clean` |
-findings | `n/a`, and **ui-fidelity** when that axis ran (else `n/a`). Don't
+findings | `n/a`, **same-surface** when chrome changed (`owner-extended` |
+`new-no-sibling` | findings | `n/a`), and **ui-fidelity** when that axis ran
+(else `n/a`). Don't
 pick a single winner across axes — that's the reranking the separation exists
 to prevent. Light reports under `## Slice` instead of Standards/Spec.
 
@@ -137,7 +139,9 @@ which workers run.
 - Frontend and backend in one slice, or more than two production modules with distinct control flow
 
 Visibility, default, enablement, or copy of **existing** chrome — no pin, no
-restyle — stays **light**.
+restyle — stays **light**. A **new** widget beside an existing owner of the
+same family is not "existing chrome"; light Slice still applies
+[SAME-SURFACE.md](SAME-SURFACE.md).
 
 ### Hard-try Reviewer / Verifier
 
@@ -148,11 +152,13 @@ workers this weight names. Prefer pack `Reviewer` / `Verifier`; else host
 **Light**
 
 1. One `Reviewer` with the **Slice** brief: AC coverage, extra hunks, broken
-   paths, incomplete-surface scan.
+   paths, incomplete-surface scan, **same-surface** scan on UI chrome.
 2. Incomplete surface and fail-open logging stay **blocking** on production
    diffs ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md),
    [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md)). Light folds that
-   class into the Slice Reviewer — it does not drop the check.
+   class into the Slice Reviewer — it does not drop the check. Same-surface
+   lookalikes are also **blocking** on UI chrome
+   ([SAME-SURFACE.md](SAME-SURFACE.md)) — `ui-fidelity: n/a` does not waive.
 3. `ui-fidelity: n/a`. No UI Fidelity worker.
 4. Newly shown existing chrome still needs parent evidence of that path (one
    screenshot or one checklist item) before `/implement` Done.
@@ -172,8 +178,9 @@ workers this weight names. Prefer pack `Reviewer` / `Verifier`; else host
    waiver, or no evidence while claiming fidelity, **blocks** `Pass`.
    Otherwise `ui-fidelity: n/a`.
 3. After candidates: **must try** `Verifier`. Keep findings at confidence
-   `>=80`. Incomplete surface (including quiet path / log-unsafe) and
-   in-scope UI Fidelity fail / missing evidence **block** `Pass`.
+   `>=80`. Incomplete surface (including quiet path / log-unsafe),
+   same-surface lookalikes, and in-scope UI Fidelity fail / missing evidence
+   **block** `Pass`.
 
 Matt step 4 (two parallel axes) applies to **full**. Light uses the single
 Slice Reviewer instead.
@@ -205,7 +212,11 @@ one Reviewer (or host-general) attempt → process-bug. Do not report a clean
   `Needs User Decision`. Do not bury under “known non-blocking / grill AC ok.”
 - **UI Fidelity:** when that axis is in scope, verdict cannot be `Pass`
   without pin+evidence or checklist-only waiver + checklist evidence. Parent
-  prose alone is invalid.
+  prose alone is invalid. A restyled lookalike is not fidelity
+  ([SAME-SURFACE.md](SAME-SURFACE.md)).
+- **Same-surface:** a parallel widget for a family the same screen already
+  owns blocks `Pass` on light and full. Hide-arrow / padding CSS is evidence
+  of a lookalike, not a fix.
 - Final report **must** include **`review-weight`**: `light` | `full`,
   **`agents used`** (Reviewer / Verifier / host-general / parent-fallback per
   worker), and **incomplete-surface**: `clean` | findings | `n/a` (docs-only),
@@ -213,6 +224,8 @@ one Reviewer (or host-general) attempt → process-bug. Do not report a clean
   doc was in evidence, also state **prd-alignment**: `aligned` |
   `authorized-deltas` | `unauthorized-partial` (blocks Pass). When UI Fidelity
   ran, also state **ui-fidelity**: `pass` | `fail` | `blocked-no-pin`; on light
-  or non-UI, `n/a`. If review used **parent-fallback** for a required worker,
+  or non-UI, `n/a`. When the diff adds or restyles chrome, also state
+  **same-surface**: `owner-extended` | `new-no-sibling` | findings | `n/a`.
+  If review used **parent-fallback** for a required worker,
   state **confidence: degraded** and do not imply independent multi-agent
   review.

@@ -46,7 +46,7 @@ Role: Executor
 Goal: <one bounded coding outcome>
 Scope in/out: <allowed files/modules> / <do not touch>
 AC / source: <ticket/spec IDs AND the AC text, not IDs alone>
-Constraints: patterns; no speculative refactors; no inventing Expected; no incomplete surface
+Constraints: patterns; no speculative refactors; no inventing Expected; no incomplete surface; same-surface chrome extends the owner (no lookalike Select)
 Verify: <exact commands>
 Authority: code + local verify only; NO tracker/PR unless granted
 Return: status, files, what changed, verify results, incomplete-surface, observability, risks
@@ -85,9 +85,13 @@ Role: Executor (focused implementation subagent)
 - Public seams / APIs / enums / wire values to use:
 - Reference implementations (path + what to copy):
 - Tables / messages / identity patterns to match:
+- Same-surface chrome owner (UI): <ComponentName + how extras plug in | new — no sibling | n/a>
+  Load skills/code-review/SAME-SURFACE.md when adding filter/picker/search/empty/chip/toolbar chrome.
 
 ## Constraints
 - Follow existing project patterns; no speculative refactors
+- Same-surface chrome: extend the owner already on that screen; do not CSS-match
+  a lookalike Select/filter. User 样式不一样 / 不能复用 is reuse, not restyle.
 - Do not invent product requirements, Expected behavior, or market bets
 - No incomplete production surface for claimed AC (TODO/FIXME deferred logic,
   stubs, dual-source domain facts, config stand-ins, quiet critical paths,
@@ -115,6 +119,7 @@ Stop and report blocked (do not guess) if:
 - required product/eng decision missing
 - logging foundation missing on a full-bar project for applicable paths
 - scope collides with out-of-scope areas
+- same-surface owner cannot take the extra item (capability gap — do not ship a lookalike)
 - <add any task-specific blockers>
 
 ## Return (required shape)
@@ -125,6 +130,7 @@ Stop and report blocked (do not guess) if:
 - incomplete-surface: clean | blocked (signal) | n/a
 - observability: instrumented | foundation-missing | quiet-path | log-unsafe | n/a
 - remaining risks / unchecked criteria
+- same-surface: owner-extended | new-no-sibling | n/a | blocked (owner gap)
 - if blocked: exact missing decision or evidence needed
 ```
 
@@ -144,7 +150,11 @@ exactly what is missing.
 
 Follow the repository instructions, task acceptance criteria, and verification
 commands in the brief. Keep the change small, use existing project patterns,
-avoid speculative refactors, and preserve unrelated user changes.
+avoid speculative refactors, and preserve unrelated user changes. Look before
+you write: reuse a helper/pattern already on this surface or a few files over.
+Extra filter/picker/search chrome on a bar that already has an owner must
+**extend that owner** — do not write a second Select and CSS-match it. The
+shortest new widget beside the owner is not lazy.
 
 **Intent authority in every Executor brief:** product requirements/PRD (when
 present) > accepted eng spec/tickets > explicitly accepted `相对 PRD` deltas >
@@ -169,7 +179,7 @@ quiet fallback.
 If blocked, unsafe, or missing a required decision, stop and report the blocker.
 Otherwise implement, run the relevant checks, and return: status, files changed,
 what changed, verification run and results, incomplete-surface check,
-observability, remaining risks or unchecked criteria.
+observability, same-surface, remaining risks or unchecked criteria.
 ```
 
 ## Slice size

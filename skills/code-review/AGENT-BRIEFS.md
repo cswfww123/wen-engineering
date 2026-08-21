@@ -18,6 +18,7 @@ Read the **full** diff and the intent evidence. Report:
 2. Extra hunks the AC did not ask for (scope creep — blocking on `/implement`)
 3. User-hittable breaks on the changed paths
 4. Incomplete production surface / log-unsafe on production paths ([INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)). Pure local visibility/default/copy of existing chrome with no async: `incomplete-surface: n/a`, `observability: n/a`
+5. Same-surface lookalike on UI chrome ([SAME-SURFACE.md](SAME-SURFACE.md)): extra filter/picker/search beside an owner must extend that owner. Hide-arrow / padding CSS on a second `Select` is blocking, not a style nit. `ui-fidelity: n/a` does not waive. Non-UI: `same-surface: n/a`
 
 Return under 300 words:
 
@@ -25,6 +26,7 @@ Return under 300 words:
 - extra hunks (or `none`)
 - incomplete-surface: `clean` | findings | `n/a`
 - observability: `n/a` | `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | findings
+- same-surface: `owner-extended` | `new-no-sibling` | findings | `n/a`
 - axis result: `issues found` | `clean`
 
 ## Intent Reviewer
@@ -37,7 +39,7 @@ Read the intent evidence first, in this **authority order** when multiple source
 4. Grill / chat residual for eng seams the product doc does not specify
 5. Bug report / user-provided path / branch-matching docs as applicable
 
-Then read the diff. Report only where changed code misses requested behavior, adds unrequested scope, or implements the right requirement in the wrong place.
+Then read the diff. Report only where changed code misses requested behavior, adds unrequested scope, or implements the right requirement in the wrong place (including a same-surface lookalike: extra filters in a new widget beside the owner — [SAME-SURFACE.md](SAME-SURFACE.md)).
 
 **Hard rules:**
 
@@ -108,12 +110,12 @@ Return under 300 words:
 
 ## Ponytail Reviewer
 
-Review changed code only for over-engineering and complexity that should be cut before merge. Look for dead code, unused flexibility, speculative abstractions, one-implementation layers, reimplemented stdlib or native platform features, needless dependencies, and verbose code that can shrink without behavior changes.
+Review changed code only for over-engineering and complexity that should be cut before merge. Climb the ladder; stop at the first rung that holds. Look for dead code, unused flexibility, speculative abstractions, **reimplemented in-repo helpers/patterns** (`reuse` — including same-surface chrome lookalikes), reimplemented stdlib or **platform** features (`native` is `<input type="date">` / CSS, not the project's owner), one-implementation layers, needless dependencies, and verbose code that can shrink **after** it is in the right owner. A short second `Select` beside `CommonQuickFilters` is `reuse` missed, not `shrink` / `native`.
 
 Return under 300 words:
 
 - issues worth fixing even if behavior is correct
-- the smallest fix direction, using `delete`, `stdlib`, `native`, `yagni`, or `shrink`
+- the smallest fix direction, using `delete`, `reuse`, `stdlib`, `native`, `yagni`, or `shrink`
 - fixability: small local cleanup may be `auto-fixable`; refactors are `report-only`
 - likely false positives to discard
 
@@ -129,6 +131,7 @@ Read [REVIEW-AXES.md](REVIEW-AXES.md) **UI Fidelity** (paste that section into t
 - No design pin **and** no explicit checklist-only waiver → blocking delivery gap.
 - Missing empty/error/loading states that the UI contract or pin specifies → findings.
 - Token drift vs package `DESIGN.md` when that file exists → findings unless accepted design delta.
+- A restyled lookalike (hide-arrow / padding on a second widget) is **not** fidelity. Same-surface miss — [SAME-SURFACE.md](SAME-SURFACE.md) — do not Pass because it now *looks* like the owner.
 
 Return under 300 words:
 
@@ -148,6 +151,8 @@ Run this after collecting findings. For each candidate, assign a `0-100` confide
 
 **UI Fidelity (when that axis was in scope):** empty evidence, missing pin without checklist-only waiver, or `ui-fidelity: fail` / `blocked-no-pin` **blocks** overall `Pass`. Do not accept parent prose alone ("fidelity OK") without pin/screenshot/checklist paths in the packet or candidates.
 
+**Same-surface lookalikes block Pass** on light and full when the diff adds or restyles chrome beside an owner of that family ([SAME-SURFACE.md](SAME-SURFACE.md)). Hide-arrow CSS is not a fix.
+
 Return only findings with confidence `>=80`, each with:
 
 - score
@@ -156,4 +161,4 @@ Return only findings with confidence `>=80`, each with:
 - why it is not a false positive
 - fixability: `auto-fixable`, `report-only`, or `needs-user-decision`
 
-Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe, **unauthorized product-doc partial** when a PRD/requirements doc was in the review packet, and **in-scope UI Fidelity failure / missing evidence**). Report **observability** when the diff touches applicable paths. Report **prd-alignment** when a product doc was in evidence. Report **ui-fidelity** when that axis ran. Otherwise `Changes Required` or `Needs User Decision`.
+Verdict: `Pass` only with zero validated blocking findings (including incomplete surface, quiet path, log-unsafe, **same-surface lookalike**, **unauthorized product-doc partial** when a PRD/requirements doc was in the review packet, and **in-scope UI Fidelity failure / missing evidence**). Report **observability** when the diff touches applicable paths. Report **prd-alignment** when a product doc was in evidence. Report **ui-fidelity** when that axis ran. Report **same-surface** when chrome changed. Otherwise `Changes Required` or `Needs User Decision`.

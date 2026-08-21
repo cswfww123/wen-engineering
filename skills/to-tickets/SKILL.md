@@ -122,7 +122,7 @@ The end-to-end behaviour this ticket makes work, from the user's perspective —
 
 </issue-template>
 
-In either form, avoid specific file paths or code snippets — they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
+In either form, avoid specific file paths or code snippets — they go stale fast. Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits. UI tickets that add filter / picker / search / empty-state / chip chrome **must** name the **Chrome owner** (existing control to extend, or `new — no sibling`) — component name, not a stale path. Extra filters without an owner name are incomplete ([SAME-SURFACE.md](../code-review/SAME-SURFACE.md)).
 
 Work the frontier one ticket at a time with `/implement`, clearing context between tickets.
 
@@ -133,7 +133,7 @@ Work the frontier one ticket at a time with `/implement`, clearing context betwe
 - Optional field shapes and publish steps: [TEMPLATE.md](TEMPLATE.md),
   [PUBLISH.md](PUBLISH.md). Wide-refactor sequencing also in
   [EXPAND-CONTRACT.md](EXPAND-CONTRACT.md) (same expand → migrate → contract
-  rule as above).
+  rule as above). UI chrome tickets: **Chrome owner** field — [SAME-SURFACE.md](../code-review/SAME-SURFACE.md).
 - When the harness uses modes: `Mode: AFK` = agent-finishable implementation
   frontier; `Mode: HITL` = human gate (outside AFK frontier).
 - Bug-report conversion only when an accepted parent already covers the defect —

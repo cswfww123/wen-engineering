@@ -18,8 +18,8 @@ names.
    Optional extra axes (Performance, Security, Ponytail) when warranted.
    Correctness / Slice packets include [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)
    and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md) when the diff can
-   hit those classes. UI Fidelity packet includes design pin or checklist-only
-   waiver + fidelity evidence paths.
+   hit those classes. UI chrome diffs also include [SAME-SURFACE.md](SAME-SURFACE.md).
+   UI Fidelity packet includes design pin or checklist-only waiver + fidelity evidence paths.
 2. **Every Reviewer/Verifier spawn uses a full self-contained brief** (see
    templates below). Subagent context is cold/disposable and often a weaker
    model — paste the review packet, axis body, and evidence; do not spawn with
@@ -27,7 +27,8 @@ names.
 3. **Verifier:** **full** always must-try after candidates. **Light** only when
    the Slice Reviewer filed a candidate. Confidence bar `>=80`. Incomplete
    surface (including quiet path / log-unsafe) that survives verification
-   blocks `Pass`. In-scope UI Fidelity fail or missing evidence blocks `Pass`.
+   blocks `Pass`. Same-surface lookalikes block `Pass`. In-scope UI Fidelity
+   fail or missing evidence blocks `Pass`.
    The Verifier brief is candidates (or `none`) + the same fixed point — not a
    parent verdict, and not a pre-waived evidence bar.
 4. **Never** abort because pack roles are missing. Skipping spawn when a
@@ -36,7 +37,8 @@ names.
    present that as a full multi-agent Pass.
 5. Report **`review-weight`**, **`agents used`**, **incomplete-surface**:
    `clean` | findings | `n/a`, **observability** when applicable, and
-   **ui-fidelity** when that axis ran (else `n/a`).
+   **ui-fidelity** when that axis ran (else `n/a`), **same-surface** when chrome
+   changed.
 
 ## Review packet (shared by every axis worker)
 
@@ -60,6 +62,8 @@ Build once; attach the same packet to each Reviewer spawn:
   - UI contract subset: <screens/fields/rules or path>
   - DESIGN.md: <path or none>
   - Evidence: <screenshot path(s) and/or checklist path | missing>
+- Same-surface owner (when chrome added/restyled; else n/a):
+  <existing control extras must extend | new — no sibling | unknown>
 - Standards sources: <paths + any non-obvious rules to apply>
 - Project shape / lenses (if Performance/Security): <from PROJECT-LENSES or none>
 - Out of scope / intentional non-goals for this change:
@@ -87,12 +91,14 @@ Role: Reviewer (read-only; do not edit files)
 - Do not invent product requirements if intent evidence is missing — say so
 - Correctness: apply incomplete-surface + forensic observability rules when those
   docs are pasted or available
+- Slice / UI chrome: apply same-surface rules when that doc is pasted or available
 
 ## Return
 - findings: summary, file:line, evidence, axis, fixability, confidence
 - axis result: issues found | clean | skipped (reason)
 - incomplete-surface (Correctness only): clean | findings | n/a
 - observability (Correctness only): instrumented | foundation-missing | quiet-path | log-unsafe | n/a | findings
+- same-surface (Slice / UI chrome): owner-extended | new-no-sibling | findings | n/a
 - likely false positives discarded (brief)
 ```
 
@@ -112,6 +118,7 @@ Do not include a parent verdict or a pre-waived evidence bar.
 - Confidence bar to keep: >=80
 - Drop invented, pre-existing, out-of-scope, intentional, CI-noise
 - Incomplete production surface / quiet path / log-unsafe are blocking — not "intentional later"
+- Same-surface lookalike (new widget + CSS beside the owner) blocks Pass
 - Unauthorized product-doc partial blocks Pass when a PRD was in the packet
 - In-scope UI Fidelity fail / blocked-no-pin / missing screenshot-or-checklist
   evidence blocks Pass — parent prose "fidelity OK" is not evidence
@@ -124,6 +131,7 @@ Do not include a parent verdict or a pre-waived evidence bar.
 - incomplete-surface: clean | findings | n/a
 - observability: ...
 - ui-fidelity: pass | fail | blocked-no-pin | n/a | skipped
+- same-surface: owner-extended | new-no-sibling | findings | n/a
 - rejected groups (brief)
 - verification gaps
 - design-packet only: recommended next step
@@ -171,7 +179,10 @@ any remain.
 
 When UI Fidelity is in scope: missing pin without checklist-only waiver, missing
 screenshot/checklist evidence, or ui-fidelity fail blocks Pass. Parent prose
-alone is not evidence.
+alone is not evidence. A restyled lookalike is not fidelity.
+
+Same-surface lookalikes (extra filter/picker beside the owner, hide-arrow CSS)
+block Pass on light and full.
 
 Return exactly one verdict:
 - Pass — no validated blocking finding
@@ -179,7 +190,8 @@ Return exactly one verdict:
 - Needs User Decision — behavior/trade-off cannot be decided from evidence
 
 Then: surviving findings; incomplete-surface clean|findings|n/a; observability;
-ui-fidelity pass|fail|blocked-no-pin|n/a|skipped; rejected groups (brief);
+ui-fidelity pass|fail|blocked-no-pin|n/a|skipped; same-surface
+owner-extended|new-no-sibling|findings|n/a; rejected groups (brief);
 verification gaps.
 ```
 

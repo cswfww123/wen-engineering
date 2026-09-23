@@ -1,6 +1,6 @@
 ---
 name: setup-project
-description: "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills."
+description: "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, domain doc layout, and repo-level rules. Run once before first use of the other engineering skills."
 disable-model-invocation: true
 ---
 
@@ -11,6 +11,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Issue tracker**: where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels**: the strings used for the five canonical triage roles
 - **Domain docs**: where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
+- **Repo rules**: `docs/rules/`, seeded with the PR packet. Same level as `docs/adr/` and `docs/agents/`; one file per rule, read on demand.
 
 Same scope as upstream `setup-matt-pocock-skills`. It does **not** rewrite `AGENTS.md` / `CLAUDE.md`. Those files are user-authored; when their prose needs writing or editing, use `writing-for-agents`.
 
@@ -27,6 +28,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/`: does this skill's prior output already exist?
+- `docs/rules/`: repo-level rules. `docs/rules/pr.md` is this skill's seed.
 - `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section B runs at all.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
@@ -68,6 +70,7 @@ Show the user a draft of:
 
 - The `## Agent skills` block, only when a root `AGENTS.md` or `CLAUDE.md` already exists (see step 4)
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
+- `docs/rules/pr.md`, copied from the seed. Show it with the other drafts; it is a repo rule, not a per-repo choice, so it is not a section to ask about.
 
 Let them edit before writing.
 
@@ -80,8 +83,11 @@ Write the docs files using the seed templates in this skill folder as a starting
 - [issue-tracker-local.md](./issue-tracker-local.md): local-markdown issue tracker
 - [triage-labels.md](./triage-labels.md): label mapping (only if `triage` is installed)
 - [domain.md](./domain.md): domain doc consumer rules + layout
+- [pr.md](./pr.md): the PR packet, written to `docs/rules/pr.md`
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
+
+Always write `docs/rules/pr.md` from [pr.md](./pr.md). `docs/rules/` is the repo-level rules directory, a peer of `docs/adr/` and `docs/agents/`: one rule per file, reached by a pointer, not loaded every turn. On re-run, leave an existing `docs/rules/pr.md` in place; the repo's copy wins over the seed.
 
 **Do not author `AGENTS.md` or `CLAUDE.md`.** Do not create either file. Do not replace, reformat, or rewrite sections outside `## Agent skills`. Body prose is the user's; when they want that prose written or revised, use `writing-for-agents`.
 
@@ -101,12 +107,18 @@ If `AGENTS.md` or `CLAUDE.md` already exists, insert or update **only** this blo
 ### Domain docs
 
 [one-line summary of layout: "single-context" or "multi-context"]. See `docs/agents/domain.md`.
+
+### Repo rules
+
+Repo-level rules live in `docs/rules/`, one file per rule. Read the matching file before the work it names.
+
+- `docs/rules/pr.md` — writing or updating a PR/MR description.
 ```
 
 Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
 
-If neither root file exists, stop after the `docs/agents/` files. Tell the user to add the block themselves, or to write the file with `writing-for-agents`.
+If neither root file exists, stop after the `docs/agents/` and `docs/rules/` files. Tell the user to add the block themselves, or to write the file with `writing-for-agents`. The PR rule still needs its pointer: without the block above, nothing reaches `docs/rules/pr.md`.
 
 ### 5. Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` directly later; re-running this skill is only necessary if they want to switch issue trackers or restart from scratch. If `AGENTS.md` / `CLAUDE.md` still needs prose, point at `writing-for-agents` — do not draft that prose here.
+Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `docs/agents/*.md` and `docs/rules/*.md` directly later; re-running this skill is only necessary if they want to switch issue trackers or restart from scratch. A re-run does not overwrite `docs/rules/pr.md`. If `AGENTS.md` / `CLAUDE.md` still needs prose, point at `writing-for-agents` — do not draft that prose here.

@@ -72,6 +72,7 @@ git pull --ff-only
 - `/to-tickets` 和 tracker adapters 使用的五个 triage roles
 - domain documentation layout：单个 `CONTEXT.md`，或多 context 的 `CONTEXT-MAP.md`
 - `docs/agents/` 下的 issue-tracker、triage-labels、domain
+- `docs/rules/`，仓库级规范目录（与 `docs/adr/`、`docs/agents/` 同级），初始化时带上 `docs/rules/pr.md`
 
 它**不改写** `AGENTS.md` / `CLAUDE.md`。这两份文件已存在时，只插入或更新 `## Agent skills` 指针块。正文的写作和修改走 `/writing-for-agents`。日志 foundation 仍是 `/setup-logging`，不在这个 skill 里。
 
@@ -300,7 +301,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/to-design-md` 为前端包生成或刷新符合 Google Labs 规范的 `DESIGN.md` 视觉身份（可选；从 theme 抽取或综合生成）。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
 - `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
-- `/setup-project` 配置 issue tracker、分诊标签和领域文档布局。不改写 `AGENTS.md`。
+- `/setup-project` 配置 issue tracker、分诊标签、领域文档布局和仓库级规范（`docs/rules/`，初始化时带上 PR packet）。不改写 `AGENTS.md`。
 - `/harvest-pins` 从真实 agent session 收割并折旧 `AGENTS.md` Checklist 钉。
 - `/setup-logging` 在项目形态需要时搭建日志 foundation。
 - `/skill-review` 在接受新增或修改后的 skill 前进行审查。
@@ -314,7 +315,8 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 `/setup-project` 会写：
 
 - `docs/agents/` 下的 tracker / labels / domain 文档
-- 仅当 `AGENTS.md` 或 `CLAUDE.md` 已经存在时，插入或更新其中的 `## Agent skills` 指针块
+- `docs/rules/pr.md`，PR packet（文件已存在则不动）
+- 仅当 `AGENTS.md` 或 `CLAUDE.md` 已经存在时，插入或更新其中的 `## Agent skills` 指针块，包含 `docs/rules/` 指针
 
 它不创建、也不重写这两份文件。正文交给 `/writing-for-agents`。
 
@@ -387,13 +389,14 @@ AI agents 会以很可预测的方式失败。
 
 ### Engineering Harness
 
-- [`setup-project`](skills/setup-project/SKILL.md) - 与上游 `setup-matt-pocock-skills` 同范围：issue tracker、分诊标签、领域文档。不改写 `AGENTS.md`；正文走 `/writing-for-agents`。
+- [`setup-project`](skills/setup-project/SKILL.md) - issue tracker、分诊标签、领域文档，外加仓库级规范 `docs/rules/`（初始化时带上 PR packet）。不改写 `AGENTS.md`；正文走 `/writing-for-agents`。
 - [`harvest-pins`](skills/harvest-pins/SKILL.md) - 从真实 Claude / Codex / Grok session 收割并折旧 `AGENTS.md` Checklist 钉（原文引用、预算、人闸）。Wiring 冻结。
 - [`setup-logging`](skills/setup-logging/SKILL.md) - 搭建项目日志 foundation（现场录像）：统一 logger API、关联 id、fail-open sink、脱敏、如何查日志；含 Spring / Next.js / Python / Node / Go 等栈原生日志配方。
 - [`skill-review`](skills/skill-review/SKILL.md) - 审查 skills 的 discovery、trigger clarity、progressive disclosure 和 judgment-preserving guidance。
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) - 写 agent 会消费的文档；skill 打包见 `SKILL-MECHANICS.md`。
 - [`wait-what`](skills/wait-what/SKILL.md) - 上一句没听懂时的一键纠偏；用简化技术英语重讲。
 - [`wizard`](skills/wizard/SKILL.md) - 为人机只能做的 setup/迁移步骤生成交互 bash 向导。
+- [`show-me`](skills/show-me/SKILL.md) - 视觉化讲解辅助：伪代码、调用/组件树、Mermaid、按主题形状裁剪的 diff，以及聚焦的 HTML artifact（HumanLayer 上游）。
 
 ## Skill Design Principles
 
@@ -504,6 +507,7 @@ skills/
     issue-tracker-github.md
     issue-tracker-gitlab.md
     issue-tracker-local.md
+    pr.md
     triage-labels.md
   skill-review/
     SKILL.md
@@ -533,6 +537,10 @@ skills/
     FOG.md
     SKILL.md
     TEMPLATES.md
+  show-me/
+    SKILL.md
+    agents/
+      openai.yaml
   wait-what/
     SKILL.md
   wizard/

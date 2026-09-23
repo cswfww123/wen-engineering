@@ -73,6 +73,7 @@ For a new project, run **`/setup-project`** in the target project after syncing.
 - the five triage roles used by `/to-tickets` and tracker adapters
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
 - `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, and `docs/agents/domain.md`
+- `docs/rules/`, the repo-level rules directory (peer of `docs/adr/` and `docs/agents/`), seeded with `docs/rules/pr.md`
 
 It does **not** rewrite `AGENTS.md` or `CLAUDE.md`. If one of those files already exists, it only inserts or updates the `## Agent skills` pointer block. Writing or revising the rest of that file is `/writing-for-agents`. Logging foundation stays `/setup-logging`, not this skill.
 
@@ -303,7 +304,7 @@ Common skills:
 - `/to-design-md` generates or refreshes a Google Labs–format `DESIGN.md` visual identity for frontend packages (optional; extract from theme or synthesize).
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
-- `/setup-project` configures the issue tracker, triage labels, and domain-doc layout. It does not rewrite `AGENTS.md`.
+- `/setup-project` configures the issue tracker, triage labels, domain-doc layout, and repo-level rules (`docs/rules/`, seeded with the PR packet). It does not rewrite `AGENTS.md`.
 - `/harvest-pins` harvests and depreciates `AGENTS.md` Checklist pins from real agent sessions.
 - `/setup-logging` builds the project logging foundation when the shape requires it.
 - `/skill-review` reviews a new or changed skill before accepting it.
@@ -317,7 +318,8 @@ Common skills:
 `/setup-project` writes:
 
 - tracker / labels / domain docs under `docs/agents/`
-- an `## Agent skills` pointer block, only inside an `AGENTS.md` or `CLAUDE.md` that already exists
+- `docs/rules/pr.md`, the PR packet (left untouched if the file already exists)
+- an `## Agent skills` pointer block, only inside an `AGENTS.md` or `CLAUDE.md` that already exists, including the `docs/rules/` pointer
 
 It does not create or rewrite those files. Prose for them is `/writing-for-agents`.
 
@@ -390,13 +392,14 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Engineering Harness
 
-- [`setup-project`](skills/setup-project/SKILL.md) — same scope as upstream `setup-matt-pocock-skills`: issue tracker, triage labels, domain docs. Does not rewrite `AGENTS.md`; that prose is `/writing-for-agents`.
+- [`setup-project`](skills/setup-project/SKILL.md) — issue tracker, triage labels, domain docs, plus repo-level rules in `docs/rules/` (seeded with the PR packet). Does not rewrite `AGENTS.md`; that prose is `/writing-for-agents`.
 - [`harvest-pins`](skills/harvest-pins/SKILL.md) — harvests and depreciates `AGENTS.md` Checklist pins from real Claude / Codex / Grok sessions (quote-gated, budgeted, human-gated). Wiring stays frozen.
 - [`setup-logging`](skills/setup-logging/SKILL.md) — builds a project logging foundation (crime-scene replay): unified logger API, correlation, fail-open sinks, redaction, how-to-read; stack recipes for Spring, Next.js, Python, Node, Go.
 - [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) — writing documents agents consume; skill packaging in `SKILL-MECHANICS.md`.
 - [`wait-what`](skills/wait-what/SKILL.md) — one-word corrective when a message did not land; re-pitch in plain technical English.
 - [`wizard`](skills/wizard/SKILL.md) — interactive bash wizard for human-only setup/migration steps.
+- [`show-me`](skills/show-me/SKILL.md) — visual explanation aid: pseudocode, call/component trees, Mermaid, shape-matched diffs, and focused HTML artifacts (HumanLayer upstream).
 
 ## Skill Design Principles
 
@@ -507,7 +510,12 @@ skills/
     issue-tracker-github.md
     issue-tracker-gitlab.md
     issue-tracker-local.md
+    pr.md
     triage-labels.md
+  show-me/
+    SKILL.md
+    agents/
+      openai.yaml
   skill-review/
     SKILL.md
   tdd/

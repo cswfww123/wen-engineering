@@ -374,7 +374,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements (PRD Inventory required when the source is a product doc).
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
 - [`implement`](skills/implement/SKILL.md) — implements a spec or ticket in this pack: TDD at pre-agreed seams, then `/code-review`, then commit.
-- [`implement-spec`](skills/implement-spec/SKILL.md) — implements a whole spec as one PR: ticket frontier, one worktree per ticket, then `/code-review`.
+- [`implement-spec`](skills/implement-spec/SKILL.md) — implements a whole spec on the current branch: ticket frontier, one local worktree per ticket, merge back, `/code-review`, then delete those worktrees and branches. No new branch, PR, or push unless the user asks.
 - [`tdd`](skills/tdd/SKILL.md) — red → green at pre-agreed seams (Matt base).
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
 - [`triage`](skills/triage/SKILL.md) — moves issues through triage roles and writes agent-ready briefs. Same scope as upstream.

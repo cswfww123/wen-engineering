@@ -371,7 +371,7 @@ AI agents 会以很可预测的方式失败。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec（源是产品文档时必须有 PRD Inventory）。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
 - [`implement`](skills/implement/SKILL.md) - 本库实现 skill：按约定 seam 做 TDD，然后 `/code-review`，再提交。
-- [`implement-spec`](skills/implement-spec/SKILL.md) - 整份 spec 做成一个 PR：按票的 frontier 并行，每票一个 worktree，最后 `/code-review`。
+- [`implement-spec`](skills/implement-spec/SKILL.md) - 整份 spec 做到当前分支：按票的 frontier 并行，每票一个本地 worktree，合回当前分支，`/code-review`，然后删掉这些 worktree 和分支。用户没说就不开新分支、不提 PR、不推送。
 - [`tdd`](skills/tdd/SKILL.md) - red → green + seams（Matt 底）。
 - [`handoff`](skills/handoff/SKILL.md) - 为新的 agent 写一份紧凑 handoff document，并保存在 repo 外。
 - [`triage`](skills/triage/SKILL.md) - 把 issue 推过 triage 角色，写出 agent 可执行的 brief。范围与上游相同。

@@ -39,11 +39,11 @@ Default is LIGHT. Do not open PM, Wayfinder, or a multi-skill pipeline when `/im
 | The answers sit with someone else, or a clarification meeting | **Q** `/to-questionnaire` → paste back → `/to-spec` | Grill the subject you cannot answer; re-ask filled answers |
 | Already shipped, or "not quite what I meant" | **L3** `/product-fog` → exactly one next hop | Market discovery |
 | Product settled, technical route needs more than one session | **L4** `/wayfinder`, then L2 when the map is resolved | Try L4 before G if one interview would clear it |
-| Whole spec, one PR, tickets already form a graph | `/implement-spec` | Use it for a single ticket; that is `/implement` |
+| Whole spec, tickets already form a graph, land on the current branch | `/implement-spec` | Use it for a single ticket; that is `/implement` |
 
 `/implement` is one slice: TDD at the agreed seams, `/code-review`, commit. It does not close the parent spec.
 
-`/implement-spec` drives the whole graph on one branch: frontier tickets in parallel, one worktree each, merge back, then one `/code-review`.
+`/implement-spec` drives the whole graph on the branch the user is already on: frontier tickets in parallel, one local worktree each, merge back, one `/code-review`, then delete those worktrees and branches. It does not create a branch, open a PR, or push unless the user asks.
 
 ## When a PRD or prototype already exists
 

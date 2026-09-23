@@ -1,5 +1,41 @@
 # Third-Party Notices
 
+## HumanLayer — Skills
+
+WEN Engineering Skills contains material from
+[`humanlayer/skills`](https://github.com/humanlayer/skills) (`plugins/show-me`).
+**`show-me`** tracks upstream text closely; WEN layers no pack deltas on it.
+
+Upstream pin: **show-me** at `bba9d13ab34f0a87f1cc33df4dd196372393ddfc`
+("Make show-me user-invocable", 2026-09-12; repo HEAD at port time
+`ca7c8088db69e315a8b2deea43820270457f8f3c`, 2026-09-17). Ported 2026-09-23.
+
+Upstream material is licensed under the MIT License:
+
+```text
+MIT License
+
+Copyright (c) 2026 HumanLayer
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
 ## Matt Pocock — Skills for Real Engineers
 
 WEN Engineering Skills contains and adapts material from

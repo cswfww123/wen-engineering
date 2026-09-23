@@ -307,7 +307,6 @@ Common skills:
 - `/setup-project` configures the issue tracker, triage labels, domain-doc layout, and repo-level rules (`docs/rules/`, seeded with the PR packet). It does not rewrite `AGENTS.md`.
 - `/harvest-pins` harvests and depreciates `AGENTS.md` Checklist pins from real agent sessions.
 - `/setup-logging` builds the project logging foundation when the shape requires it.
-- `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` is the red → green reference (seams, anti-patterns); close to Matt upstream.
 - `/to-spec` turns settled context into a non-runnable spec with stable requirements.
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
@@ -395,7 +394,6 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`setup-project`](skills/setup-project/SKILL.md) — issue tracker, triage labels, domain docs, plus repo-level rules in `docs/rules/` (seeded with the PR packet). Does not rewrite `AGENTS.md`; that prose is `/writing-for-agents`.
 - [`harvest-pins`](skills/harvest-pins/SKILL.md) — harvests and depreciates `AGENTS.md` Checklist pins from real Claude / Codex / Grok sessions (quote-gated, budgeted, human-gated). Wiring stays frozen.
 - [`setup-logging`](skills/setup-logging/SKILL.md) — builds a project logging foundation (crime-scene replay): unified logger API, correlation, fail-open sinks, redaction, how-to-read; stack recipes for Spring, Next.js, Python, Node, Go.
-- [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) — writing documents agents consume; skill packaging in `SKILL-MECHANICS.md`.
 - [`wait-what`](skills/wait-what/SKILL.md) — one-word corrective when a message did not land; re-pitch in plain technical English.
 - [`wizard`](skills/wizard/SKILL.md) — interactive bash wizard for human-only setup/migration steps.
@@ -516,8 +514,6 @@ skills/
     SKILL.md
     agents/
       openai.yaml
-  skill-review/
-    SKILL.md
   tdd/
     SKILL.md
     mocking.md

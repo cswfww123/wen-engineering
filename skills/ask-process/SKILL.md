@@ -87,7 +87,6 @@ Use these under a flow, not instead of one.
 | Logging foundation | `/setup-logging` |
 | Incoming raw issues | `/triage` |
 | Checklist pins from real sessions | `/harvest-pins` |
-| Review a skill before accepting it | `/skill-review` |
 
 `/setup-project` does not rewrite `AGENTS.md`. It writes `docs/agents/` and, only if a root file already exists, the `## Agent skills` pointer.
 

@@ -47,8 +47,8 @@ optional templates).
 
 ## WEN-only (untouched by this sync)
 
-`alignment-review`, `product-fog`, `setup-logging`, `simplify`, `skill-review`,
-`to-design-md`, plus `agents/` multi-agent pack.
+`alignment-review`, `product-fog`, `setup-logging`, `simplify`, `to-design-md`,
+plus `agents/` multi-agent pack.
 
 ## Follow-ups (optional)
 

@@ -304,7 +304,6 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/setup-project` 配置 issue tracker、分诊标签、领域文档布局和仓库级规范（`docs/rules/`，初始化时带上 PR packet）。不改写 `AGENTS.md`。
 - `/harvest-pins` 从真实 agent session 收割并折旧 `AGENTS.md` Checklist 钉。
 - `/setup-logging` 在项目形态需要时搭建日志 foundation。
-- `/skill-review` 在接受新增或修改后的 skill 前进行审查。
 - `/tdd` red → green 参考（seams、反模式）；正文贴近 Matt 上游。
 - `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec。
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
@@ -392,7 +391,6 @@ AI agents 会以很可预测的方式失败。
 - [`setup-project`](skills/setup-project/SKILL.md) - issue tracker、分诊标签、领域文档，外加仓库级规范 `docs/rules/`（初始化时带上 PR packet）。不改写 `AGENTS.md`；正文走 `/writing-for-agents`。
 - [`harvest-pins`](skills/harvest-pins/SKILL.md) - 从真实 Claude / Codex / Grok session 收割并折旧 `AGENTS.md` Checklist 钉（原文引用、预算、人闸）。Wiring 冻结。
 - [`setup-logging`](skills/setup-logging/SKILL.md) - 搭建项目日志 foundation（现场录像）：统一 logger API、关联 id、fail-open sink、脱敏、如何查日志；含 Spring / Next.js / Python / Node / Go 等栈原生日志配方。
-- [`skill-review`](skills/skill-review/SKILL.md) - 审查 skills 的 discovery、trigger clarity、progressive disclosure 和 judgment-preserving guidance。
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) - 写 agent 会消费的文档；skill 打包见 `SKILL-MECHANICS.md`。
 - [`wait-what`](skills/wait-what/SKILL.md) - 上一句没听懂时的一键纠偏；用简化技术英语重讲。
 - [`wizard`](skills/wizard/SKILL.md) - 为人机只能做的 setup/迁移步骤生成交互 bash 向导。
@@ -509,8 +507,6 @@ skills/
     issue-tracker-local.md
     pr.md
     triage-labels.md
-  skill-review/
-    SKILL.md
   tdd/
     SKILL.md
     mocking.md

@@ -43,7 +43,8 @@ manifest_names=()
 # .wen-test-managed) are left untouched; only this pack's old managed copies retire.
 # grill-with-docs stays retired (not shipped): coding grill is /grill-code,
 # non-coding grill is /grill-me. grilling is the shared interview primitive.
-retired_skill_names=("to-prd" "to-issues" "to-test-plan" "qa-run" "grill-with-docs")
+# skill-review stays retired: skill authoring and review is /writing-for-agents.
+retired_skill_names=("to-prd" "to-issues" "to-test-plan" "qa-run" "grill-with-docs" "skill-review")
 canonical_skills_dir="${AGENTS_SKILLS_DIR:-$HOME/.agents/skills}"
 codex_skills_dir="${CODEX_SKILLS_DIR:-$HOME/.codex/skills}"
 claude_skills_dir="${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}"

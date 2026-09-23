@@ -80,7 +80,8 @@ description. Pins are checkable, positive, and not model-default competence.
 Skill descriptions are the trigger (pointer), not a second constitution.
 
 EXTRACT default path: `.agents/skills/<name>/SKILL.md` unless the repo already
-owns another project-skill root. After accept, `/skill-review` the new skill.
+owns another project-skill root. After accept, review the new skill against
+`/writing-for-agents`.
 
 ## Workflow
 
@@ -116,7 +117,7 @@ owns another project-skill root. After accept, `/skill-review` the new skill.
 
 - Shape of `AGENTS.md`: `/writing-for-agents` (user-authored; `/setup-project` only inserts the `## Agent skills` pointer)
 - Pin / pointer wording: `/writing-for-agents`
-- EXTRACT review: `/skill-review`
+- EXTRACT review: `/writing-for-agents` (skill mechanics in its `SKILL-MECHANICS.md`)
 
 ## Done
 

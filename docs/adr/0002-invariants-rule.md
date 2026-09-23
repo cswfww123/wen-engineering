@@ -22,7 +22,7 @@ a reminder but no recognize-and-force mechanism:
   matters more for some work than others, so it is routinely skipped.
 - `code-review` is diff-local by design; each changed line reads correct in isolation, and
   a race is only visible across requests and time.
-- `setup-project-harness` configures formatters, linters, typecheckers, SCA, and secret
+- `setup-project` configures formatters, linters, typecheckers, SCA, and secret
   scanning — none of which detect business-level concurrency races.
 
 The reminder lived nowhere that could refuse to let the work proceed.

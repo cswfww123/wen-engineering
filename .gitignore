@@ -6,3 +6,6 @@ skills/.DS_Store
 
 # Upstream snapshots for skill optimization (not committed)
 .upstream/
+
+# Local distill / tracker scratch (not committed)
+.scratch/

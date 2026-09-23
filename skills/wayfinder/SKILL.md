@@ -26,7 +26,7 @@ The map is a single issue on this repo's issue tracker, labelled `wayfinder:map`
 
 The map is an **index**, not a store. It lists the decisions made and points at the tickets that hold their detail; a decision lives in exactly one place — its ticket — so the map never restates it, only gists it and links.
 
-**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — run `/setup-project-harness` if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker (`.scratch/<slug>/`).
+**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — run `/setup-project` if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker (`.scratch/<slug>/`).
 
 ### The map body
 
@@ -187,7 +187,7 @@ Never ask the human to re-paste Destination, iron rules, or full ticket bodies.
 ## WEN additions
 
 - Routing: LIGHT L4 in `docs/lifecycle.md`. Prefer same-session `/grill-me` when one interview would clear the fog. **Never invent** Expected / market / user value; **never implement the destination** (disposable `/prototype` only when the ticket authorizes it).
-- Tracker ops: resolve the issue-tracker doc via the harness pointer from `/setup-project-harness` (not a hard-coded path). Default without harness: **local-markdown** under `.scratch/`. Field shapes: [TEMPLATES.md](TEMPLATES.md). Fog extract: [FOG.md](FOG.md) (must not contradict this file). Short pastes: [CONTINUE.md](CONTINUE.md).
+- Tracker ops: resolve the issue-tracker doc via the harness pointer from `/setup-project` (not a hard-coded path). Default without harness: **local-markdown** under `.scratch/`. Field shapes: [TEMPLATES.md](TEMPLATES.md). Fog extract: [FOG.md](FOG.md) (must not contradict this file). Short pastes: [CONTINUE.md](CONTINUE.md).
 - Prefer checkable **Resolution Signal** on each ticket. Full answer in the resolution comment; map only gets a named gist.
 - Claim map/ticket before work when the adapter supports it; release claims on stop. `/research` and `/prototype` return evidence only — Wayfinder owns comments, closure, and map updates.
 - **Chart budget:** ≤5 tickets on first publish; expand only by graduating fog after resolutions.

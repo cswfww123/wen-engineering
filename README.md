@@ -67,20 +67,19 @@ Then migrate once when you want this repo to manage those skill names or replace
 
 With `--force`, the script imports skills that only existed in an agent-specific directory into `~/.agents/skills`, backs up the old directory as `*.wen-engineering-backup-*`, and replaces it with a symlink.
 
-For a new project, run **`/setup-project-harness`** in the target project after syncing. It will configure:
+For a new project, run **`/setup-project`** in the target project after syncing. Same scope as upstream `setup-matt-pocock-skills`. It configures:
 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
-- the five triage roles used by `/to-tickets`, `/implement`, and tracker adapters
+- the five triage roles used by `/to-tickets` and tracker adapters
 - the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
-- observability **bar classification** (full / thin / partial); foundation build is **`/setup-logging`**
-- `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, and failure pins only when justified (Checklist first; long classifiers under `.agents/rules/` rarely)
+- `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, and `docs/agents/domain.md`
 
-That is the fast path. After harness setup, agents know where project wiring lives; prove-work commands stay in README/scripts/CI. On integration-heavy repos, run **`/setup-logging`** for a stack-native logging foundation (unified API, correlation, fail-open, how-to-read) before AFK feature work.
+It does **not** rewrite `AGENTS.md` or `CLAUDE.md`. If one of those files already exists, it only inserts or updates the `## Agent skills` pointer block. Writing or revising the rest of that file is `/writing-for-agents`. Logging foundation stays `/setup-logging`, not this skill.
 
 ### Empty Project Routing
 
 See [Lifecycle §4 Empty project](#4-empty-project). Short version: no workbench →
-`/setup-project-harness` (or HEAVY PM first if only a fuzzy product goal exists);
+`/setup-project` (or HEAVY PM first if only a fuzzy product goal exists);
 daily work then follows the LIGHT chooser.
 
 ## Lifecycle
@@ -251,9 +250,9 @@ vague idea | unknown user | market bet | "should we build this?"
 
 ```text
 no workbench yet
-  → stack/repo shape known     → /setup-project-harness first
+  → stack/repo shape known     → /setup-project first
   → only product goal (fuzzy)  → HEAVY PM first, then harness + L2
-  → stack choices open         → short /grill-me → /setup-project-harness
+  → stack choices open         → short /grill-me → /setup-project
   → then daily work            → LIGHT from the chooser above
 ```
 
@@ -268,7 +267,7 @@ claim → behavior test or compatibility baseline → simplify → verify → co
 
 Support skills (compose under any flow): `/tdd`, `/simplify`, `/code-review`,
 `/research`, `/prototype`, `/to-design-md`, `/domain-modeling`,
-`/alignment-review`, `/resolving-merge-conflicts`, `/handoff`.
+`/alignment-review`, `/handoff`.
 
 ### 6. Command names (v1.1)
 
@@ -290,7 +289,7 @@ Common skills:
 - `/code-review` independently reviews a fixed delta. **light** (default on `/implement` slices): one Slice Reviewer. **full** (standalone branch/PR, or escalate): intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
-- `/implement` takes one bounded task or implementation-frontier ticket through the matching evidence loop, simplification, verification, code review, and tracker completion.
+- `/implement` (extras) runs Matt `/implement` through one Executor per slice. Implementation process stays in `implement`.
 - `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room.
 - `/grilling` is the reusable interview loop: **frontier rounds** (`❓`/`➡️` format, dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, anti rubber-stamp, confirmation gate.
 - `/wait-what` re-pitches the last message when it did not land (concise, domain language).
@@ -301,9 +300,9 @@ Common skills:
 - `/prototype` creates a disposable logic (shareable HTML demo) or UI evidence artifact for an explicit question or Wayfinder ticket.
 - `/to-design-md` generates or refreshes a Google Labs–format `DESIGN.md` visual identity for frontend packages (optional; extract from theme or synthesize).
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
-- `/resolving-merge-conflicts` resolves in-progress git merge/rebase conflicts by intent.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
-- `/setup-project-harness` initializes a project-level agent harness.
+- `/setup-project` configures the issue tracker, triage labels, and domain-doc layout. It does not rewrite `AGENTS.md`.
+- `/harvest-pins` harvests and depreciates `AGENTS.md` Checklist pins from real agent sessions.
 - `/setup-logging` builds the project logging foundation when the shape requires it.
 - `/skill-review` reviews a new or changed skill before accepting it.
 - `/tdd` is the red → green reference (seams, anti-patterns); close to Matt upstream.
@@ -313,12 +312,12 @@ Common skills:
 - `/wayfinder` clears multi-session fog into a thin decision map (short pastes, research-first), then hands off to `/to-spec`.
 - `/writing-for-agents` is the reference for writing any document an agent consumes (skills, AGENTS.md, pointer docs).
 
-The harness skill creates:
+`/setup-project` writes:
 
-- `AGENTS.md` as the shared entrypoint: path wiring + optional failure Checklist
-- `CLAUDE.md` linked to `AGENTS.md`
 - tracker / labels / domain docs under `docs/agents/`
-- `.agents/rules/**` only when a real failure needs more than a Checklist line (e.g. `invariants/`)
+- an `## Agent skills` pointer block, only inside an `AGENTS.md` or `CLAUDE.md` that already exists
+
+It does not create or rewrite those files. Prose for them is `/writing-for-agents`.
 
 ## Why This Exists
 
@@ -345,6 +344,7 @@ The fix is failure-driven, depreciating pins:
 - After a real failure → one Checklist item (or a long classifier under `.agents/rules/` only when needed)
 - When current models stop tripping → remove the pin
 - Never restate model-default competence
+- After real sessions exist, `/harvest-pins` mines transcripts so add/remove is evidence-gated under a token budget, not memory
 
 ### #4: The Codebase Lost Its Language
 
@@ -368,16 +368,17 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`to-design-md`](skills/to-design-md/SKILL.md) — optional frontend visual identity: extract or synthesize a lintable `DESIGN.md` (Google Labs format) agents reapply on UI work.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements (PRD Inventory required when the source is a product doc).
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
-- [`implement`](skills/implement/SKILL.md) — takes one bounded task or implementation-frontier ticket through testing or compatibility evidence, review, and verification.
+- [`implement`](skills/implement/SKILL.md) — implements a spec or ticket in this pack: TDD at pre-agreed seams, then `/code-review`, then commit.
+- [`implement-spec`](skills/implement-spec/SKILL.md) — implements a whole spec as one PR: ticket frontier, one worktree per ticket, then `/code-review`.
 - [`tdd`](skills/tdd/SKILL.md) — red → green at pre-agreed seams (Matt base).
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
-- [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) — resolves in-progress git merge/rebase conflicts from each side's intent.
-
+- [`triage`](skills/triage/SKILL.md) — moves issues through triage roles and writes agent-ready briefs. Same scope as upstream.
+- [`ask-process`](skills/ask-process/SKILL.md) — routes a situation to a skill or flow in this pack (L1–L4, G, Q, PRD, design pin).
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) — reviews diffs. **light** (default on `/implement` slices): one Slice Reviewer (AC, extra hunks, broken paths, incomplete surface, same-surface chrome). **full**: intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
-- [`simplify`](skills/simplify/SKILL.md) — cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
+- [`simplify`](skills/simplify/SKILL.md) — behavior-preserving cleanup of non-trivial diffs (reuse, altitude). In this pack.
 
 ### Architecture
 
@@ -386,7 +387,8 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Engineering Harness
 
-- [`setup-project-harness`](skills/setup-project-harness/SKILL.md) — builds a minimal, evidence-first project harness for Codex and Claude. Use it for frontend, backend, full-stack, library, CLI, monorepo, empty starter, or engineering-skills repositories.
+- [`setup-project`](skills/setup-project/SKILL.md) — same scope as upstream `setup-matt-pocock-skills`: issue tracker, triage labels, domain docs. Does not rewrite `AGENTS.md`; that prose is `/writing-for-agents`.
+- [`harvest-pins`](skills/harvest-pins/SKILL.md) — harvests and depreciates `AGENTS.md` Checklist pins from real Claude / Codex / Grok sessions (quote-gated, budgeted, human-gated). Wiring stays frozen.
 - [`setup-logging`](skills/setup-logging/SKILL.md) — builds a project logging foundation (crime-scene replay): unified logger API, correlation, fail-open sinks, redaction, how-to-read; stack recipes for Spring, Next.js, Python, Node, Go.
 - [`skill-review`](skills/skill-review/SKILL.md) — reviews skills for discovery, trigger clarity, progressive disclosure, and judgment-preserving guidance.
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) — writing documents agents consume; skill packaging in `SKILL-MECHANICS.md`.
@@ -476,10 +478,10 @@ skills/
     SKILL.md
   handoff/
     SKILL.md
-  implement/
-    DISPATCH.md
+  harvest-pins/
     SKILL.md
-    TRACKED-WORK.md
+    scripts/
+      distill.py
   improve-codebase-architecture/
     HTML-REPORT.md
     SKILL.md
@@ -489,28 +491,18 @@ skills/
     UI.md
   research/
     SKILL.md
-  resolving-merge-conflicts/
-    SKILL.md
   setup-logging/
     PRINCIPLES.md
     SKILL.md
     STACKS.md
     VERIFY.md
-  setup-project-harness/
-    AGENTS_TEMPLATE.md
-    HARNESS_FLOW.md
-    OBSERVABILITY.md
-    RULE_TEMPLATE.md
-    SECTIONS.md
+  setup-project/
     SKILL.md
-    TRACKER_CONTRACT.md
     domain.md
     issue-tracker-github.md
     issue-tracker-gitlab.md
     issue-tracker-local.md
     triage-labels.md
-  simplify/
-    SKILL.md
   skill-review/
     SKILL.md
   tdd/

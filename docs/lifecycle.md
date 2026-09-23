@@ -194,13 +194,12 @@ tasks may batch. Plan only — never ship the destination inside the map.
 | Need | Skill |
 | --- | --- |
 | Public-behavior tests | `/tdd` (Matt red → green + seams) |
-| Cleanup | `/simplify` (WEN) |
+| Cleanup | `/simplify` (this pack) |
 | Diff review | `/code-review` (Matt Standards+Spec; optional WEN axes) |
 | Evidence only | `/research`, `/prototype` |
 | Domain terms / ADRs | `/domain-modeling` |
 | Same-session interview | `/grill-me` → `/grilling` (+ `/domain-modeling`) |
 | Stakeholder questionnaire | `/to-questionnaire` (meeting or async) |
-| Merge/rebase conflicts | `/resolving-merge-conflicts` |
 
 ---
 

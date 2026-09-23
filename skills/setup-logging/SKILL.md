@@ -14,7 +14,7 @@ forensically solvable field record — without ever letting logging break busine
 This skill owns **foundation construction**. Decision-boundary instrumentation
 on feature paths, and forensic review gates, stay in
 [`code-review/FORENSIC-OBSERVABILITY.md`](../code-review/FORENSIC-OBSERVABILITY.md).
-`/setup-project-harness` only classifies bar and points here; it does not build logs.
+`/setup-project` does not build or classify logs. Run this skill when the repo needs a logging foundation.
 
 ## Output contract
 
@@ -127,7 +127,7 @@ fail-open posture + how-to-read are evidenced.
   [`../code-review/FORENSIC-OBSERVABILITY.md`](../code-review/FORENSIC-OBSERVABILITY.md)
 - Quiet path / log-unsafe classifier:
   [`../code-review/INCOMPLETE-SURFACE.md`](../code-review/INCOMPLETE-SURFACE.md)
-- Harness wiring only: `/setup-project-harness`
+- Issue tracker / domain docs: `/setup-project` (does not touch logging)
 - Temporary DEBUG probes: `/diagnosing-bugs` (not a substitute for foundation)
 
 ## Done

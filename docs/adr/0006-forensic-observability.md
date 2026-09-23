@@ -37,8 +37,8 @@ everything" best practices into always-loaded `AGENTS.md`.
    and **log-unsafe** rows pointing at that contract.
 3. **Foundation skill:** `/setup-logging` builds the logging foundation
    (unified API, correlation, fail-open sinks, how-to-read) with stack-native
-   recipes. `/setup-project-harness` only **classifies** full/thin/partial bar
-   and hands off — it does not implement logger modules.
+   recipes. `/setup-project` does not classify or build logs; run
+   `/setup-logging` when the repo needs a logging foundation.
 4. **Implement / Executor:** applicable slices must instrument decision
    boundaries and report `observability`; foundation-missing or log-unsafe is
    not `done`.
@@ -61,7 +61,7 @@ everything" best practices into always-loaded `AGENTS.md`.
 
 ## Consequences
 
-- `setup-logging`, `setup-project-harness`, `implement`, `code-review`,
+- `setup-logging`, `setup-project`, `implement`, `code-review`,
   `diagnosing-bugs`, and pack agents gain thin pointers to the contract and
   classifier.
 - Integration-heavy greenfield repos may need `/setup-logging` before AFK

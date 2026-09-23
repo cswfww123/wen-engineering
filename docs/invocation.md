@@ -66,7 +66,7 @@ skill.
 ## Setup Dependencies
 
 Some skills depend on repo harness configuration seeded by
-`/setup-project-harness`.
+`/setup-project`.
 
 - **Hard dependency**: the skill cannot work correctly without configured issue
   tracker, triage labels, or domain layout. Say so explicitly.

@@ -7,8 +7,7 @@ done until (1) a project **logging foundation** exists when needed, (2)
 **fail-open**: a log failure must never fail the business path.
 
 This file is the single source of truth for that contract. `/setup-logging`
-(foundation build), `/setup-project-harness` (bar classification only),
-`/implement`, Executor, `/code-review` Correctness, and Verifier point here;
+(foundation build), `/implement`, Executor, `/code-review` Correctness, and Verifier point here;
 they do not restate the full tables.
 
 Related: quiet critical path and log-unsafe shipping are also **incomplete /
@@ -111,8 +110,7 @@ path). Pure local pure-function diffs → `n/a` with one-line reason.
 | Role | Must |
 | --- | --- |
 | **`/setup-logging`** | Build or close logging **foundation** (unified API, levels/sinks, correlation, redaction, fail-open, how-to-read). Stack-native recipes in that skill. |
-| **`/setup-project-harness`** | Classify full/thin/partial bar; on full-bar missing/partial, hand off to `/setup-logging` — do not implement logger modules in harness. |
-| **Executor / `/implement`** | Instrument decision boundaries on claimed critical paths; enforce fail-open; report `observability`. Never ship log-unsafe. |
+| **Executor / `/implement`** | Instrument decision boundaries on claimed critical paths; enforce fail-open; report `observability`. Never ship log-unsafe. Foundation missing → `/setup-logging`, not `/setup-project`. |
 | **`/code-review` Correctness** | Run the forensic chain checklist; quiet path and log-unsafe are blocking. |
 | **Verifier** | Completion claims fail when applicable paths lack forensic completeness or introduce log-unsafe logging. |
 | **`/diagnosing-bugs`** | Temporary probes remain tagged and removed; if the gap is foundation or permanent boundary logs, hand back to `/setup-logging` / implement — do not "fix" production forever with DEBUG-only. |

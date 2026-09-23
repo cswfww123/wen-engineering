@@ -8,8 +8,9 @@ shared skill bodies track Matt's text closely; WEN only layers pack-specific
 deltas (tracker harness name, lifecycle routing, authority gates, multi-agent
 orchestration, optional field templates).
 
-Upstream pin: **v1.2.2** at
-`8b36d4fb2635b3c21998dcd8144439c9e5ba7302` (2026-08-05).
+Upstream pin: **v1.2.3** at
+`c55ee46073ed923f86ce59a5eb3b6d895095d1b7` (tag `v1.2.3` plus one docs commit, 2026-09-18).
+Prior pin: **v1.2.2** at `8b36d4fb2635b3c21998dcd8144439c9e5ba7302` (2026-08-05).
 
 Prior WEN pin (post-v1.1.0): `e9fcdf95b402d360f90f1db8d776d5dd450f9234`
 (2026-07-14). Prior v1.1.0 tag: `d574778f94cf620fcc8ce741584093bc650a61d3`.

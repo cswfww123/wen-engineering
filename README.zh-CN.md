@@ -66,19 +66,18 @@ git pull --ff-only
 
 使用 `--force` 时，脚本会先把仅存在于 agent 专属目录里的 skills 导入 `~/.agents/skills`，再把旧目录备份为 `*.wen-engineering-backup-*`，最后用软链替换。
 
-对于新项目，同步完成后，在目标项目中运行 **`/setup-project-harness`**。它会配置：
+对于新项目，同步完成后，在目标项目中运行 **`/setup-project`**。范围与上游 `setup-matt-pocock-skills` 相同。它会配置：
 
 - issue tracker workflow：GitHub、GitLab、本地 markdown，或其他 tracker
-- `/to-tickets`、`/implement` 和 tracker adapters 使用的五个 triage roles
+- `/to-tickets` 和 tracker adapters 使用的五个 triage roles
 - domain documentation layout：单个 `CONTEXT.md`，或多 context 的 `CONTEXT-MAP.md`
-- 可观测性 **bar 分级**（full / thin / partial）；foundation 搭建交给 **`/setup-logging`**
-- `AGENTS.md`、`CLAUDE.md`、`docs/agents/`，以及仅在有依据时的失败钉（优先 Checklist；长分类器才进 `.agents/rules/`）
+- `docs/agents/` 下的 issue-tracker、triage-labels、domain
 
-这是最快路径。harness setup 之后，agents 知道项目接线在哪里；证明工作的命令放在 README/scripts/CI。集成型仓库应先跑 **`/setup-logging`** 搭好栈原生日志 foundation（统一 API、关联 id、fail-open、如何查日志），再做 AFK 功能开发。
+它**不改写** `AGENTS.md` / `CLAUDE.md`。这两份文件已存在时，只插入或更新 `## Agent skills` 指针块。正文的写作和修改走 `/writing-for-agents`。日志 foundation 仍是 `/setup-logging`，不在这个 skill 里。
 
 ### 空项目路由
 
-见 [Lifecycle §4 空项目](#4-空项目)。短版：没有工作台 → `/setup-project-harness`
+见 [Lifecycle §4 空项目](#4-空项目)。短版：没有工作台 → `/setup-project`
 （若只有模糊产品目标则先 HEAVY PM）；日常工作再按 LIGHT 选型。
 
 ## Lifecycle
@@ -249,9 +248,9 @@ bug | 清晰 AC | 纯工程切片
 
 ```text
 还没有工作台
-  → 技术栈/仓库形态已知     → 先 /setup-project-harness
+  → 技术栈/仓库形态已知     → 先 /setup-project
   → 只有产品目标且仍模糊    → 先 HEAVY PM，再 harness + L2
-  → 技术栈选择仍开放        → 短 /grill-me → /setup-project-harness
+  → 技术栈选择仍开放        → 短 /grill-me → /setup-project
   → 之后日常工作            → 按上方 LIGHT 选型
 ```
 
@@ -265,8 +264,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 ```
 
 可组合支持 skill：`/tdd`、`/simplify`、`/code-review`、`/research`、`/prototype`、
-`/to-design-md`、`/domain-modeling`、`/alignment-review`、`/resolving-merge-conflicts`、
-`/handoff`。
+`/to-design-md`、`/domain-modeling`、`/alignment-review`、`/handoff`。
 
 ### 6. 命令名（v1.1）
 
@@ -299,9 +297,9 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic（可分享 HTML demo）或 UI evidence artifact。
 - `/to-design-md` 为前端包生成或刷新符合 Google Labs 规范的 `DESIGN.md` 视觉身份（可选；从 theme 抽取或综合生成）。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
-- `/resolving-merge-conflicts` 按双方意图解决进行中的 git merge/rebase 冲突。
 - `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
-- `/setup-project-harness` 初始化项目级 agent harness。
+- `/setup-project` 配置 issue tracker、分诊标签和领域文档布局。不改写 `AGENTS.md`。
+- `/harvest-pins` 从真实 agent session 收割并折旧 `AGENTS.md` Checklist 钉。
 - `/setup-logging` 在项目形态需要时搭建日志 foundation。
 - `/skill-review` 在接受新增或修改后的 skill 前进行审查。
 - `/tdd` red → green 参考（seams、反模式）；正文贴近 Matt 上游。
@@ -311,12 +309,12 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/wayfinder` 将跨会话雾清成薄 decision ticket map（短 paste、research 优先），结案后交接 `/to-spec`。
 - `/writing-for-agents` 是写作任何 agent 会读的文档（skills、AGENTS.md、指针文档）的 reference。
 
-Harness skill 会创建：
+`/setup-project` 会写：
 
-- `AGENTS.md` 作为共享入口：路径接线 + 可选的失败 Checklist
-- 指向 `AGENTS.md` 的 `CLAUDE.md`
 - `docs/agents/` 下的 tracker / labels / domain 文档
-- 仅当真实失败需要超过一行 Checklist 时才写 `.agents/rules/**`（例如 `invariants/`）
+- 仅当 `AGENTS.md` 或 `CLAUDE.md` 已经存在时，插入或更新其中的 `## Agent skills` 指针块
+
+它不创建、也不重写这两份文件。正文交给 `/writing-for-agents`。
 
 ## Why This Exists
 
@@ -343,6 +341,7 @@ AI agents 会以很可预测的方式失败。
 - 真实翻车后 → 一条 Checklist（只有放不下时才写 `.agents/rules/` 长分类器）
 - 当前模型不再踩 → 删掉
 - 绝不重述模型默认就会的能力
+- 仓库里已有真实 session 之后，用 `/harvest-pins` 从 transcript 收割/折旧，受 token budget 约束，不靠记忆加规则
 
 ### #4: 代码库失去了自己的语言
 
@@ -366,16 +365,17 @@ AI agents 会以很可预测的方式失败。
 - [`to-design-md`](skills/to-design-md/SKILL.md) - 可选的前端视觉身份：抽取或综合生成可 lint 的 `DESIGN.md`（Google Labs 格式），供 agent 在 UI 工作中复用。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec（源是产品文档时必须有 PRD Inventory）。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
-- [`implement`](skills/implement/SKILL.md) - 把一个 bounded task 或 implementation-frontier ticket 推进到 testing 或 compatibility evidence、review 和 verification。
+- [`implement`](skills/implement/SKILL.md) - 本库实现 skill：按约定 seam 做 TDD，然后 `/code-review`，再提交。
+- [`implement-spec`](skills/implement-spec/SKILL.md) - 整份 spec 做成一个 PR：按票的 frontier 并行，每票一个 worktree，最后 `/code-review`。
 - [`tdd`](skills/tdd/SKILL.md) - red → green + seams（Matt 底）。
 - [`handoff`](skills/handoff/SKILL.md) - 为新的 agent 写一份紧凑 handoff document，并保存在 repo 外。
-- [`resolving-merge-conflicts`](skills/resolving-merge-conflicts/SKILL.md) - 按双方意图解决进行中的 git merge/rebase 冲突。
-
+- [`triage`](skills/triage/SKILL.md) - 把 issue 推过 triage 角色，写出 agent 可执行的 brief。范围与上游相同。
+- [`ask-process`](skills/ask-process/SKILL.md) - 按当前情况路由到本库流程（L1–L4、G、Q、PRD、原型 pin）。
 ### Review And Quality
 
 - [`code-review`](skills/code-review/SKILL.md) - 审查 diffs/PRs。**light**（`/implement` 切片默认）：一个 Slice Reviewer（AC、多余 hunk、坏路径、incomplete surface、same-surface chrome）。**full**：intent、correctness、规范；有 pin 或重做视觉时再开 UI Fidelity；ponytail / 性能 / 安全按需。
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) - 在改代码前先建立 feedback loop，用于诊断 bugs 和性能回归。
-- [`simplify`](skills/simplify/SKILL.md) - 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
+- [`simplify`](skills/simplify/SKILL.md) - 本库的非琐碎 diff 保行为清理（复用、层级）。
 
 ### Architecture
 
@@ -384,7 +384,8 @@ AI agents 会以很可预测的方式失败。
 
 ### Engineering Harness
 
-- [`setup-project-harness`](skills/setup-project-harness/SKILL.md) - 为 Codex 和 Claude 构建 minimal、evidence-first 的 project harness。适用于 frontend、backend、full-stack、library、CLI、monorepo、empty starter 或 engineering-skills repos。
+- [`setup-project`](skills/setup-project/SKILL.md) - 与上游 `setup-matt-pocock-skills` 同范围：issue tracker、分诊标签、领域文档。不改写 `AGENTS.md`；正文走 `/writing-for-agents`。
+- [`harvest-pins`](skills/harvest-pins/SKILL.md) - 从真实 Claude / Codex / Grok session 收割并折旧 `AGENTS.md` Checklist 钉（原文引用、预算、人闸）。Wiring 冻结。
 - [`setup-logging`](skills/setup-logging/SKILL.md) - 搭建项目日志 foundation（现场录像）：统一 logger API、关联 id、fail-open sink、脱敏、如何查日志；含 Spring / Next.js / Python / Node / Go 等栈原生日志配方。
 - [`skill-review`](skills/skill-review/SKILL.md) - 审查 skills 的 discovery、trigger clarity、progressive disclosure 和 judgment-preserving guidance。
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) - 写 agent 会消费的文档；skill 打包见 `SKILL-MECHANICS.md`。
@@ -474,10 +475,10 @@ skills/
     SKILL.md
   handoff/
     SKILL.md
-  implement/
-    DISPATCH.md
+  harvest-pins/
     SKILL.md
-    TRACKED-WORK.md
+    scripts/
+      distill.py
   improve-codebase-architecture/
     HTML-REPORT.md
     SKILL.md
@@ -487,28 +488,18 @@ skills/
     UI.md
   research/
     SKILL.md
-  resolving-merge-conflicts/
-    SKILL.md
   setup-logging/
     PRINCIPLES.md
     SKILL.md
     STACKS.md
     VERIFY.md
-  setup-project-harness/
-    AGENTS_TEMPLATE.md
-    HARNESS_FLOW.md
-    OBSERVABILITY.md
-    RULE_TEMPLATE.md
-    SECTIONS.md
+  setup-project/
     SKILL.md
-    TRACKER_CONTRACT.md
     domain.md
     issue-tracker-github.md
     issue-tracker-gitlab.md
     issue-tracker-local.md
     triage-labels.md
-  simplify/
-    SKILL.md
   skill-review/
     SKILL.md
   tdd/

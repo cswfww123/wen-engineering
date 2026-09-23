@@ -1,10 +1,18 @@
-# Upstream sync — mattpocock/skills v1.2.2
+# Upstream sync — mattpocock/skills v1.2.3
 
-Pin: `8b36d4fb2635b3c21998dcd8144439c9e5ba7302` (tag `v1.2.2`, 2026-08-05).  
-Prior pin: `e9fcdf95b402d360f90f1db8d776d5dd450f9234` (post-v1.1.0).
+Pin: `c55ee46073ed923f86ce59a5eb3b6d895095d1b7` (tag `v1.2.3` plus one docs commit, 2026-09-18).  
+Prior pin: `8b36d4fb2635b3c21998dcd8144439c9e5ba7302` (tag `v1.2.2`, 2026-08-05).
+
+v1.2.2 → v1.2.3 behavior taken (WEN deltas kept):
+
+- `diagnosing-bugs`: **Redact** section; captured artifacts and the Phase 1 loop output are shown redacted; `hitl-loop.template.sh` notes that `capture` echoes to the terminal.
+- `code-review` / `improve-codebase-architecture`: drop harness-specific tool and agent-type names from the shared dispatch sentence. WEN still names pack `Reviewer` / `Verifier` in its own process section.
+- `wizard`: drop `TOTAL_MINUTES` and the time-remaining display. `stage` takes a name only.
+
+Not taken: em-dash to colon reflow across the rest of the skill set (no behavior change), and in-progress skills (`pr`, `retro`) that have not graduated. `implement-spec` was copied in as-is (still upstream in-progress) because this pack needs a whole-spec PR driver; its only skill call is `/code-review`, which this pack owns. PRD Inventory, `Covers`, design pin, and residual-only grill are WEN and were not in this upstream delta.
 
 Principle: **Matt-first** on shared skill bodies; WEN only layers pack deltas
-(harness name `/setup-project-harness`, lifecycle, authority, multi-agent,
+(harness name `/setup-project`, lifecycle, authority, multi-agent,
 optional templates).
 
 ## Decision table
@@ -30,9 +38,10 @@ optional templates).
 | `codebase-design` | **Identical** | No change |
 | `domain-modeling` | **Identical** | No change |
 | `improve-codebase-architecture` | **Identical** | No change |
-| `resolving-merge-conflicts` | **Identical** | No change |
-| `setup-project-harness` | **Keep WEN** | Pack rename of `setup-matt-pocock-skills`; not replaced |
-| `ask-matt` | **Skip** | WEN routes via lifecycle / wayfinder / harness, not Matt router |
+| `resolving-merge-conflicts` | **Removed** | Upstream plans to drop it; removed from this pack. |
+| `triage` | **Add** | Copied from upstream; was the remaining promoted engineering skill this pack lacked. |
+| `setup-project` | **Matt body, renamed** | Same scope as `setup-matt-pocock-skills`. Does not rewrite `AGENTS.md`; prose is `writing-for-agents`. Replaces WEN `setup-project-harness`. |
+| `ask-process` | **WEN router** | Replaces copying `ask-matt`. Routes this pack's LIGHT tracks (L1–L4, G, Q), PRD inventory, and design pins. |
 | Claude plugin / docs pages | **Skip** | Packaging & human docs; WEN uses `sync-skills.sh` |
 
 ## WEN-only (untouched by this sync)

@@ -37,7 +37,7 @@ deterministic execution.
    release go/no-go, bypass reasoning, and prioritization. It consumes outputs
    from scanners, builders, and deployers; it does not replace them. Scanning,
    builds, deploys, and signing belong to CI, the project harness
-   (`setup-project-harness`), or external tools.
+   (`setup-project`), or external tools.
 4. **Enterprise gaps stay inside existing review boundaries.** Security is a
    `code-review` axis for changed code. Ops, release automation, and data
    migration stay project-harness concerns, not general skills. **Forensic

@@ -10,7 +10,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker should have been provided to you — run `/setup-project-harness` if `docs/agents/issue-tracker.md` is missing.
+The issue tracker should have been provided to you — run `/setup-project` if `docs/agents/issue-tracker.md` is missing.
 
 ## Process
 
@@ -72,7 +72,7 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 
 ### 4. Spawn both sub-agents in parallel
 
-Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
+Spawn both sub-agents in one turn so they do not pollute each other's context. Do not name a harness-specific tool or agent type here; the WEN process below picks the worker.
 
 **Standards sub-agent prompt** — include:
 

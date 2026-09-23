@@ -41,8 +41,8 @@ third_party_notice_src="$repo_root/THIRD_PARTY_NOTICES.md"
 manifest_names=()
 # Names this pack no longer ships. Foreign-managed copies (e.g. .wen-pm-managed,
 # .wen-test-managed) are left untouched; only this pack's old managed copies retire.
-# grill-with-docs stays retired (not shipped). grilling is live again as the
-# model-invoked interview primitive behind /grill-me.
+# grill-with-docs stays retired (not shipped): coding grill is /grill-code,
+# non-coding grill is /grill-me. grilling is the shared interview primitive.
 retired_skill_names=("to-prd" "to-issues" "to-test-plan" "qa-run" "grill-with-docs")
 canonical_skills_dir="${AGENTS_SKILLS_DIR:-$HOME/.agents/skills}"
 codex_skills_dir="${CODEX_SKILLS_DIR:-$HOME/.codex/skills}"

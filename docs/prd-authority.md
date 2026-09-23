@@ -34,9 +34,9 @@ when no product doc covers the surface.
 ## 1. Route lock (do not re-author the PRD)
 
 Named multi-slice product doc → **L2** (`/to-spec`). Do **not** open a full
-product `/grill-me` that rewrites settled behavior.
+product `/grill-code` that rewrites settled behavior.
 
-`/grill-me` may run only as a **residual** table:
+`/grill-code` may run only as a **residual** table:
 
 - Original contradictions (two PRD rows that cannot both be true)
 - Terms that do not map to a live column / enum / API

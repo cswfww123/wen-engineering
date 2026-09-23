@@ -40,7 +40,7 @@ can be answered from code in the same turn — just answer or `/implement`.
 | Disposition | Next |
 | --- | --- |
 | `pure-eng` | `/implement` or `/to-spec` |
-| `Align` | `/grill-me`, `/to-questionnaire` (stakeholder/meeting), or `/wayfinder` |
+| `Align` | `/grill-code`, `/to-questionnaire` (stakeholder/meeting), or `/wayfinder` |
 | `Build-ready` | `/to-spec` |
 | `Discovery` / `Pause` / `Kill` / `Escalate-PM` | stop with named reason or PM |
 

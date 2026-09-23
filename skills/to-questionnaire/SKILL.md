@@ -14,12 +14,12 @@ The recipient holds knowledge the user lacks. Filled answers become **settled pr
 
 | Situation | Prefer |
 | --- | --- |
-| User *is* the decision owner and can answer live | `/grill-me` |
+| User *is* the decision owner and can answer live | `/grill-code` |
 | Answers live with someone else / a meeting | **`/to-questionnaire`** |
 | Product need itself is still fuzzy (market / worth-doing) | HEAVY PM (`wen-pm`), not this skill alone |
 | Multi-session eng fog after product is settled | `/wayfinder` |
 
-From a stuck `/grill-me`: if several frontier rows need a stakeholder the user is not, **stop grilling those rows**, park them, and run this skill (or suggest it).
+From a stuck `/grill-code`: if several frontier rows need a stakeholder the user is not, **stop grilling those rows**, park them, and run this skill (or suggest it).
 
 ## Modes
 
@@ -120,7 +120,7 @@ When answers return, the agent:
 
 1. Treat non-empty **选择** / **回答** as **settled** — do not re-confirm unless blank, `Z` without text, or internal conflict.
 2. Fold Q-id → choice → gist into the **`/to-spec` body** (implementation decisions / stories). Do **not** also create a separate long-lived `decision-*.md` unless the user will hand off before to-spec in another session.
-3. Route: **default `/to-spec`** if product scope is enough to synthesize; **short `/grill-me`** only for remaining *engineering* frontier (seams, txn, API shape) — never re-interview product rows already answered. After to-spec consumes answers, stop treating the questionnaire as authoritative (no user prompt to delete).
+3. Route: **default `/to-spec`** if product scope is enough to synthesize; **short `/grill-code`** only for remaining *engineering* frontier (seams, txn, API shape) — never re-interview product rows already answered. After to-spec consumes answers, stop treating the questionnaire as authoritative (no user prompt to delete).
 ```
 
 ## Return path (paste answers back)
@@ -132,7 +132,7 @@ filled questionnaire
   → agent reads answers (path or paste)
   → fold Q-id → choice into /to-spec (single durable artifact)
   → default: /to-spec
-  → only if eng seams / high-risk tech still open: short /grill-me on *those* only
+  → only if eng seams / high-risk tech still open: short /grill-code on *those* only
 ```
 
 | Rule | |
@@ -141,7 +141,7 @@ filled questionnaire
 | **Re-ask only** | Blank must-haves, bare `Z` with no text, or two answers that contradict |
 | **Default next** | `/to-spec` when product in/out + stories are enough to write a honest spec |
 | **Short grill** | Eng-only residual (module seams, contracts, test seams) — cite questionnaire IDs as already closed |
-| **Never** | Restart full `/grill-me` frontier over the same product questions |
+| **Never** | Restart full `/grill-code` frontier over the same product questions |
 
 On skill close (after writing the empty form), print a one-liner the user can paste after the meeting, e.g.:
 
@@ -161,4 +161,4 @@ On skill close (after writing the empty form), print a one-liner the user can pa
 
 - At most two short interview turns before drafting (who + what-back).
 - Do not re-read this file every turn after first load.
-- Do not run a full product discovery interview here — that is HEAVY PM or `/grill-me` with the right human in the room.
+- Do not run a full product discovery interview here — that is HEAVY PM, or `/grill-me` when the human in the room owns a non-coding call. Engineering residuals stay on `/grill-code`.

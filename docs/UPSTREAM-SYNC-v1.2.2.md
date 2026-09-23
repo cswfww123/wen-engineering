@@ -19,8 +19,9 @@ optional templates).
 
 | Skill | Action | Notes |
 | --- | --- | --- |
-| `grilling` | **Take Matt + WEN delta** | Round/frontier + `❓`/`➡️` format from Matt; batch tables, PRD, rubber-stamp, next-hop from WEN |
-| `grill-me` | **Keep WEN** | Matt is one line; pack owns product-doc authority, close gate, implement handoff |
+| `grilling` | **Take Matt + WEN delta** | Round/frontier + `❓`/`➡️` format from Matt; batch tables from WEN. PRD, rubber-stamp, next-hop live on `grill-code`, not this shared loop |
+| `grill-me` | **Split** | Matt's one-liner stays the non-coding interview. Coding body moved to `grill-code` |
+| `grill-code` | **WEN** | Former `grill-me` body: product-doc authority, close gate, implement handoff. Not Matt `grill-with-docs` |
 | `prototype` | **Take Matt + WEN bounds** | Logic branch = shareable HTML; UI.md keeps WEN anti-goal / `to-design-md` |
 | `wayfinder` | **Matt body + WEN** | Decision tickets + research subagents from Matt; Session handoff, cold-start, chart budget, harness name from WEN |
 | `to-tickets` | **Matt body + WEN** | Pre-publish gate, harness name, TEMPLATE/PUBLISH refs stay |

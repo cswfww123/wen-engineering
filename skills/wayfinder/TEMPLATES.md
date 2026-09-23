@@ -39,7 +39,7 @@ tracker: local-markdown
 map: .scratch/<slug>/WAYFINDER.md
 status: active
 next_ticket: <path or none>
-next_discipline: research | grill-me | task | prototype | none
+next_discipline: research | grill-code | task | prototype | none
 next_paste: /wayfinder .scratch/<slug>/WAYFINDER.md
 post_map_paste: /to-spec .scratch/<slug>/
 do_not_reread: FOG.md, TEMPLATES.md, full wayfinder SKILL (unless handoff broken)
@@ -73,7 +73,7 @@ Subtype: n/a
 ID: <stable tracker reference or local ID>
 Runnable: no
 Mode: AFK | HITL
-Discipline: research | prototype | grill-me | task
+Discipline: research | prototype | grill-code | task
 Origin: none
 Parent: <map reference>
 Blocked by: None | <decision ticket references>
@@ -117,7 +117,7 @@ Choose the smallest discipline that can satisfy the Resolution Signal:
 | --- | --- | --- | --- |
 | `research` | AFK | Cited primary-source artifact via `/research` subagent | Settling taste, UX feel, or user-owned trade-offs |
 | `prototype` | HITL | Disposable artifact + user reaction via `/prototype` | Production code, shared schema, or permanent UI |
-| `grill-me` | HITL | Recorded user decision via `/grilling` (repo facts first); **batch/diff** for tables | Questions the codebase or production config already answers |
+| `grill-code` | HITL | Recorded user decision via `/grilling` (repo facts first); **batch/diff** for tables | Questions the codebase or production config already answers |
 | `task` | AFK/HITL | Facts from a prerequisite action that unblocks a decision | Delivering the destination or shipping a slice |
 
 `task` earns its place only by unblocking a later decision (access, sample data,

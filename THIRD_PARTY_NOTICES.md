@@ -17,7 +17,7 @@ Prior WEN pin (post-v1.1.0): `e9fcdf95b402d360f90f1db8d776d5dd450f9234`
 
 WEN also ships **`to-questionnaire`**, adapted from Matt's upstream
 (now graduated into the productivity bucket at v1.2). WEN layers meeting mode,
-lifecycle route **Q**, and routing from stuck `/grill-me`.
+lifecycle route **Q**, and routing from stuck `/grill-code`.
 
 WEN adopted from v1.2.x without renaming:
 

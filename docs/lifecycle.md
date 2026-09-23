@@ -41,7 +41,7 @@ Start at the **smallest** honest step. Escalate only when that step fails.
 ```text
 L1  clear work              → /implement
 L2  multi-slice             → /to-spec → /to-tickets → /implement
-G   same-session pin        → /grill-me → (chat recap default) → /implement
+G   same-session pin        → /grill-code → (chat recap default) → /implement
                             → durable archive / /to-spec only if cross-session handoff
 Q   stakeholder questionnaire → /to-questionnaire → fill → ingest → /to-spec
 L3  mild intent pin         → /product-fog → one next
@@ -54,7 +54,7 @@ These are **automatic**. Prefer code and open tracker state; do not add user ste
 
 1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. Same-surface chrome **extends the owner** already on that screen ([../skills/code-review/SAME-SURFACE.md](../skills/code-review/SAME-SURFACE.md)) — a CSS-matched lookalike is not reuse. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta). Hard gates: [prd-authority.md](prd-authority.md).
 2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Named multi-slice product docs (`docs/requirements/*`, `docs/prd/*`) → L2 `/to-spec` with a PRD Inventory — **not** a full product re-grill. Grill residual only (contradictions, unmapped terms, eng seams). User **按原文** revokes listed `相对 PRD` ids via L3 — do not re-grill the package.
-3. **Same-session default = no new process docs.** `/grill-me` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask. Grill may pin residual eng seams; it must **not** silently supersede an active PRD — PRD deltas require labeled `相对 PRD` accept.
+3. **Same-session default = no new process docs.** `/grill-code` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask. Grill may pin residual eng seams; it must **not** silently supersede an active PRD — PRD deltas require labeled `相对 PRD` accept.
 4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*. Still load the **active product requirements / eng spec** for the feature under build.
 5. **Hygiene without asking.** After a handoff file is consumed (spec written, ticket closed, implement done), stop citing it; delete or cold-ignore silently. Never prompt the user to approve doc cleanup.
 6. **Ask the user only** for product intent they own or irreversible environment-changing migrations — not for “save this md?” or “trust code or doc?” Do not ask them to choose “grill AC vs PRD” when the pack already ranks product doc first; only ask when a **labeled** PRD delta is proposed.
@@ -100,7 +100,7 @@ or unreviewed artifacts.
 
 ```text
 plan/design still fuzzy, but one interview can clear it
-  → /grill-me   (loads /grilling; domain-modeling only if terms truly change)
+  → /grill-code   (loads /grilling; domain-modeling only if terms truly change)
 ```
 
 **In the flow**, not optional fluff — but **not a documentation factory**. Use when:
@@ -114,7 +114,7 @@ plan/design still fuzzy, but one interview can clear it
 
 **Default out:** shared understanding **in the chat** + optional short recap.
 Do **not** require `decision-*.md` / `docs/decisions/` for same-session work
-(Matt-upstream `grill-me` is interview-only; durable docs are the exception).
+(Matt-upstream `grill-me` is interview-only; this pack's coding grill is `/grill-code`. Durable docs are the exception. Non-coding plans use `/grill-me`.)
 
 **Next hop after grill (pick one — do not default to "spec + prototype"):**
 
@@ -142,14 +142,14 @@ user is not the product/domain owner for open decisions
   → fill in meeting or async
   → paste back (问卷已填) → ingest, no re-confirm
   → default /to-spec
-  → short /grill-me only for eng residual
+  → short /grill-code only for eng residual
 ```
 
 **In the flow** when grill would only produce "I don't know — ask PM". Use for
 需求澄清会 prep or a single async pass. Grill the *send* (who + what you need
 back), not a fake product discovery. Questions ship with **options + recommended
 answer + free-text override**. Filled answers are **settled** — do not re-ask.
-Default return is **`/to-spec`**; `/grill-me` only for remaining engineering
+Default return is **`/to-spec`**; `/grill-code` only for remaining engineering
 frontier. Never invent Expected. Still not a substitute for HEAVY PM when
 worth-doing / market is open.
 
@@ -161,7 +161,7 @@ rework / mild Expected gap / "not quite what I meant"
 ```
 
 Mini docket only. Never invent Expected. Common next hops: **G**
-`/grill-me`, **Q** `/to-questionnaire`, L2 `/to-spec`, L4 `/wayfinder`, stop, or
+`/grill-code`, **Q** `/to-questionnaire`, L2 `/to-spec`, L4 `/wayfinder`, stop, or
 **Escalate-PM**.
 
 Use when already in a coding context — **not** as market discovery.
@@ -198,7 +198,8 @@ tasks may batch. Plan only — never ship the destination inside the map.
 | Diff review | `/code-review` (Matt Standards+Spec; optional WEN axes) |
 | Evidence only | `/research`, `/prototype` |
 | Domain terms / ADRs | `/domain-modeling` |
-| Same-session interview | `/grill-me` → `/grilling` (+ `/domain-modeling`) |
+| Same-session coding interview | `/grill-code` → `/grilling` (+ `/domain-modeling` only if terms change) |
+| Non-coding plan / idea | `/grill-me` → `/grilling` (no repo, no implement handoff) |
 | Stakeholder questionnaire | `/to-questionnaire` (meeting or async) |
 
 ---
@@ -233,7 +234,8 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | --- | --- | --- |
 | Fix this bug / do this AC | LIGHT L1 | `/implement` |
 | Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` (PRD Inventory + last-ticket prd-walk) |
-| Few open decisions; one session can pin them | LIGHT **G** | `/grill-me` |
+| Few open **engineering** decisions; one session can pin them | LIGHT **G** | `/grill-code` |
+| Plan, idea, or decision with no codebase | — | `/grill-me` |
 | Need product answers from another person / 澄清会 | LIGHT **Q** | `/to-questionnaire` → ingest → default `/to-spec` |
 | Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G or Q) |
 | Migration/contracts too big for one session | LIGHT L4 | `/wayfinder` (try G first; then L2) |

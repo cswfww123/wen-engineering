@@ -23,7 +23,7 @@ Do **not** use this for a fixed code delta — that remains
 3. **Read-only.** No production edits, no tracker mutation, no “while we’re here”
    implement.
 4. **Parent owns HITL.** Reviewer may recommend; only the user pins MVP scope
-   (`/grill-me` when decisions remain open).
+   (`/grill-code` when decisions remain open).
 
 ## Design packet (parent assembles)
 
@@ -49,7 +49,7 @@ Parent freezes design packet
   ├─ Reviewer × root-cause-fit   (prefer other model)
   ├─ Reviewer × architecture     (prefer other model; parallel OK)
   └─ optional Verifier           (merge candidates → one verdict)
-User HITL /grill-me if Ask User or scope still open
+User HITL /grill-code if Ask User or scope still open
   → bounded-fix → /implement
   → multi-slice → /to-spec → /to-tickets (pre-publish gate) → /implement
   → optional /alignment-review only for handoff / unreviewed artifacts
@@ -139,7 +139,7 @@ Return **exactly one** verdict:
 | --- | --- |
 | `Pass` | Proposal (or a stated minimal subset) is fit to enter `/implement` or `/to-spec` **as scoped** |
 | `Changes Required` | Packet or proposal must be rewritten before coding (misaligned or dangerous scope) |
-| `Needs User Decision` | Engineering residual open; parent must HITL /grill-me before route |
+| `Needs User Decision` | Engineering residual open; parent must HITL /grill-code before route |
 
 Also return:
 

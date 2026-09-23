@@ -1,0 +1,158 @@
+---
+name: grill-code
+description: Relentless interview against a codebase — residual eng seams, wire alignment, PRD deltas. Not non-coding plans (that is /grill-me).
+disable-model-invocation: true
+---
+
+Run a `/grilling` session (load `grilling` once). Use its **frontier-round** rules, question format (`❓` / `➡️`), and batch/surface table shape.
+
+This skill is the **coding** grill (LIGHT G). Non-coding plans, ideas, and decisions use `/grill-me` — do not load this file for those.
+
+**Shared understanding in the conversation is enough.** Do not invent a paper trail for work that finishes in this session. Do not revive Matt's `/grill-with-docs`: ADR / glossary only when terms truly change (`/domain-modeling`), not as the default close.
+
+## When to skip this skill entirely
+
+If the user already has clear AC, a bug, or a single eng slice → prefer **`/implement`** (L1). Do not open grill (or force docs) to look thorough.
+
+If the user already has a **detailed product requirements / PRD / `docs/requirements/*` package** for a multi-slice feature → prefer **`/to-spec`** (L2) with that doc as the primary source. Do **not** open a full product grill that re-authors what the PRD already settles. Use this skill only for residual open poles the PRD leaves fuzzy (or for eng seams after `/to-spec`). Protocol: `docs/prd-authority.md`.
+
+If they say **按原文** / 收回 delta after a grill already accepted `相对 PRD` rows → **stop grilling the package**. Route **L3** `/product-fog` and re-open **only** those delta ids / inventory `SRC`s.
+
+## Product-doc authority (hard — when a PRD/requirements doc is in play)
+
+Product intent hierarchy for this session:
+
+1. **Product requirements / PRD / in-repo product doc** — primary source of *what* ships (behavior, UX, rules).
+2. **Explicit user-authorized deltas** — only after a clear “relative to PRD: X → Y (MVP/defer)” row is posted **and** the user accepts/diffs it. Silent MVP shrink is forbidden.
+3. **Grill residual** — engineering seams, wire/enum alignment, txn shape, test seams the product doc does not own.
+4. **Code / tests** — facts about *what ships today* after merge; never a license to rewrite product intent mid-grill.
+
+Binding rules:
+
+- **Do not re-open settled PRD behavior** as a fresh recommended pole “for cleanliness” or engineering convenience (e.g. PRD says single-row edit → do not recommend whole-table edit unless you label it as a **PRD delta**).
+- Every recommended row that **narrows, defers, or changes** product-doc behavior must be marked: `相对 PRD: <was> → <now> (<reason>)` and classified **`doc-change`** (edit the product doc) or **`eng-read`** (contradiction / missing mapping; user **按原文** revokes that id only). Unmarked deltas are invalid; do not treat `按推荐` as authority over unlabeled PRD overrides.
+- If the user is **not** the product owner for those deltas → park and offer `/to-questionnaire`; do not invent Expected.
+- Close recap (chat or archive) must list **PRD deltas accepted** separately from eng pins. Implement handoff AC = PRD baseline **minus** only those accepted deltas — never “grill AC alone.”
+
+## Engineering defaults (coding repos)
+
+1. **Facts first (non-blocking)** — map existing tables, bridges, call sites, tests, ADRs/CONTEXT before asking. Prefer code over stale process docs. Non-trivial lookups: dispatch explore/sub-agents; only hold back decisions that depend on those facts — still post the rest of the frontier this round.
+   - **Explore is not ground truth.** Before pinning AC or a recommended wire/enum value, verify against **primary write paths** (the production code that actually sets the field), not only enum definitions or a single call site. Second-hand explore reports that say “uses the enum” must be re-checked when the field is money-, identity-, or status-bearing.
+2. **Conflict-fact table (mandatory when sources disagree)** — if the same field / type / prefix has **more than one live value** across enums, write paths, XML/SQL hardcodes, reports, or sibling services, **do not** write “code wins / no need to ask.” Post a short fact table (source → value → role) and put the **alignment target** on the frontier with a recommended pole. A hardcoded legacy write path is **not** automatically the standard; prefer the documented enum / shared contract unless I pick the legacy value.
+3. **“Align with us / the other system” requests** — treat as open until the target is named: **enum/contract value** vs **one existing write path** vs **report/filter semantics**. Never silently pick one pole.
+4. **MVP hard boundary early** — on the **first** frontier surface (or immediately after Q1 storage/shape), post a table with:
+   - **In scope this round** (minimal shippable behavior)
+   - **Explicitly out** (red-dot/SSE/enum/search/… unless required for correctness of the core path)
+   - **Open risks**
+   Get accept/diff **before** expanding into summary APIs, realtime, renames, full enum isomorphism, or refactors. Do **not** recommend bringing an admin/side service up to a full payment-type catalog “for cleanliness” unless required for the in-scope write path.
+5. **Default high-risk rows (first frontier when in play)** — if the change touches any of these, put **2–3** of them on the **first** frontier surface (not mid-implement): money/stats report口径, historical data backfill, dual write paths across services, irreversible schema/wire renames, shared-branch blast radius. Do not assume “fixing the write path auto-fixes the report.”
+6. **Frontier batch tables** — each round posts only the **frontier** (decisions with settled prerequisites). Preferred shape: one markdown table of **5–8** product/architecture decisions (max **10** without “继续深烤”). Recompute the frontier after my answers. Implementation minutiae → park for implement / tdd, do not serial-grill. **Anti rubber-stamp:** if I accept the full recommended table unchanged **2 times in a row** (or keep saying only `按推荐`), do not open more low-risk rows. Next message: **2–3 high-risk decisions only** (visibility/privacy, transaction boundaries, half-finished surfaces, irreversible schema, shared-branch blast radius, money/stats 口径, historical backfill, dual write paths). Force an explicit choice on those.
+7. **Environment constraints (auto, do not interview me for these)** — from codebase + open tracker only:
+   - Prefer existing wire values, enums, APIs, and identity patterns already in production paths.
+   - Same-surface chrome: extra filters/pickers **extend the owner** already on that screen; do not recommend a lookalike Select (`skills/code-review/SAME-SURFACE.md`).
+   - Treat dangerous legacy (silent tenant/user fallback, dual sources of money facts, etc.) as **do-not-copy**, not as a recommended design.
+   - Default proposals stay **in-environment** (aliases, adapters, fail-closed). **Environment-changing** work (wire/protocol renames, isolation semantics) is out of scope unless I explicitly ask for a migration.
+8. **`/domain-modeling` only when terms actually change** — do **not** load it as a mandatory epic and do **not** create `CONTEXT.md` / ADRs for a trivial pin. If a durable glossary/ADR is truly needed (hard to reverse + surprising + real trade-off), update sparingly; never dump unshipped implementation plans into CONTEXT.
+9. **Routing / anti-invention** — if present: `docs/lifecycle.md` (LIGHT G; HEAVY product fog stays in PM).
+10. **Wrong human in the room** — if several frontier decisions need product/business/ops and I am not the owner, **stop serial-grilling me**. Park those rows and offer `/to-questionnaire`. Do not invent Expected / market / user value.
+11. **Filled questionnaire ingest (no re-confirm)** — if I paste a filled `/to-questionnaire` (or `问卷已填` + path):
+   - Treat non-empty **选择** / **回答** as **settled product input** — do **not** re-ask those Q-ids.
+   - Re-ask only blanks, bare `Z` without text, or clear contradictions.
+   - Prefer **`/to-spec`** when product scope is multi-slice; do **not** also invent a parallel long-lived decision file if the spec will hold the decisions.
+   - If this session continues as grill: only the **engineering residual** frontier. Cite closed questionnaire Q-ids; never restart product discovery.
+
+## Close gate (default: no new files)
+
+When we share understanding, **stop or offer implement** — **without** writing a decision document by default.
+
+### Default (same session / simple pin) — **no artifact**
+
+Use when any of these hold (usual case):
+
+- I will implement or keep working **in this chat**
+- Scope is a small eng pin, bug path, or few decisions already answered
+- Nothing needs another agent/session to re-read a file
+
+**Do:**
+
+1. Short chat recap (in/out scope + settled choices) — message only, not a repo file.
+2. Snippet rule scan **only if** the recap freezes code/SQL/templates (same checks as below); fix the snippet in the recap.
+3. High-risk list **only if** real blast-radius forks were decided; if I rubber-stamped, force explicit ack on those 2–3 only.
+4. Next: `/implement` in-session when I ask to build — implementer uses **this thread + code**, not a mandatory `decision-*.md`.
+
+**Do not:**
+
+- Create `.scratch/**/decision-*.md`, `docs/decisions/**`, or “archive for completeness”
+- Ask me whether to save/delete/archive the grill
+- Open `/to-spec` or Wayfinder just to have a place to put paper
+
+### Durable archive — **only when handoff needs it**
+
+Write a decision file **only if** at least one is true:
+
+- Work continues in **another session/agent** and I did not get a ticket/spec yet
+- Handing a **multi-slice** package into `/to-spec` and the settled table is too large to retype (prefer putting decisions **into the spec**, not a second rotting file)
+- An open **Wayfinder** ticket must record the resolution (write **on the ticket**, not a parallel doc)
+- I **explicitly** asked to archive
+
+If you write one:
+
+- Prefer tracker/ticket/spec body over a new `docs/decisions/` path
+- `.scratch/<feature>/decision-*.md` is local-only scaffolding; **do not** ask me to promote it; after `/to-spec` or implement merges, treat it as **non-authoritative** (do not reload by default)
+- Include: decision table, in/out scope, leftovers, TDD seams **in scope only**
+- Run snippet rule scan on any frozen code/SQL/templates:
+
+| Check | Fail if |
+|---|---|
+| Time API | raw `Instant.now()`, `new Date()`, `System.currentTimeMillis()` where project forbids them |
+| Auth context | `LoginContextHolder` (or equivalent) on unsafe paths (MQ, `@Scheduled`, raw executors) |
+| Module / layer | cross-module mapper grabs, wrong layer for the seam |
+| Iron laws | e.g. “notice failure must not roll back credit” violated by proposed txn shape |
+| Tests vs AC | AC asserts field copy / time / visibility but test strategy says “don’t test that surface” |
+
+Never freeze a sample the repo’s contract tests would reject.
+
+## Implement handoff (when I order build)
+
+Do not treat “grill done” as silent auth to push shared branches.
+
+### Bare `/implement` while frontier still open
+
+If I type `/implement` (or “直接做 / 开干”) **before** the frontier is empty:
+
+1. **Do not silently invent answers** for open A/B rows or unresolved alignment targets.
+2. **One short recap** of the last recommended table (or only the still-open rows) and ask for `按推荐` / diffs — **one message, then wait**.
+3. If I insist on building immediately **without** answering: implement **only** the settled, non-ambiguous rows; leave open poles as **blockers** in the done report. Prefer shipping order-number/prefix style pins over guessing pay-type/money口径.
+4. Never claim “code wins, no need to ask” to close an open decision so implement can start.
+
+### After shared understanding
+
+**Pick next hop** (do **not** default to “always `/to-spec` + `/prototype`”):
+
+| Settled | Next | Avoid |
+| --- | --- | --- |
+| Behavior AC enough; no UI or UI already has a design pin | Same-session `/implement` (or L2 if multi-slice) | Multi-variant `/prototype` |
+| Multi-slice / other session needs the package | `/to-spec` → `/to-tickets` → `/implement` | Chat-only handoff |
+| Only look-and-feel still open | `/prototype` → pin winner → implement or L2 | Prototype as pixel-perfect delivery |
+| Versioned high-fidelity pin already exists | Put pin on ticket/spec → `/implement` + UI fidelity evidence | Re-exploring variants against a settled pin |
+| Market / worth-doing still open | HEAVY PM | More grill as fake product discovery |
+
+1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s). For UI: name **design pin** or checklist-only waiver before implement.
+2. **`/tdd` (or project equivalent)** — Red → Green → Refactor at agreed seams. **Red evidence required** when claiming behavior change. Green on a **wrong AC** is failure, not progress — if a mid-slice fact flips the target, stop and re-open that frontier row instead of “fixing forward.” Matching grill recap while missing unlabeled PRD behavior is **wrong AC**.
+3. **`/code-review`** before commit (that skill picks **light** or **full**). Incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope). Same-surface lookalikes are blocking on UI chrome (`skills/code-review/SAME-SURFACE.md`). Spec / Slice review must dual-read product doc and session AC — unauthorized PRD partial cannot Pass. UI Fidelity worker only when that skill marks it in scope (pin or restyle).
+4. **Git** — follow repo push protocol.
+
+## Artifact hygiene (automatic — never ask me)
+
+- **Authoritative after ship:** code, tests, open tracker items, short invariants — not closed grill notes.
+- **Closed / delivered / resolved** tracker artifacts: do not load as “how to build now.”
+- **Process files** created only for handoff: after consume (spec written, ticket closed, or same-session implement done), stop citing them; delete or cold-ignore without prompting.
+- Conflicts between old process docs and code → **code wins** for *facts about what ships today*; do not interview me to reconcile docs.
+- **Do not misuse “code wins”** for *which value we should align to* when live code sources disagree — that is a frontier decision (see Conflict-fact table above).
+- **Do not misuse “code wins” or “grill AC wins”** to override an active product requirements doc. Product intent vs live code mismatch is either a deliberate migration (user-owned) or a gap to implement — not auto-resolution in the agent’s favor.
+
+## Keep it short
+
+- One frontier surface per turn (batch table = one round).
+- Do not re-read `/grilling` or this file every turn after first load.
+- Wayfinder: write the decision onto the ticket on close; do not demand re-paste of Destination / prior DECs.

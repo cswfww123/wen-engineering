@@ -110,7 +110,7 @@ Is intent good enough to code against?
 | --- | --- | --- |
 | Bug / clear AC / one eng slice | **L1** | `/implement` → done |
 | Settled multi-slice package | **L2** | `/to-spec` (Inventory) → `/to-tickets` → `/implement` → last-ticket prd-walk |
-| Few open decisions; *you* can answer this session | **G** | `/grill-me` → chat recap → `/implement` (archive/`/to-spec` only if handoff) |
+| Few open decisions; *you* can answer this session | **G** | `/grill-code` → chat recap → `/implement` (archive/`/to-spec` only if handoff) |
 | Answers live with PM/业务; 需求澄清会 or async form | **Q** | `/to-questionnaire` → fill → paste back → **`/to-spec`** (no re-confirm) |
 | Shipped wrong / mild Expected gap in coding context | **L3** | `/product-fog` → exactly one next (G / Q / L2 / L4 / stop / PM) |
 | Product OK; technical route needs many sessions | **L4** | try **G** first → else `/wayfinder` → map resolved → **L2** |
@@ -124,7 +124,7 @@ Map of steps (each flow is independent — pick one):
 ```text
 L1  clear work              →  /implement
 L2  multi-slice             →  /to-spec → /to-tickets → /implement
-G   same-session pin        →  /grill-me  →  chat recap  →  /implement (| archive → /to-spec if handoff)
+G   same-session pin        →  /grill-code  →  chat recap  →  /implement (| archive → /to-spec if handoff)
 Q   stakeholder questionnaire →  /to-questionnaire  →  fill  →  ingest  →  /to-spec
 L3  mild intent pin         →  /product-fog  →  one next skill
 L4  multi-session eng fog   →  /wayfinder  →  (resolved)  →  L2
@@ -164,7 +164,7 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
 
 ```text
 plan still fuzzy, but *you* own the decisions and one session can clear them
-  → /grill-me   (loads /grilling; domain-modeling only if terms truly change)
+  → /grill-code   (loads /grilling; domain-modeling only if terms truly change)
       frontier rounds: batch table + 推荐; facts first (non-blocking sub-agents)
       with a detailed PRD: residual / eng seams only; PRD scope cuts must be labeled 相对 PRD
       MVP in/out early; anti rubber-stamp on high-risk only
@@ -193,7 +193,7 @@ you are not the product/domain owner for open decisions
   → paste back: 问卷已填 + path
   → ingest: answered Q-ids are settled — do not re-confirm
   → default: /to-spec
-  → only if eng seams remain: short /grill-me on *those* only
+  → only if eng seams remain: short /grill-code on *those* only
 ```
 
 - **In:** PM/业务 holds answers; or you want a clarification-meeting agenda.
@@ -252,7 +252,7 @@ vague idea | unknown user | market bet | "should we build this?"
 no workbench yet
   → stack/repo shape known     → /setup-project first
   → only product goal (fuzzy)  → HEAVY PM first, then harness + L2
-  → stack choices open         → short /grill-me → /setup-project
+  → stack choices open         → short /grill-code → /setup-project
   → then daily work            → LIGHT from the chooser above
 ```
 
@@ -275,7 +275,8 @@ Support skills (compose under any flow): `/tdd`, `/simplify`, `/code-review`,
 | --- | --- |
 | `/to-spec` | `/to-prd` — existing `PRD.md` stays valid |
 | `/to-tickets` | `/to-issues` — existing `issues/` stays valid |
-| `/grill-me` | user entry; loads model-invoked `/grilling` |
+| `/grill-code` | coding same-session pin (LIGHT G); loads `/grilling` |
+| `/grill-me` | non-coding plan or idea; loads `/grilling`; no repo scan |
 
 Sync removes managed copies of fully retired command names; unmarked same-name
 skills in the canonical root block normal sync (`--force` backs them up first).
@@ -290,8 +291,9 @@ Common skills:
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` (extras) runs Matt `/implement` through one Executor per slice. Implementation process stays in `implement`.
-- `/grill-me` stress-tests an engineering plan (same-session pin); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room.
-- `/grilling` is the reusable interview loop: **frontier rounds** (`❓`/`➡️` format, dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, anti rubber-stamp, confirmation gate.
+- `/grill-code` stress-tests an engineering plan (same-session pin, LIGHT G); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room. Not Matt `/grill-with-docs`.
+- `/grill-me` stress-tests a **non-coding** plan, decision, or idea. Same `/grilling` loop; no codebase scan, no PRD deltas, no implement handoff.
+- `/grilling` is the reusable interview loop: **frontier rounds** (`❓`/`➡️` format, dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, confirmation gate. Coding-only rules (conflict facts, PRD, rubber-stamp, implement handoff) live on `/grill-code`.
 - `/wait-what` re-pitches the last message when it did not land (concise, domain language).
 - `/wizard` generates an interactive bash wizard for steps only a human can perform (credentials, dashboards, one-off cutovers).
 - `/to-questionnaire` turns stakeholder gaps into a meeting or async questionnaire (options + 推荐 + 手写); paste back → ingest without re-asking → default `/to-spec`.
@@ -358,8 +360,9 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 publish path. Mandatory **prd-walk** at PRD-sourced package close ([docs/prd-authority.md](docs/prd-authority.md)).
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked same-session plan pin (LIGHT G); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
-- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop: frontier rounds + batch tables, non-blocking facts, anti rubber-stamp, confirmation gate.
+- [`grill-code`](skills/grill-code/SKILL.md) — user-invoked same-session **coding** pin (LIGHT G); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
+- [`grill-me`](skills/grill-me/SKILL.md) — user-invoked **non-coding** interview (plan, decision, idea); loads `/grilling`; chat close only.
+- [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop shared by both grills: frontier rounds + batch tables, non-blocking facts, confirmation gate.
 - [`to-questionnaire`](skills/to-questionnaire/SKILL.md) — stakeholder questionnaire (options + 推荐 + 手写); filled answers settle without re-grill; default next `/to-spec` (LIGHT Q).
 - [`product-fog`](skills/product-fog/SKILL.md) — LIGHT intent pin in coding context; mini docket and one next route (not full PM).
 - [`wayfinder`](skills/wayfinder/SKILL.md) — thin multi-session map + short pastes; exit to `/to-spec` (see `CONTINUE.md`).
@@ -471,6 +474,8 @@ skills/
   domain-modeling/
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
+    SKILL.md
+  grill-code/
     SKILL.md
   grill-me/
     SKILL.md

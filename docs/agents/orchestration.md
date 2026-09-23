@@ -113,7 +113,7 @@ cause evidence + proposal text), not a diff. Full briefs:
 diagnosis / proposal frozen
   → Reviewer (root-cause-fit) + Reviewer (architecture)  [prefer other model]
   → optional Verifier
-  → user scopes MVP (/grill-me if open)
+  → user scopes MVP (/grill-code if open)
   → /implement  or  /to-spec → /to-tickets → /implement
 ```
 

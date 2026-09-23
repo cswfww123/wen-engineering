@@ -108,7 +108,7 @@ git pull --ff-only
 | --- | --- | --- |
 | Bug / 清晰 AC / 单一切片 | **L1** | `/implement` → 完成 |
 | 已 settled 的多切片包 | **L2** | `/to-spec`（Inventory）→ `/to-tickets` → `/implement` → 末票 prd-walk |
-| 少量开放决策，且**你本人**能同会话拍板 | **G** | `/grill-me` → 会话内收口 → `/implement`（跨会话才归档/`/to-spec`） |
+| 少量开放决策，且**你本人**能同会话拍板 | **G** | `/grill-code` → 会话内收口 → `/implement`（跨会话才归档/`/to-spec`） |
 | 答案在 PM/业务；需求澄清会或异步表单 | **Q** | `/to-questionnaire` → 填写 → 贴回 → **`/to-spec`**（不重确认） |
 | 已上线但不对 / coding 邻域 Expected 轻度缺口 | **L3** | `/product-fog` → 恰好一条下一跳（G / Q / L2 / L4 / 停 / PM） |
 | 产品 OK；技术路线需多会话 | **L4** | 先试 **G** → 否则 `/wayfinder` → 地图 resolved → **L2** |
@@ -122,7 +122,7 @@ git pull --ff-only
 ```text
 L1  清晰工作                →  /implement
 L2  多切片                  →  /to-spec → /to-tickets → /implement
-G   同会话钉住              →  /grill-me  →  会话收口  →  /implement（跨会话才归档 → /to-spec）
+G   同会话钉住              →  /grill-code  →  会话收口  →  /implement（跨会话才归档 → /to-spec）
 Q   干系人问卷              →  /to-questionnaire  →  填写  →  ingest  →  /to-spec
 L3  轻度意图钉              →  /product-fog  →  一条下一跳
 L4  多会话工程雾            →  /wayfinder  →  (resolved)  →  L2
@@ -162,7 +162,7 @@ bug | 清晰 AC | 纯工程切片
 
 ```text
 方案仍糊，但决策归你，且一会话问得清
-  → /grill-me   （加载 /grilling；仅术语真变时才 domain-modeling）
+  → /grill-code   （加载 /grilling；仅术语真变时才 domain-modeling）
       frontier 轮次：batch 表 + 推荐；事实优先（非阻塞 sub-agent）
       已有详细 PRD 时只烤 residual / 工程缝；相对 PRD 的缩 scope 必须标「相对 PRD」
       尽早 MVP 内外；反橡皮图章只压高风险
@@ -191,7 +191,7 @@ bug | 清晰 AC | 纯工程切片
   → 贴回：问卷已填 + 路径
   → ingest：已答 Q-id = settled — 不重确认
   → 默认：/to-spec
-  → 仅剩工程缝时：短 /grill-me，只烤那些
+  → 仅剩工程缝时：短 /grill-code，只烤那些
 ```
 
 - **入：** 答案在 PM/业务；或需要澄清会议程。
@@ -250,7 +250,7 @@ bug | 清晰 AC | 纯工程切片
 还没有工作台
   → 技术栈/仓库形态已知     → 先 /setup-project
   → 只有产品目标且仍模糊    → 先 HEAVY PM，再 harness + L2
-  → 技术栈选择仍开放        → 短 /grill-me → /setup-project
+  → 技术栈选择仍开放        → 短 /grill-code → /setup-project
   → 之后日常工作            → 按上方 LIGHT 选型
 ```
 
@@ -272,7 +272,8 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 | --- | --- |
 | `/to-spec` | `/to-prd` — 现有 `PRD.md` 仍有效 |
 | `/to-tickets` | `/to-issues` — 现有 `issues/` 仍有效 |
-| `/grill-me` | 用户入口；加载 model-invoked `/grilling` |
+| `/grill-code` | 编码同会话钉住（LIGHT G）；加载 `/grilling` |
+| `/grill-me` | 非编码计划或想法；加载 `/grilling`；不扫仓库 |
 
 同步会删除已退役命令的 managed copies；canonical skills 根下未标记的同名 skill
 会阻断普通同步（`--force` 先备份再处理）。
@@ -287,8 +288,9 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归；若顺带给出多步修复方案，先冻结 design packet，用现有 `Reviewer`（设计轴，宜换模型）对抗评审，见 `docs/agents/DESIGN-REVIEW-BRIEF.md`。
 - `/domain-modeling` 在设计决策结晶时锐化 glossary，并稀疏记录 ADR。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
-- `/grill-me` stress-test **工程** plan（同会话钉住）；加载 `/grilling`；仅术语真变时 domain-modeling；**默认会话内收口、不强制 decision 文件**。房间里不是决策人时路由到 `/to-questionnaire`。
-- `/grilling` 可复用访谈循环：**frontier 轮次**（`❓`/`➡️` 格式、按依赖批问，非串行微问题）、非阻塞事实 sub-agent、反橡皮图章、确认门。
+- `/grill-code` stress-test **工程** plan（同会话钉住，LIGHT G）；加载 `/grilling`；仅术语真变时 domain-modeling；**默认会话内收口、不强制 decision 文件**。房间里不是决策人时路由到 `/to-questionnaire`。不是 Matt `/grill-with-docs`。
+- `/grill-me` stress-test **非编码**计划、决策或想法。同一 `/grilling` 循环；不扫代码、不写 PRD delta、不交 `/implement`。
+- `/grilling` 可复用访谈循环：**frontier 轮次**（`❓`/`➡️` 格式、按依赖批问，非串行微问题）、非阻塞事实 sub-agent、确认门。冲突表、PRD、反橡皮图章、implement 交接只在 `/grill-code`。
 - `/wait-what` 在上一句没听懂时要求重讲（简洁 + 领域语言）。
 - `/wizard` 为人机只能点的流程生成交互式 bash 向导（凭证、控制台、一次性切换）。
 - `/to-questionnaire` 把干系人缺口变成会中议程或异步问卷（选项 + 推荐 + 手写）；贴回后 ingest、不重问 → 默认 `/to-spec`。
@@ -355,8 +357,9 @@ AI agents 会以很可预测的方式失败。
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 **发布**路径上。PRD 源包关单时强制 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `CONTEXT.md`，并在决策结晶时稀疏记录 ADR。
-- [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的同会话 plan pin（LIGHT G）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
-- [`grilling`](skills/grilling/SKILL.md) - model-invoked 访谈循环：frontier 轮次 + batch 表、非阻塞事实、反橡皮图章、确认门。
+- [`grill-code`](skills/grill-code/SKILL.md) - 用户调用的同会话**编码** pin（LIGHT G）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
+- [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的**非编码**访谈（计划、决策、想法）；加载 `/grilling`；只在会话里收口。
+- [`grilling`](skills/grilling/SKILL.md) - 两个 grill 共用的 model-invoked 访谈循环：frontier 轮次 + batch 表、非阻塞事实、确认门。
 - [`to-questionnaire`](skills/to-questionnaire/SKILL.md) - 干系人问卷（选项 + 推荐 + 手写）；填完不复烤，默认进 `/to-spec`（LIGHT Q）。
 - [`product-fog`](skills/product-fog/SKILL.md) - LIGHT 意图钉：编码邻域迷你 docket + 一条下一跳（非完整 PM）。
 - [`wayfinder`](skills/wayfinder/SKILL.md) - 多会话薄 map + 短 paste；结案后 `/to-spec`（见 `CONTINUE.md`）。
@@ -468,6 +471,8 @@ skills/
   domain-modeling/
     ADR-FORMAT.md
     CONTEXT-FORMAT.md
+    SKILL.md
+  grill-code/
     SKILL.md
   grill-me/
     SKILL.md

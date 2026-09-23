@@ -34,8 +34,8 @@ Default is LIGHT. Do not open PM, Wayfinder, or a multi-skill pipeline when `/im
 | Bug, clear AC, one eng slice | **L1** `/implement` | Open G, Q, L2, or L4 to look thorough |
 | Hard bug, no tight repro yet | `/diagnosing-bugs` first, then L1 if a fix is authorized | Hypothesise without a red loop |
 | Diagnosis produced a multi-step fix proposal | Freeze a design packet, pack `Reviewer` on design axes, then the user scopes MVP → `/implement` or L2 | Start coding inside the diagnosis |
-| Settled multi-slice (PRD, docs, chat AC, PM handoff) | **L2** `/to-spec` → `/to-tickets` → `/implement` | Full-product `/grill-me` |
-| A few decisions only you can close in this chat | **G** `/grill-me` (loads `/grilling`) | Write a decision file by default |
+| Settled multi-slice (PRD, docs, chat AC, PM handoff) | **L2** `/to-spec` → `/to-tickets` → `/implement` | Full-product `/grill-code` |
+| A few decisions only you can close in this chat | **G** `/grill-code` (loads `/grilling`) | Write a decision file by default |
 | The answers sit with someone else, or a clarification meeting | **Q** `/to-questionnaire` → paste back → `/to-spec` | Grill the subject you cannot answer; re-ask filled answers |
 | Already shipped, or "not quite what I meant" | **L3** `/product-fog` → exactly one next hop | Market discovery |
 | Product settled, technical route needs more than one session | **L4** `/wayfinder`, then L2 when the map is resolved | Try L4 before G if one interview would clear it |
@@ -49,7 +49,7 @@ Default is LIGHT. Do not open PM, Wayfinder, or a multi-skill pipeline when `/im
 
 A named product doc (`docs/requirements/*`, `docs/prd/*`, or a doc the user treats as the PRD) is the product baseline.
 
-- Multi-slice → **L2**, not a full grill. `/grill-me` only for residual poles: two PRD rows that cannot both be true, a term that does not map to a live column, an eng seam the PRD does not own.
+- Multi-slice → **L2**, not a full grill. `/grill-code` only for residual poles: two PRD rows that cannot both be true, a term that does not map to a live column, an eng seam the PRD does not own.
 - A recommendation that narrows or changes PRD behavior must be labeled `相对 PRD` and classed `doc-change` or `eng-read`. Unlabeled `按推荐` does not override the PRD.
 - **按原文** / revoke a delta → **L3** `/product-fog`, re-open only those ids. Do not re-grill the package.
 - `/to-spec` must publish a PRD Inventory before `accepted`. `/to-tickets` must put every `REQ` `SRC` in some ticket `Covers` before publish. `Supports` is not coverage.

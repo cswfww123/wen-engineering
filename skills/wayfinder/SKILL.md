@@ -14,7 +14,7 @@ Wayfinder is **planning** by default: each ticket resolves a decision, and the m
 
 ## Prefer not to open a map
 
-Before Charting, ask whether **one same-session `/grill-me`** (or straight `/to-spec` on settled docs) would clear the fog. Open Wayfinder only when decisions truly need **multiple sessions** or a shared frontier. A thick PRD + a few open trade-offs is usually **G then L2**, not L4.
+Before Charting, ask whether **one same-session `/grill-code`** (or straight `/to-spec` on settled docs) would clear the fog. Open Wayfinder only when decisions truly need **multiple sessions** or a shared frontier. A thick PRD + a few open trade-offs is usually **G then L2**, not L4.
 
 ## Refer by name
 
@@ -87,7 +87,7 @@ Every ticket is either **HITL** — human in the loop, worked *with* a human who
 - **Grilling** (HITL): Conversation via the /grilling and /domain-modeling skills. **Only for decisions a human must own.** Prefer **frontier-round batch/diff grill** for tables and mapping rows (recommended frontier set; human replies with diffs only). One *decision surface* per turn, not one micro-row per turn when a recommended table exists.
 - **Task** (HITL or AFK): Manual work that must happen before a *decision* can be made — nothing to decide, prototype, or research, but the discussion is blocked until it's done (access, sample data, **production path verification**). Resolved when the work is done; the answer records resulting facts later tickets depend on.
 
-**Discipline bias:** if the codebase, production config, or primary docs can satisfy the Resolution Signal, use `research` or `task` — **not** `grill-me`. HITL is expensive; default thin.
+**Discipline bias:** if the codebase, production config, or primary docs can satisfy the Resolution Signal, use `research` or `task` — **not** `grill-code`. HITL is expensive; default thin.
 
 ## Fog of war
 
@@ -123,9 +123,9 @@ Human pastes should stay **short** — see [CONTINUE.md](CONTINUE.md). The agent
 User invokes with a loose idea (or `/wayfinder` + brief goal).
 
 1. **Name the destination.** Prefer a short confirmation of Destination from user materials; use `/grilling` only if Destination itself is ambiguous. Destination fixes scope — **one product/engineering outcome**, not a second architecture epic unless the user insists.
-2. **Map the frontier** breadth-first. **If no multi-session fog** — stop; recommend `/grill-me` or `/to-spec` instead of a map.
+2. **Map the frontier** breadth-first. **If no multi-session fog** — stop; recommend `/grill-code` or `/to-spec` instead of a map.
 3. **Create the map** with Destination, compact Notes (tracker root, domain, skills), empty Decisions, fog in **Not yet specified**, and an initial **Session handoff** block.
-4. **Create only tickets you can specify now** — **Chart budget: ≤5 open tickets** on first publish. Wire blocking in a second pass. Everything else stays fog. Prefer `research`/`task` over `grill-me` when possible.
+4. **Create only tickets you can specify now** — **Chart budget: ≤5 open tickets** on first publish. Wire blocking in a second pass. Everything else stays fog. Prefer `research`/`task` over `grill-code` when possible.
 5. **Fire research subagents** immediately for every `research` ticket (parallel). Capture findings and close AFK research when the Resolution Signal is met **in this Chart session** when cheap — do not leave pure fact-gathering as HITL homework.
 6. **End Chart with one-line pastes** for the human (next Resolve / optional AFK burn-down). Do **not** hand-resolve HITL tickets in the Chart session unless the user explicitly continues into Resolve.
 
@@ -151,7 +151,7 @@ Local markdown: map path is `.scratch/<slug>/WAYFINDER.md`; children live under 
 
 1. Read **Session handoff**; pick frontier ticket (user-named or first unblocked open).
 2. **Claim** map + ticket before work.
-3. Resolve by discipline (`research` subagent / `task` / `/grill-me` batch-diff / `prototype`). Zoom related closed tickets **only on demand**.
+3. Resolve by discipline (`research` subagent / `task` / `/grill-code` batch-diff / `prototype`). Zoom related closed tickets **only on demand**.
 4. Record resolution; close ticket; append named gist to Decisions so far; update **Session handoff** (`next_paste`, frontier).
 5. Graduate fog only when now sharp; rule mis-scoped tickets out of scope; fix invalidated tickets.
 
@@ -186,7 +186,7 @@ Never ask the human to re-paste Destination, iron rules, or full ticket bodies.
 
 ## WEN additions
 
-- Routing: LIGHT L4 in `docs/lifecycle.md`. Prefer same-session `/grill-me` when one interview would clear the fog. **Never invent** Expected / market / user value; **never implement the destination** (disposable `/prototype` only when the ticket authorizes it).
+- Routing: LIGHT L4 in `docs/lifecycle.md`. Prefer same-session `/grill-code` when one interview would clear the fog. **Never invent** Expected / market / user value; **never implement the destination** (disposable `/prototype` only when the ticket authorizes it).
 - Tracker ops: resolve the issue-tracker doc via the harness pointer from `/setup-project` (not a hard-coded path). Default without harness: **local-markdown** under `.scratch/`. Field shapes: [TEMPLATES.md](TEMPLATES.md). Fog extract: [FOG.md](FOG.md) (must not contradict this file). Short pastes: [CONTINUE.md](CONTINUE.md).
 - Prefer checkable **Resolution Signal** on each ticket. Full answer in the resolution comment; map only gets a named gist.
 - Claim map/ticket before work when the adapter supports it; release claims on stop. `/research` and `/prototype` return evidence only — Wayfinder owns comments, closure, and map updates.

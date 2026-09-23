@@ -141,7 +141,7 @@ rate limit”, etc.):** do **not** treat that proposal as approved. Parent freez
 pack **`Reviewer`** on design axes — preferably a **different model** than the
 one that wrote the plan — then optional **`Verifier`**. Briefs:
 [docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md).
-User scopes MVP (`/grill-me` if open) before `/implement` or `/to-spec`. Skip this
+User scopes MVP (`/grill-code` if open) before `/implement` or `/to-spec`. Skip this
 gate only for a single, evidence-tight bounded fix the user already authorized.
 
 Write the regression test **before the fix** — but only if there is a **correct seam** for it.

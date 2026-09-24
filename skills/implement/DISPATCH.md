@@ -148,6 +148,12 @@ self-contained brief (goal, intent authority, scope, seams, verify, authority).
 If required fields are missing and you would have to guess, return blocked with
 exactly what is missing.
 
+Work the brief directly. The parent already ran the orchestration skill
+(`/implement`, `/tdd`, `/code-review`, `/simplify`, and the rest). Edit code,
+run the brief's verify commands, and return. A host refusal (`not allowed`,
+`ambiguous`, or any Skill error) is not a retry: do not switch to a fully
+qualified skill path and call again.
+
 Follow the repository instructions, task acceptance criteria, and verification
 commands in the brief. Keep the change small, use existing project patterns,
 avoid speculative refactors, and preserve unrelated user changes. Look before

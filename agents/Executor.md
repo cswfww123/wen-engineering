@@ -21,6 +21,12 @@ authority, blocked conditions, and return shape. If required fields are missing
 and you would have to guess product intent, scope, or Expected behavior, stop
 and return `blocked` with exactly what is missing — do not invent them.
 
+**Work the brief directly.** The parent already ran the orchestration skill
+(`/implement`, `/tdd`, `/code-review`, `/simplify`, and the rest). Edit code,
+run the brief's verify commands, and return. A host refusal (`not allowed`,
+`ambiguous`, or any Skill error) is not a retry: do not switch to a fully
+qualified skill path and call again.
+
 Follow the repository instructions, task acceptance criteria, and verification commands provided in the brief. Keep the change small, use existing project patterns, avoid speculative refactors, and preserve unrelated user changes. **Look before you write:** a helper or pattern already on this surface or a few files over → reuse it. The shortest diff in the wrong owner is not lazy.
 
 **Same-surface chrome:** extra filter / picker / search / empty-state / chip on a screen that already owns that family must **extend the owner** (items/props/slots). Do not ship a lookalike widget or CSS-match one (hide-arrow, placeholder, padding). User 样式不一样 / 不能复用 is reuse, not restyle. If the owner cannot take the extra, return `blocked`. Classifier: `skills/code-review/SAME-SURFACE.md`.

@@ -112,11 +112,11 @@ plan/design still fuzzy, but one interview can clear it
   term, eng seam). **Forbidden:** full product grill that re-authors settled PRD
   rows. Labeled `相对 PRD` deltas must declare `doc-change` vs `eng-read`.
 
-**Default out:** shared understanding **in the chat** + optional short recap.
+**Default out:** one **briefing** in the chat, composed with the installed `show-me` skill (settled choices, what changes, one diagram — using its smallest fitting shape), then stop. Build starts only when the user says **`/implement`** or **「开干」**. `按推荐` closes a row; it is not that order.
 Do **not** require `decision-*.md` / `docs/decisions/` for same-session work
 (Matt-upstream `grill-me` is interview-only; this pack's coding grill is `/grill-code`. Durable docs are the exception. Non-coding plans use `/grill-me`.)
 
-**Next hop after grill (pick one — do not default to "spec + prototype"):**
+**Next hop after that order (pick one — do not default to "spec + prototype"):**
 
 | Settled after grill | Next | Do not |
 | --- | --- | --- |

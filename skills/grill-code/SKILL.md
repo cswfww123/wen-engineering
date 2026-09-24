@@ -63,22 +63,19 @@ Binding rules:
 
 ## Close gate (default: no new files)
 
-When we share understanding, **stop or offer implement** — **without** writing a decision document by default.
+The frontier is empty only when every row is answered — `按推荐` or a diff — and no pole is still open. `按推荐` closes that row. It is not an order to build.
 
-### Default (same session / simple pin) — **no artifact**
+Then complete a **show-me briefing** using the installed `show-me` skill and **end the turn**. Read that skill's current guidance before composing the briefing; do not treat the briefing as implementation authorization:
 
-Use when any of these hold (usual case):
+1. Settled choices, in scope, and explicitly out — prose, short.
+2. What will change: a shape-matched `diff` when the surrounding shape already exists; a shallow file tree when the point is which files move. Name real paths.
+3. One diagram of the architecture or the flow the change sits in — Mermaid for control flow, data flow, or component interaction; a call tree or pseudocode when that is smaller. Skip the diagram only when the change is a single local edit with no flow to show.
+4. Snippet rule scan **only if** the briefing freezes code/SQL/templates (same checks as below); fix the snippet in the briefing.
+5. The last line is the wait: build starts when I say **`/implement`** or **「开干」**.
 
-- I will implement or keep working **in this chat**
-- Scope is a small eng pin, bug path, or few decisions already answered
-- Nothing needs another agent/session to re-read a file
+Completion of this step is a `show-me`-shaped briefing in the same message, with no production edit after it. The next message is mine.
 
-**Do:**
-
-1. Short chat recap (in/out scope + settled choices) — message only, not a repo file.
-2. Snippet rule scan **only if** the recap freezes code/SQL/templates (same checks as below); fix the snippet in the recap.
-3. High-risk list **only if** real blast-radius forks were decided; if I rubber-stamped, force explicit ack on those 2–3 only.
-4. Next: `/implement` in-session when I ask to build — implementer uses **this thread + code**, not a mandatory `decision-*.md`.
+Same-session work needs no decision file. The implementer reads **this thread**.
 
 **Do not:**
 
@@ -112,13 +109,15 @@ If you write one:
 
 Never freeze a sample the repo’s contract tests would reject.
 
-## Implement handoff (when I order build)
+## Implement handoff (only after I say `/implement` or 「开干」)
 
-Do not treat “grill done” as silent auth to push shared branches.
+The briefing is not the order. Production edits start only when my **next** message says **`/implement`** or **「开干」**. Anything else — including `按推荐` on the last open row — stays on the grill. “Grill done” is not auth to push a shared branch.
+
+Load `/implement` and follow it. It reads this thread, not a decision file.
 
 ### Bare `/implement` while frontier still open
 
-If I type `/implement` (or “直接做 / 开干”) **before** the frontier is empty:
+If I type `/implement` (or 「开干」) **before** the frontier is empty:
 
 1. **Do not silently invent answers** for open A/B rows or unresolved alignment targets.
 2. **One short recap** of the last recommended table (or only the still-open rows) and ask for `按推荐` / diffs — **one message, then wait**.

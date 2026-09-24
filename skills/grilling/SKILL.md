@@ -21,7 +21,7 @@ Each round the user answers reshapes the tree — settled decisions push the fro
 
 Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, and — only on a `/grill-code` session — code, schema, tests, ADRs), dispatch a sub-agent to find it — don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report — ask the rest of the frontier now. The _decisions_ are the user's — put each to them and wait.
 
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding. Same-session work needs no decision file. Parents own anything durable: `/grill-me` stays in chat; `/grill-code` archives only for cross-session handoff; wayfinder writes the ticket.
+The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. `/grill-me` then recaps in chat and stops. `/grill-code` then posts its briefing (settled choices, the change, one diagram) and stops until the user says `/implement` or 「开干」. Same-session work needs no decision file. Parents own anything durable: `/grill-me` stays in chat; `/grill-code` archives only for cross-session handoff; wayfinder writes the ticket.
 
 ## Which parent
 

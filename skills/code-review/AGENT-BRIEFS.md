@@ -6,7 +6,7 @@ Use these prompts as written with the orchestration ladder in `docs/agents/orche
 
 **Not for design/plan review.** After diagnosis, multi-step fix proposals use the same `Reviewer`/`Verifier` roles with a design packet — see [docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md). This file remains **code-delta** axes only.
 
-Preferred execution: spawn only the workers **Pick weight** in [SKILL.md](SKILL.md) names. **Light** — one Slice Reviewer; Verifier only if that Reviewer filed candidates. **Full** — parallel Standards, Spec/Intent, Correctness; plus UI Fidelity when the packet marks it in scope; Performance/Security/Ponytail when warranted; then Verifier. Fallback: sequential briefs in the parent. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
+Preferred execution: spawn only the workers **Pick weight** in [SKILL.md](SKILL.md) names. **None** — spawn nothing; the implement test loop is the gate. **Light** — one Slice Reviewer; Verifier only if that Reviewer filed candidates. **Full** — parallel Standards, Spec/Intent, Correctness; plus UI Fidelity when the packet marks it in scope; Performance/Security/Ponytail when warranted; then Verifier even when candidates are `none`. A serializer annotation on an existing field is `none`, not `full`. Fallback: sequential briefs in the parent. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
 
 ## Slice Reviewer
 

@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a diff since a fixed point. Picks light (one Slice Reviewer) or full (Standards/Spec/Correctness, plus UI Fidelity when a pin or restyle exists). Use when reviewing a branch, PR, implement slice, or "review since X".
+description: Review a diff since a fixed point. Picks none (skip; simple fix), light (one Slice Reviewer), or full (Standards/Spec/Correctness plus Verifier). Use when reviewing a branch, PR, implement slice, or "review since X".
 ---
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
@@ -93,7 +93,7 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 
 Present the reports under `## Standards`, `## Spec`, and (when run) `## Correctness` / `## UI Fidelity` / other extra-axis headings, verbatim or lightly cleaned. Do **not** merge or rerank findings across axes (see _Why two axes_).
 
-End with a one-line summary: **review-weight**, total findings per worker, the
+End with a one-line summary: **review-weight** (`none` | `light` | `full`), total findings per worker, the
 worst issue _within each heading_ (if any), **incomplete-surface**: `clean` |
 findings | `n/a`, **same-surface** when chrome changed (`owner-extended` |
 `new-no-sibling` | findings | `n/a`), and **ui-fidelity** when that axis ran
@@ -123,31 +123,37 @@ review.
 
 ### Pick weight
 
-Record **`review-weight`**: `light` | `full`. This table is the only owner of
-which workers run.
+Record **`review-weight`**: `none` | `light` | `full`. This table is the only
+owner of which workers run. The size of the change picks the weight. Do not
+upgrade a small fix because a risk word can be stretched to fit the diff.
 
-| Default | When |
-| --- | --- |
-| **light** | `/implement` of a bounded slice |
-| **full** | standalone `/code-review` of a branch, PR, or named range |
+| Weight | When | Workers |
+| --- | --- | --- |
+| **none** | Simple fix: one existing behavior, localized to an existing seam (annotation, guard, copy, test pin, one query tweak). No new module, screen, endpoint, schema, or migration. | Do **not** start review. No Reviewer, no Verifier. The implement test loop is the gate. |
+| **light** | Medium fix: one ticket or slice that changes control flow or touches several production files, but is not a new capability. Default when it is neither clearly simple nor a large requirement. | One Slice Reviewer. **Verifier only if** that reviewer filed a candidate. |
+| **full** | Large requirement: a new capability, a multi-slice feature, or frontend and backend with distinct new control flow. Also when the user explicitly asks for a full review of a branch, PR, or named range. | Parallel Standards + Spec + Correctness (plus UI Fidelity / Performance / Security / Ponytail only when this skill already marks them in scope). Then **Verifier always**, even when candidates are `none`. |
 
-**Escalate light → full** when **any** of these is true:
+**Do not escalate** a simple fix to `full`. These stay **`none`**:
 
-- New or restyled user-visible chrome, or a design pin exists to compare
-- Money, authz, tenant isolation, state machine, dual-write, migration, or wire/protocol rename
-- External / async / webhook / MQ / third-party path (forensic logs apply)
-- Frontend and backend in one slice, or more than two production modules with distinct control flow
+- A serializer or annotation on an existing field (`@JsonSerialize`, JSON number→string) when the field name, path, and message name stay the same. That is not a wire/protocol rename.
+- A test pin, a copy change, or deleting an unused untracked experiment.
+- The words "wire", "protocol", "audit JSON", or "money" appearing in the discussion when the diff itself does not change money math, an authz decision, a tenant boundary, a state machine, or a schema.
 
-Visibility, default, enablement, or copy of **existing** chrome — no pin, no
-restyle — stays **light**. A **new** widget beside an existing owner of the
-same family is not "existing chrome"; light Slice still applies
-[SAME-SURFACE.md](SAME-SURFACE.md).
+**Raise `none` → `light`** (not to `full`) when the small diff still changes money math, an authz decision, tenant isolation, a state machine transition, a dual-write, or a migration. Those are medium even when the diff is short.
+
+**Raise `light` → `full`** only when the slice is actually a large requirement: new or restyled user-visible chrome, a design pin to compare, a new external/async/webhook/MQ path, or more than two production modules with distinct new control flow.
+
+Visibility, default, enablement, or copy of **existing** chrome — no pin, no restyle — stays **light** (or **none** when it is a one-line copy fix). A **new** widget beside an existing owner of the same family is not "existing chrome"; it stays **light** and still applies [SAME-SURFACE.md](SAME-SURFACE.md). It does not by itself justify `full`.
 
 ### Hard-try Reviewer / Verifier
 
 **Before** step 5 Aggregate, load [DISPATCH.md](DISPATCH.md). Spawn only the
 workers this weight names. Prefer pack `Reviewer` / `Verifier`; else host
 `general-purpose` with [AGENT-BRIEFS.md](AGENT-BRIEFS.md).
+
+**`none`:** spawn nothing. Do not Aggregate. The caller records
+`review-weight: none` and a one-line reason, then stops. A skipped review is
+not a `Pass`.
 
 **Light**
 
@@ -177,15 +183,16 @@ workers this weight names. Prefer pack `Reviewer` / `Verifier`; else host
    optional `DESIGN.md`, screenshot and/or checklist. Missing pin without
    waiver, or no evidence while claiming fidelity, **blocks** `Pass`.
    Otherwise `ui-fidelity: n/a`.
-3. After candidates: **must try** `Verifier`. Keep findings at confidence
-   `>=80`. Incomplete surface (including quiet path / log-unsafe),
-   same-surface lookalikes, and in-scope UI Fidelity fail / missing evidence
-   **block** `Pass`.
+3. After candidates: **must try** `Verifier` at **full** only. `none` never
+   spawns Verifier. A clean **light** slice (no candidate filed) does not
+   spawn Verifier. Keep findings at confidence `>=80`. Incomplete surface
+   (including quiet path / log-unsafe), same-surface lookalikes, and in-scope
+   UI Fidelity fail / missing evidence **block** `Pass`.
 
 Matt step 4 (two parallel axes) applies to **full**. Light uses the single
 Slice Reviewer instead.
 
-**Verifier briefs (both weights):** paste each candidate with file:line and
+**Verifier briefs (`light` with a candidate, or `full`):** paste each candidate with file:line and
 evidence. When Reviewers filed none, write `none`. The brief is candidates +
 fixed point — not a verdict, and not a pre-waived evidence bar.
 
@@ -217,7 +224,7 @@ one Reviewer (or host-general) attempt → process-bug. Do not report a clean
 - **Same-surface:** a parallel widget for a family the same screen already
   owns blocks `Pass` on light and full. Hide-arrow / padding CSS is evidence
   of a lookalike, not a fix.
-- Final report **must** include **`review-weight`**: `light` | `full`,
+- Final report **must** include **`review-weight`**: `none` | `light` | `full`,
   **`agents used`** (Reviewer / Verifier / host-general / parent-fallback per
   worker), and **incomplete-surface**: `clean` | findings | `n/a` (docs-only),
   and **observability** when the diff touches applicable paths. When a product

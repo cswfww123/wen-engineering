@@ -19,6 +19,18 @@ partial against a `Covers` SRC (`docs/prd-authority.md` §4). If this is the las
 open ticket of a PRD-sourced spec, `/implement` must run prd-walk before the
 parent can be called delivered.
 
+## Close When Done
+
+When the slice is done (AC met, review weight applied, no incomplete surface,
+no leftover 残差 on a `Covers` SRC), close **this** ticket before the Done
+report. Comment acceptance, verification, review weight and verdict, and the
+commit link; close; read the issue back. The read-back must show `closed`.
+Leaving a finished ticket open is a process bug — the queue then looks undone.
+
+Do not close a parent spec, a ticket this run did not finish, or a ticket that
+failed review, prd-walk, or the honest-complete check. A stopped slice stays
+open and the Done report says why.
+
 ## Bug-Report Conversion
 
 Never select a `bug-report` from a frontier. When the user explicitly names one, use the adapter's intake-conversion protocol: read it, claim it for conversion, and re-read ownership. Search exact `Origin` fields and its `Converted to` pointer before creating anything; reuse an existing replacement. If it is a runnable ticket, finish any missing report pointer/read-back and claim that ticket normally. If it is a spec or another non-runnable artifact, report the canonical route and stop. When claiming is not atomic or workers share one identity, convert serially.

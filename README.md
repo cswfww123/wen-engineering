@@ -139,7 +139,7 @@ bug | clear AC | pure eng slice
       (hard bug first: /diagnosing-bugs)
   → evidence loop (TDD or GREEN baseline)
   → /simplify when non-trivial
-  → project checks → /code-review (light or full) → done
+  → project checks → review by size (none | light | full) → done
 ```
 
 - **In:** enough AC or a single ticket; no invented product value.
@@ -288,7 +288,7 @@ Common skills:
 
 - `/alignment-review` optional audit of unreviewed specs/tickets (handoff / no human graph approval); default L2 uses `/to-tickets` pre-publish gate. **Mandatory prd-walk** at PRD-sourced package close (last ticket / “已按 PRD 实现”) against the original product doc.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
-- `/code-review` independently reviews a fixed delta. **light** (default on `/implement` slices): one Slice Reviewer. **full** (standalone branch/PR, or escalate): intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
+- `/code-review` independently reviews a fixed delta. **none** (simple fix: annotation, guard, copy, test pin): skip review. **light** (medium slice): one Slice Reviewer; Verifier only if it filed a candidate. **full** (large requirement, or an explicit branch/PR review): intent, correctness, standards, then Verifier always; UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` (extras) runs Matt `/implement` through one Executor per slice. Implementation process stays in `implement`.
@@ -372,15 +372,15 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`to-design-md`](skills/to-design-md/SKILL.md) — optional frontend visual identity: extract or synthesize a lintable `DESIGN.md` (Google Labs format) agents reapply on UI work.
 - [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements (PRD Inventory required when the source is a product doc).
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
-- [`implement`](skills/implement/SKILL.md) — implements a spec or ticket in this pack: TDD at pre-agreed seams, then `/code-review`, then commit.
-- [`implement-spec`](skills/implement-spec/SKILL.md) — implements a whole spec on the current branch: ticket frontier, one local worktree per ticket, merge back, `/code-review`, then delete those worktrees and branches. No new branch, PR, or push unless the user asks.
+- [`implement`](skills/implement/SKILL.md) — implements a spec or ticket in this pack: TDD at pre-agreed seams, then review by size (`none` skips, `light`, or `full`), then commit. A finished tracked ticket is closed in the same run and read back as closed.
+- [`implement-spec`](skills/implement-spec/SKILL.md) — implements a whole spec on the current branch: ticket frontier, one local worktree per ticket, merge back, close each finished ticket, `/code-review`, then delete those worktrees and branches. No new branch, PR, or push unless the user asks. The parent spec stays open until its own closeout rule passes.
 - [`tdd`](skills/tdd/SKILL.md) — red → green at pre-agreed seams (Matt base).
 - [`handoff`](skills/handoff/SKILL.md) — writes a compact handoff document for a fresh agent, saved outside the repo.
 - [`triage`](skills/triage/SKILL.md) — moves issues through triage roles and writes agent-ready briefs. Same scope as upstream.
 - [`ask-process`](skills/ask-process/SKILL.md) — routes a situation to a skill or flow in this pack (L1–L4, G, Q, PRD, design pin).
 ### Review And Quality
 
-- [`code-review`](skills/code-review/SKILL.md) — reviews diffs. **light** (default on `/implement` slices): one Slice Reviewer (AC, extra hunks, broken paths, incomplete surface, same-surface chrome). **full**: intent, correctness, standards, plus UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
+- [`code-review`](skills/code-review/SKILL.md) — reviews diffs. **none** (simple fix): no Reviewer. **light** (medium slice): one Slice Reviewer (AC, extra hunks, broken paths, incomplete surface, same-surface chrome); Verifier only if it filed a candidate. **full** (large requirement or explicit branch/PR review): intent, correctness, standards, then Verifier; UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md) — diagnoses bugs and performance regressions by building a feedback loop before changing code.
 - [`simplify`](skills/simplify/SKILL.md) — behavior-preserving cleanup of non-trivial diffs (reuse, altitude). In this pack.
 

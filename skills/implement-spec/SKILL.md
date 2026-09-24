@@ -24,12 +24,12 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 4. Use **implementer subagents** to implement each ticket. Each implementer subagent works in its own **local** worktree, on its own **local** branch. Those branches must not be pushed to any remote. Name them so cleanup can find them (for example `worktree/<ticket>`).
 
-5. Once an **implementer subagent** completes, merge its work into the current branch with a **merger subagent**. Merge locally only.
+5. Once an **implementer subagent** completes, merge its work into the current branch with a **merger subagent**. Merge locally only. Then close **that ticket** if its acceptance criteria are met and it has no leftover 残差 / 下张票收口 / partial on a `Covers` SRC. Comment the commit (or merge) link and the verification result, close it, and read it back. A merged ticket that stays open looks undone. Do not close a ticket whose slice is unfinished, and do not close the parent spec here.
 
 6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
 
 7. Once all tickets are complete, run /code-review on the current branch. Fix all issues raised by the code review in a single **implementer subagent**, then merge that fix back the same way.
 
-8. Commit the finished work on the current branch if it is not already committed. Stop there. A PR or a push happens only when the user explicitly asks.
+8. Commit the finished work on the current branch if it is not already committed. Confirm every finished implementation ticket from this run is **closed** and was read back as closed. Close any that were merged but left open. Leave a ticket open only when its slice is unfinished, and say which. Do not close the parent spec unless every in-scope child is closed and the spec's own closeout rule (`docs/agents/issue-tracker.md`) passes — including prd-walk when this is a PRD-sourced package. A PR or a push happens only when the user explicitly asks.
 
 9. Clean up every worktree and local branch this run created. `git worktree remove` each one, then `git branch -D` its branch. Do not leave them for the user. Do not delete `master`, `test`, `develop`, `main`, the current branch, or any branch you did not create in this run. Do not delete remote branches.

@@ -11,9 +11,12 @@ the host's general multi-step / subagent tool with the system text below.
 | Moment | Worker | Soft-fail |
 | --- | --- | --- |
 | Non-trivial code edit, TDD green loop, simplify, verification fixes | **Executor** | host general → **parent** |
-| `/code-review` axes | **Reviewer** (per that skill) | parent + code-review briefs |
-| After review candidates | **Verifier** (via `/code-review`) | parent |
+| `/code-review` axes (`light` or `full` only) | **Reviewer** (per that skill) | parent + code-review briefs |
+| After review candidates (`full` always; `light` only if a candidate was filed) | **Verifier** (via `/code-review`) | parent |
 | Authorized post-review fix list | **Executor** | host general → parent |
+
+**`review-weight: none`** (simple fix): do not dispatch Reviewer or Verifier.
+The evidence loop is the gate.
 
 **Hard try:** if the host can spawn any subagent / multi-step worker, you **must
 attempt** spawn before parent bulk-edits. Skipping spawn without an attempt is a
@@ -21,8 +24,9 @@ process bug. Missing role names → still try host general with the brief. Never
 abort the skill because a pack agent file is missing.
 
 **Parent only keeps:** find-work, tracker claim/state, route, HITL, final Done
-report, commits (when authorized). Parent may do pure research/explore and
-tiny one-line mechanical edits when cheaper.
+report, commits (when authorized), and **closing the ticket when the slice is
+done**. Parent may do pure research/explore and tiny one-line mechanical edits
+when cheaper. A finished ticket left open is a process bug.
 
 ## Executor brief quality
 

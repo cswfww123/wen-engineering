@@ -10,7 +10,7 @@ Use /tdd where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
-Once done, use /code-review to review the work.
+Once done, pick a review weight from `/code-review` **Pick weight** and follow it. Simple fixes (`none`) skip `/code-review`. Medium fixes use light review. Large requirements use full review, which includes Verifier.
 
 Commit your work to the current branch.
 
@@ -111,9 +111,23 @@ that never dispatches.
 
 ### 3. Review
 
-1. Record a review fixed point that isolates this ticket/task delta.
-2. Run `/code-review` against that fixed point. That skill picks **light** or
-   **full** and names the workers — do not spawn four axes on a light slice.
+Pick **`review-weight`** from `/code-review` **Pick weight** before spawning
+anyone. Size, not a stretched risk word, decides:
+
+| Weight | Do |
+| --- | --- |
+| **none** | Do not run `/code-review`. Do not spawn a Reviewer or a Verifier. Record `review-weight: none` plus one sentence naming the seam (for example "existing-field serializer annotation"). The test loop above is the gate. Then commit when authorized. |
+| **light** | One Slice Reviewer. Verifier only if that reviewer filed a candidate. |
+| **full** | Full `/code-review`, then Verifier even when candidates are `none`. |
+
+A serializer or annotation that keeps the field name, path, and message name
+is **`none`**. Do not call that a wire/protocol rename.
+
+1. Record a review fixed point that isolates this ticket/task delta. Skip this
+   step when weight is `none`.
+2. Run `/code-review` against that fixed point only when weight is `light` or
+   `full`. That skill names the workers — do not spawn four axes on a light
+   slice, and do not spawn Verifier on a clean light slice or on `none`.
    Pass the **product baseline path** and any **accepted PRD deltas** into
    intent evidence — not grill-only AC. When UI Fidelity is in scope, pass
    **design pin + fidelity evidence paths**. On **light**, if existing chrome
@@ -148,6 +162,38 @@ After the commit, `git status` is clean except files declared unrelated before
 the commit (e.g. local `.scratch/`). Uncommitted leftovers of reverted hunks
 fail Done — do not report a clean slice.
 
+### 5. Close the ticket
+
+When this run implemented a tracked ticket and the work is actually done,
+**close that ticket in the same run**. An open ticket after a finished slice
+reads as "not done". Do this after the commit (or after the authorized
+uncommitted delta, when commit was not granted), and after the review weight
+for this slice has been applied (`none` recorded, or `light`/`full` verdict
+`Pass`).
+
+Done means all of these:
+
+- the ticket's acceptance criteria are met
+- the required review weight was applied
+- no incomplete production surface remains for the claimed AC
+- the ticket body does not still list 残差 / 下张票收口 / partial for a `Covers` SRC
+
+Close through the configured tracker (see `docs/agents/issue-tracker.md` when
+that is the adapter). Comment with the acceptance result, the verification
+command and result, the review weight and verdict, and the commit link. Then
+close the issue and **read it back**. Done is invalid if the read-back still
+shows `open`.
+
+Do **not** close:
+
+- a parent **spec** (only this implementation ticket)
+- a ticket that is not done, including review `Changes Required`, a blocked
+  incomplete surface, a failed prd-walk (`缺`), or a body that still lists 残差
+- a ticket this run did not implement
+
+If the slice stopped unfinished, leave the ticket open and say so in the Done
+report. Never report "done" while the ticket is still open.
+
 ### Done report (mandatory fields)
 
 - task / ticket / source (**include product-doc path when present**; do not list
@@ -155,7 +201,7 @@ fail Done — do not report a clean slice.
 - **PRD deltas**: `none` | list of accepted `相对 PRD` rows used as AC
 - fixed point
 - files changed
-- **review-weight**: `light` | `full` (from `/code-review`)
+- **review-weight**: `none` | `light` | `full` (from `/code-review` Pick weight). `none` includes the one-line reason and `code-review verdict: skipped`.
 - behavior-gate + fidelity (or n/a)
 - **UI fidelity evidence** (when UI Fidelity ran, or light parent path check):
   pin path@version | checklist-only waiver | one path screenshot/checklist;
@@ -171,6 +217,7 @@ fail Done — do not report a clean slice.
 - **`agents used`**: e.g. `Executor` | `host-general` | `parent-fallback` (and
   for review: `Reviewer` / `Verifier` / fallback) — if parent did the work,
   say so explicitly and why (no runtime / spawn failed)
+- **ticket**: `closed #<n> (read-back: closed)` | `left open (<why>)` | `n/a` (no tracked ticket). `closed` requires the read-back. An open ticket cannot be reported as done.
 - tracker update, commit status, next frontier or blocker
 - **unauthorized PRD partials** (if any): must force non-Pass or explicit
   user decision — never bury under “known non-blocking”

@@ -93,8 +93,8 @@ Use the full templates in skill dispatch files. In short:
 | --- | --- | --- |
 | `/implement` Execute (evidence loop, fidelity prep, verification runs that need edits) | `Executor` | host general → parent |
 | `/implement` after `/code-review` when verdict is not Pass and fixes are authorized | `Executor` (fix list) | host general → parent |
-| `/code-review` axis passes | `Reviewer` × weight (`light`: 1 Slice; `full`: Standards+Spec+Correctness, +UI Fidelity when in scope) | parent sequential briefs |
-| `/code-review` validation gate | `Verifier` (`full` always; `light` only if the Slice Reviewer filed candidates) | parent Verification Reviewer |
+| `/code-review` axis passes | `Reviewer` × weight (`none`: nobody; `light`: 1 Slice; `full`: Standards+Spec+Correctness, +UI Fidelity when in scope) | parent sequential briefs |
+| `/code-review` validation gate | `Verifier` (`full` always; `light` only if the Slice Reviewer filed candidates; `none` never) | parent Verification Reviewer |
 | `/code-review` Auto-fix (user or `/implement` authorized) | `Executor` with eligible findings + fix contract | host general → parent (same per-fix verify/revert rules) |
 | After `/diagnosing-bugs` (or any multi-slice fix **proposal**) before code | `Reviewer` × design axes (`DESIGN-REVIEW-BRIEF.md`); prefer a **different model** than the proposal author | optional `Verifier` → user HITL → `/implement` or `/to-spec` |
 | Research before edit | host explore/search worker | parent |

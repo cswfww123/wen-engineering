@@ -6,14 +6,15 @@ below. Axis detail: [AGENT-BRIEFS.md](AGENT-BRIEFS.md), [REVIEW-AXES.md](REVIEW-
 
 ## Hard try (required)
 
-Parent picks **`review-weight`** first (`light` | `full`) using [SKILL.md](SKILL.md)
-**Pick weight**, after the **Diff gate**. Spawn only the workers that weight
-names.
+Parent picks **`review-weight`** first (`none` | `light` | `full`) using
+[SKILL.md](SKILL.md) **Pick weight**, after the **Diff gate**. Spawn only the
+workers that weight names. **`none`:** spawn nothing and stop.
 
 1. Prefer pack `Reviewer` per worker; else host general-purpose with the brief
    from [AGENT-BRIEFS.md](AGENT-BRIEFS.md) or the Matt prompts in SKILL.md.
-   **Light:** one Slice Reviewer. **Full:** parallel Standards + Spec, plus
-   Correctness on production-reachable code (skip only docs/comment/config-rename).
+   **None:** no Reviewer. **Light:** one Slice Reviewer. **Full:** parallel
+   Standards + Spec, plus Correctness on production-reachable code (skip only
+   docs/comment/config-rename).
    Full also hard-tries **UI Fidelity** when SKILL.md marks it in scope.
    Optional extra axes (Performance, Security, Ponytail) when warranted.
    Correctness / Slice packets include [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)
@@ -24,8 +25,9 @@ names.
    templates below). Subagent context is cold/disposable and often a weaker
    model — paste the review packet, axis body, and evidence; do not spawn with
    only “review the diff on axis X”.
-3. **Verifier:** **full** always must-try after candidates. **Light** only when
-   the Slice Reviewer filed a candidate. Confidence bar `>=80`. Incomplete
+3. **Verifier:** **full** always must-try after candidates (including `none`).
+   **Light** only when the Slice Reviewer filed a candidate. **None** never
+   spawns Verifier. Confidence bar `>=80`. Incomplete
    surface (including quiet path / log-unsafe) that survives verification
    blocks `Pass`. Same-surface lookalikes block `Pass`. In-scope UI Fidelity
    fail or missing evidence blocks `Pass`.
@@ -35,7 +37,7 @@ names.
    runtime exists, without an attempt, is a process bug — report
    **confidence: degraded** if parent-fallback ran a required worker; do not
    present that as a full multi-agent Pass.
-5. Report **`review-weight`**, **`agents used`**, **incomplete-surface**:
+5. Report **`review-weight`** (`none` | `light` | `full`), **`agents used`**, **incomplete-surface**:
    `clean` | findings | `n/a`, **observability** when applicable, and
    **ui-fidelity** when that axis ran (else `n/a`), **same-surface** when chrome
    changed.

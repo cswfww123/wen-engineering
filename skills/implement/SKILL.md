@@ -12,7 +12,7 @@ Run typechecking regularly, single test files regularly, and the full test suite
 
 Once done, pick a review weight from `/code-review` **Pick weight** and follow it. Simple fixes (`none`) skip `/code-review`. Medium fixes use light review. Large requirements use full review, which includes Verifier.
 
-Commit your work to the current branch.
+Code edits happen in an isolated local worktree and merge back to the current branch once the slice passes (§0c, §4). Commit your work to the current branch.
 
 ## WEN process (required — read before writing code)
 
@@ -48,6 +48,30 @@ Binding:
 - Done report **source** field must list product doc path when used; if any claimed AC is a PRD delta, list those deltas explicitly under incomplete/deferred or accepted-delta.
 - **Forbidden complete:** ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC. Split a follow-up ticket or accept a labeled delta — do not `complete`.
 - **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the **original product doc** (`docs/prd-authority.md` §5) before claiming the package delivered. Any `缺` → do not say 已按 PRD 实现; do not mark the parent delivered.
+
+### 0c. Isolate: one worktree per run (default for code edits)
+
+Concurrent sessions on one repo (parallel bug fixes) overwrite each other in a
+shared checkout. So any run that edits production code works in its own
+**local worktree** on its own **local** branch:
+
+- Record the current branch at run start — it is the **integration branch**.
+  Create the worktree from its HEAD; branch name `worktree/<ticket-or-slug>`.
+  Local only: never push. Place the worktree **outside** the repo working tree
+  (e.g. a sibling directory) so the main checkout stays clean.
+- `git worktree list` first: never reuse another session's worktree or branch
+  name; suffix `-2` on collision. This run cleans up only what it created.
+- Executor briefs carry the **worktree root**; every path in the brief
+  resolves against it (see [DISPATCH.md](DISPATCH.md)). If verify needs
+  installed dependencies, provision them inside the worktree (e.g. `npm ci`).
+  If the environment cannot be provisioned, soft-fail back to the main
+  checkout, report the fallback, and flag the concurrent-session collision
+  risk.
+- Stay in the main checkout (no worktree) when: the run is docs/config-only
+  with nothing to verify; commit is not authorized (an uncommitted delta
+  cannot ride the merge-back); or the user asked to work in place.
+
+Merge-back and cleanup rules live in §4.
 
 ### 1. Hard-try Executor before non-trivial edits
 
@@ -123,8 +147,10 @@ anyone. Size, not a stretched risk word, decides:
 A serializer or annotation that keeps the field name, path, and message name
 is **`none`**. Do not call that a wire/protocol rename.
 
-1. Record a review fixed point that isolates this ticket/task delta. Skip this
-   step when weight is `none`.
+1. Record a review fixed point that isolates this ticket/task delta. In the
+   worktree flow the fixed point is the **branch base** (`git diff
+   <base>..HEAD` inside the worktree) — a concurrent session's changes must
+   never enter this slice's review. Skip this step when weight is `none`.
 2. Run `/code-review` against that fixed point only when weight is `light` or
    `full`. That skill names the workers — do not spawn four axes on a light
    slice, and do not spawn Verifier on a clean light slice or on `none`.
@@ -153,21 +179,38 @@ is **`none`**. Do not call that a wire/protocol rename.
    present as a full multi-agent Pass — prefer a further independent
    `/code-review` or human gate before merge.
 
-### 4. Commit
+### 4. Commit, merge back, clean up
 
-Commit only when authorized, on the current branch. Do **not** commit a slice
-that still carries an incomplete production surface for its AC.
+Commit only when authorized. Do **not** commit a slice that still carries an
+incomplete production surface for its AC. In-place runs commit on the current
+branch, as before.
 
-After the commit, `git status` is clean except files declared unrelated before
-the commit (e.g. local `.scratch/`). Uncommitted leftovers of reverted hunks
-fail Done — do not report a clean slice.
+Worktree runs merge back only after this slice's review weight was applied
+(`none` recorded, or `light`/`full` verdict `Pass`) and the Done criteria in
+§5 hold. No extra human gate unless the user asked to hold the merge:
+
+1. Merge the integration branch **into** the worktree branch first, resolve,
+   and re-run verify — a concurrent session may have landed meanwhile.
+2. Merge the worktree branch into the integration branch in the main checkout.
+   Local merge only: no push, no PR.
+3. Then close the ticket (§5) — never before the merge lands.
+
+Clean up in the same run: `git worktree remove` each worktree this run
+created, then `git branch -D` its branch. Do not delete worktrees or branches
+another session created, `main`/`master`/`test`/`develop`, the current branch,
+or anything on a remote.
+
+After the merge (or commit), `git status` in the main checkout is clean except
+files declared unrelated before the commit (e.g. local `.scratch/`). Uncommitted
+leftovers of reverted hunks fail Done — do not report a clean slice.
 
 ### 5. Close the ticket
 
 When this run implemented a tracked ticket and the work is actually done,
 **close that ticket in the same run**. An open ticket after a finished slice
-reads as "not done". Do this after the commit (or after the authorized
-uncommitted delta, when commit was not granted), and after the review weight
+reads as "not done". Do this after the merge-back lands on the integration
+branch (or after the commit / authorized uncommitted delta when commit was not
+granted), and after the review weight
 for this slice has been applied (`none` recorded, or `light`/`full` verdict
 `Pass`).
 
@@ -201,6 +244,7 @@ report. Never report "done" while the ticket is still open.
 - **PRD deltas**: `none` | list of accepted `相对 PRD` rows used as AC
 - fixed point
 - files changed
+- **isolation**: `worktree/<slug>` | `in-place (<why: docs-only | no-commit-grant | env-fallback | user-asked>)`
 - **review-weight**: `none` | `light` | `full` (from `/code-review` Pick weight). `none` includes the one-line reason and `code-review verdict: skipped`.
 - behavior-gate + fidelity (or n/a)
 - **UI fidelity evidence** (when UI Fidelity ran, or light parent path check):
@@ -218,7 +262,8 @@ report. Never report "done" while the ticket is still open.
   for review: `Reviewer` / `Verifier` / fallback) — if parent did the work,
   say so explicitly and why (no runtime / spawn failed)
 - **ticket**: `closed #<n> (read-back: closed)` | `left open (<why>)` | `n/a` (no tracked ticket). `closed` requires the read-back. An open ticket cannot be reported as done.
-- tracker update, commit status, next frontier or blocker
+- **merge-back**: `<integration-branch>@<sha>` | `held (<why>)` | `n/a (in-place)`
+- tracker update, commit status, **worktree cleanup** (`removed` | `left: <list + why>`), next frontier or blocker
 - **unauthorized PRD partials** (if any): must force non-Pass or explicit
   user decision — never bury under “known non-blocking”
 - **prd-walk** (last ticket of a PRD-sourced spec, or user asked 已按 PRD 实现):

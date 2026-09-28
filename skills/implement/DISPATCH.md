@@ -24,9 +24,10 @@ process bug. Missing role names → still try host general with the brief. Never
 abort the skill because a pack agent file is missing.
 
 **Parent only keeps:** find-work, tracker claim/state, route, HITL, final Done
-report, commits (when authorized), and **closing the ticket when the slice is
-done**. Parent may do pure research/explore and tiny one-line mechanical edits
-when cheaper. A finished ticket left open is a process bug.
+report, commits and merge-back (when authorized), and **closing the ticket
+when the slice is done**. Parent may do pure research/explore and tiny
+one-line mechanical edits when cheaper. A finished ticket left open is a
+process bug.
 
 ## Executor brief quality
 
@@ -48,6 +49,7 @@ Must appear in every spawn:
 ```text
 Role: Executor
 Goal: <one bounded coding outcome>
+Working root: <abs worktree path for this run — all paths below resolve against it | main checkout>
 Scope in/out: <allowed files/modules> / <do not touch>
 AC / source: <ticket/spec IDs AND the AC text, not IDs alone>
 Constraints: patterns; no speculative refactors; no inventing Expected; no incomplete surface; same-surface chrome extends the owner (no lookalike Select)
@@ -81,6 +83,9 @@ Role: Executor (focused implementation subagent)
   2. ...
 
 ## Scope
+- Working root: <abs path of this run's worktree, or main checkout; every path
+  in this brief resolves against it. Provision dependencies inside the
+  worktree when verify needs them (e.g. `npm ci`).>
 - In scope (files/modules/packages allowed):
 - Out of scope (do not touch / do not expand into):
 - Unrelated user changes to preserve:

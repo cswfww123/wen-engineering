@@ -370,7 +370,7 @@ AI agents 会以很可预测的方式失败。
 - [`to-design-md`](skills/to-design-md/SKILL.md) - 可选的前端视觉身份：抽取或综合生成可 lint 的 `DESIGN.md`（Google Labs 格式），供 agent 在 UI 工作中复用。
 - [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec（源是产品文档时必须有 PRD Inventory）。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
-- [`implement`](skills/implement/SKILL.md) - 本库实现 skill：按约定 seam 做 TDD，再按改动大小审查（`none` 跳过，`light` 或 `full`），然后提交。做完的跟踪票在同一次运行里关闭，并回读确认已关闭。
+- [`implement`](skills/implement/SKILL.md) - 本库实现 skill：代码改动默认在本次运行专属的本地 worktree 里进行（多会话并行修 bug 互不覆盖），按约定 seam 做 TDD，按改动大小审查（`none` 跳过，`light` 或 `full`），合回当前分支后删掉 worktree 和分支。做完的跟踪票在同一次运行里关闭，并回读确认已关闭。
 - [`implement-spec`](skills/implement-spec/SKILL.md) - 整份 spec 做到当前分支：按票的 frontier 并行，每票一个本地 worktree，合回当前分支，关掉已完成的票，`/code-review`，然后删掉这些 worktree 和分支。用户没说就不开新分支、不提 PR、不推送。父 spec 要等它自己的收口规则通过才关。
 - [`tdd`](skills/tdd/SKILL.md) - red → green + seams（Matt 底）。
 - [`handoff`](skills/handoff/SKILL.md) - 为新的 agent 写一份紧凑 handoff document，并保存在 repo 外。

@@ -8,7 +8,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 - **Standards** — does the code conform to this repo's documented coding standards?
 - **Spec** — does the code faithfully implement the originating issue / PRD / spec?
 
-Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
+At **full** weight both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings. **Light** folds them into one Slice Reviewer; **none** runs no review (WEN **Pick weight** below).
 
 The issue tracker should have been provided to you — run `/setup-project` if `docs/agents/issue-tracker.md` is missing.
 
@@ -16,7 +16,7 @@ The issue tracker should have been provided to you — run `/setup-project` if `
 
 ### 1. Pin the fixed point
 
-Whatever the user said is the fixed point — a commit SHA, branch name, tag, `main`, `HEAD~5`, etc. If they didn't specify one, ask for it.
+Whatever the user said is the fixed point — a commit SHA, branch name, tag, `main`, `HEAD~5`, etc. If they didn't specify one, review local staged + unstaged changes (WEN **Default scope** below).
 
 Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 
@@ -103,8 +103,8 @@ binds **how** subagents are used when the host has a spawn runtime.
 ### Diff gate (before any Reviewer)
 
 Read the **full** diff, not only `--stat`. Every hunk must belong to the stated
-AC / review scope. Revert extra hunks first. A dirty tree is not ready for
-review.
+AC / review scope. Under `/implement` authority, revert extra hunks before
+review; standalone review reports them as findings and edits nothing.
 
 ### Pick weight
 

@@ -50,9 +50,8 @@ Frontier bindings this skill adds on top:
    - Treat dangerous legacy (silent tenant/user fallback, dual sources of money facts, etc.) as **do-not-copy**, not as a recommended design.
    - Default proposals stay **in-environment** (aliases, adapters, fail-closed). **Environment-changing** work (wire/protocol renames, isolation semantics) is out of scope unless I explicitly ask for a migration.
 8. **`/domain-modeling` only when terms actually change** — do **not** load it as a mandatory epic and do **not** create `CONTEXT.md` / ADRs for a trivial pin. If a durable glossary/ADR is truly needed (hard to reverse + surprising + real trade-off), update sparingly; never dump unshipped implementation plans into CONTEXT.
-9. **Routing / anti-invention** — if present: `../ask-process/LIFECYCLE.md` (LIGHT G; HEAVY product fog stays in PM).
-10. **Wrong human in the room** — if several frontier decisions need product/business/ops and I am not the owner, **stop serial-grilling me**. Park those rows and offer `/to-questionnaire`. Do not invent Expected / market / user value.
-11. **Filled questionnaire ingest (no re-confirm)** — if I paste a filled `/to-questionnaire` (or `问卷已填` + path):
+9. **Wrong human in the room** — if several frontier decisions need product/business/ops and I am not the owner, **stop serial-grilling me**. Park those rows and offer `/to-questionnaire`. Do not invent Expected / market / user value.
+10. **Filled questionnaire ingest (no re-confirm)** — if I paste a filled `/to-questionnaire` (or `问卷已填` + path):
    - Treat non-empty **选择** / **回答** as **settled product input** — do **not** re-ask those Q-ids.
    - Re-ask only blanks, bare `Z` without text, or clear contradictions.
    - Prefer **`/to-spec`** when product scope is multi-slice; do **not** also invent a parallel long-lived decision file if the spec will hold the decisions.
@@ -140,12 +139,10 @@ If I type `/implement` (or 「开干」) **before** the frontier is empty:
 
 ## Artifact hygiene (automatic — never ask me)
 
-- **Authoritative after ship:** code, tests, open tracker items, short invariants — not closed grill notes.
-- **Closed / delivered / resolved** tracker artifacts: do not load as “how to build now.”
-- **Process files** created only for handoff: after consume (spec written, ticket closed, or same-session implement done), stop citing them; delete or cold-ignore without prompting.
-- Conflicts between old process docs and code → **code wins** for *facts about what ships today*; do not interview me to reconcile docs.
-- **Do not misuse “code wins”** for *which value we should align to* when live code sources disagree — that is a frontier decision (see Conflict-fact table above).
-- **Do not misuse “code wins” or “grill AC wins”** to override an active product requirements doc. Product intent vs live code mismatch is either a deliberate migration (user-owned) or a gap to implement — not auto-resolution in the agent’s favor.
+Apply [LIFECYCLE.md](../ask-process/LIFECYCLE.md) **Environment and artifact hygiene** (routing, anti-invention, consumed process files). Grill-specific limits on “code wins”:
+
+- It settles *facts about what ships today* only. *Which value we align to* when live code sources disagree is a frontier decision (Conflict-fact table above).
+- It never overrides an active product requirements doc; neither does “grill AC wins”. Product intent vs live code is a user-owned migration or a gap to implement.
 
 ## Keep it short
 

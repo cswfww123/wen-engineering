@@ -203,5 +203,9 @@ verification gaps.
 
 ## Executor (auto-fix only)
 
-Only when the user or `/implement` authorized fixes. Same Executor brief pattern
-as implement/DISPATCH.md; preserve **how not what**.
+Only when the user or `/implement` authorized fixes, and only for findings that
+pass **Fix eligibility** ([SKILL.md](SKILL.md)). Use the **Fix-list brief** in
+[../implement/DISPATCH.md](../implement/DISPATCH.md): per finding, `file:line`,
+the current code pasted, the exact change, and a check command. Each fix keeps
+behavior the same except the named defect. The parent then runs `/implement`
+§3 Accept on the result.

@@ -42,7 +42,7 @@ Start at the **smallest** honest step. Escalate only when that step fails.
 L1  clear work (bug, AC, one slice) → /implement
 G   requirement — default entry  → /grill-code (entry sweep → residual frontier)
                                   → /implement | (multi-slice) /to-spec
-L2  multi-slice spec spine       → /to-spec → /to-tickets → /implement
+L2  multi-slice spec spine       → /to-spec → /to-tickets → /implement (one ticket) | /implement-spec (parallel frontier)
                                   (usually the hop after G; direct entry when the sweep shows zero poles)
 Q   stakeholder questionnaire → /to-questionnaire → fill → ingest → /to-spec
 L3  mild intent pin         → /product-fog → one next
@@ -96,8 +96,14 @@ the PRD Inventory then re-runs the collision check, and HITL rows it surfaces
 get **one residual grill round** before `accepted`
 ([PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) §1–2).
 
-Scope FE/BE fidelity to the ticket layer. `/implement` never closes the parent
-spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate
+**Which executor for the tickets:** one ticket at a time → `/implement`
+(fresh context per ticket). Two or more unblocked AFK tickets on the frontier
+and the user wants the package run in one go → `/implement-spec` (parallel
+Executors, per-ticket accept + review, serial merge, package close).
+
+Scope FE/BE fidelity to the ticket layer. The parent spec closes only after
+its last child and a clean prd-walk (last-ticket `/implement` or
+`/implement-spec` step 9). Coverage and slice shape are enforced by `/to-tickets` pre-publish gate
 (inventory `SRC` in `Covers`; `Supports` does not count) —
 default path does **not** run `/alignment-review` after every publish.
 **Exception (mandatory):** PRD-sourced package close — last open ticket, or
@@ -244,7 +250,7 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | --- | --- | --- |
 | Fix this bug / do this AC | LIGHT L1 | `/implement` |
 | Any other requirement (default entry; PRD included) | LIGHT **G** | `/grill-code` (entry sweep → residual poles; zero poles → hop L2/L1) |
-| Multi-slice settled at G, or sweep showed zero poles | LIGHT L2 | `/to-spec` (PRD Inventory + last-ticket prd-walk) → `/to-tickets` |
+| Multi-slice settled at G, or sweep showed zero poles | LIGHT L2 | `/to-spec` (PRD Inventory + last-ticket prd-walk) → `/to-tickets` → `/implement` or `/implement-spec` |
 | Plan, idea, or decision with no codebase | — | `/grill-me` |
 | Need product answers from another person / 澄清会 | LIGHT **Q** | `/to-questionnaire` → ingest → default `/to-spec` |
 | Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G or Q) |

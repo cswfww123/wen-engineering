@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: "Implement a specification in code."
+description: "Implement a specification in code: run its ticket graph with parallel Executors, then accept, review, merge, and close each ticket."
 disable-model-invocation: true
 ---
 
@@ -10,26 +10,31 @@ The goal is the entire spec committed on the branch the user is already on. Do n
 
 The tickets are not a list of steps. They are a **task graph** with blocking relationships between them. This means there is always a **frontier** of tickets which are ready to be grabbed.
 
-Communication to and from subagents should be sparse. Communicate primarily through **context pointers**: to the spec, tickets, research notes, and previous commits. Don't duplicate information already available via pointers.
-
-**Implementer subagents** should be run in the background where possible for **maximum concurrency**.
+Each ticket runs the `/implement` protocol; this skill adds the graph, concurrency, and package close. Load `/implement` [SKILL.md](../implement/SKILL.md) and [DISPATCH.md](../implement/DISPATCH.md) once. **The parent plans and accepts every ticket; Executors only type** — they are usually weaker models that execute the brief literally.
 
 ## Steps
 
-1. Read the spec and tickets. Read enough to understand the task graph.
+1. **Map the graph.** Read the spec and tickets: blocking edges, `Covers`, the spec's Testing Decisions, and each ticket's Behavior gate / pin rows.
 
-2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **implementer subagents** focus on implementation rather than exploration.
+2. **Record once.** Current branch = integration branch (stay on it in the main checkout; no integration branch, no push, no PR) and its HEAD = run start. Intent (`/implement` §0): product baseline path, design source paths, accepted `相对 PRD` deltas. Confirmed test seams = the spec's Testing Decisions + each ticket's Behavior gate; ask the user only for a ticket that names none.
 
-3. Record the user's current branch. That branch is the integration branch. Stay on it in the main checkout. Do not create an integration branch. Do not `git push`. Do not open, update, or mark a PR ready.
+3. (optional) **Explore** with an exploration subagent. It saves notes in a directory outside the repo. The parent reads them to write briefs; Executors do not.
 
-4. Use **implementer subagents** to implement each ticket. Each implementer subagent works in its own **local** worktree, on its own **local** branch. Those branches must not be pushed to any remote. Name them so cleanup can find them (for example `worktree/<ticket>`). For UI tickets, the implementer brief passes pin@version and the **pin rows** the ticket `Covers` (when the spec Inventory has them): evidence must cover each Covered row's state — a row neither visible in evidence nor an accepted delta means that slice is unfinished (`../to-spec/PRD-AUTHORITY.md` §2).
+4. **Brief each frontier ticket** — `/implement` §1 plan, written as the DISPATCH **Implementation brief**. Paste the decision-critical text (AC with literal values, Covered pin rows, test names + expected values, walkthrough table); point to the spec only as extra. One ticket per brief.
 
-5. Once an **implementer subagent** completes, merge its work into the current branch with a **merger subagent**. Merge locally only. Then close **that ticket** if its acceptance criteria are met **with walkthrough evidence on the real path** (the `/implement` §2.4 bar) and it has no leftover 残差 / 下张票收口 / partial on a `Covers` SRC — pin rows included: a Covered pin row without evidence or an accepted delta is leftover. Comment the commit (or merge) link and the verification result, close it, and read it back. A merged ticket that stays open looks undone. Do not close a ticket whose slice is unfinished, and do not close the parent spec here.
+5. **Dispatch in parallel** — each Executor in its own local worktree `worktree/<ticket>`, never pushed. Run tickets concurrently only when their **Edit only** lists are disjoint; overlapping tickets queue.
 
-6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
+6. **Per returned ticket, in order:**
+   1. `/implement` §3 **Accept**. A failed check → new brief with the failure; after 2 rejections the parent takes the ticket over or leaves it `blocked`.
+   2. Commit in the worktree.
+   3. `/code-review` **Pick weight** for this ticket's diff (`none` or `light`; a ticket that is itself `full`-sized gets `full`). Verdict not `Pass` → Fix-list brief, then Accept again.
+   4. **Merge** — the parent, serially, one ticket at a time, per [WORKTREE.md](../implement/WORKTREE.md).
+   5. **Close** that ticket per `/implement` §6: comment result + evidence + commit link, close, read back. Unfinished ticket stays open.
 
-7. Once all tickets are complete, run /code-review on the current branch. Fix the **eligible** findings only in a single **implementer subagent** — code-review's **Fix eligibility** gate owns which findings never auto-fix; those route to the user. Then merge the fix back the same way.
+7. **Recompute the frontier** after each close and brief the newly unblocked tickets (back to step 4).
 
-8. Commit the finished work on the current branch if it is not already committed. Confirm every finished implementation ticket from this run is **closed** and was read back as closed. Close any that were merged but left open. Leave a ticket open only when its slice is unfinished, and say which. Do not close the parent spec unless every in-scope child is closed and the spec's own closeout rule (`docs/agents/issue-tracker.md`) passes — including prd-walk when this is a PRD- or design-pin-sourced package (the walk covers pin rows; `../to-spec/PRD-AUTHORITY.md` §5). A PR or a push happens only when the user explicitly asks.
+8. **Branch review.** All tickets closed → `/code-review` `full` on the integration branch since the run start. Fix eligible findings only — code-review **Fix eligibility** owns which never auto-fix; those route to the user — via one Fix-list brief, then Accept, commit, merge the same way.
 
-9. Clean up every worktree and local branch this run created. `git worktree remove` each one, then `git branch -D` its branch. Do not leave them for the user. Do not delete `master`, `test`, `develop`, `main`, the current branch, or any branch you did not create in this run. Do not delete remote branches.
+9. **Close the package.** Confirm every finished ticket reads back `closed`; close any merged-but-open one; name any left open and why. PRD- or design-pin-sourced package → prd-walk ([PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) §5, pin rows included). Every in-scope child closed and no `缺` → set the parent spec `delivered` by the tracker's closeout sequence (`docs/agents/issue-tracker.md`) and read it back; otherwise say what holds it open. PR or push only on explicit ask.
+
+10. **Clean up** every worktree and local branch this run created: `git worktree remove`, then `git branch -D`. Keep `master`, `main`, `test`, `develop`, the current branch, other sessions' worktrees/branches, and every remote branch.

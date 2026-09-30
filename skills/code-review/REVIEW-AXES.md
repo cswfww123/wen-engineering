@@ -117,7 +117,7 @@ Tie each finding to changed code and stack-specific exploitability. Treat auth, 
 
 ## UI Fidelity
 
-**When required:** the review packet marks UI Fidelity in scope — full weight **and** (new/restyled chrome **or** a design pin). Owner: [SKILL.md](SKILL.md) Pick weight. This *worker* runs only there; on **light** the parent still owes the same evidence (per-row screenshots, `/implement` §2) — report its absence as a blocking gap, not as out of scope. Skip only on backend-only / non-UI / docs.
+**When required:** the review packet marks UI Fidelity in scope — full weight **and** (new/restyled chrome **or** a design pin). Owner: [SKILL.md](SKILL.md) Pick weight. This *worker* runs only there; on **light** the parent still owes the same evidence (per-row screenshots, `/implement` §3) — report its absence as a blocking gap, not as out of scope. Skip only on backend-only / non-UI / docs.
 
 **Design pin = any versioned visual source of truth:** 原型图 / 设计稿 / 截图 / HTML 原型 / pinned prototype winner / Figma frame or export @version.
 

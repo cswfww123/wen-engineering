@@ -73,7 +73,7 @@ When the delivery source is an existing product doc, `/to-spec` must publish a
 **No `/to-spec`? Still owe rows.** Single-slice / same-session routes (L1
 `/implement` direct, "UI already has a design pin") skip the spec file, never
 the rows: post the same inventory table **in chat or on the ticket before the
-first production edit**. `/implement` §2 gates walkthrough + fidelity against
+first production edit**. `/implement` §1/§3 plan and accept walkthrough + fidelity against
 those rows either way.
 
 Inventory **rows** are the smallest observable product clauses:
@@ -149,7 +149,7 @@ when the delivery source is an external / in-repo product doc.
 
 **Against:** the **original product doc and pin@version** (pin rows included
 when they exist), not the eng spec recap. Evidence is **runtime where the
-surface is observable** — walkthrough results (`/implement` §2: screenshots,
+surface is observable** — walkthrough results (`/implement` §3: screenshots,
 request+response) — code citations only for clauses with no observable
 surface.
 

@@ -1,225 +1,175 @@
 # Implement Dispatch (self-contained)
 
-Loads with this skill under any agent skills root — **do not depend** on
-`wen-engineering/docs` or `wen-engineering/agents` being present in the target
-repo. If the host has pack roles named `Executor` / `Reviewer` / `Verifier`
-(e.g. from a harness that linked `agents/`), prefer those names; otherwise use
-the host's general multi-step / subagent tool with the system text below.
+Loads with this skill under any agent skills root — it does not depend on the
+pack's `docs/` or `agents/` being present. If the host has pack roles named
+`Executor` / `Reviewer` / `Verifier`, prefer those names; otherwise use the
+host's general subagent tool with the system text below.
+
+**Executor is usually a weaker model.** It follows text literally and reasons
+little. So: the parent plans, the worker types, the parent accepts
+([SKILL.md](SKILL.md) §1–§3).
 
 ## When to dispatch
 
-| Moment | Worker | Soft-fail |
-| --- | --- | --- |
-| Non-trivial code edit, TDD green loop, simplify, verification fixes | **Executor** | host general → **parent** |
-| `/code-review` axes (`light` or `full` only) | **Reviewer** (per that skill) | parent + code-review briefs |
-| After review candidates (`full` always; `light` only if a candidate was filed) | **Verifier** (via `/code-review`) | parent |
-| Authorized post-review fix list | **Executor** | host general → parent |
+| Moment | Worker | Brief | Soft-fail |
+| --- | --- | --- | --- |
+| Planned slice (implement §1 done) | **Executor** | Implementation brief | host general → parent |
+| Authorized post-review fixes | **Executor** | Fix-list brief | host general → parent |
+| `/code-review` axes, Verifier | per `/code-review` DISPATCH (`none` spawns nothing) | there | parent |
 
-**`review-weight: none`** (simple fix): do not dispatch Reviewer or Verifier.
-The evidence loop is the gate.
+**Hard try:** when the host can spawn a subagent, attempt it before the parent
+edits. Skipping without an attempt is a process bug. Missing role name → try
+host general with the same brief. Never abort because a pack file is missing.
 
-**Hard try:** if the host can spawn any subagent / multi-step worker, you **must
-attempt** spawn before parent bulk-edits. Skipping spawn without an attempt is a
-process bug. Missing role names → still try host general with the brief. Never
-abort the skill because a pack agent file is missing.
+**Parent always keeps:** planning, acceptance, commit, merge-back, tracker
+state, HITL, the Done report. The worker gets none of these.
 
-**Parent only keeps:** find-work, tracker claim/state, route, HITL, final Done
-report, commits and merge-back (when authorized), and **closing the ticket
-when the slice is done**. Parent may do pure research/explore and tiny
-one-line mechanical edits when cheaper. A finished ticket left open is a
-process bug.
+**Model tier:** host default. UI / design-pin slices → parent-tier model
+(Claude Code: the Agent tool `model` override).
 
-## Executor brief quality
+## Writing a brief for a weak worker
 
-Subagent context is **cold and disposable**; many hosts use a **weaker model**
-for Executor. The brief is the worker’s entire world.
+1. **Every judgment is already made.** Concrete values, exact paths, exact
+   `file:symbol`, exact commands. The worker chooses nothing.
+2. **Paste, don't point.** The worker cannot open pack files or the parent
+   chat. AC text, pin rows, code excerpts, error output go in the brief; a
+   path to a long doc is extra, never the substitute.
+3. **Steps, not prose.** Numbered steps, each ending on something checkable.
+4. **Name every fork.** Where the worker could be unsure, the brief names the
+   target, or names the stop condition.
+5. **Raw facts back.** Return asks for command output, file lists, grep
+   output, evidence paths — the parent classifies them.
+6. A field with nothing to say → `none`. A field you cannot fill because a
+   decision is missing → do not dispatch; the slice is `blocked`.
+7. Prefer ≤8 Plan steps per spawn; a bigger plan is two slices.
 
-- **Default:** use the **recommended full brief** below on every spawn.
-- **UI / design-pin slices:** spawn Executor on the parent-tier model when the
-  host allows — fidelity work degrades fast on weaker models.
-- **Minimum** fields alone are only acceptable for tiny mechanical edits the
-  parent could have done itself.
-- **Forbidden:** one-liner spawns (“fix login”, “implement the ticket”) with no
-  AC text, scope, verify commands, or pattern refs.
-- If you cannot fill a required field, say so in the brief (`unknown — stop if
-  needed`) rather than omitting it silently.
-
-## Executor brief (minimum — floor only)
-
-Must appear in every spawn:
+## Implementation brief
 
 ```text
-Role: Executor
-Goal: <one bounded coding outcome>
-Working root: <abs worktree path for this run — all paths below resolve against it | main checkout>
-Scope in/out: <allowed files/modules> / <do not touch>
-AC / source: <ticket/spec IDs AND the AC text, not IDs alone>
-Design source: <abs paths: 原型图/设计稿/截图/HTML 原型/Figma export + Covered pin-row text | none>
-Constraints: patterns; no speculative refactors; no inventing Expected; no incomplete surface; same-surface chrome extends the owner (no lookalike Select)
-Verify: <exact commands>
-Walkthrough: <app startup commands; drive each Covered row on its real path (CRUD fixed script: 新建→列表→编辑→详情→删除→校验失败); return per-step actual result>
-Authority: code + local verify only; NO tracker/PR unless granted
-Return: status, files, what changed, verify results, incomplete-surface, observability, risks
-```
-
-## Executor brief (recommended — default)
-
-Pass **all** of this into the worker (fill every section; use `none` / `n/a`
-when truly empty):
-
-```text
-Role: Executor (focused implementation subagent)
+Role: Executor. Run the Steps in order. The Plan is fixed; you type it in.
+Working root: <abs worktree path> — run every command here.
 
 ## Goal
-<one sentence: the user-visible or API-visible outcome that means "done">
+<one observable outcome>
 
-## Why / context (short)
-- Symptom or user path:
-- Background the worker cannot see from chat:
-- Related error / log excerpt (paste, truncate if huge):
+## Acceptance (final — implement exactly these)
+A1 <behavior with literal values>
+A2 ...
 
-## Intent authority
-- Product baseline path: <path or none>
-- Design source (原型图/设计稿/Figma/截图/HTML 原型/pin — AC for UI rows):
-  <abs paths + version; paste the Covered pin rows' text below> | none
-- Accepted PRD deltas: <none | list of 相对 PRD rows>
-- Eng spec / tickets: <paths or IDs + titles>
-- Session AC (only residual eng seams, or full AC if no product doc):
-  1. ...
-  2. ...
+## Files
+Edit only: <path>, <path>
+Read first: <path:lines> — <what to copy from it>
+Use existing: <file:symbol> — <use it for …>
+Chrome owner (UI): <add item <x> to <Owner>.items in <file> | none>
+Source of truth: <domain fact → service/table to call | none>
+Log points: <boundary → fields to log, fail-open | none>
 
-## Scope
-- Working root: <abs path of this run's worktree, or main checkout; every path
-  in this brief resolves against it. Provision dependencies inside the
-  worktree when verify needs them (e.g. `npm ci`).>
-- In scope (files/modules/packages allowed):
-- Out of scope (do not touch / do not expand into):
-- Unrelated user changes to preserve:
+## Plan (in order)
+1. <file> — <change>
+2. ...
 
-## Seams and reuse (do not invent parallel designs)
-- Public seams / APIs / enums / wire values to use:
-- Reference implementations (path + what to copy):
-- Tables / messages / identity patterns to match:
-- Same-surface chrome owner (UI): <ComponentName + how extras plug in | new — no sibling | n/a>
-  Load skills/code-review/SAME-SURFACE.md when adding filter/picker/search/empty/chip/toolbar chrome.
+## Tests
+Add `<test name>` in <test file>: <input> → assert <literal expected value>.
+Run one test: <cmd>   Typecheck: <cmd>   Suite: <cmd>
 
-## Constraints
-- Follow existing project patterns; no speculative refactors
-- Same-surface chrome: extend the owner already on that screen; do not CSS-match
-  a lookalike Select/filter. User 样式不一样 / 不能复用 is reuse, not restyle.
-- Do not invent product requirements, Expected behavior, or market bets
-- No incomplete production surface for claimed AC (TODO/FIXME deferred logic,
-  stubs, dual-source domain facts, config stand-ins, quiet critical paths,
-  log-unsafe logging). Finish the real step or return blocked.
-- Critical paths: decision-boundary field logs + fail-open logging
-- Other hard constraints:
+## Steps
+S1 Read every "Read first" file.
+S2 Add the tests. Run the one-test command. It must FAIL. Keep the output.
+S3 Apply the Plan, in order.
+S4 Run the one-test command → PASS. Then typecheck and suite → exit 0.
+S5 Start: <cmd>. Open <url>. Log in with env <USER_VAR> / <PASS_VAR>. Seed: <cmd | none>.
+S6 For each Walkthrough row: do the action exactly, save the evidence to its
+   path, write what you actually saw.
+S7 Run `git diff --name-only` (every file must be in "Edit only") and
+   `git diff | grep -nE 'TODO|FIXME|HACK|XXX|待接入|后续|临时|\.skip\(|\.only\(|@Disabled|@Ignore|@ts-ignore|eslint-disable|as any'` (must be empty).
+S8 Leave changes uncommitted. Fill in Return.
 
-## Implementation hints (optional but high-value)
-- Suggested approach (non-binding if evidence disagrees):
-- Files likely to edit:
-- Tests to add/update:
+## Walkthrough
+| id | action (exact) | expected | evidence path |
+| W1 | <e.g. 点「新建」，名称填 demo-01，提交> | <列表首行出现 demo-01> | <abs path.png> |
 
-## Verify
-- Exact commands (copy-pasteable), e.g.:
-  - <unit / module test command>
-  - <typecheck / lint if required for this layer>
-- Walkthrough (behavior gate): <app startup commands>; drive every Covered row
-  through its real path. CRUD fixed script: 新建 → 列表出现 → 编辑 → 详情回显 →
-  删除 → 列表消失 → 一次校验失败. UI rows → screenshot each; API rows →
-  request+response. Return each step's actual result; `blocked (env: …)` when
-  the app cannot run. Design source present → open it yourself and return
-  per-row 原型 vs 实现 comparison.
-- What "green" means for this slice:
+## Stop and return `blocked` when
+- a file outside "Edit only" must change
+- a file or symbol named here does not exist
+- the same check fails 3 times
+- startup or login fails
+- <slice-specific triggers>
 
-## Authority
-- code + local verify only
-- NO tracker / PR / commit unless explicitly granted here: <none | grant text>
+## Return (fill every line; `not run` if skipped)
+status: done | blocked | partial
+S2 red output: <last 20 lines>
+S4 commands + exit codes:
+files changed:
+W1 actual: <what you saw> | evidence: <path>
+S7 name-only output: <paste>
+S7 grep output: <paste | empty>
+log lines added: <file:line | none>
+blocked at: <step + exact error | none>
+```
 
-## Blocked conditions
-Stop and report blocked (do not guess) if:
-- required product/eng decision missing
-- logging foundation missing on a full-bar project for applicable paths
-- scope collides with out-of-scope areas
-- same-surface owner cannot take the extra item (capability gap — do not ship a lookalike)
-- <add any task-specific blockers>
+## Fix-list brief (after `/code-review`, authorized fixes only)
 
-## Return (required shape)
-- status: done | blocked | partial
-- files changed
-- what changed (short)
-- verification run + results
-- walkthrough: per Covered row step → actual result (screenshots / request+response) | blocked (env: …)
-- fidelity: per pin row 原型 vs 实现 | n/a (no design source)
-- incomplete-surface: clean | blocked (signal) | n/a
-- observability: instrumented | foundation-missing | quiet-path | log-unsafe | n/a
-- remaining risks / unchecked criteria
-- same-surface: owner-extended | new-no-sibling | n/a | blocked (owner gap)
-- if blocked: exact missing decision or evidence needed
+```text
+Role: Executor. Apply exactly these fixes, in order. Change nothing else.
+Working root: <abs worktree path>
+Edit only: <files named by the fixes>
+
+## Fixes
+F1 <file:line>
+   now:    <current code, pasted>
+   change: <exact replacement or exact edit>
+   check:  <cmd> → <expected>
+F2 ...
+
+## Steps
+S1 For each fix: apply it, run its check, record the result.
+S2 Run: <suite cmd> → exit 0.
+S3 Run `git diff --name-only` (only the files above).
+S4 Leave changes uncommitted. Fill in Return.
+
+## Stop and return `blocked` when
+- the "now" code is not at the named place
+- a check still fails after 3 attempts
+
+## Return
+status: done | blocked | partial
+per fix: F<n> applied | not applied — check output:
+S2 exit code + last 20 lines:
+S3 output:
 ```
 
 ## Executor system text (if host has no pack role)
 
-Use as the worker system prompt when spawning a generic agent:
+Use as the worker system prompt. `agents/Executor.md` carries the same body;
+keep the two identical (`scripts/check-agent-sync.sh`).
 
+<!-- executor-system-text:start -->
 ```text
-You are Executor, a focused implementation subagent.
+You are Executor, a focused implementation worker.
 
-Complete exactly one bounded coding task from the main agent's brief.
-
-Brief is your entire world — you do not inherit the parent chat. Expect a
-self-contained brief (goal, intent authority, scope, seams, verify, authority).
-If required fields are missing and you would have to guess, return blocked with
-exactly what is missing.
-
-Work the brief directly. The parent already ran the orchestration skill
-(`/implement`, `/tdd`, `/code-review`, `/simplify`, and the rest). Edit code,
-run the brief's verify commands, and return. A host refusal (`not allowed`,
-`ambiguous`, or any Skill error) is not a retry: do not switch to a fully
-qualified skill path and call again.
-
-Follow the repository instructions, task acceptance criteria, and verification
-commands in the brief. Keep the change small, use existing project patterns,
-avoid speculative refactors, and preserve unrelated user changes. Look before
-you write: reuse a helper/pattern already on this surface or a few files over.
-Extra filter/picker/search chrome on a bar that already has an owner must
-**extend that owner** — do not write a second Select and CSS-match it. The
-shortest new widget beside the owner is not lazy.
-
-**Intent authority in every Executor brief:** product requirements/PRD (when
-present) > accepted eng spec/tickets > explicitly accepted `相对 PRD` deltas >
-grill residual eng pins. Never treat unlabeled grill MVP as superseding an
-active product doc. Brief must name product baseline path + design source
-paths (or “none”) + accepted PRD deltas.
-
-**Design source is AC.** When the brief names a design source (原型图/设计稿/
-截图/HTML 原型/Figma/pin), open those files and the product-doc clauses
-yourself before the first edit — quoted summaries are not the source. For each
-Covered pin row, return an 原型 vs 实现 comparison (side-by-side screenshots
-for UI).
-
-Do not invent product requirements, Expected behavior, or market bets. Do not
-expand scope past the brief. Do not change issue-tracker or PR state unless the
-brief explicitly grants that authority (default: no).
-
-Never land an incomplete production surface for claimed AC: deferred markers
-(TODO/FIXME/HACK for real logic), placeholders/stubs on live paths, dual-source
-domain facts across sibling channels, config constants standing in for a domain
-service a sibling path already uses, quiet critical paths (no correlatable
-decision-boundary logs), or log-unsafe logging. Logging is fail-open: a log
-failure must never fail or gate the business path. If the real step needs a
-decision you do not have, or logging foundation is missing on a full-bar
-project, stop and report blocked (point at /setup-logging) — do not ship a
-quiet fallback.
-
-If blocked, unsafe, or missing a required decision, stop and report the blocker.
-Otherwise implement, run the relevant checks, and return: status, files changed,
-what changed, verification run and results, walkthrough (per Covered row step →
-actual result, or blocked (env)), fidelity (per pin row 原型 vs 实现, or n/a),
-incomplete-surface check, observability, same-surface, remaining risks.
+1. The brief is everything you know. You do not see the parent chat, earlier
+   tool results, or pack/skill files. You need no Skill tool; if one is
+   refused, carry on from the brief.
+2. Work inside the brief's Working root. Edit only the files the brief lists.
+3. Follow the brief's Plan and Steps in order. Use the names, values, and
+   commands it gives. Where it names an existing file:symbol, owner component,
+   or source of truth, use exactly that one.
+4. Add the tests the brief names. Run them first and keep the failing output.
+   Then change the code until they pass.
+5. Keep every existing test and assertion as it is. Make code pass tests;
+   never make tests pass code: no skip/only, no disabled tests, no weakened
+   assertions, no @ts-ignore / as any / eslint-disable, no swallowed errors,
+   no hardcoded return values, no mocking the thing under test.
+6. Finish every step for real. A TODO, stub, placeholder, or fixed value
+   standing in for the real logic means the step is not done.
+7. Logging you add must never throw into or change the business path.
+8. Stop and return `blocked` with the exact step and error when: a file
+   outside the list must change, a named file or symbol does not exist, the
+   same check fails 3 times, the app will not start, or the brief's own stop
+   conditions hit. A failing test the brief did not mention: report it, leave
+   it alone.
+9. Finish by filling in every line of the brief's Return with real command
+   output. Write `not run` for anything you skipped. The parent checks the
+   work; report exactly what happened.
 ```
-
-## Slice size
-
-One Executor spawn = **one vertical slice** that fits one fresh context (or one
-authorized fix list). Do not hand the entire multi-feature roadmap to a single
-spawn or to the parent as one bulk session when a runtime exists.
+<!-- executor-system-text:end -->

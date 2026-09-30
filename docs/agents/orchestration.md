@@ -68,12 +68,19 @@ worker’s entire environment — not a polite summary.
    `DISPATCH.md` templates.
 6. **Thin brief → expect `blocked`.** Workers are instructed to stop rather
    than invent product intent, scope, or Expected behavior.
+7. **Judgment stays with the parent.** Executor briefs carry a fixed Plan,
+   literal AC values, named `file:symbol` reuse, the chrome owner, log points,
+   and a filled walkthrough table — the worker chooses nothing
+   (`skills/implement/SKILL.md` §1).
+8. **A worker report is a claim.** The parent re-runs verify, checks the diff
+   against the allowlist and the forbidden-marker grep, and opens every
+   evidence file before it commits (`skills/implement/SKILL.md` §3 Accept).
 
 ### Brief minimum (must)
 
 | Agent | Brief must include |
 | --- | --- |
-| `Executor` | goal, scope, AC or fix list, constraints, verify commands, authority (no tracker unless granted) |
+| `Executor` | working root, literal AC, edit allowlist, fixed Plan, tests with literal expected values, exact commands, walkthrough table, stop conditions, raw-fact Return (or a file:line fix list) |
 | `Reviewer` | review packet + **one axis** (or explicit all-axes). Packet may be a **code diff** (`skills/code-review/AGENT-BRIEFS.md`) or a **design/plan** (`skills/code-review/DESIGN-REVIEW-BRIEF.md`) |
 | `Verifier` | candidates + same scope fixed point (diff fixed point **or** design packet) |
 
@@ -83,7 +90,7 @@ Use the full templates in skill dispatch files. In short:
 
 | Agent | Also include (recommended) |
 | --- | --- |
-| `Executor` | why/context; product baseline path + accepted PRD deltas (or `none`); in/out of scope files; pattern refs (paths + what to copy); seams/APIs/enums to reuse; **same-surface chrome owner** on UI slices; exact verify commands; blocked conditions; return schema. Full text: `skills/implement/DISPATCH.md` |
+| `Executor` | read-first `path:lines` + what to copy; `file:symbol` to reuse; chrome owner (UI); source of truth for domain facts; log points. Full text: `skills/implement/DISPATCH.md` **Implementation brief** / **Fix-list brief** |
 | `Reviewer` | same review packet for every axis worker: fixed-point commands and/or diff text, changed files, commit list, intent/standards sources **with quotes for critical lines**, project shape/lenses when needed, **axis name + axis brief body** from `AGENT-BRIEFS.md` or `DESIGN-REVIEW-BRIEF.md` (paste axis text — do not assume the worker will open the pack). Full text: `skills/code-review/DISPATCH.md` |
 | `Verifier` | full candidate list with file:line + evidence; identical fixed point; confidence bar; Pass rules (incomplete-surface, observability, same-surface, unauthorized PRD partial). Full text: `skills/code-review/DISPATCH.md` |
 
@@ -91,9 +98,9 @@ Use the full templates in skill dispatch files. In short:
 
 | Skill / moment | Must try | Then |
 | --- | --- | --- |
-| `/implement` Execute (evidence loop, fidelity prep, verification runs that need edits) | `Executor` | host general → parent |
+| `/implement` §2 planned slice (after parent §1 plan; parent §3 accepts) | `Executor` | host general → parent |
 | `/implement` after `/code-review` when verdict is not Pass and fixes are authorized | `Executor` (fix list) | host general → parent |
-| `/implement-spec` implementer subagents (one ticket per spawn) | `Executor` | host general → parent |
+| `/implement-spec` one ticket per spawn (same brief + accept as `/implement`) | `Executor` | host general → parent |
 | `/code-review` axis passes | `Reviewer` × weight (`none`: nobody; `light`: 1 Slice; `full`: Standards+Spec+Correctness, +UI Fidelity when in scope) | parent sequential briefs |
 | `/code-review` validation gate | `Verifier` (`full` always; `light` only if the Slice Reviewer filed candidates; `none` never) | parent Verification Reviewer |
 | `/code-review` Auto-fix (user or `/implement` authorized) | `Executor` with eligible findings + fix contract (eligibility gate: `skills/code-review/SKILL.md` **Fix eligibility**) | host general → parent (same per-fix verify/revert rules) |

@@ -119,7 +119,7 @@ upgrade a small fix because a risk word can be stretched to fit the diff.
 | **full** | Large requirement: a new capability, a multi-slice feature, or frontend and backend with distinct new control flow. Also when the user explicitly asks for a full review of a branch, PR, or named range. | Parallel Standards + Spec + Correctness (plus UI Fidelity / Performance / Security / Ponytail only when this skill already marks them in scope). Then **Verifier always**, even when candidates are `none`. |
 
 **Weight picks workers, never evidence.** Walkthrough results and pin-row
-fidelity evidence are Done criteria owed by `/implement` §2 under **every**
+fidelity evidence are Done criteria owed by `/implement` §3 (parent-accepted) under **every**
 weight — `none`/`light` skip review workers, not evidence. A Covered pin row
 without evidence or a user-granted waiver is a blocking gap at any weight.
 

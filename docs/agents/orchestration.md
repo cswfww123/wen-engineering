@@ -93,6 +93,7 @@ Use the full templates in skill dispatch files. In short:
 | --- | --- | --- |
 | `/implement` Execute (evidence loop, fidelity prep, verification runs that need edits) | `Executor` | host general → parent |
 | `/implement` after `/code-review` when verdict is not Pass and fixes are authorized | `Executor` (fix list) | host general → parent |
+| `/implement-spec` implementer subagents (one ticket per spawn) | `Executor` | host general → parent |
 | `/code-review` axis passes | `Reviewer` × weight (`none`: nobody; `light`: 1 Slice; `full`: Standards+Spec+Correctness, +UI Fidelity when in scope) | parent sequential briefs |
 | `/code-review` validation gate | `Verifier` (`full` always; `light` only if the Slice Reviewer filed candidates; `none` never) | parent Verification Reviewer |
 | `/code-review` Auto-fix (user or `/implement` authorized) | `Executor` with eligible findings + fix contract (eligibility gate: `skills/code-review/SKILL.md` **Fix eligibility**) | host general → parent (same per-fix verify/revert rules) |

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Implement the work described by the user in the spec or tickets.
 
-Use /tdd where possible, at pre-agreed seams.
+Use /tdd at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
@@ -134,8 +134,7 @@ anyone. Size, not a stretched risk word, decides:
 | Weight | Do |
 | --- | --- |
 | **none** | Do not run `/code-review`. Do not spawn a Reviewer or a Verifier. Record `review-weight: none` plus one sentence naming the seam (for example "existing-field serializer annotation"). The walkthrough (§2.4) + test loop above is the gate. Then commit when authorized. |
-| **light** | One Slice Reviewer. Verifier only if that reviewer filed a candidate. |
-| **full** | Full `/code-review`, then Verifier even when candidates are `none`. |
+| **light / full** | Run `/code-review` against the fixed point — its **Pick weight** table owns which workers spawn and when the Verifier runs. |
 
 A serializer or annotation that keeps the field name, path, and message name
 is **`none`**. Do not call that a wire/protocol rename.

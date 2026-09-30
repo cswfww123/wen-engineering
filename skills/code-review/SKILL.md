@@ -220,6 +220,13 @@ one Reviewer (or host-general) attempt → process-bug. Do not report a clean
   **how not what**; prefer small Ponytail/Standards fixes. Hard-try `Executor`
   for authorized fixes ([DISPATCH.md](DISPATCH.md)). Never auto-fix on public
   PR audits without explicit ask.
+- **Fix eligibility.** Authorized fixes cover behavior-preserving
+  Standards/Ponytail/simplification findings and small, locally-verifiable
+  corrections inside the authorized scope. **Never auto-fix**, even under a
+  blanket “修一下” — mark `needs-user-decision` instead: exposed
+  secrets/credentials (rotation is user-owned), auth/authz or
+  tenant-boundary logic, money-math and data-loss paths, and
+  product-behavior changes (those are `相对 PRD` deltas, not fixes).
 - This skill never closes a ticket. When loaded from `/implement`, return
   `Pass` / `Changes Required` / `Needs User Decision`.
 - **Spec vs product doc:** unauthorized product-doc partial/missing (no accepted

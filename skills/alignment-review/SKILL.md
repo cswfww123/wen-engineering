@@ -20,10 +20,15 @@ because a human did **not** already approve the graph in-session.
 - Unreviewed publish: agent-authored graph without human quiz/approval
 - High-risk re-slice after a large scope or architecture change
 - You explicitly want a second-pass audit before `/implement`
-- **prd-walk (mandatory):** delivery source is an in-repo / named product doc
-  **and** (the last implementation ticket is closing, **or** the user asked
-  已按 PRD 实现 / 对照 PRD 验收 / 是不是做完了, **or** the parent spec is being
-  called `delivered`). Protocol: `docs/prd-authority.md` §5.
+- **prd-walk (mandatory)** — run it when **both** are true:
+  1. Delivery source is an in-repo / named product doc
+  2. **Any one** of:
+     - the **last** implementation ticket of the spec is closing now
+     - the user asks 已按 PRD 实现 / 对照 PRD 验收 / 是不是做完了
+     - the parent spec is being called `delivered`
+
+  Protocol: `docs/prd-authority.md` §5. Mandatory means it runs on the
+  trigger — not only when someone names the skill.
 
 ## When not to use
 

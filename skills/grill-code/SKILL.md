@@ -22,19 +22,13 @@ A **detailed product requirements / PRD / `docs/requirements/*` package** does *
 
 ## Product-doc authority (hard — when a PRD/requirements doc is in play)
 
-Product intent hierarchy for this session:
+Load `docs/prd-authority.md` — it owns the **authority table**, the `相对 PRD` delta format and classes, and the delta lock. Do not restate them here; apply them as written.
 
-1. **Product requirements / PRD / in-repo product doc** — primary source of *what* ships (behavior, UX, rules).
-2. **Explicit user-authorized deltas** — only after a clear “relative to PRD: X → Y (MVP/defer)” row is posted **and** the user accepts/diffs it. Silent MVP shrink is forbidden.
-3. **Grill residual** — engineering seams, wire/enum alignment, txn shape, test seams the product doc does not own.
-4. **Code / tests** — facts about *what ships today* after merge; never a license to rewrite product intent mid-grill.
-
-Binding rules:
+Frontier bindings this skill adds on top:
 
 - **Do not re-open settled PRD behavior** as a fresh recommended pole “for cleanliness” or engineering convenience (e.g. PRD says single-row edit → do not recommend whole-table edit unless you label it as a **PRD delta**).
-- Every recommended row that **narrows, defers, or changes** product-doc behavior must be marked: `相对 PRD: <was> → <now> (<reason>)` and classified **`doc-change`** (edit the product doc) or **`eng-read`** (contradiction / missing mapping; user **按原文** revokes that id only). Unmarked deltas are invalid; do not treat `按推荐` as authority over unlabeled PRD overrides.
 - If the user is **not** the product owner for those deltas → park and offer `/to-questionnaire`; do not invent Expected.
-- Close recap (chat or archive) must list **PRD deltas accepted** separately from eng pins. Implement handoff AC = PRD baseline **minus** only those accepted deltas — never “grill AC alone.”
+- Close recap (chat or archive) lists **PRD deltas accepted** separately from eng pins (`prd-authority.md` §3).
 
 ## Engineering defaults (coding repos)
 

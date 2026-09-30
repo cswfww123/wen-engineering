@@ -13,17 +13,12 @@ The issue tracker and triage label vocabulary should have been provided to you �
 1. Explore the repo to understand the current state of the codebase, if you haven't already (direct PRD entry: fold the collision sweep into this exploration — live write paths, schema, contract/seal tests, management surfaces). Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
 
 2. **If the delivery source is an existing product doc** (`docs/requirements/*`,
-   `docs/prd/*`, or a user-named PRD): load `docs/prd-authority.md` and draft the
-   **PRD Inventory** *before* writing REQs. Every numbered 验收 point and each
-   material 场景 row becomes a `SRC` with a surface. Dual surfaces (弹窗 vs 页外,
-   提交剔 vs GET 重验, 选模板 vs 变量编辑器) are two rows. A design pin in
-   the source adds its observable details as **pin rows** in the same
-   Inventory (`PIN-xx @pin v3`; `docs/prd-authority.md` §2). Contradiction /
-   unmapped-term rows stay `HITL` — do not silently fold them into Accepted
-   deltas. **Do not interview** settled PRD behavior. HITL rows that surface
-   here after a grill pass mean the entry sweep missed a pole: run **one**
-   residual `/grill-code` round on exactly those rows, fold the accepted
-   deltas, then re-check the fail-closed gate ([docs/prd-authority.md](../../docs/prd-authority.md) §2).
+   `docs/prd/*`, or a user-named PRD): load
+   [docs/prd-authority.md](../../docs/prd-authority.md) and draft the
+   **PRD Inventory** per its §2 *before* writing REQs — row shape, pin rows,
+   dual-surface splits, and the fail-closed gate (HITL → one residual
+   `/grill-code` round → re-check) are all defined there. **Do not interview**
+   settled PRD behavior.
 
 3. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
 

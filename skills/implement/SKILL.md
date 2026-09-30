@@ -41,7 +41,8 @@ The Executor is often a weaker model that executes the brief literally. Every ju
 - **Acceptance** — final AC as concrete behavior with literal values (not SRC ids alone, not "per spec").
 - **Files** — exact edit allowlist; read-first files with line ranges and what to copy; existing `file:symbol` to reuse (look for it yourself — the worker does not search).
 - **Plan** — ordered edits, one line each. Binding.
-- **Tests** — test file, test name, literal expected value per seam. Seams come from the spec's Testing Decisions or the ticket's Behavior gate; confirm with the user only when neither names them.
+- **Tests** — test file, test name, literal expected value per seam. Seams come from the spec's Testing Decisions or the ticket's Behavior gate; confirm with the user only when neither names them. A docs/config/mechanical slice with no behavior change writes `Tests: none — GREEN baseline`: the existing suite passing before and after is its evidence.
+- **Baseline** — run the suite in the worktree before dispatch; list the tests already failing as `Already failing` (or `none`). In-place runs also list files dirty before the run as `Do not touch`.
 - **Real source of truth** — where the slice reads a domain fact (rate, tax, owner), name the service/table the sibling path uses. No config stand-in in the plan.
 - **Log points** — on external / async / webhook / MQ / state-machine paths, list each decision boundary and its fields ([FORENSIC-OBSERVABILITY.md](../code-review/FORENSIC-OBSERVABILITY.md)); else `none`.
 
@@ -62,12 +63,16 @@ Load [DISPATCH.md](DISPATCH.md) once per session. Per slice:
 
 Run every check yourself; none is waived by the worker's `status: done`:
 
-1. Re-run each brief verify command in the worktree; exit codes match the report.
-2. `git diff --name-only` ⊆ the brief's edit allowlist.
-3. `git diff | grep -nE 'TODO|FIXME|HACK|XXX|待接入|后续|临时|\.skip\(|\.only\(|@Disabled|@Ignore|@ts-ignore|eslint-disable|as any'` is empty; read the test-file diff — no weakened, deleted, or skipped assertion.
-4. The report's red output (S2) shows the new test failing for the AC's reason.
-5. Open every walkthrough evidence file; compare it with the row's expected observation yourself. UI: judge pin rows against the design source ([UI.md](UI.md)).
+`<base>` = the worktree branch point. `git add -N .` first, so new files, staged, and committed changes all show.
+
+1. Re-run each brief verify command in the worktree; exit codes match the report; only `Already failing` tests fail.
+2. `git diff --name-only <base>` ⊆ the brief's edit allowlist (in-place: minus `Do not touch`), and `git status --porcelain` shows nothing else. Read every `off-plan edits` line the report lists.
+3. `git diff -U0 <base> | grep '^+' | grep -nE 'TODO|FIXME|HACK|XXX|待接入|后续|临时|\.skip\(|\.only\(|@Disabled|@Ignore|@ts-ignore|eslint-disable|as any'` is empty; read the test-file diff — no weakened, deleted, or skipped assertion.
+4. Test-bearing slice: the report's S2 output shows the new test failing for the AC's reason. GREEN-baseline slice: check 1 is the evidence. Fix-list brief: each fix's check output.
+5. Open every walkthrough evidence file; compare it with the row's expected observation yourself. UI: judge pin rows against the design source ([UI.md](UI.md)). A row reported `blocked (env: …)` → confirm the missing fact yourself (run the startup/login step); confirmed → stop and report it to the user — this is not a rejection.
 6. Judge the diff for incomplete surface ([INCOMPLETE-SURFACE.md](../code-review/INCOMPLETE-SURFACE.md)): real domain step on every production path of this AC; planned log points present; logging fail-open. Logging foundation missing on an applicable path → `observability: foundation-missing`, point at `/setup-logging`, stop.
+
+The parent's own edits (§1 skip, or takeover) run checks 1–3, 5, 6 the same way.
 
 A failed check → new brief to Executor naming the check, its exact output, and the fix. After 2 rejections of one slice, the parent takes it over or marks it `blocked`. All pass → `/simplify` when the delta is non-trivial (re-run 1–3 after), then commit in the worktree referencing the ticket. **Accepted** = every check above passed.
 
@@ -78,7 +83,7 @@ Pick **`review-weight`** from `/code-review` **Pick weight** before spawning any
 - **`none`** — no `/code-review`, no Reviewer, no Verifier. Record `review-weight: none` plus one sentence naming the seam (e.g. "existing-field serializer annotation" — that keeps field name, path, and message name, so it is not a wire rename).
 - **`light` / `full`** — run `/code-review` against the worktree branch base (`git diff <base>..HEAD`). Pass product baseline, design source paths, accepted PRD deltas, and (UI Fidelity in scope) pin rows + evidence paths as intent evidence.
 
-Verdict not `Pass` with fixes in scope → Executor with the DISPATCH **Fix-list brief**, then §3 again. `Pass` requires: §3 accepted; no product-doc gap without an accepted delta; pin rows evidenced or user-waived; no same-surface lookalike. Parent-fallback workers → `confidence: degraded` (prefer an independent review or human gate before merge).
+Verdict not `Pass` with fixes in scope → Executor with the DISPATCH **Fix-list brief**, then §3 again (check 4 = the per-fix check outputs). `Pass` requires: §3 accepted; no product-doc gap without an accepted delta; pin rows evidenced or user-waived; no same-surface lookalike. Parent-fallback workers → `confidence: degraded` (prefer an independent review or human gate before merge).
 
 ### 5. Merge back, clean up
 
@@ -95,7 +100,7 @@ A tracked ticket this run finished closes **in the same run**, after the merge l
 
 Close through the configured tracker (`docs/agents/issue-tracker.md`): comment the acceptance result, walkthrough evidence, review weight + verdict, commit link; close; **read it back** — Done is invalid while it still reads `open`. Unfinished slice (review `Changes Required`, blocked, prd-walk `缺`, 残差 in body) → leave it open and say why.
 
-This was the spec's **last** open child → run the package prd-walk (§0). No `缺` → close the parent spec by the tracker's closeout sequence and read it back; else name what holds it open.
+This was the spec's **last** open child → run the package prd-walk (§0). No `缺` → close the parent spec by the tracker's closeout sequence and read it back; else name what holds it open. Under `/implement-spec` skip this paragraph — its step 9 closes the spec after the branch review.
 
 ### Done report (mandatory fields)
 

@@ -42,7 +42,7 @@ Default is LIGHT. Do not open PM, Wayfinder, or a multi-skill pipeline when `/im
 | Product settled, technical route needs more than one session | **L4** `/wayfinder`, then L2 when the map is resolved | Try L4 before G if one interview would clear it |
 | Whole spec, tickets already form a graph, land on the current branch | `/implement-spec` | Use it for a single ticket; that is `/implement` |
 
-`/implement` is one slice: TDD at the agreed seams, `/code-review`, commit. It does not close the parent spec.
+`/implement` is one slice: TDD at the agreed seams, `/code-review`, commit. It closes the parent spec only when this was its last open child and prd-walk is clean.
 
 `/implement-spec` drives the whole graph on the branch the user is already on: frontier tickets in parallel (disjoint files only), one local worktree each; the parent accepts, reviews, merges (serially), and closes each ticket, runs one full `/code-review` on the branch, closes the spec after a clean prd-walk, then deletes those worktrees and branches. It does not create a branch, open a PR, or push unless the user asks.
 

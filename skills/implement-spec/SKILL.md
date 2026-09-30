@@ -29,7 +29,7 @@ Each ticket runs the `/implement` protocol; this skill adds the graph, concurren
    2. Commit in the worktree.
    3. `/code-review` **Pick weight** for this ticket's diff (`none` or `light`; a ticket that is itself `full`-sized gets `full`). Verdict not `Pass` → Fix-list brief, then Accept again.
    4. **Merge** — the parent, serially, one ticket at a time, per [WORKTREE.md](../implement/WORKTREE.md).
-   5. **Close** that ticket per `/implement` §6: comment result + evidence + commit link, close, read back. Unfinished ticket stays open.
+   5. **Close** that ticket per `/implement` §6: comment result + evidence + commit link, close, read back. Unfinished ticket stays open. The spec itself waits for step 9.
 
 7. **Recompute the frontier** after each close and brief the newly unblocked tickets (back to step 4).
 

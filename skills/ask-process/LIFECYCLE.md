@@ -70,7 +70,7 @@ Human-facing walkthrough (same flows, longer form): root `README.md` /
 bug | clear AC | pure eng slice  →  /implement
 ```
 
-Evidence loop (TDD or GREEN baseline), `/simplify` when non-trivial, project
+Parent plans the brief, Executor runs it (TDD, or GREEN baseline for no-behavior slices), parent accepts; `/simplify` when non-trivial, project
 checks, then review by size (`none` skips, `light`, or `full` — `/code-review`
 **Pick weight**), done. A finished tracked ticket is closed in the same run
 and read back as closed; an unfinished ticket stays open. No invented spec or ticket.

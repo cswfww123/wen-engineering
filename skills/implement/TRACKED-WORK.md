@@ -27,8 +27,9 @@ report. Comment acceptance, verification, review weight and verdict, and the
 commit link; close; read the issue back. The read-back must show `closed`.
 Leaving a finished ticket open is a process bug — the queue then looks undone.
 
-Do not close a parent spec, a ticket this run did not finish, or a ticket that
-failed review, prd-walk, or the honest-complete check. A stopped slice stays
+Do not close a ticket this run did not finish, or a ticket that failed review,
+prd-walk, or the honest-complete check. The parent spec closes only by the
+last-child rule in implement §6. A stopped slice stays
 open and the Done report says why.
 
 ## Bug-Report Conversion

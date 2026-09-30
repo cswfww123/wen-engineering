@@ -55,7 +55,7 @@ User HITL /grill-code if Ask User or scope still open
   → optional /alignment-review only for handoff / unreviewed artifacts
 ```
 
-Hard try `Reviewer` / `Verifier` per `orchestration.md`; soft-fail to parent with
+Hard try `Reviewer` / `Verifier` per [DISPATCH.md](DISPATCH.md); soft-fail to parent with
 the same brief text.
 
 ---

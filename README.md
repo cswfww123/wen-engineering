@@ -322,7 +322,7 @@ Common skills:
 
 - tracker / labels / domain docs under `docs/agents/`
 - `docs/rules/pr.md`, the PR packet (left untouched if the file already exists)
-- an `## Agent skills` pointer block, only inside an `AGENTS.md` or `CLAUDE.md` that already exists, including the `docs/rules/` pointer
+- an `## Agent skills` pointer block, only inside an `AGENTS.md` or `CLAUDE.md` that already exists, including the fixed `### Work routing` line (agent-owned entry routing) and the `docs/rules/` pointer
 
 It does not create or rewrite those files. Prose for them is `/writing-for-agents`.
 

@@ -320,7 +320,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 
 - `docs/agents/` 下的 tracker / labels / domain 文档
 - `docs/rules/pr.md`，PR packet（文件已存在则不动）
-- 仅当 `AGENTS.md` 或 `CLAUDE.md` 已经存在时，插入或更新其中的 `## Agent skills` 指针块，包含 `docs/rules/` 指针
+- 仅当 `AGENTS.md` 或 `CLAUDE.md` 已经存在时，插入或更新其中的 `## Agent skills` 指针块，包含固定的 `### Work routing`（agent 自行路由入口）和 `docs/rules/` 指针
 
 它不创建、也不重写这两份文件。正文交给 `/writing-for-agents`。
 

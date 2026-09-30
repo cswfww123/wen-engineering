@@ -68,7 +68,7 @@ Offer **multi-context** (a root `CONTEXT-MAP.md` pointing to per-context `CONTEX
 
 Show the user a draft of:
 
-- The `## Agent skills` block, only when a root `AGENTS.md` or `CLAUDE.md` already exists (see step 4)
+- The `## Agent skills` block (including the fixed `### Work routing` sub-block), only when a root `AGENTS.md` or `CLAUDE.md` already exists (see step 4)
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
 - `docs/rules/pr.md`, copied from the seed. Show it with the other drafts; it is a repo rule, not a per-repo choice, so it is not a section to ask about.
 
@@ -96,6 +96,10 @@ If `AGENTS.md` or `CLAUDE.md` already exists, insert or update **only** this blo
 ```markdown
 ## Agent skills
 
+### Work routing
+
+Route incoming work yourself; do not ask the user which skill to use. Bug → `/diagnosing-bugs`. Fuzzy product need (worth-doing, market) → stop, needs PM. Clear AC or one slice → `/implement`. Any other requirement, product doc included → `/grill-code`. Enter the chosen skill by reading its `SKILL.md`. Mid-flow hops still wait for the user's order (grill close gate, `/implement` | 「开干」). Full routing: `ask-process/LIFECYCLE.md` in the skills root.
+
 ### Issue tracker
 
 [one-line summary of where issues are tracked]. See `docs/agents/issue-tracker.md`.
@@ -117,7 +121,9 @@ Repo-level rules live in `docs/rules/`, one file per rule. Read the matching fil
 
 Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
 
-If neither root file exists, stop after the `docs/agents/` and `docs/rules/` files. Tell the user to add the block themselves, or to write the file with `writing-for-agents`. The PR rule still needs its pointer: without the block above, nothing reaches `docs/rules/pr.md`.
+Always include `### Work routing` verbatim. It is a pack rule, not a per-repo choice, so it is not a section to ask about. It is the only always-loaded carrier of agent-owned entry routing in a target repo: the router skill is user-invoked and `LIFECYCLE.md` is reached only through this line.
+
+If neither root file exists, stop after the `docs/agents/` and `docs/rules/` files. Tell the user to add the block themselves, or to write the file with `writing-for-agents`. The PR rule and work routing still need their pointer: without the block above, nothing reaches `docs/rules/pr.md`, and the agent waits for slash commands instead of routing.
 
 ### 5. Done
 

@@ -21,7 +21,8 @@ loading its `SKILL.md` and following it. This is documented router behavior,
 not hidden cross-invocation. User-typed slash commands are manual overrides,
 not the only door. Mid-flow hops still wait for the user's order — an
 agent-entered flow has the same close gates and side-effect limits as a
-user-typed one.
+user-typed one. In a target repo the always-loaded carrier of this rule is the
+`### Work routing` line `/setup-project` writes into the `## Agent skills` block.
 
 For user-invoked skills, the `description:` is human-facing:
 

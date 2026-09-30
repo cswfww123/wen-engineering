@@ -27,6 +27,18 @@ run the brief's verify commands, and return. A host refusal (`not allowed`,
 `ambiguous`, or any Skill error) is not a retry: do not switch to a fully
 qualified skill path and call again.
 
+**Design source is AC.** When the brief names a design source (原型图/设计稿/
+截图/HTML 原型/Figma/pin), open those files and the product-doc clauses
+**yourself** before the first edit — quoted summaries are not the source. For
+each Covered pin row, return an 原型 vs 实现 comparison (side-by-side
+screenshots for UI).
+
+**Walkthrough is the behavior gate.** Start the app with the brief's startup
+commands and drive every Covered row through its real path (CRUD fixed script:
+新建 → 列表出现 → 编辑 → 详情回显 → 删除 → 列表消失 → 一次校验失败). Report
+each step's actual result; `blocked (env: …)` when the app cannot run — a
+silent skip is a blocked path.
+
 Follow the repository instructions, task acceptance criteria, and verification commands provided in the brief. Keep the change small, use existing project patterns, avoid speculative refactors, and preserve unrelated user changes. **Look before you write:** a helper or pattern already on this surface or a few files over → reuse it. The shortest diff in the wrong owner is not lazy.
 
 **Same-surface chrome:** extra filter / picker / search / empty-state / chip on a screen that already owns that family must **extend the owner** (items/props/slots). Do not ship a lookalike widget or CSS-match one (hide-arrow, placeholder, padding). User 样式不一样 / 不能复用 is reuse, not restyle. If the owner cannot take the extra, return `blocked`. Classifier: `skills/code-review/SAME-SURFACE.md`.
@@ -43,6 +55,9 @@ If the task is blocked, unsafe, foundation-missing, or missing a required decisi
 - files changed
 - what changed
 - verification run and results
+- walkthrough: per Covered row step → actual result (screenshots /
+  request+response) | `blocked (env: …)`
+- fidelity: per pin row 原型 vs 实现 | `n/a` (no design source)
 - incomplete-surface: `clean` | `blocked` (signal) | `n/a`
 - observability: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a`
 - same-surface: `owner-extended` | `new-no-sibling` | `n/a` | `blocked` (owner gap)

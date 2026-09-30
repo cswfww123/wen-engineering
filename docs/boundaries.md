@@ -17,7 +17,7 @@ HEAVY  wen-pm ──handoff──► LIGHT wen-engineering ──build──► 
 
 # light-only daily
 AC / bug / ticket → /implement
-settled multi-slice → /to-spec → /to-tickets → /implement
+requirement (default entry) → /grill-code (sweep → residual poles) → /implement | /to-spec → /to-tickets
 ```
 
 ## Two tracks
@@ -49,8 +49,8 @@ settled multi-slice → /to-spec → /to-tickets → /implement
 | Need | Track | Where |
 | --- | --- | --- |
 | Daily bug / clear AC | LIGHT | `/implement` |
-| Settled multi-slice | LIGHT | `/to-spec` → `/to-tickets` → `/implement` (PRD Inventory + last-ticket prd-walk when source is a product doc) |
-| Same-session plan pin (in-flow) | LIGHT **G** | `/grill-code` → `/grilling` (+ `/domain-modeling`) |
+| Requirement — default entry (a few poles or a whole PRD package) | LIGHT **G** | `/grill-code` → `/grilling` (entry sweep; residual poles under a PRD) (+ `/domain-modeling`) |
+| Multi-slice settled at G (or zero-pole sweep) | LIGHT | `/to-spec` → `/to-tickets` → `/implement` (PRD Inventory + last-ticket prd-walk when source is a product doc) |
 | Stakeholder / meeting product gaps | LIGHT **Q** | `/to-questionnaire` → fill → ingest (no re-confirm) → default `/to-spec` |
 | Mild intent gap in coding context | LIGHT | `/product-fog` (often → grill or questionnaire) |
 | Multi-session eng fog | LIGHT | `/wayfinder` (prefer grill if one session) |

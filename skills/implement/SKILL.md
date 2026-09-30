@@ -10,14 +10,16 @@ Use /tdd where possible, at pre-agreed seams.
 
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
+Done means **walkthrough-proven**: the app runs and every Covered clause / AC bullet passes on its real path, with per-row runtime evidence (§2.4). Tests green + diff looks right is not Done on its own.
+
 Once done, pick a review weight from `/code-review` **Pick weight** and follow it. Simple fixes (`none`) skip `/code-review`. Medium fixes use light review. Large requirements use full review, which includes Verifier.
 
-Code edits happen in an isolated local worktree and merge back to the current branch once the slice passes (§0c, §4). Commit your work to the current branch.
+Code edits happen in an isolated local worktree and merge back to the current branch once the slice passes. Worktree setup, merge-back, cleanup: [WORKTREE.md](WORKTREE.md). Commit your work to the current branch.
 
 ## WEN process (required — read before writing code)
 
-These steps **bind** how the Matt steps above are executed in this pack. They
-do not replace TDD / typecheck / review / commit.
+These steps **bind** how the steps above are executed in this pack. They do not
+replace TDD / typecheck / walkthrough / review / commit.
 
 ### 0. Route and bound
 
@@ -25,16 +27,17 @@ do not replace TDD / typecheck / review / commit.
 - Intent not ready → stop; do not invent Expected (see project lifecycle docs if present).
 - Note layer (`frontend` | `backend` | `full-stack` | `non-UI`) for fidelity later.
 - UI layers: if a package-root `DESIGN.md` exists (Google Labs visual identity), treat it as **visual environment** for fidelity — tokens + Do's/Don'ts. Missing identity with multi-screen UI drift → optional `/to-design-md`, not a blocker for non-UI tickets.
+- **Design source present (原型图 / 设计稿 / Figma / 截图 / HTML 原型 / pinned winner) → it is product AC.** Extract its observable details as **pin rows** for this slice (chat table or ticket body is enough — `docs/prd-authority.md` §2) before the first edit, and name the source path in the Executor brief.
 - Look before you write (ponytail reuse rung): a helper, type, or pattern already on this surface or a few files over → reuse it. Same-surface chrome is the **refuse-to-pass** form of that rung.
-- UI chrome (filter / picker / search / empty-state / chip / toolbar control): load [SAME-SURFACE.md](../code-review/SAME-SURFACE.md) **before** the first control edit. Name the **owner** already on that screen (or `new — no sibling`) in the Executor brief. Extra instances **extend the owner**. User 样式不一样 / 不能复用 / 为什么新写 of sibling controls is a same-surface hit, not a restyle. Shortest new `Select` beside the owner is not lazy.
+- UI chrome (filter / picker / search / empty-state / chip / toolbar control): load [SAME-SURFACE.md](../code-review/SAME-SURFACE.md) **before** the first control edit. Name the **owner** already on that screen (or `new — no sibling`) in the Executor brief. Extra instances **extend the owner**. User 样式不一样 / 不能复用 / 为什么新写 of sibling controls is a same-surface hit, not a restyle.
 - Tracked work (frontier, bug-report conversion, HITL, claim): load
   [TRACKED-WORK.md](TRACKED-WORK.md) **before** edits.
 
 ### 0b. Intent authority (hard)
 
-When choosing what AC to build and what Spec review must prove, use this order:
+When choosing what AC to build and what review must prove, use this order:
 
-1. **Product requirements / PRD / in-repo product doc** (`docs/requirements/*`, `docs/prd/*`, user-named PRD path) — primary *product behavior* source when present.
+1. **Product requirements / PRD / in-repo product doc — including its design pin / 原型图 rows** (`docs/requirements/*`, `docs/prd/*`, user-named PRD path) — primary *product behavior* source when present.
 2. **Accepted eng spec / implementation tickets** derived from that product source.
 3. **Explicit user-authorized deltas** only when labeled as relative to the product doc (e.g. grill row `相对 PRD: …` accepted in session, or ticket Out-of-scope with PRD ref). Unlabeled chat “MVP” does **not** override the product doc.
 4. **Grill / chat residual** — eng seams and pins the product doc does not specify.
@@ -42,36 +45,16 @@ When choosing what AC to build and what Spec review must prove, use this order:
 
 Binding:
 
-- Multi-slice work with a detailed product doc and no eng spec yet → prefer stop and route **`/to-spec`** (do not invent a parallel “grill AC supersedes PRD” package).
-- Before first production edit: name the **product baseline path** (or “none”) and **accepted PRD deltas** (or “none”) in the working notes / Executor brief. If the parent spec has a PRD Inventory, list the `SRC`s this ticket `Covers`.
-- **Forbidden:** treat grill recap alone as full AC when an active product doc covers the same surface; implement to grill while leaving unlabeled PRD gaps, then report “grill AC 满足” as Pass.
-- Done report **source** field must list product doc path when used; if any claimed AC is a PRD delta, list those deltas explicitly under incomplete/deferred or accepted-delta.
-- **Forbidden complete:** ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC. Split a follow-up ticket or accept a labeled delta — do not `complete`.
-- **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the **original product doc** (`docs/prd-authority.md` §5) before claiming the package delivered. Any `缺` → do not say 已按 PRD 实现; do not mark the parent delivered.
+- Multi-slice work with a detailed product doc and no eng spec yet → prefer stop and route **`/grill-code`** (default entry: sweep + residual poles) — do not invent a parallel “grill AC supersedes PRD” package.
+- Before first production edit: name the **product baseline path** (or “none”), the **design source path** (or “none”), and **accepted PRD deltas** (or “none”) in the working notes / Executor brief. If the parent spec has a PRD Inventory, list the `SRC`s (PRD clauses **and pin rows**) this ticket `Covers`.
+- Implement to grill recap while leaving unlabeled PRD gaps, then reporting “grill AC 满足” as Pass, is **wrong AC** — prohibited outcome.
+- Done report **source** field must list product-doc path when used; if any claimed AC is a PRD delta, list those deltas explicitly.
+- Ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC → split a follow-up ticket or accept a labeled delta; `complete` is unavailable.
+- **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the **original product doc** (`docs/prd-authority.md` §5) before claiming the package delivered. Any `缺` → the package is not delivered.
 
-### 0c. Isolate: one worktree per run (default for code edits)
+### 0c. Isolate (default for code edits)
 
-Concurrent sessions on one repo (parallel bug fixes) overwrite each other in a
-shared checkout. So any run that edits production code works in its own
-**local worktree** on its own **local** branch:
-
-- Record the current branch at run start — it is the **integration branch**.
-  Create the worktree from its HEAD; branch name `worktree/<ticket-or-slug>`.
-  Local only: never push. Place the worktree **outside** the repo working tree
-  (e.g. a sibling directory) so the main checkout stays clean.
-- `git worktree list` first: never reuse another session's worktree or branch
-  name; suffix `-2` on collision. This run cleans up only what it created.
-- Executor briefs carry the **worktree root**; every path in the brief
-  resolves against it (see [DISPATCH.md](DISPATCH.md)). If verify needs
-  installed dependencies, provision them inside the worktree (e.g. `npm ci`).
-  If the environment cannot be provisioned, soft-fail back to the main
-  checkout, report the fallback, and flag the concurrent-session collision
-  risk.
-- Stay in the main checkout (no worktree) when: the run is docs/config-only
-  with nothing to verify; commit is not authorized (an uncommitted delta
-  cannot ride the merge-back); or the user asked to work in place.
-
-Merge-back and cleanup rules live in §4.
+Work in a local worktree `worktree/<slug>` off the integration branch; record the integration branch at run start; never reuse another session's worktree. Docs-only runs, no-commit runs, and user-asked-in-place stay in the main checkout. Full setup, merge-back, and cleanup rules: [WORKTREE.md](WORKTREE.md).
 
 ### 1. Hard-try Executor before non-trivial edits
 
@@ -83,16 +66,16 @@ per session.
    the host's general multi-step / coding subagent with the **Executor system
    text + brief** from [DISPATCH.md](DISPATCH.md).
 2. **Spawn with the recommended full brief** (not a one-liner). Subagent
-   context is cold/disposable and often a weaker model — paste AC, scope,
-   pattern refs, verify commands, authority, and decision-critical evidence.
-   Thin briefs are a process bug; see [DISPATCH.md](DISPATCH.md) and
-   orchestration Brief quality.
-3. If spawn fails or no subagent runtime exists → parent performs the same
+   context is cold/disposable and often a weaker model — paste AC, design
+   source paths, scope, pattern refs, verify + walkthrough commands,
+   authority, and decision-critical evidence. Thin briefs are a process bug.
+3. **UI / design-pin slices: spawn Executor on the parent-tier model when the
+   host allows** — fidelity work degrades fast on weaker models.
+4. If spawn fails or no subagent runtime exists → parent performs the same
    bounded slice in-session (soft fail).
-4. **Never** abort because Executor is missing.
-5. **Forbidden:** parent bulk-implements a multi-slice feature while a subagent
-   runtime exists **without at least one Executor (or host-general) attempt**
-   recorded for that slice.
+5. **Never** abort because Executor is missing. Parent bulk-implements a
+   multi-slice feature without at least one Executor (or host-general) attempt
+   recorded for that slice only when no runtime exists.
 
 Tiny one-line mechanical edits may stay in parent when cheaper.
 
@@ -106,15 +89,25 @@ Per slice, Executor (or fallback) does:
    seam — not a config constant that sidesteps a sibling path's source of truth
    (see [incomplete surface](../code-review/INCOMPLETE-SURFACE.md)).
 3. `/simplify` when the delta is non-trivial.
-4. Project verification for this layer (behavior gate).
-5. Fidelity when applicable (API vs stated contract; UI vs design pin when
-   `/code-review` will mark UI Fidelity in scope). New/restyled chrome or a
-   pin: collect pin@version (or checklist-only waiver) plus screenshot and/or
-   checklist **before review**. Light visibility/default of existing chrome:
-   one path screenshot or checklist item before Done — not a UI Fidelity
-   worker. Do not claim UI fidelity without that evidence. Restyling a
-   lookalike to match sibling chrome is **same-surface**, not light
-   visibility ([SAME-SURFACE.md](../code-review/SAME-SURFACE.md)).
+4. **Walkthrough — the behavior gate (blocking).** Start the app with the
+   brief's startup commands and drive **every Covered SRC / AC bullet through
+   its real path**. A CRUD surface runs the fixed script: **新建 → 列表出现 →
+   编辑 → 详情回显 → 删除 → 列表消失 → 一次校验失败路径**. UI rows return a
+   screenshot each; API rows return request + response. Executor reports each
+   step's **actual result** (what appeared / what errored). A Covered row with
+   no runtime evidence is not Done. The environment cannot run the app →
+   report `blocked (env: <what's missing>)` and let the user route; a silent
+   skip is a blocked path. Layer verify commands (typecheck/tests) from the
+   brief run alongside.
+5. **Fidelity vs design source.** Ticket carries pin rows / 原型图 → Executor
+   opens the design files **itself** (paths from the brief's Design source
+   field) and returns a per-row **原型 vs 实现** comparison (side-by-side
+   screenshots for UI). This evidence is owed under **every** review weight —
+   weight decides review workers, never evidence. Restyling a lookalike to
+   match sibling chrome is **same-surface**, not fidelity
+   ([SAME-SURFACE.md](../code-review/SAME-SURFACE.md)). Light visibility of
+   untouched existing chrome: one path screenshot. A checklist-only waiver
+   comes from an explicit user grant and lists its rows.
 6. **Incomplete-surface + forensic observability self-check** before claiming
    the slice ready for review: production paths for this AC must be complete.
    Deferred markers, placeholders, dual-source domain facts, config stand-ins,
@@ -140,131 +133,90 @@ anyone. Size, not a stretched risk word, decides:
 
 | Weight | Do |
 | --- | --- |
-| **none** | Do not run `/code-review`. Do not spawn a Reviewer or a Verifier. Record `review-weight: none` plus one sentence naming the seam (for example "existing-field serializer annotation"). The test loop above is the gate. Then commit when authorized. |
+| **none** | Do not run `/code-review`. Do not spawn a Reviewer or a Verifier. Record `review-weight: none` plus one sentence naming the seam (for example "existing-field serializer annotation"). The walkthrough (§2.4) + test loop above is the gate. Then commit when authorized. |
 | **light** | One Slice Reviewer. Verifier only if that reviewer filed a candidate. |
 | **full** | Full `/code-review`, then Verifier even when candidates are `none`. |
 
 A serializer or annotation that keeps the field name, path, and message name
 is **`none`**. Do not call that a wire/protocol rename.
 
+**Evidence is weight-independent.** Walkthrough results (§2.4) and fidelity
+evidence (§2.5) are Done criteria owed under every weight; `none` / `light`
+skip review *workers*, never evidence.
+
 1. Record a review fixed point that isolates this ticket/task delta. In the
    worktree flow the fixed point is the **branch base** (`git diff
-   <base>..HEAD` inside the worktree) — a concurrent session's changes must
-   never enter this slice's review. Skip this step when weight is `none`.
-2. Run `/code-review` against that fixed point only when weight is `light` or
-   `full`. That skill names the workers — do not spawn four axes on a light
-   slice, and do not spawn Verifier on a clean light slice or on `none`.
-   Pass the **product baseline path** and any **accepted PRD deltas** into
-   intent evidence — not grill-only AC. When UI Fidelity is in scope, pass
-   **design pin + fidelity evidence paths**. On **light**, if existing chrome
-   newly appears on a path, collect one screenshot or one checklist item of
-   that path before Done (parent evidence, not a UI Fidelity worker).
-3. If verdict is not `Pass` and fixes are in scope (`/implement` authorizes
-   in-scope behavior-preserving fixes): hard-try **Executor** again with the
-   eligible fix list + fix contract from code-review.
-4. Do not close a parent **spec**; complete only this ticket/task.
-5. **`Pass` is invalid** if an incomplete surface remains for claimed AC —
-   even when Standards looks clean and thin tests are green.
-6. **`Pass` is invalid** when Spec / Slice review finds product-doc behavior
-   missing/partial **without** an explicit accepted PRD delta for that gap —
-   do not reclassify as “known non-blocking because grill AC matched.”
-7. **`Pass` is invalid** when UI Fidelity is in scope and design pin is missing
-   without checklist-only waiver, or fidelity evidence (screenshot/checklist)
-   is missing.
-8. **`Pass` is invalid** when a same-surface lookalike remains (new widget +
-   CSS beside the owner of that family). Light `ui-fidelity: n/a` does not
-   waive it. Classifier: [SAME-SURFACE.md](../code-review/SAME-SURFACE.md).
-9. If Executor or a required review worker used **parent-fallback** (no
-   independent worker attempt): Done report **confidence: degraded**; do not
-   present as a full multi-agent Pass — prefer a further independent
-   `/code-review` or human gate before merge.
+   <base>..HEAD` inside the worktree). Skip when weight is `none`.
+2. Run `/code-review` against that fixed point when weight is `light` or
+   `full`. Pass the **product baseline path**, **design source paths**, and any
+   **accepted PRD deltas** into intent evidence — not grill-only AC. When UI
+   Fidelity is in scope, pass **pin rows + fidelity evidence paths**.
+3. Verdict not `Pass` and fixes in scope → hard-try **Executor** again with
+   the eligible fix list + fix contract from code-review.
+4. Complete only this ticket/task; the parent **spec** closes elsewhere.
+5. `Pass` requires: no incomplete surface for claimed AC; no product-doc gap
+   without an explicit accepted PRD delta; pin rows either evidenced or
+   user-waived; no same-surface lookalike; parent-fallback runs reported as
+   `confidence: degraded` (prefer an independent `/code-review` or human gate
+   before merge).
 
 ### 4. Commit, merge back, clean up
 
-Commit only when authorized. Do **not** commit a slice that still carries an
-incomplete production surface for its AC. In-place runs commit on the current
-branch, as before.
-
-Worktree runs merge back only after this slice's review weight was applied
-(`none` recorded, or `light`/`full` verdict `Pass`) and the Done criteria in
-§5 hold. No extra human gate unless the user asked to hold the merge:
-
-1. Merge the integration branch **into** the worktree branch first, resolve,
-   and re-run verify — a concurrent session may have landed meanwhile.
-2. Merge the worktree branch into the integration branch in the main checkout.
-   Local merge only: no push, no PR.
-3. Then close the ticket (§5) — never before the merge lands.
-
-Clean up in the same run: `git worktree remove` each worktree this run
-created, then `git branch -D` its branch. Do not delete worktrees or branches
-another session created, `main`/`master`/`test`/`develop`, the current branch,
-or anything on a remote.
-
-After the merge (or commit), `git status` in the main checkout is clean except
-files declared unrelated before the commit (e.g. local `.scratch/`). Uncommitted
-leftovers of reverted hunks fail Done — do not report a clean slice.
+Commit only when authorized. A slice missing walkthrough evidence (§2.4) or
+carrying an incomplete production surface for its AC stays uncommitted.
+Worktree runs merge back after the review weight was applied and §5 Done
+criteria hold; sequence and cleanup per [WORKTREE.md](WORKTREE.md). Then close
+the ticket — never before the merge lands.
 
 ### 5. Close the ticket
 
 When this run implemented a tracked ticket and the work is actually done,
 **close that ticket in the same run**. An open ticket after a finished slice
-reads as "not done". Do this after the merge-back lands on the integration
-branch (or after the commit / authorized uncommitted delta when commit was not
-granted), and after the review weight
-for this slice has been applied (`none` recorded, or `light`/`full` verdict
-`Pass`).
+reads as "not done". Do this after the merge-back lands (or the commit /
+authorized uncommitted delta), and after the review weight for this slice was
+applied.
 
 Done means all of these:
 
-- the ticket's acceptance criteria are met
+- every Covered SRC / AC bullet has **walkthrough runtime evidence** (§2.4)
+- pin rows have fidelity evidence or an explicit user-granted waiver (§2.5)
 - the required review weight was applied
 - no incomplete production surface remains for the claimed AC
-- the ticket body does not still list 残差 / 下张票收口 / partial for a `Covers` SRC
+- the ticket body is free of 残差 / 下张票收口 / partial for every `Covers` SRC
+- **PRD-sourced `Covers` → mini prd-walk:** walk this ticket's Covered SRCs
+  against the **original product doc** using the walkthrough results; any `缺`
+  → follow-up ticket or labeled accepted delta, and this ticket stays open
 
 Close through the configured tracker (see `docs/agents/issue-tracker.md` when
-that is the adapter). Comment with the acceptance result, the verification
-command and result, the review weight and verdict, and the commit link. Then
-close the issue and **read it back**. Done is invalid if the read-back still
-shows `open`.
+that is the adapter). Comment with the acceptance result, the walkthrough
+evidence, the review weight and verdict, and the commit link. Then close the
+issue and **read it back**. Done is invalid if the read-back still shows
+`open`.
 
-Do **not** close:
-
-- a parent **spec** (only this implementation ticket)
-- a ticket that is not done, including review `Changes Required`, a blocked
-  incomplete surface, a failed prd-walk (`缺`), or a body that still lists 残差
-- a ticket this run did not implement
-
-If the slice stopped unfinished, leave the ticket open and say so in the Done
-report. Never report "done" while the ticket is still open.
+Leave the ticket open and say so in the Done report when the slice stopped
+unfinished (review `Changes Required`, blocked incomplete surface, failed
+prd-walk `缺`, or a body still listing 残差). Never report "done" while the
+ticket is still open. Parent specs close via the package prd-walk (§0b), not
+here.
 
 ### Done report (mandatory fields)
 
-- task / ticket / source (**include product-doc path when present**; do not list
-  grill AC as the only source alongside a PRD)
-- **PRD deltas**: `none` | list of accepted `相对 PRD` rows used as AC
-- fixed point
-- files changed
-- **isolation**: `worktree/<slug>` | `in-place (<why: docs-only | no-commit-grant | env-fallback | user-asked>)`
-- **review-weight**: `none` | `light` | `full` (from `/code-review` Pick weight). `none` includes the one-line reason and `code-review verdict: skipped`.
-- behavior-gate + fidelity (or n/a)
-- **UI fidelity evidence** (when UI Fidelity ran, or light parent path check):
-  pin path@version | checklist-only waiver | one path screenshot/checklist;
-  else `n/a`
-- **same-surface** (UI chrome slices): `owner-extended` | `new-no-sibling` |
-  `n/a` (non-UI) | findings (lookalike — cannot Pass)
-- **ui-fidelity** (from review): `pass` | `fail` | `blocked-no-pin` | `n/a`
-- **incomplete-surface check**: `clean` | `blocked` (cite signal) | `n/a` (docs/config only)
-- **observability**: `instrumented` | `foundation-missing` | `quiet-path` | `log-unsafe` | `n/a`
-- code-review verdict
-- **confidence**: `normal` | `degraded` (required when any required worker used
-  parent-fallback, or spawn was skipped without attempt)
-- **`agents used`**: e.g. `Executor` | `host-general` | `parent-fallback` (and
-  for review: `Reviewer` / `Verifier` / fallback) — if parent did the work,
-  say so explicitly and why (no runtime / spawn failed)
-- **ticket**: `closed #<n> (read-back: closed)` | `left open (<why>)` | `n/a` (no tracked ticket). `closed` requires the read-back. An open ticket cannot be reported as done.
-- **merge-back**: `<integration-branch>@<sha>` | `held (<why>)` | `n/a (in-place)`
-- tracker update, commit status, **worktree cleanup** (`removed` | `left: <list + why>`), next frontier or blocker
-- **unauthorized PRD partials** (if any): must force non-Pass or explicit
-  user decision — never bury under “known non-blocking”
-- **prd-walk** (last ticket of a PRD-sourced spec, or user asked 已按 PRD 实现):
-  `n/a` | table (`SRC` × `过`/`缺`/`有意 delta`). `缺` forces non-delivered.
+1. **task / ticket / source** — include product-doc path **and** design-source
+   path when present; grill AC never stands in as the only source beside a PRD
+2. **walkthrough evidence** — per Covered row: step → actual result
+   (screenshot / request+response paths), or `blocked (env: …)`
+3. **fidelity** — per pin row 原型 vs 实现 outcome | `n/a` (non-UI) |
+   user-granted waiver (rows listed)
+4. **review-weight + verdict** — `none | light | full` + code-review verdict;
+   add `confidence: degraded` when any required worker used parent-fallback or
+   spawn was skipped without attempt (also list `agents used`)
+5. **PRD deltas** — `none` | accepted `相对 PRD` rows used as AC | gaps found
+   (a gap forces non-Pass; never bury it as “known non-blocking”)
+6. **quality flags** — one line: `incomplete-surface: … · observability: … ·
+   same-surface: …`
+7. **ticket + merge-back** — `closed #<n> (read-back: closed)` | `left open
+   (<why>)` | `n/a`; merge-back `<integration-branch>@<sha>` | `held` | `n/a
+   (in-place)`; worktree cleanup `removed` | `left: <list + why>`; commit
+   status
+8. **blockers / next frontier** — including prd-walk result when run
+   (`SRC × 过/缺/有意 delta`; `缺` forces non-delivered)

@@ -103,13 +103,15 @@ git pull --ff-only
 
 **默认偏好：** `/implement` 够用时，不要开 PM、Wayfinder 或多 skill 流水线。
 
+**路由归属：** agent 自行分类进来的请求（bug → `/diagnosing-bugs`，清晰 AC → L1，其余需求 → G `/grill-code`）并进入对应流程，不为此采访用户；slash 命令是手动覆盖（[docs/lifecycle.md](docs/lifecycle.md) hygiene 7）。
+
 ### 1. 快速选型
 
 | 场景 | 流程 | 入口 → 出口 |
 | --- | --- | --- |
 | Bug / 清晰 AC / 单一切片 | **L1** | `/implement` → 完成 |
-| 已 settled 的多切片包 | **L2** | `/to-spec`（Inventory）→ `/to-tickets` → `/implement` → 末票 prd-walk |
-| 少量开放决策，且**你本人**能同会话拍板 | **G** | `/grill-code` → 会话内收口 → `/implement`（跨会话才归档/`/to-spec`） |
+| 其余需求——少量开放决策或整包 PRD | **G** | `/grill-code`（入口盘点 → 残差极）→ 会话收口 → `/implement`（多切片：`/to-spec`） |
+| G 收口后的多切片，或盘点零极 | **L2** | `/to-spec`（Inventory）→ `/to-tickets` → `/implement` → 末票 prd-walk |
 | 答案在 PM/业务；需求澄清会或异步表单 | **Q** | `/to-questionnaire` → 填写 → 贴回 → **`/to-spec`**（不重确认） |
 | 已上线但不对 / coding 邻域 Expected 轻度缺口 | **L3** | `/product-fog` → 恰好一条下一跳（G / Q / L2 / L4 / 停 / PM） |
 | 产品 OK；技术路线需多会话 | **L4** | 先试 **G** → 否则 `/wayfinder` → 地图 resolved → **L2** |
@@ -122,8 +124,8 @@ git pull --ff-only
 
 ```text
 L1  清晰工作                →  /implement
-L2  多切片                  →  /to-spec → /to-tickets → /implement
-G   同会话钉住              →  /grill-code  →  会话收口  →  /implement（跨会话才归档 → /to-spec）
+G   需求——默认入口          →  /grill-code（盘点 → 残差极）→ 收口 → /implement | /to-spec
+L2  多切片主线              →  /to-spec → /to-tickets → /implement（通常是 G 之后的下一跳）
 Q   干系人问卷              →  /to-questionnaire  →  填写  →  ingest  →  /to-spec
 L3  轻度意图钉              →  /product-fog  →  一条下一跳
 L4  多会话工程雾            →  /wayfinder  →  (resolved)  →  L2
@@ -147,25 +149,27 @@ bug | 清晰 AC | 纯工程切片
 #### L2 — Spec → tickets → 实现
 
 ```text
-已 settled 的包（PRD / 文档 / chat AC / PM 交接 / 已填问卷归档）
+需求在 G 已收口（或盘点零极时直入）
   → /to-spec          （non-runnable 父文档；已 settled 答案不重访谈）
   → /to-tickets       （依赖图；implementation frontier）
   → /implement        （一次一张 ticket）
   → （可选）wen-test: /to-test-plan → /qa-run
 ```
 
-- **入：** 产品意图够写诚实 requirements（详细产品文档是主源，走本路径，不要先整包 grill 重写）。
+- **入：** 产品意图够写诚实 requirements——通常**从 G 过来**（极已定、`相对 PRD` 偏差已标注）。直入同样有效：PRD Inventory 重跑碰撞检查，冒出的 HITL 行先补一轮 residual grill 才准 `accepted`。详细产品文档是主源，不要重写。
 - **出：** frontier 上的切片；父 spec 在工作完成前保持打开。
 - **补充：** 源是产品文档时 `/to-spec` 必须有 PRD Inventory；`/to-tickets` 发布前硬门闩（Inventory `SRC` 进 `Covers`，`Supports` 不算覆盖）；FE/BE 保真在 ticket 层。`/alignment-review` **不在**每次发布后的默认路径上——**例外：** 关最后一张票或回答「已按 PRD 实现」时，必须对**原始产品文档**做 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
 - **不要：** 用 `/implement` 关闭父 spec；不要用会话 grill AC 静默覆盖已有 PRD；票正文仍写残差时不要标 `complete`。
 
-#### G — Grill（同会话钉住）
+#### G — Grill（需求默认入口）
 
 ```text
-方案仍糊，但决策归你，且一会话问得清
+非 bug / 非清晰 AC / 非单切片的需求——决策数量未知
   → /grill-code   （加载 /grilling；仅术语真变时才 domain-modeling）
-      frontier 轮次：batch 表 + 推荐；事实优先（非阻塞 sub-agent）
+      入口：事实优先盘点（PRD 包 → 首 frontier 前必须碰撞盘点）
+      frontier 轮次：batch 表 + 推荐；只放开放极
       已有详细 PRD 时只烤 residual / 工程缝；相对 PRD 的缩 scope 必须标「相对 PRD」
+      盘点零极 → 直接跳 L2 /to-spec（多切片）或 L1
       尽早 MVP 内外；反橡皮图章只压高风险
   → 默认收口：briefing（使用已安装的 `show-me`：结论 + 改动 + 一张最小必要图），然后停
   → 仅当你说 /implement 或「开干」才开工；「按推荐」只关行
@@ -177,7 +181,7 @@ bug | 清晰 AC | 纯工程切片
       高保真 pin 已定 → ticket 写 pin → /implement + UI fidelity 证据
 ```
 
-- **入：** 少量用户可拍板的产品/工程决策；尚不需要多会话地图。已有完整产品文档的多切片需求优先 L2。只烤 residual（原文矛盾 / 对不上库 / 工程缝）；`相对 PRD` 须标 `doc-change` 或 `eng-read`。**按原文** 只经 L3 收回列出的 delta，不整包重烤。
+- **入：** 决策数量未知的需求——入口盘点来数。已有完整产品文档：先盘点，**只烤 residual**（原文矛盾 / 对不上库 / 工程缝）；`相对 PRD` 须标 `doc-change` 或 `eng-read`；零极 → 直进 L2。**按原文** 只经 L3 收回列出的 delta，不整包重烤。
 - **出：** 会话内 briefing（使用已安装的 `show-me`，不落盘）；等你说 `/implement` 或「开干」。AC = 产品文档 − 仅已接受的 `相对 PRD` 偏差。
 - **升级：** 房间里不是决策人 → **Q**；一会话装不下 → **L4**；值不值得做仍开 → **HEAVY**。
 - **不要：** 编造 Expected；简单问题强行产过程文档；把「grill 完」当成可推 shared 分支的授权；用未标注的 grill MVP 顶替产品文档；有 pin 仍开 multi-variant prototype 当高保真验收。
@@ -274,7 +278,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 | --- | --- |
 | `/to-spec` | `/to-prd` — 现有 `PRD.md` 仍有效 |
 | `/to-tickets` | `/to-issues` — 现有 `issues/` 仍有效 |
-| `/grill-code` | 编码同会话钉住（LIGHT G）；加载 `/grilling` |
+| `/grill-code` | 编码需求入口（LIGHT G）：盘点 → 残差极；加载 `/grilling` |
 | `/grill-me` | 非编码计划或想法；加载 `/grilling`；不扫仓库 |
 
 同步会删除已退役命令的 managed copies；canonical skills 根下未标记的同名 skill
@@ -290,7 +294,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归；若顺带给出多步修复方案，先冻结 design packet，用现有 `Reviewer`（设计轴，宜换模型）对抗评审，见 `docs/agents/DESIGN-REVIEW-BRIEF.md`。
 - `/domain-modeling` 在设计决策结晶时锐化 glossary，并稀疏记录 ADR。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
-- `/grill-code` stress-test **工程** plan（同会话钉住，LIGHT G）；加载 `/grilling`；仅术语真变时 domain-modeling；**默认会话内收口、不强制 decision 文件**。房间里不是决策人时路由到 `/to-questionnaire`。不是 Matt `/grill-with-docs`。
+- `/grill-code` 是**需求默认入口**（LIGHT G）：先做事实优先碰撞盘点，再只访谈开放极（有 PRD 时只烤残差）；加载 `/grilling`；仅术语真变时 domain-modeling；**默认会话内收口、不强制 decision 文件**。房间里不是决策人时路由到 `/to-questionnaire`。不是 Matt `/grill-with-docs`。
 - `/grill-me` stress-test **非编码**计划、决策或想法。同一 `/grilling` 循环；不扫代码、不写 PRD delta、不交 `/implement`。
 - `/grilling` 可复用访谈循环：**frontier 轮次**（`❓`/`➡️` 格式、按依赖批问，非串行微问题）、非阻塞事实 sub-agent、确认门。冲突表、PRD、反橡皮图章、implement 交接只在 `/grill-code`。
 - `/wait-what` 在上一句没听懂时要求重讲（简洁 + 领域语言）。
@@ -298,7 +302,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/to-questionnaire` 把干系人缺口变成会中议程或异步问卷（选项 + 推荐 + 手写）；贴回后 ingest、不重问 → 默认 `/to-spec`。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
-- `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic（可分享 HTML demo）或 UI evidence artifact。
+- `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic（可分享 HTML demo）或 UI evidence artifact；胜出的 UI 变体定格为 design pin 时，可观察细节同步抽成 pin rows。
 - `/to-design-md` 为前端包生成或刷新符合 Google Labs 规范的 `DESIGN.md` 视觉身份（可选；从 theme 抽取或综合生成）。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
 - `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
@@ -306,7 +310,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/harvest-pins` 从真实 agent session 收割并折旧 `AGENTS.md` Checklist 钉。
 - `/setup-logging` 在项目形态需要时搭建日志 foundation。
 - `/tdd` red → green 参考（seams、反模式）；正文贴近 Matt 上游。
-- `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec。
+- `/to-spec` 把 settled context 转成带稳定 requirements 的 non-runnable spec（含 design pin 时 Inventory 附 pin rows）。
 - `/to-tickets` 把 approved spec 转成 dependency-aware ticket graph 和 typed frontiers。
 - `/product-fog` LIGHT 意图钉（编码邻域迷你 docket + 一条下一跳；非完整 PM）。
 - `/wayfinder` 将跨会话雾清成薄 decision ticket map（短 paste、research 优先），结案后交接 `/to-spec`。
@@ -359,7 +363,7 @@ AI agents 会以很可预测的方式失败。
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 **发布**路径上。PRD 源包关单时强制 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `CONTEXT.md`，并在决策结晶时稀疏记录 ADR。
-- [`grill-code`](skills/grill-code/SKILL.md) - 用户调用的同会话**编码** pin（LIGHT G）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
+- [`grill-code`](skills/grill-code/SKILL.md) - 用户调用的**编码**需求入口（LIGHT G）：碰撞盘点后只访谈开放极（有 PRD 时只烤残差）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
 - [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的**非编码**访谈（计划、决策、想法）；加载 `/grilling`；只在会话里收口。
 - [`grilling`](skills/grilling/SKILL.md) - 两个 grill 共用的 model-invoked 访谈循环：frontier 轮次 + batch 表、非阻塞事实、确认门。
 - [`to-questionnaire`](skills/to-questionnaire/SKILL.md) - 干系人问卷（选项 + 推荐 + 手写）；填完不复烤，默认进 `/to-spec`（LIGHT Q）。
@@ -368,7 +372,7 @@ AI agents 会以很可预测的方式失败。
 - [`research`](skills/research/SKILL.md) - 为显式问题或 active Wayfinder ticket 保存带引用的 primary-source evidence。
 - [`prototype`](skills/prototype/SKILL.md) - 创建 bounded disposable logic/state 或 UI evidence，不修改 tracker 或 production state。
 - [`to-design-md`](skills/to-design-md/SKILL.md) - 可选的前端视觉身份：抽取或综合生成可 lint 的 `DESIGN.md`（Google Labs 格式），供 agent 在 UI 工作中复用。
-- [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec（源是产品文档时必须有 PRD Inventory）。
+- [`to-spec`](skills/to-spec/SKILL.md) - 把 settled context 转成带稳定 requirements 的 non-runnable spec（源是产品文档或 design pin 时必须有 PRD Inventory；design pin 的可观察细节进 pin rows）。
 - [`to-tickets`](skills/to-tickets/SKILL.md) - 把 approved spec 转成 dependency-aware one-context tickets。
 - [`implement`](skills/implement/SKILL.md) - 本库实现 skill：代码改动默认在本次运行专属的本地 worktree 里进行（多会话并行修 bug 互不覆盖），按约定 seam 做 TDD，按改动大小审查（`none` 跳过，`light` 或 `full`），合回当前分支后删掉 worktree 和分支。做完的跟踪票在同一次运行里关闭，并回读确认已关闭。
 - [`implement-spec`](skills/implement-spec/SKILL.md) - 整份 spec 做到当前分支：按票的 frontier 并行，每票一个本地 worktree，合回当前分支，关掉已完成的票，`/code-review`，然后删掉这些 worktree 和分支。用户没说就不开新分支、不提 PR、不推送。父 spec 要等它自己的收口规则通过才关。
@@ -556,7 +560,7 @@ skills/
 - 可单独用，也可与 `wen-pm` / `wen-test` 联动（无硬依赖）
 - 接受任意 settled 产品输入
 - 支持仅前端 / 仅后端 / 全栈的层级门禁
-- 默认跨会话编码路径：settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- 默认跨会话编码路径：需求 → `/grill-code`（盘点 → 残差极）→ `/to-spec` → `/to-tickets` → `/implement`
 - 日常默认 LIGHT；模糊产品需求 HEAVY（可选 `wen-pm` 先做）
 - 多会话工程雾：`/wayfinder`（薄 map + 短 paste）→ `/to-spec` → `/to-tickets` → `/implement`
 - 系统测试/QA 由可选 `wen-test` 或人工/CI 负责

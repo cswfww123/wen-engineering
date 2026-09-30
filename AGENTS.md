@@ -9,7 +9,7 @@ WEN Engineering Skills pack. Optional: `wen-pm` / `wen-test`.
 Every skill, grill, ticket, and review in this pack must uphold that:
 
 - **Authoritative now:** production code, tests, open tracker items, short invariants — not closed process notes or month-old decision docs.
-- **Product intent when building:** active product requirements / PRD / eng spec first; grill chat only for residual eng seams or **explicit** accepted `相对 PRD` deltas. Session AC must not silently supersede a detailed product doc. Gates: `docs/prd-authority.md` (Inventory, delta lock, last-ticket prd-walk).
+- **Product intent when building:** requirements enter `/grill-code` by default (sweep first); under an active product requirements / PRD / eng spec the grill frontier stays on residual eng seams or **explicit** accepted `相对 PRD` deltas. Session AC must not silently supersede a detailed product doc. Gates: `docs/prd-authority.md` (entry/mode lock, Inventory, delta lock, last-ticket prd-walk).
 - **Act inside the environment:** prefer existing wire values, APIs, enums, and identity patterns; treat dangerous legacy as **do-not-copy**, never as a template to spread. Same-surface chrome: **extend the owner** already on that screen — lookalikes are do-not-ship (`skills/code-review/SAME-SURFACE.md`).
 - **Environment change is explicit:** renaming protocols, relaxing isolation, silent identity fallbacks → only when the user asks for a migration, not as “cleaner” drive-by design.
 - **Process docs are scaffolding:** same-session work defaults to chat; durable archives only for real handoff. After consume/close, do not reload them as law; never invent paperwork for thoroughness.

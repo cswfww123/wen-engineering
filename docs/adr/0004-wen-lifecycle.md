@@ -1,6 +1,8 @@
 # WEN lifecycle: Wayfinder, specs, tickets, and frontier execution
 
-Status: accepted
+Status: accepted — §3 entry order partially superseded by ADR 0008
+(requirements default into G `/grill-code`; L2 `/to-spec` becomes the usual
+post-grill hop, direct entry survives as the zero-pole exception)
 
 Supersedes in part:
 

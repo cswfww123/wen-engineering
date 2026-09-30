@@ -31,7 +31,9 @@ Reject invented, pre-existing, out-of-scope, likely-intentional, or CI-noise ite
 
 **Forensic completeness + fail-open.** On applicable external/async/state paths, Pass requires correlatable decision-boundary logs **and** that logging cannot break business. Missing foundation when the project bar requires it, or log calls that can abort the domain, block Pass.
 
-**UI Fidelity (when in scope).** User-visible UI changes need design pin (or checklist-only waiver) plus screenshot/checklist evidence. Parent prose "fidelity OK" is not evidence. Fail / blocked-no-pin / missing evidence blocks Pass. See `skills/code-review/REVIEW-AXES.md` UI Fidelity. A restyled lookalike is not fidelity.
+**UI Fidelity (when in scope).** User-visible UI changes need design pin (or checklist-only waiver) plus screenshot/checklist evidence, with **per-row evidence for Covered pin rows** — a Covered row absent without an accepted delta blocks Pass. Parent prose "fidelity OK" is not evidence. Fail / blocked-no-pin / missing evidence blocks Pass. See `skills/code-review/REVIEW-AXES.md` UI Fidelity. A restyled lookalike is not fidelity.
+
+**Runtime evidence (walkthrough).** A completion claim over behavior AC needs walkthrough results — per Covered row, the actual outcome of driving the real path (screenshot / request+response), per `/implement` §2. Code citations and green unit tests alone do not Pass a Covered row; `blocked (env)` claims need the missing-environment facts stated.
 
 **Same-surface lookalikes block Pass.** Extra filter / picker / search / empty-state / chip beside the owner of that family on the same screen, including hide-arrow CSS on a second widget, is blocking — not a style nit. Classifier: `skills/code-review/SAME-SURFACE.md`.
 

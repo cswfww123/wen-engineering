@@ -35,6 +35,8 @@ Subagent context is **cold and disposable**; many hosts use a **weaker model**
 for Executor. The brief is the worker’s entire world.
 
 - **Default:** use the **recommended full brief** below on every spawn.
+- **UI / design-pin slices:** spawn Executor on the parent-tier model when the
+  host allows — fidelity work degrades fast on weaker models.
 - **Minimum** fields alone are only acceptable for tiny mechanical edits the
   parent could have done itself.
 - **Forbidden:** one-liner spawns (“fix login”, “implement the ticket”) with no
@@ -52,8 +54,10 @@ Goal: <one bounded coding outcome>
 Working root: <abs worktree path for this run — all paths below resolve against it | main checkout>
 Scope in/out: <allowed files/modules> / <do not touch>
 AC / source: <ticket/spec IDs AND the AC text, not IDs alone>
+Design source: <abs paths: 原型图/设计稿/截图/HTML 原型/Figma export + Covered pin-row text | none>
 Constraints: patterns; no speculative refactors; no inventing Expected; no incomplete surface; same-surface chrome extends the owner (no lookalike Select)
 Verify: <exact commands>
+Walkthrough: <app startup commands; drive each Covered row on its real path (CRUD fixed script: 新建→列表→编辑→详情→删除→校验失败); return per-step actual result>
 Authority: code + local verify only; NO tracker/PR unless granted
 Return: status, files, what changed, verify results, incomplete-surface, observability, risks
 ```
@@ -76,6 +80,8 @@ Role: Executor (focused implementation subagent)
 
 ## Intent authority
 - Product baseline path: <path or none>
+- Design source (原型图/设计稿/Figma/截图/HTML 原型/pin — AC for UI rows):
+  <abs paths + version; paste the Covered pin rows' text below> | none
 - Accepted PRD deltas: <none | list of 相对 PRD rows>
 - Eng spec / tickets: <paths or IDs + titles>
 - Session AC (only residual eng seams, or full AC if no product doc):
@@ -117,6 +123,12 @@ Role: Executor (focused implementation subagent)
 - Exact commands (copy-pasteable), e.g.:
   - <unit / module test command>
   - <typecheck / lint if required for this layer>
+- Walkthrough (behavior gate): <app startup commands>; drive every Covered row
+  through its real path. CRUD fixed script: 新建 → 列表出现 → 编辑 → 详情回显 →
+  删除 → 列表消失 → 一次校验失败. UI rows → screenshot each; API rows →
+  request+response. Return each step's actual result; `blocked (env: …)` when
+  the app cannot run. Design source present → open it yourself and return
+  per-row 原型 vs 实现 comparison.
 - What "green" means for this slice:
 
 ## Authority
@@ -136,6 +148,8 @@ Stop and report blocked (do not guess) if:
 - files changed
 - what changed (short)
 - verification run + results
+- walkthrough: per Covered row step → actual result (screenshots / request+response) | blocked (env: …)
+- fidelity: per pin row 原型 vs 实现 | n/a (no design source)
 - incomplete-surface: clean | blocked (signal) | n/a
 - observability: instrumented | foundation-missing | quiet-path | log-unsafe | n/a
 - remaining risks / unchecked criteria
@@ -174,8 +188,14 @@ shortest new widget beside the owner is not lazy.
 **Intent authority in every Executor brief:** product requirements/PRD (when
 present) > accepted eng spec/tickets > explicitly accepted `相对 PRD` deltas >
 grill residual eng pins. Never treat unlabeled grill MVP as superseding an
-active product doc. Brief must name product baseline path + accepted PRD
-deltas (or “none”).
+active product doc. Brief must name product baseline path + design source
+paths (or “none”) + accepted PRD deltas.
+
+**Design source is AC.** When the brief names a design source (原型图/设计稿/
+截图/HTML 原型/Figma/pin), open those files and the product-doc clauses
+yourself before the first edit — quoted summaries are not the source. For each
+Covered pin row, return an 原型 vs 实现 comparison (side-by-side screenshots
+for UI).
 
 Do not invent product requirements, Expected behavior, or market bets. Do not
 expand scope past the brief. Do not change issue-tracker or PR state unless the
@@ -193,8 +213,9 @@ quiet fallback.
 
 If blocked, unsafe, or missing a required decision, stop and report the blocker.
 Otherwise implement, run the relevant checks, and return: status, files changed,
-what changed, verification run and results, incomplete-surface check,
-observability, same-surface, remaining risks or unchecked criteria.
+what changed, verification run and results, walkthrough (per Covered row step →
+actual result, or blocked (env)), fidelity (per pin row 原型 vs 实现, or n/a),
+incomplete-surface check, observability, same-surface, remaining risks.
 ```
 
 ## Slice size

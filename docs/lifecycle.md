@@ -39,10 +39,11 @@ pipelines when `/implement` is enough.
 Start at the **smallest** honest step. Escalate only when that step fails.
 
 ```text
-L1  clear work              → /implement
-L2  multi-slice             → /to-spec → /to-tickets → /implement
-G   same-session pin        → /grill-code → (chat recap default) → /implement
-                            → durable archive / /to-spec only if cross-session handoff
+L1  clear work (bug, AC, one slice) → /implement
+G   requirement — default entry  → /grill-code (entry sweep → residual frontier)
+                                  → /implement | (multi-slice) /to-spec
+L2  multi-slice spec spine       → /to-spec → /to-tickets → /implement
+                                  (usually the hop after G; direct entry when the sweep shows zero poles)
 Q   stakeholder questionnaire → /to-questionnaire → fill → ingest → /to-spec
 L3  mild intent pin         → /product-fog → one next
 L4  multi-session eng fog   → /wayfinder → (resolved) → L2
@@ -53,11 +54,12 @@ L4  multi-session eng fog   → /wayfinder → (resolved) → L2
 These are **automatic**. Prefer code and open tracker state; do not add user steps.
 
 1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. Same-surface chrome **extends the owner** already on that screen ([../skills/code-review/SAME-SURFACE.md](../skills/code-review/SAME-SURFACE.md)) — a CSS-matched lookalike is not reuse. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta). Hard gates: [prd-authority.md](prd-authority.md).
-2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement`. Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Named multi-slice product docs (`docs/requirements/*`, `docs/prd/*`) → L2 `/to-spec` with a PRD Inventory — **not** a full product re-grill. Grill residual only (contradictions, unmapped terms, eng seams). User **按原文** revokes listed `相对 PRD` ids via L3 — do not re-grill the package.
+2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement` (PRD / 原型图 in play → still extract inventory + pin rows first, [prd-authority.md](prd-authority.md) §2). Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Every other requirement (named product docs `docs/requirements/*`, `docs/prd/*` included) → **G** `/grill-code`: entry sweep (facts-first collision map) then **residual poles only** — never a full product re-grill. Sweep shows zero poles → L2 `/to-spec` with a PRD Inventory. User **按原文** revokes listed `相对 PRD` ids via L3 — do not re-grill the package.
 3. **Same-session default = no new process docs.** `/grill-code` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask. Grill may pin residual eng seams; it must **not** silently supersede an active PRD — PRD deltas require labeled `相对 PRD` accept.
 4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*. Still load the **active product requirements / eng spec** for the feature under build.
 5. **Hygiene without asking.** After a handoff file is consumed (spec written, ticket closed, implement done), stop citing it; delete or cold-ignore silently. Never prompt the user to approve doc cleanup.
 6. **Ask the user only** for product intent they own or irreversible environment-changing migrations — not for “save this md?” or “trust code or doc?” Do not ask them to choose “grill AC vs PRD” when the pack already ranks product doc first; only ask when a **labeled** PRD delta is proposed.
+7. **Agent owns entry routing.** Classify incoming work from the request itself (bug → `/diagnosing-bugs`; fuzzy product → HEAVY gate; clear AC / one slice → L1; otherwise → G) and enter the matching flow — do **not** interview the user to pick a skill. User-typed slash commands are manual overrides, not the only door. Mid-flow hops still wait for the user's order (grill close gate, `/implement` | 「开干」).
 
 Human-facing walkthrough (same flows, longer form): root `README.md` /
 `README.zh-CN.md` **Lifecycle** section.
@@ -79,13 +81,20 @@ hard-try pack `Reviewer` (design axes; prefer another model) before coding —
 [agents/DESIGN-REVIEW-BRIEF.md](agents/DESIGN-REVIEW-BRIEF.md); then user scopes
 MVP and continues `/implement` or L2.
 
-### L2 — Settled multi-slice (default multi-session coding)
+### L2 — Multi-slice spec spine (usually the hop after G)
 
 ```text
-settled package (PRD / docs / chat AC / PM handoff)
+requirement settled at G (or direct entry when the sweep showed zero poles)
   → /to-spec → /to-tickets → /implement
   → (optional) wen-test: /to-test-plan → /qa-run
 ```
+
+Usually reached **from G**: `/grill-code` settled the poles and labeled PRD
+deltas in chat; `/to-spec` synthesizes and publishes. Direct entry is equally
+valid (user names the package, or the entry sweep showed zero open poles) —
+the PRD Inventory then re-runs the collision check, and HITL rows it surfaces
+get **one residual grill round** before `accepted`
+([prd-authority.md](prd-authority.md) §1–2).
 
 Scope FE/BE fidelity to the ticket layer. `/implement` never closes the parent
 spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate
@@ -97,21 +106,21 @@ product doc** ([prd-authority.md](prd-authority.md) §5). Any `缺` blocks
 delivered. Use `/alignment-review` otherwise only as a manual audit of handoff
 or unreviewed artifacts.
 
-### G — Same-session grill (first-class LIGHT tool)
+### G — Grill (default requirement entry)
 
 ```text
-plan/design still fuzzy, but one interview can clear it
+any requirement that is not a bug, not clear-AC, not a single slice
   → /grill-code   (loads /grilling; domain-modeling only if terms truly change)
+      entry: facts-first sweep (PRD package → PRD-package entry sweep, hard gate)
+      frontier: open poles only — under a PRD, residual poles only
 ```
 
 **In the flow**, not optional fluff — but **not a documentation factory**. Use when:
 
-- Before `/implement` (or rarely `/to-spec`), a few user-owned decisions are open
-- L4 would be overkill (no multi-session map yet)
-- L3 routed `Align` for same-session trade-offs
-- A named PRD exists **and** only residual poles remain (contradiction, unmapped
-  term, eng seam). **Forbidden:** full product grill that re-authors settled PRD
-  rows. Labeled `相对 PRD` deltas must declare `doc-change` vs `eng-read`.
+- Default entry for requirements: AC not clear yet, decision count **unknown** — the entry sweep counts them
+- Under a named PRD: entry sweep first, then **residual poles only** (contradiction, unmapped term, eng seam). **Forbidden:** full product grill that re-authors settled PRD rows. Labeled `相对 PRD` deltas must declare `doc-change` vs `eng-read`
+- Sweep shows zero open poles → skip the interview; hop L2 `/to-spec` (multi-slice) or L1 directly
+- L4 would be overkill (no multi-session map yet); L3 routed `Align` for same-session trade-offs
 
 **Default out:** one **briefing** in the chat, composed with the installed `show-me` skill (settled choices, what changes, one diagram — using its smallest fitting shape), then stop. Build starts only when the user says **`/implement`** or **「开干」**. `按推荐` closes a row; it is not that order.
 Do **not** require `decision-*.md` / `docs/decisions/` for same-session work
@@ -234,8 +243,8 @@ process and the evidence still required. Optional: `/product-fog` only to record
 | Situation | Track | Entry |
 | --- | --- | --- |
 | Fix this bug / do this AC | LIGHT L1 | `/implement` |
-| Feature with settled PRD/AC, multi-slice | LIGHT L2 | `/to-spec` (PRD Inventory + last-ticket prd-walk) |
-| Few open **engineering** decisions; one session can pin them | LIGHT **G** | `/grill-code` |
+| Any other requirement (default entry; PRD included) | LIGHT **G** | `/grill-code` (entry sweep → residual poles; zero poles → hop L2/L1) |
+| Multi-slice settled at G, or sweep showed zero poles | LIGHT L2 | `/to-spec` (PRD Inventory + last-ticket prd-walk) → `/to-tickets` |
 | Plan, idea, or decision with no codebase | — | `/grill-me` |
 | Need product answers from another person / 澄清会 | LIGHT **Q** | `/to-questionnaire` → ingest → default `/to-spec` |
 | Stakeholder: shipped but wrong; Expected unclear | LIGHT L3 | `/product-fog` (often → G or Q) |

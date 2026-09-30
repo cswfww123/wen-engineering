@@ -12,7 +12,7 @@ This skill is the **non-coding** grill: a plan, a decision, an idea, writing, a 
 
 - The subject is a codebase, a PRD, a ticket, wire values, schema, or “how should we build this” → **`/grill-code`** (LIGHT G). Do not run this skill and then invent engineering defaults.
 - Clear acceptance criteria, a bug, or one engineering slice → **`/implement`**.
-- A detailed product doc already settles a multi-slice feature → **`/to-spec`**, not a product re-grill.
+- A detailed product doc already settles a multi-slice feature → **`/grill-code`** (the coding entry: sweep + residual poles only), which hops to **`/to-spec`** — not a product re-grill here.
 
 ## How to grill
 

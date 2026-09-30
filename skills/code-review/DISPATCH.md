@@ -20,7 +20,8 @@ workers that weight names. **`none`:** spawn nothing and stop.
    Correctness / Slice packets include [INCOMPLETE-SURFACE.md](INCOMPLETE-SURFACE.md)
    and [FORENSIC-OBSERVABILITY.md](FORENSIC-OBSERVABILITY.md) when the diff can
    hit those classes. UI chrome diffs also include [SAME-SURFACE.md](SAME-SURFACE.md).
-   UI Fidelity packet includes design pin or checklist-only waiver + fidelity evidence paths.
+   UI Fidelity packet includes design pin (with Covered **pin rows** when the
+   Inventory has them) or checklist-only waiver + fidelity evidence paths.
 2. **Every Reviewer/Verifier spawn uses a full self-contained brief** (see
    templates below). Subagent context is cold/disposable and often a weaker
    model — paste the review packet, axis body, and evidence; do not spawn with
@@ -60,7 +61,8 @@ Build once; attach the same packet to each Reviewer spawn:
   - Grill/session residual (eng seams only):
 - UI fidelity (when that axis is in scope; else n/a):
   - Design pin: <Figma/path/URL@version + frames | none>
-  - Checklist-only waiver: <none | written reason>
+  - Pin rows Covered: <PIN-xx list from Inventory | none>
+  - Checklist-only waiver: <none | written reason + waived rows>
   - UI contract subset: <screens/fields/rules or path>
   - DESIGN.md: <path or none>
   - Evidence: <screenshot path(s) and/or checklist path | missing>
@@ -123,7 +125,8 @@ Do not include a parent verdict or a pre-waived evidence bar.
 - Same-surface lookalike (new widget + CSS beside the owner) blocks Pass
 - Unauthorized product-doc partial blocks Pass when a PRD was in the packet
 - In-scope UI Fidelity fail / blocked-no-pin / missing screenshot-or-checklist
-  evidence blocks Pass — parent prose "fidelity OK" is not evidence
+  evidence / a Covered pin row absent without an accepted delta blocks Pass —
+  parent prose "fidelity OK" is not evidence
 - Design-packet gates: Pass is not implement authority; recommend
   implement-minimal | spec-and-slice | blocked
 
@@ -180,7 +183,8 @@ fail-open: log failure must never fail business. Completion claims fail while
 any remain.
 
 When UI Fidelity is in scope: missing pin without checklist-only waiver, missing
-screenshot/checklist evidence, or ui-fidelity fail blocks Pass. Parent prose
+screenshot/checklist evidence, a Covered pin row absent without an accepted
+delta, or ui-fidelity fail blocks Pass. Parent prose
 alone is not evidence. A restyled lookalike is not fidelity.
 
 Same-surface lookalikes (extra filter/picker beside the owner, hide-arrow CSS)

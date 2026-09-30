@@ -117,11 +117,13 @@ Tie each finding to changed code and stack-specific exploitability. Treat auth, 
 
 ## UI Fidelity
 
-**When required:** the review packet marks UI Fidelity in scope — full weight **and** (new/restyled chrome **or** a design pin). Owner: [SKILL.md](SKILL.md) Pick weight. Skip on **light**, and on backend-only / non-UI / docs.
+**When required:** the review packet marks UI Fidelity in scope — full weight **and** (new/restyled chrome **or** a design pin). Owner: [SKILL.md](SKILL.md) Pick weight. This *worker* runs only there; on **light** the parent still owes the same evidence (per-row screenshots, `/implement` §2) — report its absence as a blocking gap, not as out of scope. Skip only on backend-only / non-UI / docs.
+
+**Design pin = any versioned visual source of truth:** 原型图 / 设计稿 / 截图 / HTML 原型 / pinned prototype winner / Figma frame or export @version.
 
 **Authority for "looks right":**
 
-1. **Delivery design pin** (versioned Figma/frame/export path) when present
+1. **Delivery design pin** (versioned Figma/frame/export path) when present, with its **pin rows** (`PIN-xx @pin v3`) when the parent Inventory has them
 2. **UI contract** (screens / fields / rules / states) from ticket or spec
 3. Package-root **`DESIGN.md`** tokens + Do's/Don'ts when present (visual environment; does not replace a screen pin)
 4. Explicit written **checklist-only fidelity** reason when no pin (weaker — note residual risk)
@@ -132,11 +134,12 @@ Look for:
 - missing interactive / empty / error / loading states that the UI contract or pin specifies
 - invented fields, copy, or chrome not in the UI contract
 - claims of fidelity with **no evidence** (no pin path, no same-viewport screenshot path, no checklist against pin)
+- a **Covered pin row absent** from the implementation without an accepted delta or a listed waiver row
 - a restyled **lookalike** (hide-arrow / padding on a second widget) presented as matching the owner — that is a same-surface miss, not fidelity ([SAME-SURFACE.md](SAME-SURFACE.md))
 
 **Evidence bar (blocking when this axis is in scope):**
 
-- Pass on this axis requires **at least one**: (a) same-viewport screenshot path(s) compared to the pin, or (b) a written checklist with pin/frame refs and pass/fail per material item
+- Pass on this axis requires **at least one**: (a) same-viewport screenshot path(s) compared to the pin, or (b) a written checklist with pin/frame refs and pass/fail per material item. **When pin rows exist, pass additionally requires a per-row verdict** — each Covered row 过 / accepted delta / 缺 (any 缺 blocks)
 - "Looks fine" / "matches spirit of the design" without pin or checklist → **not Pass**
 - Missing pin **and** no checklist-only waiver in the ticket/spec → report as blocking gap (`needs-user-decision` or incomplete delivery package)
 

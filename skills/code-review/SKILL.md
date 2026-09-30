@@ -129,9 +129,14 @@ upgrade a small fix because a risk word can be stretched to fit the diff.
 
 | Weight | When | Workers |
 | --- | --- | --- |
-| **none** | Simple fix: one existing behavior, localized to an existing seam (annotation, guard, copy, test pin, one query tweak). No new module, screen, endpoint, schema, or migration. | Do **not** start review. No Reviewer, no Verifier. The implement test loop is the gate. |
+| **none** | Simple fix: one existing behavior, localized to an existing seam (annotation, guard, copy, test pin, one query tweak). No new module, screen, endpoint, schema, or migration. | Do **not** start review. No Reviewer, no Verifier. The implement test loop + walkthrough is the gate. |
 | **light** | Medium fix: one ticket or slice that changes control flow or touches several production files, but is not a new capability. Default when it is neither clearly simple nor a large requirement. | One Slice Reviewer. **Verifier only if** that reviewer filed a candidate. |
 | **full** | Large requirement: a new capability, a multi-slice feature, or frontend and backend with distinct new control flow. Also when the user explicitly asks for a full review of a branch, PR, or named range. | Parallel Standards + Spec + Correctness (plus UI Fidelity / Performance / Security / Ponytail only when this skill already marks them in scope). Then **Verifier always**, even when candidates are `none`. |
+
+**Weight picks workers, never evidence.** Walkthrough results and pin-row
+fidelity evidence are Done criteria owed by `/implement` §2 under **every**
+weight — `none`/`light` skip review workers, not evidence. A Covered pin row
+without evidence or a user-granted waiver is a blocking gap at any weight.
 
 **Do not escalate** a simple fix to `full`. These stay **`none`**:
 
@@ -179,10 +184,13 @@ not a `Pass`.
    **Security**, **Ponytail**. Detail: [REVIEW-AXES.md](REVIEW-AXES.md),
    [PROJECT-LENSES.md](PROJECT-LENSES.md).
 2. **UI Fidelity** when full **and** (new/restyled chrome **or** a design pin
-   exists). Packet: pin@version or checklist-only waiver, UI contract subset,
-   optional `DESIGN.md`, screenshot and/or checklist. Missing pin without
-   waiver, or no evidence while claiming fidelity, **blocks** `Pass`.
-   Otherwise `ui-fidelity: n/a`.
+   exists). Packet: pin@version or checklist-only waiver, the **pin rows this
+   slice `Covers`** (when the parent Inventory has them), UI contract subset,
+   optional `DESIGN.md`, screenshot(s) covering each Covered row's state.
+   Missing pin without waiver, no evidence while claiming fidelity, or a
+   **Covered pin row absent without an accepted delta** (a waiver must list
+   its rows — silent skips are invalid) **blocks** `Pass`. Otherwise
+   `ui-fidelity: n/a`.
 3. After candidates: **must try** `Verifier` at **full** only. `none` never
    spawns Verifier. A clean **light** slice (no candidate filed) does not
    spawn Verifier. Keep findings at confidence `>=80`. Incomplete surface
@@ -219,8 +227,9 @@ one Reviewer (or host-general) attempt → process-bug. Do not report a clean
   `Needs User Decision`. Do not bury under “known non-blocking / grill AC ok.”
 - **UI Fidelity:** when that axis is in scope, verdict cannot be `Pass`
   without pin+evidence or checklist-only waiver + checklist evidence. Parent
-  prose alone is invalid. A restyled lookalike is not fidelity
-  ([SAME-SURFACE.md](SAME-SURFACE.md)).
+  prose alone is invalid. A Covered pin row missing without an accepted delta
+  is a fidelity fail, not polish feedback. A restyled lookalike is not
+  fidelity ([SAME-SURFACE.md](SAME-SURFACE.md)).
 - **Same-surface:** a parallel widget for a family the same screen already
   owns blocks `Pass` on light and full. Hide-arrow / padding CSS is evidence
   of a lookalike, not a fix.

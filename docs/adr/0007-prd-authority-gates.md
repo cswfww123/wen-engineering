@@ -1,6 +1,8 @@
 # Product-doc authority gates on LIGHT L2
 
-Status: accepted
+Status: accepted — decision 2's route-to-L2 door rule superseded by ADR 0008
+(grill-first entry; residual-only becomes a mode lock inside `/grill-code`).
+Gates 3–6 unchanged.
 
 ## Context
 

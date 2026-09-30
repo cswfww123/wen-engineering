@@ -105,13 +105,15 @@ Is intent good enough to code against?
 
 **Bias:** do not open PM, Wayfinder, or multi-skill pipelines when `/implement` is enough.
 
+**Routing owner:** the agent classifies incoming work and enters the matching flow (bug → `/diagnosing-bugs`, clear AC → L1, any other requirement → G `/grill-code`); slash commands are manual overrides ([docs/lifecycle.md](docs/lifecycle.md) hygiene 7).
+
 ### 1. Quick chooser
 
 | Situation | Flow | Entry → exit |
 | --- | --- | --- |
 | Bug / clear AC / one eng slice | **L1** | `/implement` → done |
-| Settled multi-slice package | **L2** | `/to-spec` (Inventory) → `/to-tickets` → `/implement` → last-ticket prd-walk |
-| Few open decisions; *you* can answer this session | **G** | `/grill-code` → chat recap → `/implement` (archive/`/to-spec` only if handoff) |
+| Any other requirement — a few open decisions *or* a whole PRD package | **G** | `/grill-code` (entry sweep → residual poles) → chat recap → `/implement` (multi-slice: `/to-spec`) |
+| Multi-slice settled at G, or zero-pole sweep | **L2** | `/to-spec` (Inventory) → `/to-tickets` → `/implement` → last-ticket prd-walk |
 | Answers live with PM/业务; 需求澄清会 or async form | **Q** | `/to-questionnaire` → fill → paste back → **`/to-spec`** (no re-confirm) |
 | Shipped wrong / mild Expected gap in coding context | **L3** | `/product-fog` → exactly one next (G / Q / L2 / L4 / stop / PM) |
 | Product OK; technical route needs many sessions | **L4** | try **G** first → else `/wayfinder` → map resolved → **L2** |
@@ -123,12 +125,12 @@ Is intent good enough to code against?
 Map of steps (each flow is independent — pick one):
 
 ```text
-L1  clear work              →  /implement
-L2  multi-slice             →  /to-spec → /to-tickets → /implement
-G   same-session pin        →  /grill-code  →  chat recap  →  /implement (| archive → /to-spec if handoff)
-Q   stakeholder questionnaire →  /to-questionnaire  →  fill  →  ingest  →  /to-spec
-L3  mild intent pin         →  /product-fog  →  one next skill
-L4  multi-session eng fog   →  /wayfinder  →  (resolved)  →  L2
+L1  clear work                     →  /implement
+G   requirement — default entry    →  /grill-code (sweep → residual poles)  →  recap  →  /implement | /to-spec
+L2  multi-slice spine              →  /to-spec → /to-tickets → /implement (usually the hop after G)
+Q   stakeholder questionnaire      →  /to-questionnaire  →  fill  →  ingest  →  /to-spec
+L3  mild intent pin                →  /product-fog  →  one next skill
+L4  multi-session eng fog          →  /wayfinder  →  (resolved)  →  L2
 ```
 
 #### L1 — Implement (default daily)
@@ -156,18 +158,20 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
   → (optional) wen-test: /to-test-plan → /qa-run
 ```
 
-- **In:** product intent settled enough to write honest requirements (detailed product docs are the primary source — use this path; do not re-author via a full product grill).
+- **In:** product intent settled enough to write honest requirements — usually arrived **from G** (poles settled, PRD deltas labeled in thread). Direct entry is valid: the PRD Inventory re-runs the collision check, and HITL rows it surfaces get one residual grill round before `accepted`. Detailed product docs are the primary source — do not re-author them.
 - **Out:** slices on the frontier; parent spec stays open until work is done.
 - **Also:** `/to-spec` PRD Inventory when the source is a product doc; `/to-tickets` pre-publish gate (inventory `SRC` in `Covers`, `Supports` does not count); FE/BE fidelity at ticket layer. `/alignment-review` is **not** on the default path after every publish — **except** a mandatory **prd-walk** against the original product doc when closing the last ticket or answering “已按 PRD 实现” ([docs/prd-authority.md](docs/prd-authority.md)).
 - **Do not:** close the parent spec from `/implement`; do not let session grill AC silently supersede an active PRD; do not `complete` a ticket whose body still lists 残差 for a `Covers` clause.
 
-#### G — Grill (same-session pin)
+#### G — Grill (default requirement entry)
 
 ```text
-plan still fuzzy, but *you* own the decisions and one session can clear them
+any requirement that is not a bug / clear AC / single slice — decision count unknown
   → /grill-code   (loads /grilling; domain-modeling only if terms truly change)
-      frontier rounds: batch table + 推荐; facts first (non-blocking sub-agents)
+      entry: facts-first sweep (PRD package → collision sweep before first frontier, hard gate)
+      frontier rounds: batch table + 推荐; open poles only
       with a detailed PRD: residual / eng seams only; PRD scope cuts must be labeled 相对 PRD
+      zero open poles → hop L2 /to-spec (multi-slice) or L1 directly
       MVP in/out early; anti rubber-stamp on high-risk only
   → close: chat recap by default (no decision-*.md)
   → durable archive only for cross-session / Wayfinder / explicit ask
@@ -178,7 +182,7 @@ plan still fuzzy, but *you* own the decisions and one session can clear them
       high-fi pin already versioned → ticket pin → /implement + UI fidelity evidence
 ```
 
-- **In:** a few user-owned product/eng decisions; not multi-session fog. Prefer L2 when a full product doc already covers multi-slice work. Residual grill only (contradictions, unmapped terms, eng seams); labeled deltas declare `doc-change` vs `eng-read`. **按原文** revokes listed ids via L3 — do not re-grill the package.
+- **In:** any requirement whose decision count is unknown — the entry sweep counts them. Under a full product doc: sweep first, **residual grill only** (contradictions, unmapped terms, eng seams); labeled deltas declare `doc-change` vs `eng-read`; zero poles → L2 directly. **按原文** revokes listed ids via L3 — do not re-grill the package.
 - **Out:** shared understanding in chat (Matt-style). Files are the exception, not the rule. AC = product doc − only accepted `相对 PRD` deltas.
 - **Escalate:** wrong human in the room → **Q**; too big for one session → **L4**; market/worth-doing open → **HEAVY**.
 - **Do not:** invent Expected; force process docs for simple pins; treat “grill done” as push authority on shared branches; use unlabeled grill MVP to replace the product doc; open multi-variant prototype against a settled high-fi pin as if that were fidelity QA.
@@ -276,7 +280,7 @@ Support skills (compose under any flow): `/tdd`, `/simplify`, `/code-review`,
 | --- | --- |
 | `/to-spec` | `/to-prd` — existing `PRD.md` stays valid |
 | `/to-tickets` | `/to-issues` — existing `issues/` stays valid |
-| `/grill-code` | coding same-session pin (LIGHT G); loads `/grilling` |
+| `/grill-code` | coding requirement entry (LIGHT G): sweep → residual poles; loads `/grilling` |
 | `/grill-me` | non-coding plan or idea; loads `/grilling`; no repo scan |
 
 Sync removes managed copies of fully retired command names; unmarked same-name
@@ -292,7 +296,7 @@ Common skills:
 - `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` (extras) runs Matt `/implement` through one Executor per slice. Implementation process stays in `implement`.
-- `/grill-code` stress-tests an engineering plan (same-session pin, LIGHT G); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room. Not Matt `/grill-with-docs`.
+- `/grill-code` is the **default requirement entry** (LIGHT G): facts-first collision sweep, then interviews only the open poles (under a PRD: residual only); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room. Not Matt `/grill-with-docs`.
 - `/grill-me` stress-tests a **non-coding** plan, decision, or idea. Same `/grilling` loop; no codebase scan, no PRD deltas, no implement handoff.
 - `/grilling` is the reusable interview loop: **frontier rounds** (`❓`/`➡️` format, dependency-aware batch tables, not serial micro-Qs), non-blocking fact sub-agents, confirmation gate. Coding-only rules (conflict facts, PRD, rubber-stamp, implement handoff) live on `/grill-code`.
 - `/wait-what` re-pitches the last message when it did not land (concise, domain language).
@@ -300,7 +304,7 @@ Common skills:
 - `/to-questionnaire` turns stakeholder gaps into a meeting or async questionnaire (options + 推荐 + 手写); paste back → ingest without re-asking → default `/to-spec`.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
-- `/prototype` creates a disposable logic (shareable HTML demo) or UI evidence artifact for an explicit question or Wayfinder ticket.
+- `/prototype` creates a disposable logic (shareable HTML demo) or UI evidence artifact for an explicit question or Wayfinder ticket; a winning UI variant becomes the design pin with its details extracted as pin rows.
 - `/to-design-md` generates or refreshes a Google Labs–format `DESIGN.md` visual identity for frontend packages (optional; extract from theme or synthesize).
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
@@ -308,7 +312,7 @@ Common skills:
 - `/harvest-pins` harvests and depreciates `AGENTS.md` Checklist pins from real agent sessions.
 - `/setup-logging` builds the project logging foundation when the shape requires it.
 - `/tdd` is the red → green reference (seams, anti-patterns); close to Matt upstream.
-- `/to-spec` turns settled context into a non-runnable spec with stable requirements.
+- `/to-spec` turns settled context into a non-runnable spec with stable requirements (PRD Inventory includes pin rows when a design pin is in play).
 - `/to-tickets` turns an approved spec into a dependency-aware ticket graph and typed frontiers.
 - `/product-fog` LIGHT intent pin in coding context (mini docket, one next route).
 - `/wayfinder` clears multi-session fog into a thin decision map (short pastes, research-first), then hands off to `/to-spec`.
@@ -361,7 +365,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 publish path. Mandatory **prd-walk** at PRD-sourced package close ([docs/prd-authority.md](docs/prd-authority.md)).
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
-- [`grill-code`](skills/grill-code/SKILL.md) — user-invoked same-session **coding** pin (LIGHT G); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
+- [`grill-code`](skills/grill-code/SKILL.md) — user-invoked **coding** requirement entry (LIGHT G): collision sweep then open-pole interview (PRD: residual only); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
 - [`grill-me`](skills/grill-me/SKILL.md) — user-invoked **non-coding** interview (plan, decision, idea); loads `/grilling`; chat close only.
 - [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop shared by both grills: frontier rounds + batch tables, non-blocking facts, confirmation gate.
 - [`to-questionnaire`](skills/to-questionnaire/SKILL.md) — stakeholder questionnaire (options + 推荐 + 手写); filled answers settle without re-grill; default next `/to-spec` (LIGHT Q).
@@ -370,7 +374,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 - [`research`](skills/research/SKILL.md) — saves cited primary-source evidence for an explicit question or active Wayfinder ticket.
 - [`prototype`](skills/prototype/SKILL.md) — builds bounded disposable logic/state or UI evidence without mutating tracker or production state.
 - [`to-design-md`](skills/to-design-md/SKILL.md) — optional frontend visual identity: extract or synthesize a lintable `DESIGN.md` (Google Labs format) agents reapply on UI work.
-- [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements (PRD Inventory required when the source is a product doc).
+- [`to-spec`](skills/to-spec/SKILL.md) — turns settled context into a non-runnable spec with stable requirements (PRD Inventory — pin rows included when a design pin is in play — required when the source is a product doc or design pin).
 - [`to-tickets`](skills/to-tickets/SKILL.md) — turns an approved spec into a dependency-aware set of one-context tickets.
 - [`implement`](skills/implement/SKILL.md) — implements a spec or ticket in this pack: code edits run in a per-run local worktree so concurrent sessions cannot overwrite each other; TDD at pre-agreed seams, review by size (`none` skips, `light`, or `full`), merge back to the current branch, then remove the worktree and branch. A finished tracked ticket is closed in the same run and read back as closed.
 - [`implement-spec`](skills/implement-spec/SKILL.md) — implements a whole spec on the current branch: ticket frontier, one local worktree per ticket, merge back, close each finished ticket, `/code-review`, then delete those worktrees and branches. No new branch, PR, or push unless the user asks. The parent spec stays open until its own closeout rule passes.
@@ -558,7 +562,7 @@ This repo currently focuses on a **lightweight, evidence-first coding lifecycle*
 - standalone **or** linked with optional `wen-pm` / `wen-test` (no hard deps)
 - accept delivery inputs from any settled product source
 - support frontend-only, backend-only, and full-stack layer scope
-- default multi-session coding path: settled intent → `/to-spec` → `/to-tickets` → `/implement`
+- default multi-session coding path: requirement → `/grill-code` (sweep → residual poles) → `/to-spec` → `/to-tickets` → `/implement`
 - LIGHT daily path by default; HEAVY fuzzy need via optional `wen-pm` first
 - multi-session eng fog: `/wayfinder` (thin map + short paste) → `/to-spec` → `/to-tickets` → `/implement`
 - system test/QA via optional companion `wen-test` (or human/CI)

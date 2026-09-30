@@ -1,8 +1,10 @@
 # Product-doc authority gates
 
 Hard gates when an **active product requirements / PRD / `docs/requirements/*` /
-`docs/prd/*`** covers the surface being specified or built. Companion to
-[lifecycle.md](lifecycle.md). Skills point here; they do not restate the tables.
+`docs/prd/*`** covers the surface being specified or built — **or the delivery
+source includes a design pin** (pinned prototype winner, Figma frame/export
+@version). Companion to [lifecycle.md](lifecycle.md). Skills point here; they
+do not restate the tables.
 
 This is **not** a new slash command and **not** HEAVY PM. It binds LIGHT L2 / G /
 L3 so grill AC cannot silently replace a detailed product doc.
@@ -27,16 +29,26 @@ Apply when **any** of these is true:
   an equivalent path they treat as the PRD)
 - A published spec lists that doc as **Delivery source**
 - The work is multi-slice and that doc already settles the behavior surface
+- The delivery source includes a **design pin** whose observable details the
+  build must reproduce — any versioned visual source of truth: **原型图 /
+  设计稿 / 截图 / HTML 原型 / pinned prototype winner / Figma frame or export
+  @version**
 
 Skip for a one-context bug, a pure-eng slice with unchanged product behavior, or
 when no product doc covers the surface.
 
-## 1. Route lock (do not re-author the PRD)
+## 1. Entry and mode lock (do not re-author the PRD)
 
-Named multi-slice product doc → **L2** (`/to-spec`). Do **not** open a full
-product `/grill-code` that rewrites settled behavior.
+Named multi-slice product doc → enter **G** `/grill-code` (the pack's default
+requirement entry): run the **PRD-package entry sweep** (facts-first collision
+map), then grill **residual poles only**. A full product grill that rewrites
+settled behavior is forbidden whichever door you came from.
 
-`/grill-code` may run only as a **residual** table:
+Sweep shows zero open poles → hop straight to **L2** `/to-spec` (or L1 for a
+single slice). Entering L2 directly is equally valid; its PRD Inventory
+(§2) re-runs the collision check as the fail-closed backstop.
+
+`/grill-code`'s frontier may carry only **residual** rows:
 
 - Original contradictions (two PRD rows that cannot both be true)
 - Terms that do not map to a live column / enum / API
@@ -58,11 +70,26 @@ When the delivery source is an existing product doc, `/to-spec` must publish a
 **PRD Inventory** on the spec (section or sibling table). Fail → do not set
 `Status: accepted`.
 
+**No `/to-spec`? Still owe rows.** Single-slice / same-session routes (L1
+`/implement` direct, "UI already has a design pin") skip the spec file, never
+the rows: post the same inventory table **in chat or on the ticket before the
+first production edit**. `/implement` §2 gates walkthrough + fidelity against
+those rows either way.
+
 Inventory **rows** are the smallest observable product clauses:
 
 - Numbered acceptance points (e.g. 验收 1–16)
 - Each material scenario / 场景 row in the change-detail tables
 - Each explicit list/detail/edit/copy/submit rule that can fail independently
+
+**Pin rows** join the same inventory when a design pin is part of the source
+(pinned prototype winner, Figma frame/export @version): every observable
+detail that can fail independently — fields, states (default / hover /
+disabled / loading / empty / error), conditional show/require, chrome
+controls, copy units, layout rules. `SRC` cites the pin and region
+(`PIN-07 @pin v3 · 弹窗空态`); a detail visible in two states is two rows.
+Pin rows ride the same gates: `Covers` coverage, honest `complete`, and the
+prd-walk (§5).
 
 | Inventory field | Rule |
 | --- | --- |
@@ -74,6 +101,11 @@ Inventory **rows** are the smallest observable product clauses:
 **Pass when:** every material source clause has a `REQ`, `HITL`, or explicit
 `OUT`. Contradiction rows stay `HITL` until the user accepts a **labeled**
 delta — do **not** write them into Accepted deltas silently.
+
+HITL rows that surface here **after** a `/grill-code` pass mean the entry
+sweep missed a pole: run **one** residual `/grill-code` round on exactly
+those rows, fold the accepted deltas, and only then may the spec reach
+`accepted`.
 
 A clause that appears on **two surfaces** is **two inventory rows** (弹窗回显 ≠
 页外回显; 提交剔除 ≠ 编辑 GET 重验; 选模板 ≠ 每组变量编辑器).
@@ -115,7 +147,17 @@ when the delivery source is an external / in-repo product doc.
 - Answering “已按 PRD 实现 / 对照 PRD 验收 / 是不是做完了”
 - Promoting the parent spec toward `delivered`
 
-**Against:** the **original product doc**, not the eng spec recap.
+**Against:** the **original product doc and pin@version** (pin rows included
+when they exist), not the eng spec recap. Evidence is **runtime where the
+surface is observable** — walkthrough results (`/implement` §2: screenshots,
+request+response) — code citations only for clauses with no observable
+surface.
+
+**Per-ticket mini prd-walk (every PRD-sourced ticket, at close):** before a
+ticket with PRD/pin `Covers` closes, walk its Covered `SRC`s against the
+original product doc using that walkthrough evidence. Any `缺` → follow-up
+ticket or accepted delta; the ticket stays open. The package-level walk below
+still runs at last-ticket close.
 
 **Output** (one table, then stop or list follow-up tickets):
 
@@ -134,6 +176,9 @@ Verdicts: `过` | `缺` | `有意 delta <id>`.
 - Do **not** answer “已按 PRD 实现” while any `缺` remains
 - `有意 delta` rows must already exist on the Accepted deltas table; inventing
   them at walk time is a fail
+- A `缺` on a **pin row** is a coverage gap with a known answer, not an open
+  decision: route a follow-up ticket against that row — do not re-grill the
+  package for details the pin already settles
 
 Slice `/code-review` still reviews the ticket AC. `prd-walk` is the
 **package-level** check against the product doc. It does not replace

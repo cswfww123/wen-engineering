@@ -26,9 +26,10 @@ uses, for example:
 **Authority while coding:** when an active product requirements/PRD doc covers
 the surface, it is the product-behavior baseline. Grill/chat may add residual
 eng pins or **labeled** authorized deltas (`相对 PRD`); it must not silently
-replace the product doc as the sole AC. Detailed multi-slice product docs route
-to L2 `/to-spec` before implement — see [lifecycle.md](lifecycle.md) and
-[prd-authority.md](prd-authority.md) (Inventory, delta lock, prd-walk).
+replace the product doc as the sole AC. Detailed multi-slice product docs enter
+`/grill-code` (default entry: sweep + residual poles) and route on to L2
+`/to-spec` before implement — see [lifecycle.md](lifecycle.md) and
+[prd-authority.md](prd-authority.md) (entry/mode lock, Inventory, delta lock, prd-walk).
 
 When product/market/need is **fundamentally fuzzy** (HEAVY), stop inventing and
 use full product discovery (`wen-pm` `/pm-intake` or team PM) before this pack.
@@ -38,6 +39,7 @@ When intent is only mildly unclear in a coding context (LIGHT), use
 ## Default coding spine
 
 ```text
+requirements → /grill-code (default entry: sweep + residual poles)
 settled delivery inputs (any source above)
   -> /to-spec -> /to-tickets -> /implement
   -> (optional) wen-test: /to-test-plan -> /qa-run
@@ -82,8 +84,10 @@ Admit only if **all** hold (source may be PM or any design owner):
 1. UI contract present: screens/fields/rules (IDs optional if team uses tables
    without `SCR`/`FLD` prefixes — structure matters more than prefix)
 2. every interactive field and conditional show/require is specified
-3. delivery design source is **pinned** (Figma/frame/export/path + version), or
-   an explicit written reason for checklist-only fidelity
+3. delivery design source is **pinned** (Figma/frame/export/path + version,
+   observable details extracted as **pin rows** —
+   [prd-authority.md](prd-authority.md) §2), or an explicit written reason
+   for checklist-only fidelity (listing any waived rows)
 4. material UI acceptance criteria exist
 
 If any fail: **stop**, list missing pieces, ask the **product/design owner**
@@ -116,7 +120,7 @@ When one side is out of scope for this agent/ticket:
 | Gate | When | Evidence |
 | --- | --- | --- |
 | **Behavior** | every ticket | TDD/verification match acceptance for **this layer** |
-| **UI fidelity** | `/code-review` marks UI Fidelity in scope (new/restyled chrome or a design pin) | checklist/compare vs UI contract + pin; screenshot path(s) preferred; that axis blocks Pass without pin+evidence (or checklist-only waiver + checklist). Light visibility/default of existing chrome: one path screenshot or checklist item, not a UI Fidelity worker. |
+| **UI fidelity** | `/code-review` marks UI Fidelity in scope (new/restyled chrome or a design pin) | compare vs UI contract + pin **row by row**: every Covered pin row either visible in evidence or an accepted delta; screenshot path(s) preferred; that axis blocks Pass without pin+evidence (or checklist-only waiver listing its rows). Light visibility/default of existing chrome: one path screenshot or checklist item, not a UI Fidelity worker. |
 | **Contract fidelity** | ticket changes published API/events | contract checks |
 
 Not a substitute for independent system QA (`wen-test` `/qa-run` or human QA).

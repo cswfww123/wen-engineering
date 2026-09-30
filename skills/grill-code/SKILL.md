@@ -1,12 +1,12 @@
 ---
 name: grill-code
-description: Relentless interview against a codebase — residual eng seams, wire alignment, PRD deltas. Not non-coding plans (that is /grill-me).
+description: Default entry for coding requirements — sweep the codebase for collisions first, then interview only the open poles (PRD in play: residual poles under prd-authority). Not non-coding plans (that is /grill-me).
 disable-model-invocation: true
 ---
 
 Run a `/grilling` session (load `grilling` once). Use its **frontier-round** rules, question format (`❓` / `➡️`), and batch/surface table shape.
 
-This skill is the **coding** grill (LIGHT G). Non-coding plans, ideas, and decisions use `/grill-me` — do not load this file for those.
+This skill is the **coding** grill (LIGHT G) and the **default entry for requirements** in this pack: sweep the codebase first, grill only what the sweep leaves open. Non-coding plans, ideas, and decisions use `/grill-me` — do not load this file for those.
 
 **Shared understanding in the conversation is enough.** Do not invent a paper trail for work that finishes in this session. Do not revive Matt's `/grill-with-docs`: ADR / glossary only when terms truly change (`/domain-modeling`), not as the default close.
 
@@ -14,9 +14,11 @@ This skill is the **coding** grill (LIGHT G). Non-coding plans, ideas, and decis
 
 If the user already has clear AC, a bug, or a single eng slice → prefer **`/implement`** (L1). Do not open grill (or force docs) to look thorough.
 
-If the user already has a **detailed product requirements / PRD / `docs/requirements/*` package** for a multi-slice feature → prefer **`/to-spec`** (L2) with that doc as the primary source. Do **not** open a full product grill that re-authors what the PRD already settles. Use this skill only for residual open poles the PRD leaves fuzzy (or for eng seams after `/to-spec`). Protocol: `docs/prd-authority.md`.
-
 If they say **按原文** / 收回 delta after a grill already accepted `相对 PRD` rows → **stop grilling the package**. Route **L3** `/product-fog` and re-open **only** those delta ids / inventory `SRC`s.
+
+## PRD-package entry (this skill is the door)
+
+A **detailed product requirements / PRD / `docs/requirements/*` package** does **not** bounce you out — this skill is the entry for it too. Run the **PRD-package entry sweep** (Engineering default 1) before the first frontier; the frontier then carries **residual poles only** (contradictions, unmapped terms, eng seams), never a re-authoring of settled PRD rows. Sweep shows zero open poles → skip the interview and hop straight to **`/to-spec`** (L2, multi-slice) or **`/implement`** (L1). Protocol: `docs/prd-authority.md`.
 
 ## Product-doc authority (hard — when a PRD/requirements doc is in play)
 
@@ -37,6 +39,7 @@ Binding rules:
 ## Engineering defaults (coding repos)
 
 1. **Facts first (non-blocking)** — map existing tables, bridges, call sites, tests, ADRs/CONTEXT before asking. Prefer code over stale process docs. Non-trivial lookups: dispatch explore/sub-agents; only hold back decisions that depend on those facts — still post the rest of the frontier this round.
+   - **PRD-package entry sweep (hard gate)** — entering with a product doc: before the **first** frontier round, map each requirement family (验收 point / 场景 row) to the environment — live write paths, schema/tables, contract & seal tests, sibling services, and the admin/management surface that would own its CRUD. Post a short collision table (clause → environment fact → pole?). The first frontier may open only after this sweep; zero open poles → hop to L2 `/to-spec` (multi-slice) or L1 `/implement` instead of grilling.
    - **Explore is not ground truth.** Before pinning AC or a recommended wire/enum value, verify against **primary write paths** (the production code that actually sets the field), not only enum definitions or a single call site. Second-hand explore reports that say “uses the enum” must be re-checked when the field is money-, identity-, or status-bearing.
 2. **Conflict-fact table (mandatory when sources disagree)** — if the same field / type / prefix has **more than one live value** across enums, write paths, XML/SQL hardcodes, reports, or sibling services, **do not** write “code wins / no need to ask.” Post a short fact table (source → value → role) and put the **alignment target** on the frontier with a recommended pole. A hardcoded legacy write path is **not** automatically the standard; prefer the documented enum / shared contract unless I pick the legacy value.
 3. **“Align with us / the other system” requests** — treat as open until the target is named: **enum/contract value** vs **one existing write path** vs **report/filter semantics**. Never silently pick one pole.
@@ -130,13 +133,13 @@ If I type `/implement` (or 「开干」) **before** the frontier is empty:
 
 | Settled | Next | Avoid |
 | --- | --- | --- |
-| Behavior AC enough; no UI or UI already has a design pin | Same-session `/implement` (or L2 if multi-slice) | Multi-variant `/prototype` |
+| Behavior AC enough; no UI or UI already has a design pin | Same-session `/implement` (or L2 if multi-slice) — with 原型图/设计稿 present, extract pin rows first (`docs/prd-authority.md` §2); rows ride into the brief as AC | Multi-variant `/prototype` |
 | Multi-slice / other session needs the package | `/to-spec` → `/to-tickets` → `/implement` | Chat-only handoff |
 | Only look-and-feel still open | `/prototype` → pin winner → implement or L2 | Prototype as pixel-perfect delivery |
 | Versioned high-fidelity pin already exists | Put pin on ticket/spec → `/implement` + UI fidelity evidence | Re-exploring variants against a settled pin |
 | Market / worth-doing still open | HEAVY PM | More grill as fake product discovery |
 
-1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s). For UI: name **design pin** or checklist-only waiver before implement.
+1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s). For UI: name the **design source** — 原型图 / 设计稿 / Figma / 截图 / HTML 原型 / pin — and extract its **pin rows** before implement (`docs/prd-authority.md` §2); the rows ride into the Executor brief as AC. Checklist-only waiver only by explicit user grant.
 2. **`/tdd` (or project equivalent)** — Red → Green → Refactor at agreed seams. **Red evidence required** when claiming behavior change. Green on a **wrong AC** is failure, not progress — if a mid-slice fact flips the target, stop and re-open that frontier row instead of “fixing forward.” Matching grill recap while missing unlabeled PRD behavior is **wrong AC**.
 3. **`/code-review`** before commit (that skill picks **light** or **full**). Incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope). Same-surface lookalikes are blocking on UI chrome (`skills/code-review/SAME-SURFACE.md`). Spec / Slice review must dual-read product doc and session AC — unauthorized PRD partial cannot Pass. UI Fidelity worker only when that skill marks it in scope (pin or restyle).
 4. **Git** — follow repo push protocol.

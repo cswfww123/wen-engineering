@@ -37,7 +37,7 @@ State integration seams if FE-only or BE-only.>
 ## Verification
 
 - **Behavior gate:** <public seam / scenarios / tests that prove AC for this layer>
-- **UI fidelity gate:** n/a | checklist vs design pin + linkage paths
+- **UI fidelity gate:** n/a | Covered pin rows vs design pin + linkage paths
 - **Contract fidelity gate:** n/a | API/event contract checks
 
 ## UI Subset (omit if Layer is backend or non-UI)

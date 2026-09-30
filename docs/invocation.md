@@ -5,10 +5,23 @@ Skills split on one operational axis: who is allowed to reach them.
 ## User-Invoked Skills
 
 User-invoked skills are orchestration surfaces. They should run only when the
-human names them, because they choose a shared workflow, publish canonical
-artifacts, change tracker state, or coordinate multiple skills.
+human names them — or when the agent enters one via documented **entry
+classification** (below) — because they choose a shared workflow, publish
+canonical artifacts, change tracker state, or coordinate multiple skills.
 
 Use `disable-model-invocation: true` in frontmatter.
+
+## Agent entry classification
+
+Entry routing is **agent-owned** ([lifecycle.md](lifecycle.md) hygiene 7): when
+work arrives without a named command, the agent classifies it (bug →
+`/diagnosing-bugs`; fuzzy product → HEAVY gate; clear AC / one slice →
+`/implement`; otherwise → `/grill-code`) and enters the matching flow by
+loading its `SKILL.md` and following it. This is documented router behavior,
+not hidden cross-invocation. User-typed slash commands are manual overrides,
+not the only door. Mid-flow hops still wait for the user's order — an
+agent-entered flow has the same close gates and side-effect limits as a
+user-typed one.
 
 For user-invoked skills, the `description:` is human-facing:
 

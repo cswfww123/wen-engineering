@@ -13,7 +13,7 @@ Use `disable-model-invocation: true` in frontmatter.
 
 ## Agent entry classification
 
-Entry routing is **agent-owned** ([lifecycle.md](lifecycle.md) hygiene 7): when
+Entry routing is **agent-owned** ([LIFECYCLE.md](../skills/ask-process/LIFECYCLE.md) hygiene 7): when
 work arrives without a named command, the agent classifies it (bug →
 `/diagnosing-bugs`; fuzzy product → HEAVY gate; clear AC / one slice →
 `/implement`; otherwise → `/grill-code`) and enters the matching flow by

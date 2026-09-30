@@ -27,7 +27,7 @@ replace TDD / typecheck / walkthrough / review / commit.
 - Intent not ready → stop; do not invent Expected (see project lifecycle docs if present).
 - Note layer (`frontend` | `backend` | `full-stack` | `non-UI`) for fidelity later.
 - UI layers: if a package-root `DESIGN.md` exists (Google Labs visual identity), treat it as **visual environment** for fidelity — tokens + Do's/Don'ts. Missing identity with multi-screen UI drift → optional `/to-design-md`, not a blocker for non-UI tickets.
-- **Design source present (原型图 / 设计稿 / Figma / 截图 / HTML 原型 / pinned winner) → it is product AC.** Extract its observable details as **pin rows** for this slice **before the first production edit** — extraction is a blocker, not a note (chat table for same-session runs, ticket body for tracked work; `docs/prd-authority.md` §2). Name the source path in the Executor brief. Pin rows missing at §2.5/§5 means fidelity is unevidenceable — extract late and re-walk, or take an explicit user waiver.
+- **Design source present (原型图 / 设计稿 / Figma / 截图 / HTML 原型 / pinned winner) → it is product AC.** Extract its observable details as **pin rows** for this slice **before the first production edit** — extraction is a blocker, not a note (chat table for same-session runs, ticket body for tracked work; `../to-spec/PRD-AUTHORITY.md` §2). Name the source path in the Executor brief. Pin rows missing at §2.5/§5 means fidelity is unevidenceable — extract late and re-walk, or take an explicit user waiver.
 - Look before you write (ponytail reuse rung): a helper, type, or pattern already on this surface or a few files over → reuse it. Same-surface chrome is the **refuse-to-pass** form of that rung.
 - UI chrome (filter / picker / search / empty-state / chip / toolbar control): load [SAME-SURFACE.md](../code-review/SAME-SURFACE.md) **before** the first control edit. Name the **owner** already on that screen (or `new — no sibling`) in the Executor brief. Extra instances **extend the owner**. User 样式不一样 / 不能复用 / 为什么新写 of sibling controls is a same-surface hit, not a restyle.
 - Tracked work (frontier, bug-report conversion, HITL, claim): load
@@ -50,7 +50,7 @@ Binding:
 - Implement to grill recap while leaving unlabeled PRD gaps, then reporting “grill AC 满足” as Pass, is **wrong AC** — prohibited outcome.
 - Done report **source** field must list product-doc path when used; if any claimed AC is a PRD delta, list those deltas explicitly.
 - Ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC → split a follow-up ticket or accept a labeled delta; `complete` is unavailable.
-- **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the **original product doc** (`docs/prd-authority.md` §5) before claiming the package delivered. Any `缺` → the package is not delivered.
+- **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the **original product doc** (`../to-spec/PRD-AUTHORITY.md` §5) before claiming the package delivered. Any `缺` → the package is not delivered.
 
 ### 0c. Isolate (default for code edits)
 

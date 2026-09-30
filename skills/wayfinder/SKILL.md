@@ -186,7 +186,7 @@ Never ask the human to re-paste Destination, iron rules, or full ticket bodies.
 
 ## WEN additions
 
-- Routing: LIGHT L4 in `docs/lifecycle.md`. Prefer same-session `/grill-code` when one interview would clear the fog. **Never invent** Expected / market / user value; **never implement the destination** (disposable `/prototype` only when the ticket authorizes it).
+- Routing: LIGHT L4 in `../ask-process/LIFECYCLE.md`. Prefer same-session `/grill-code` when one interview would clear the fog. **Never invent** Expected / market / user value; **never implement the destination** (disposable `/prototype` only when the ticket authorizes it).
 - Tracker ops: resolve the issue-tracker doc via the harness pointer from `/setup-project` (not a hard-coded path). Default without harness: **local-markdown** under `.scratch/`. Field shapes: [TEMPLATES.md](TEMPLATES.md). Fog extract: [FOG.md](FOG.md) (must not contradict this file). Short pastes: [CONTINUE.md](CONTINUE.md).
 - Prefer checkable **Resolution Signal** on each ticket. Full answer in the resolution comment; map only gets a named gist.
 - Claim map/ticket before work when the adapter supports it; release claims on stop. `/research` and `/prototype` return evidence only — Wayfinder owns comments, closure, and map updates.

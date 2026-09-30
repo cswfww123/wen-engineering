@@ -14,7 +14,7 @@ The issue tracker and triage label vocabulary should have been provided to you �
 
 2. **If the delivery source is an existing product doc** (`docs/requirements/*`,
    `docs/prd/*`, or a user-named PRD): load
-   [docs/prd-authority.md](../../docs/prd-authority.md) and draft the
+   [PRD-AUTHORITY.md](PRD-AUTHORITY.md) and draft the
    **PRD Inventory** per its §2 *before* writing REQs — row shape, pin rows,
    dual-surface splits, and the fail-closed gate (HITL → one residual
    `/grill-code` round → re-check) are all defined there. **Do not interview**
@@ -93,8 +93,8 @@ Any further notes about the feature.
   [TEMPLATE.md](TEMPLATE.md), publish steps [PUBLISH.md](PUBLISH.md).
 - Prefer stable requirement IDs when the harness uses them; do not rename legacy
   `PRD.md` / history in place.
-- Routing / anti-invention: `docs/lifecycle.md`. Never invent Expected, market
-  bets, or user value. PRD-sourced work: [docs/prd-authority.md](../../docs/prd-authority.md)
+- Routing / anti-invention: `../ask-process/LIFECYCLE.md`. Never invent Expected, market
+  bets, or user value. PRD-sourced work: [PRD-AUTHORITY.md](PRD-AUTHORITY.md)
   (Inventory required; grill must not re-author the product doc).
 - **Filled `/to-questionnaire` is settled input.** If the user pastes answers or
   a path (`问卷已填`), synthesize from those choices — do **not** interview or

@@ -105,7 +105,7 @@ Surface the URL (and the `?variant=` keys). The user will flip through whenever 
 
 ### 6. Capture the answer and clean up
 
-Once a variant has won, capture the answer — which variant and why — and, when the winner becomes the design pin, extract its **pin rows** (observable details onto the issue / spec Inventory; `docs/prd-authority.md` §2) so later `/implement` gates have rows to enforce. Then capture the prototype the way the [SKILL](SKILL.md) describes. Fold the winner into the real code and move the rest onto the throwaway branch, not into main:
+Once a variant has won, capture the answer — which variant and why — and, when the winner becomes the design pin, extract its **pin rows** (observable details onto the issue / spec Inventory; `../to-spec/PRD-AUTHORITY.md` §2) so later `/implement` gates have rows to enforce. Then capture the prototype the way the [SKILL](SKILL.md) describes. Fold the winner into the real code and move the rest onto the throwaway branch, not into main:
 
 - **Sub-shape A** — fold the winner into the existing page; drop the losing variants and the switcher from main.
 - **Sub-shape B** — promote the winning variant to a real route; drop the throwaway route and the switcher from main.

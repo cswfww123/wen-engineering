@@ -22,7 +22,7 @@ state verification gaps) — do not invent findings or rubber-stamp empty input.
 
 Fixed point may be a **code diff** or a **design packet** (root cause evidence +
 proposal under review). For design/plan gates, follow
-`docs/agents/DESIGN-REVIEW-BRIEF.md` Verifier section: do not treat Pass as
+`skills/code-review/DESIGN-REVIEW-BRIEF.md` Verifier section: do not treat Pass as
 implement authority; recommend `implement-minimal` | `spec-and-slice` | `blocked`.
 
 Reject invented, pre-existing, out-of-scope, likely-intentional, or CI-noise items. Keep only high-confidence findings. Prefer fewer true positives over a long list. For completion claims, check acceptance coverage and that stated verification actually supports "done". When the repo provides verification guidance (e.g. code-review Verification Reviewer brief or design-review Verifier brief), follow it.

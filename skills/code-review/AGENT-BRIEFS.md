@@ -1,10 +1,10 @@
 # Agent Briefs
 
-Use these prompts as written with the orchestration ladder in `docs/agents/orchestration.md`. **Hard try** pack `Reviewer` (one instance per axis) and `Verifier` (after candidates); if missing or spawn fails, run the same brief yourself or via the host’s general worker. Missing agents must not abort review. Pass each Reviewer the same review packet: scope, diff commands or diff text, changed files, commit list, standards sources, intent evidence, project shape, and relevant project lenses.
+Use these prompts as written with the dispatch ladder in [DISPATCH.md](DISPATCH.md). **Hard try** pack `Reviewer` (one instance per axis) and `Verifier` (after candidates); if missing or spawn fails, run the same brief yourself or via the host’s general worker. Missing agents must not abort review. Pass each Reviewer the same review packet: scope, diff commands or diff text, changed files, commit list, standards sources, intent evidence, project shape, and relevant project lenses.
 
 **Paste this axis body into the spawn brief** (plus the shared review packet from `DISPATCH.md`). Subagent context is cold/disposable and often a weaker model — do not assume the worker will open this file on its own.
 
-**Not for design/plan review.** After diagnosis, multi-step fix proposals use the same `Reviewer`/`Verifier` roles with a design packet — see [docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md). This file remains **code-delta** axes only.
+**Not for design/plan review.** After diagnosis, multi-step fix proposals use the same `Reviewer`/`Verifier` roles with a design packet — see [DESIGN-REVIEW-BRIEF.md](DESIGN-REVIEW-BRIEF.md). This file remains **code-delta** axes only.
 
 Preferred execution: spawn only the workers **Pick weight** in [SKILL.md](SKILL.md) names. **None** — spawn nothing; the implement test loop is the gate. **Light** — one Slice Reviewer; Verifier only if that Reviewer filed candidates. **Full** — parallel Standards, Spec/Intent, Correctness; plus UI Fidelity when the packet marks it in scope; Performance/Security/Ponytail when warranted; then Verifier even when candidates are `none`. A serializer annotation on an existing field is `none`, not `full`. Fallback: sequential briefs in the parent. Authorized fixes after review use pack `Executor` (see code-review skill Auto-fix), not a second Reviewer.
 

@@ -39,7 +39,7 @@ intent evidence is missing, say so — do not invent product requirements.
 
 When the brief names an axis, stay on that axis. When the repo provides review
 docs, follow them: code axes in `skills/code-review/AGENT-BRIEFS.md`; design
-axes in `docs/agents/DESIGN-REVIEW-BRIEF.md`.
+axes in `skills/code-review/DESIGN-REVIEW-BRIEF.md`.
 
 On **Correctness**, also apply the incomplete production surface classifier when available (`skills/code-review/INCOMPLETE-SURFACE.md`): deferred real logic, stubs on live paths, dual-source domain facts, config stand-ins, **quiet critical path**, **log-unsafe**. Hits on production paths are high-confidence blocking findings. Run the forensic chain checklist (`skills/code-review/FORENSIC-OBSERVABILITY.md`): decision-boundary logs on applicable paths, and **logging must be fail-open** (never fail the business).
 

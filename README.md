@@ -87,7 +87,7 @@ daily work then follows the LIGHT chooser.
 
 **Two tracks.** Default to **LIGHT**. Use **HEAVY** only when the product need
 itself is fuzzy. Source of truth for edge cases:
-[docs/lifecycle.md](docs/lifecycle.md) ·
+[LIFECYCLE.md](skills/ask-process/LIFECYCLE.md) ·
 [docs/boundaries.md](docs/boundaries.md) ·
 [docs/handoff-package.md](docs/handoff-package.md).
 
@@ -105,7 +105,7 @@ Is intent good enough to code against?
 
 **Bias:** do not open PM, Wayfinder, or multi-skill pipelines when `/implement` is enough.
 
-**Routing owner:** the agent classifies incoming work and enters the matching flow (bug → `/diagnosing-bugs`, clear AC → L1, any other requirement → G `/grill-code`); slash commands are manual overrides ([docs/lifecycle.md](docs/lifecycle.md) hygiene 7).
+**Routing owner:** the agent classifies incoming work and enters the matching flow (bug → `/diagnosing-bugs`, clear AC → L1, any other requirement → G `/grill-code`); slash commands are manual overrides ([LIFECYCLE.md](skills/ask-process/LIFECYCLE.md) hygiene 7).
 
 ### 1. Quick chooser
 
@@ -160,7 +160,7 @@ settled package (PRD / docs / chat AC / PM handoff / filled questionnaire archiv
 
 - **In:** product intent settled enough to write honest requirements — usually arrived **from G** (poles settled, PRD deltas labeled in thread). Direct entry is valid: the PRD Inventory re-runs the collision check, and HITL rows it surfaces get one residual grill round before `accepted`. Detailed product docs are the primary source — do not re-author them.
 - **Out:** slices on the frontier; parent spec stays open until work is done.
-- **Also:** `/to-spec` PRD Inventory when the source is a product doc; `/to-tickets` pre-publish gate (inventory `SRC` in `Covers`, `Supports` does not count); FE/BE fidelity at ticket layer. `/alignment-review` is **not** on the default path after every publish — **except** a mandatory **prd-walk** against the original product doc when closing the last ticket or answering “已按 PRD 实现” ([docs/prd-authority.md](docs/prd-authority.md)).
+- **Also:** `/to-spec` PRD Inventory when the source is a product doc; `/to-tickets` pre-publish gate (inventory `SRC` in `Covers`, `Supports` does not count); FE/BE fidelity at ticket layer. `/alignment-review` is **not** on the default path after every publish — **except** a mandatory **prd-walk** against the original product doc when closing the last ticket or answering “已按 PRD 实现” ([PRD-AUTHORITY.md](skills/to-spec/PRD-AUTHORITY.md)).
 - **Do not:** close the parent spec from `/implement`; do not let session grill AC silently supersede an active PRD; do not `complete` a ticket whose body still lists 残差 for a `Covers` clause.
 
 #### G — Grill (default requirement entry)
@@ -293,7 +293,7 @@ Common skills:
 - `/alignment-review` optional audit of unreviewed specs/tickets (handoff / no human graph approval); default L2 uses `/to-tickets` pre-publish gate. **Mandatory prd-walk** at PRD-sourced package close (last ticket / “已按 PRD 实现”) against the original product doc.
 - `/codebase-design` provides deep-module vocabulary for module interfaces and seams.
 - `/code-review` independently reviews a fixed delta. **none** (simple fix: annotation, guard, copy, test pin): skip review. **light** (medium slice): one Slice Reviewer; Verifier only if it filed a candidate. **full** (large requirement, or an explicit branch/PR review): intent, correctness, standards, then Verifier always; UI Fidelity when a pin or restyle exists; optional ponytail / performance / security.
-- `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `docs/agents/DESIGN-REVIEW-BRIEF.md`.
+- `/diagnosing-bugs` diagnoses hard bugs and performance regressions with a feedback loop; multi-step fix proposals get a frozen design packet and pack `Reviewer` design axes (prefer another model) before coding — `skills/code-review/DESIGN-REVIEW-BRIEF.md`.
 - `/domain-modeling` sharpens glossary terms and records ADRs while design decisions crystallize.
 - `/implement` (extras) runs Matt `/implement` through one Executor per slice. Implementation process stays in `implement`.
 - `/grill-code` is the **default requirement entry** (LIGHT G): facts-first collision sweep, then interviews only the open poles (under a PRD: residual only); loads `/grilling`; domain-modeling only when terms truly change; **default close is chat recap** (no mandatory decision file). Routes to `/to-questionnaire` when the wrong human is in the room. Not Matt `/grill-with-docs`.
@@ -363,7 +363,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 publish path. Mandatory **prd-walk** at PRD-sourced package close ([docs/prd-authority.md](docs/prd-authority.md)).
+- [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 publish path. Mandatory **prd-walk** at PRD-sourced package close ([PRD-AUTHORITY.md](skills/to-spec/PRD-AUTHORITY.md)).
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-code`](skills/grill-code/SKILL.md) — user-invoked **coding** requirement entry (LIGHT G): collision sweep then open-pole interview (PRD: residual only); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
 - [`grill-me`](skills/grill-me/SKILL.md) — user-invoked **non-coding** interview (plan, decision, idea); loads `/grilling`; chat close only.
@@ -446,9 +446,7 @@ docs/
     domain.md
     issue-tracker.md
     orchestration.md
-    DESIGN-REVIEW-BRIEF.md
     triage-labels.md
-  lifecycle.md
   boundaries.md
   handoff-package.md
 scripts/
@@ -461,6 +459,7 @@ skills/
   code-review/
     DISPATCH.md
     AGENT-BRIEFS.md
+    DESIGN-REVIEW-BRIEF.md
     FORENSIC-OBSERVABILITY.md
     INCOMPLETE-SURFACE.md
     SAME-SURFACE.md
@@ -530,6 +529,7 @@ skills/
   to-questionnaire/
     SKILL.md
   to-spec/
+    PRD-AUTHORITY.md
     SKILL.md
     TEMPLATE.md
   to-tickets/

@@ -3,7 +3,7 @@
 Hard gates when an **active product requirements / PRD / `docs/requirements/*` /
 `docs/prd/*`** covers the surface being specified or built — **or the delivery
 source includes a design pin** (pinned prototype winner, Figma frame/export
-@version). Companion to [lifecycle.md](lifecycle.md). Skills point here; they
+@version). Companion to [LIFECYCLE.md](../ask-process/LIFECYCLE.md). Skills point here; they
 do not restate the tables.
 
 This is **not** a new slash command and **not** HEAVY PM. It binds LIGHT L2 / G /

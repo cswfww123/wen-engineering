@@ -140,7 +140,7 @@ rate limit”, etc.):** do **not** treat that proposal as approved. Parent freez
 **design packet** (root cause evidence separate from the wishlist) and hard-tries
 pack **`Reviewer`** on design axes — preferably a **different model** than the
 one that wrote the plan — then optional **`Verifier`**. Briefs:
-[docs/agents/DESIGN-REVIEW-BRIEF.md](../../docs/agents/DESIGN-REVIEW-BRIEF.md).
+[DESIGN-REVIEW-BRIEF.md](../code-review/DESIGN-REVIEW-BRIEF.md).
 User scopes MVP (`/grill-code` if open) before `/implement` or `/to-spec`. Skip this
 gate only for a single, evidence-tight bounded fix the user already authorized.
 

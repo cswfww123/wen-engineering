@@ -9,7 +9,7 @@ disable-model-invocation: true
 **LIGHT L3** bridge: pin mild product intent while already coding. Mini docket →
 **exactly one** next action. Not full discovery. Not production code.
 
-Routing / anti-invention: `docs/lifecycle.md`. Output: [DOCKET.md](DOCKET.md).
+Routing / anti-invention: `../ask-process/LIFECYCLE.md`. Output: [DOCKET.md](DOCKET.md).
 
 ## When
 

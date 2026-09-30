@@ -85,7 +85,7 @@ git pull --ff-only
 
 **两条轨。** 默认 **LIGHT**；仅当「产品需求本身」仍模糊时走 **HEAVY**。
 边界与例外以这些文档为准：
-[docs/lifecycle.md](docs/lifecycle.md) ·
+[LIFECYCLE.md](skills/ask-process/LIFECYCLE.md) ·
 [docs/boundaries.md](docs/boundaries.md) ·
 [docs/handoff-package.md](docs/handoff-package.md)。
 
@@ -103,7 +103,7 @@ git pull --ff-only
 
 **默认偏好：** `/implement` 够用时，不要开 PM、Wayfinder 或多 skill 流水线。
 
-**路由归属：** agent 自行分类进来的请求（bug → `/diagnosing-bugs`，清晰 AC → L1，其余需求 → G `/grill-code`）并进入对应流程，不为此采访用户；slash 命令是手动覆盖（[docs/lifecycle.md](docs/lifecycle.md) hygiene 7）。
+**路由归属：** agent 自行分类进来的请求（bug → `/diagnosing-bugs`，清晰 AC → L1，其余需求 → G `/grill-code`）并进入对应流程，不为此采访用户；slash 命令是手动覆盖（[LIFECYCLE.md](skills/ask-process/LIFECYCLE.md) hygiene 7）。
 
 ### 1. 快速选型
 
@@ -158,7 +158,7 @@ bug | 清晰 AC | 纯工程切片
 
 - **入：** 产品意图够写诚实 requirements——通常**从 G 过来**（极已定、`相对 PRD` 偏差已标注）。直入同样有效：PRD Inventory 重跑碰撞检查，冒出的 HITL 行先补一轮 residual grill 才准 `accepted`。详细产品文档是主源，不要重写。
 - **出：** frontier 上的切片；父 spec 在工作完成前保持打开。
-- **补充：** 源是产品文档时 `/to-spec` 必须有 PRD Inventory；`/to-tickets` 发布前硬门闩（Inventory `SRC` 进 `Covers`，`Supports` 不算覆盖）；FE/BE 保真在 ticket 层。`/alignment-review` **不在**每次发布后的默认路径上——**例外：** 关最后一张票或回答「已按 PRD 实现」时，必须对**原始产品文档**做 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
+- **补充：** 源是产品文档时 `/to-spec` 必须有 PRD Inventory；`/to-tickets` 发布前硬门闩（Inventory `SRC` 进 `Covers`，`Supports` 不算覆盖）；FE/BE 保真在 ticket 层。`/alignment-review` **不在**每次发布后的默认路径上——**例外：** 关最后一张票或回答「已按 PRD 实现」时，必须对**原始产品文档**做 **prd-walk**（[PRD-AUTHORITY.md](skills/to-spec/PRD-AUTHORITY.md)）。
 - **不要：** 用 `/implement` 关闭父 spec；不要用会话 grill AC 静默覆盖已有 PRD；票正文仍写残差时不要标 `complete`。
 
 #### G — Grill（需求默认入口）
@@ -291,7 +291,7 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/alignment-review` 可选审计：handoff / 无人批准的 PRD·票；默认 L2 用 `/to-tickets` 发布前硬门闩，不强制本 skill。
 - `/codebase-design` 为模块接口、seams 和边界提供深层代码库设计语言。
 - `/code-review` 独立审查 fixed delta。**none**（简单修复：注解、守卫、文案、测试钉）：跳过审查。**light**（中等切片）：一个 Slice Reviewer；只有它提出候选才跑 Verifier。**full**（大需求，或明确要求审分支/PR）：intent、correctness、规范，然后必跑 Verifier；有 pin 或重做视觉时再开 UI Fidelity；ponytail / 性能 / 安全按需。
-- `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归；若顺带给出多步修复方案，先冻结 design packet，用现有 `Reviewer`（设计轴，宜换模型）对抗评审，见 `docs/agents/DESIGN-REVIEW-BRIEF.md`。
+- `/diagnosing-bugs` 用反馈循环诊断复杂 bug 和性能回归；若顺带给出多步修复方案，先冻结 design packet，用现有 `Reviewer`（设计轴，宜换模型）对抗评审，见 `skills/code-review/DESIGN-REVIEW-BRIEF.md`。
 - `/domain-modeling` 在设计决策结晶时锐化 glossary，并稀疏记录 ADR。
 - `/implement` 把一个 bounded task 或 implementation-frontier ticket 完整推进到匹配的 evidence loop、simplification、verification、code review 和 tracker completion。
 - `/grill-code` 是**需求默认入口**（LIGHT G）：先做事实优先碰撞盘点，再只访谈开放极（有 PRD 时只烤残差）；加载 `/grilling`；仅术语真变时 domain-modeling；**默认会话内收口、不强制 decision 文件**。房间里不是决策人时路由到 `/to-questionnaire`。不是 Matt `/grill-with-docs`。
@@ -361,7 +361,7 @@ AI agents 会以很可预测的方式失败。
 
 ### Planning And Alignment
 
-- [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 **发布**路径上。PRD 源包关单时强制 **prd-walk**（[docs/prd-authority.md](docs/prd-authority.md)）。
+- [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 **发布**路径上。PRD 源包关单时强制 **prd-walk**（[PRD-AUTHORITY.md](skills/to-spec/PRD-AUTHORITY.md)）。
 - [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `CONTEXT.md`，并在决策结晶时稀疏记录 ADR。
 - [`grill-code`](skills/grill-code/SKILL.md) - 用户调用的**编码**需求入口（LIGHT G）：碰撞盘点后只访谈开放极（有 PRD 时只烤残差）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
 - [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的**非编码**访谈（计划、决策、想法）；加载 `/grilling`；只在会话里收口。
@@ -444,9 +444,7 @@ docs/
     domain.md
     issue-tracker.md
     orchestration.md
-    DESIGN-REVIEW-BRIEF.md
     triage-labels.md
-  lifecycle.md
   boundaries.md
   handoff-package.md
 scripts/
@@ -459,6 +457,7 @@ skills/
   code-review/
     DISPATCH.md
     AGENT-BRIEFS.md
+    DESIGN-REVIEW-BRIEF.md
     FORENSIC-OBSERVABILITY.md
     INCOMPLETE-SURFACE.md
     SAME-SURFACE.md
@@ -524,6 +523,7 @@ skills/
   to-questionnaire/
     SKILL.md
   to-spec/
+    PRD-AUTHORITY.md
     SKILL.md
     TEMPLATE.md
   to-tickets/

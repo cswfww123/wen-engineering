@@ -27,7 +27,7 @@ because a human did **not** already approve the graph in-session.
      - the user asks 已按 PRD 实现 / 对照 PRD 验收 / 是不是做完了
      - the parent spec is being called `delivered`
 
-  Protocol: `docs/prd-authority.md` §5. Mandatory means it runs on the
+  Protocol: `../to-spec/PRD-AUTHORITY.md` §5. Mandatory means it runs on the
   trigger — not only when someone names the skill.
 
 ## When not to use

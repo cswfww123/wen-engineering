@@ -28,8 +28,8 @@ the surface, it is the product-behavior baseline. Grill/chat may add residual
 eng pins or **labeled** authorized deltas (`相对 PRD`); it must not silently
 replace the product doc as the sole AC. Detailed multi-slice product docs enter
 `/grill-code` (default entry: sweep + residual poles) and route on to L2
-`/to-spec` before implement — see [lifecycle.md](lifecycle.md) and
-[prd-authority.md](prd-authority.md) (entry/mode lock, Inventory, delta lock, prd-walk).
+`/to-spec` before implement — see [LIFECYCLE.md](../skills/ask-process/LIFECYCLE.md) and
+[PRD-AUTHORITY.md](../skills/to-spec/PRD-AUTHORITY.md) (entry/mode lock, Inventory, delta lock, prd-walk).
 
 When product/market/need is **fundamentally fuzzy** (HEAVY), stop inventing and
 use full product discovery (`wen-pm` `/pm-intake` or team PM) before this pack.
@@ -86,7 +86,7 @@ Admit only if **all** hold (source may be PM or any design owner):
 2. every interactive field and conditional show/require is specified
 3. delivery design source is **pinned** (Figma/frame/export/path + version,
    observable details extracted as **pin rows** —
-   [prd-authority.md](prd-authority.md) §2), or an explicit written reason
+   [PRD-AUTHORITY.md](../skills/to-spec/PRD-AUTHORITY.md) §2), or an explicit written reason
    for checklist-only fidelity (listing any waived rows)
 4. material UI acceptance criteria exist
 
@@ -126,7 +126,7 @@ When one side is out of scope for this agent/ticket:
 Not a substitute for independent system QA (`wen-test` `/qa-run` or human QA).
 
 PRD-sourced **package** close (last ticket, or “已按 PRD 实现”) also requires a
-prd-walk against the original product doc — [prd-authority.md](prd-authority.md)
+prd-walk against the original product doc — [PRD-AUTHORITY.md](../skills/to-spec/PRD-AUTHORITY.md)
 §5. Slice `/code-review` does not replace that walk.
 
 ### Test layer (optional `wen-test`)

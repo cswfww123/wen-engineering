@@ -59,7 +59,7 @@ Origin: <bug-report reference | none>
 ## PRD Inventory (required when Delivery source is a product doc)
 
 Omit this section only when there is no product doc. Protocol:
-`docs/prd-authority.md`. Do not `accepted` without every material `SRC` mapped.
+`PRD-AUTHORITY.md`. Do not `accepted` without every material `SRC` mapped.
 
 | SRC | Surface | REQ | Notes |
 | --- | --- | --- | --- |

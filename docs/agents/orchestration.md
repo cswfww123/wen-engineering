@@ -1,6 +1,6 @@
 # Orchestration (subagents)
 
-Companion to [lifecycle.md](../lifecycle.md) and [agents/README.md](../../agents/README.md).
+Companion to [LIFECYCLE.md](../../skills/ask-process/LIFECYCLE.md) and [agents/README.md](../../agents/README.md).
 Portable role briefs live in `agents/`; host adapters (e.g. Claude Code
 `.claude/agents/` symlinks) are optional discovery, not a lock-in.
 
@@ -74,7 +74,7 @@ worker’s entire environment — not a polite summary.
 | Agent | Brief must include |
 | --- | --- |
 | `Executor` | goal, scope, AC or fix list, constraints, verify commands, authority (no tracker unless granted) |
-| `Reviewer` | review packet + **one axis** (or explicit all-axes). Packet may be a **code diff** (`skills/code-review/AGENT-BRIEFS.md`) or a **design/plan** (`docs/agents/DESIGN-REVIEW-BRIEF.md`) |
+| `Reviewer` | review packet + **one axis** (or explicit all-axes). Packet may be a **code diff** (`skills/code-review/AGENT-BRIEFS.md`) or a **design/plan** (`skills/code-review/DESIGN-REVIEW-BRIEF.md`) |
 | `Verifier` | candidates + same scope fixed point (diff fixed point **or** design packet) |
 
 ### Brief recommended (default for every spawn)
@@ -108,7 +108,7 @@ or eligible findings, then dispatch `Executor`.
 
 Reuse **`Reviewer`** + optional **`Verifier`** on a frozen **design packet** (root
 cause evidence + proposal text), not a diff. Full briefs:
-[DESIGN-REVIEW-BRIEF.md](DESIGN-REVIEW-BRIEF.md).
+[DESIGN-REVIEW-BRIEF.md](../../skills/code-review/DESIGN-REVIEW-BRIEF.md).
 
 ```text
 diagnosis / proposal frozen

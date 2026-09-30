@@ -12,7 +12,7 @@ hard-require those packs.
 | Coding (this pack) | **wen-engineering** | light daily coding + thin intent bridge + wayfinder |
 | Test | optional `wen-test` | system test plan + QA |
 
-See [boundaries.md](boundaries.md) and [handoff-package.md](handoff-package.md).
+Pack-repo background (not installed): `docs/boundaries.md`, `docs/handoff-package.md`.
 
 ---
 
@@ -53,8 +53,8 @@ L4  multi-session eng fog   → /wayfinder → (resolved) → L2
 
 These are **automatic**. Prefer code and open tracker state; do not add user steps.
 
-1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. Same-surface chrome **extends the owner** already on that screen ([../skills/code-review/SAME-SURFACE.md](../skills/code-review/SAME-SURFACE.md)) — a CSS-matched lookalike is not reuse. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta). Hard gates: [prd-authority.md](prd-authority.md).
-2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement` (PRD / 原型图 in play → still extract inventory + pin rows first, [prd-authority.md](prd-authority.md) §2). Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Every other requirement (named product docs `docs/requirements/*`, `docs/prd/*` included) → **G** `/grill-code`: entry sweep (facts-first collision map) then **residual poles only** — never a full product re-grill. Sweep shows zero poles → L2 `/to-spec` with a PRD Inventory. User **按原文** revokes listed `相对 PRD` ids via L3 — do not re-grill the package.
+1. **Code is the environment.** Wire values, production call paths, and tests beat month-old process notes. Dangerous legacy patterns are do-not-copy, not templates. Same-surface chrome **extends the owner** already on that screen ([SAME-SURFACE.md](../code-review/SAME-SURFACE.md)) — a CSS-matched lookalike is not reuse. **Code does not override an active product requirements doc** for *what we should build* — that is product intent (implement the gap, or get an explicit authorized delta). Hard gates: [PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md).
+2. **Smallest honest step.** Clear AC / bug / one slice → L1 `/implement` (PRD / 原型图 in play → still extract inventory + pin rows first, [PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) §2). Do not open G/Q/L2/L4 (or create decision files) for thoroughness theater. Every other requirement (named product docs `docs/requirements/*`, `docs/prd/*` included) → **G** `/grill-code`: entry sweep (facts-first collision map) then **residual poles only** — never a full product re-grill. Sweep shows zero poles → L2 `/to-spec` with a PRD Inventory. User **按原文** revokes listed `相对 PRD` ids via L3 — do not re-grill the package.
 3. **Same-session default = no new process docs.** `/grill-code` settles in chat; write `decision-*` / extra archives only for another session, another agent, Wayfinder ticket resolution, or explicit user ask. Grill may pin residual eng seams; it must **not** silently supersede an active PRD — PRD deltas require labeled `相对 PRD` accept.
 4. **Load only active work.** Ignore closed / resolved / delivered tickets, maps, and consumed grill notes when deciding how to build *now*. Still load the **active product requirements / eng spec** for the feature under build.
 5. **Hygiene without asking.** After a handoff file is consumed (spec written, ticket closed, implement done), stop citing it; delete or cold-ignore silently. Never prompt the user to approve doc cleanup.
@@ -78,7 +78,7 @@ and read back as closed; an unfinished ticket stays open. No invented spec or ti
 Hard diagnosis first: `/diagnosing-bugs`. Fix authority uses the same implement
 loop. If diagnosis yields a multi-step fix **proposal**, freeze a design packet and
 hard-try pack `Reviewer` (design axes; prefer another model) before coding —
-[agents/DESIGN-REVIEW-BRIEF.md](agents/DESIGN-REVIEW-BRIEF.md); then user scopes
+[DESIGN-REVIEW-BRIEF.md](../code-review/DESIGN-REVIEW-BRIEF.md); then user scopes
 MVP and continues `/implement` or L2.
 
 ### L2 — Multi-slice spec spine (usually the hop after G)
@@ -94,7 +94,7 @@ deltas in chat; `/to-spec` synthesizes and publishes. Direct entry is equally
 valid (user names the package, or the entry sweep showed zero open poles) —
 the PRD Inventory then re-runs the collision check, and HITL rows it surfaces
 get **one residual grill round** before `accepted`
-([prd-authority.md](prd-authority.md) §1–2).
+([PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) §1–2).
 
 Scope FE/BE fidelity to the ticket layer. `/implement` never closes the parent
 spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate
@@ -102,7 +102,7 @@ spec. Coverage and slice shape are enforced by `/to-tickets` pre-publish gate
 default path does **not** run `/alignment-review` after every publish.
 **Exception (mandatory):** PRD-sourced package close — last open ticket, or
 “已按 PRD 实现” — run `/alignment-review` **prd-walk** against the **original
-product doc** ([prd-authority.md](prd-authority.md) §5). Any `缺` blocks
+product doc** ([PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) §5). Any `缺` blocks
 delivered. Use `/alignment-review` otherwise only as a manual audit of handoff
 or unreviewed artifacts.
 
@@ -190,7 +190,7 @@ product settled enough, technical route still foggy
 
 **Try G first.** Open a map only when decisions need multiple sessions or a
 shared frontier. Chart budget ≤5 tickets; research/task over grill; short
-pastes in `skills/wayfinder/CONTINUE.md` (human should not re-paste the whole
+pastes in [CONTINUE.md](../wayfinder/CONTINUE.md) (human should not re-paste the whole
 brief each session).
 
 At most one **HITL** decision ticket per session by default; research and AFK

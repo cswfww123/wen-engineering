@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 You don't remember every skill, so ask.
 
-Answer with **one next skill** (or one short path). Do not start the work. Do not invent product Expected. Source of truth if this file and the docs disagree: [docs/lifecycle.md](../../docs/lifecycle.md), [docs/prd-authority.md](../../docs/prd-authority.md).
+Answer with **one next skill** (or one short path). Do not start the work. Do not invent product Expected. Source of truth if this file and the docs disagree: [LIFECYCLE.md](LIFECYCLE.md), [PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md).
 
 Skills named here are **this pack**. Do not route to a skill that is not installed from this repo.
 
@@ -27,7 +27,7 @@ Is the intent good enough to code against?
 
 Default is LIGHT. Do not open PM, Wayfinder, or a multi-skill pipeline when `/implement` is enough.
 
-**The agent owns entry routing.** Classify the request and enter the matching flow yourself — do not interview the user to pick a skill ([docs/lifecycle.md](../../docs/lifecycle.md) hygiene 7). User-typed slash commands are manual overrides.
+**The agent owns entry routing.** Classify the request and enter the matching flow yourself — do not interview the user to pick a skill ([LIFECYCLE.md](LIFECYCLE.md) hygiene 7). User-typed slash commands are manual overrides.
 
 ## LIGHT
 

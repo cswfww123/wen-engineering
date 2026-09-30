@@ -18,17 +18,17 @@ If they say **按原文** / 收回 delta after a grill already accepted `相对 
 
 ## PRD-package entry (this skill is the door)
 
-A **detailed product requirements / PRD / `docs/requirements/*` package** does **not** bounce you out — this skill is the entry for it too. Run the **PRD-package entry sweep** (Engineering default 1) before the first frontier; the frontier then carries **residual poles only** (contradictions, unmapped terms, eng seams), never a re-authoring of settled PRD rows. Sweep shows zero open poles → skip the interview and hop straight to **`/to-spec`** (L2, multi-slice) or **`/implement`** (L1). Protocol: `docs/prd-authority.md`.
+A **detailed product requirements / PRD / `docs/requirements/*` package** does **not** bounce you out — this skill is the entry for it too. Run the **PRD-package entry sweep** (Engineering default 1) before the first frontier; the frontier then carries **residual poles only** (contradictions, unmapped terms, eng seams), never a re-authoring of settled PRD rows. Sweep shows zero open poles → skip the interview and hop straight to **`/to-spec`** (L2, multi-slice) or **`/implement`** (L1). Protocol: `../to-spec/PRD-AUTHORITY.md`.
 
 ## Product-doc authority (hard — when a PRD/requirements doc is in play)
 
-Load `docs/prd-authority.md` — it owns the **authority table**, the `相对 PRD` delta format and classes, and the delta lock. Do not restate them here; apply them as written.
+Load `../to-spec/PRD-AUTHORITY.md` — it owns the **authority table**, the `相对 PRD` delta format and classes, and the delta lock. Do not restate them here; apply them as written.
 
 Frontier bindings this skill adds on top:
 
 - **Do not re-open settled PRD behavior** as a fresh recommended pole “for cleanliness” or engineering convenience (e.g. PRD says single-row edit → do not recommend whole-table edit unless you label it as a **PRD delta**).
 - If the user is **not** the product owner for those deltas → park and offer `/to-questionnaire`; do not invent Expected.
-- Close recap (chat or archive) lists **PRD deltas accepted** separately from eng pins (`prd-authority.md` §3).
+- Close recap (chat or archive) lists **PRD deltas accepted** separately from eng pins (`../to-spec/PRD-AUTHORITY.md` §3).
 
 ## Engineering defaults (coding repos)
 
@@ -50,7 +50,7 @@ Frontier bindings this skill adds on top:
    - Treat dangerous legacy (silent tenant/user fallback, dual sources of money facts, etc.) as **do-not-copy**, not as a recommended design.
    - Default proposals stay **in-environment** (aliases, adapters, fail-closed). **Environment-changing** work (wire/protocol renames, isolation semantics) is out of scope unless I explicitly ask for a migration.
 8. **`/domain-modeling` only when terms actually change** — do **not** load it as a mandatory epic and do **not** create `CONTEXT.md` / ADRs for a trivial pin. If a durable glossary/ADR is truly needed (hard to reverse + surprising + real trade-off), update sparingly; never dump unshipped implementation plans into CONTEXT.
-9. **Routing / anti-invention** — if present: `docs/lifecycle.md` (LIGHT G; HEAVY product fog stays in PM).
+9. **Routing / anti-invention** — if present: `../ask-process/LIFECYCLE.md` (LIGHT G; HEAVY product fog stays in PM).
 10. **Wrong human in the room** — if several frontier decisions need product/business/ops and I am not the owner, **stop serial-grilling me**. Park those rows and offer `/to-questionnaire`. Do not invent Expected / market / user value.
 11. **Filled questionnaire ingest (no re-confirm)** — if I paste a filled `/to-questionnaire` (or `问卷已填` + path):
    - Treat non-empty **选择** / **回答** as **settled product input** — do **not** re-ask those Q-ids.
@@ -127,13 +127,13 @@ If I type `/implement` (or 「开干」) **before** the frontier is empty:
 
 | Settled | Next | Avoid |
 | --- | --- | --- |
-| Behavior AC enough; no UI or UI already has a design pin | Same-session `/implement` (or L2 if multi-slice) — with 原型图/设计稿 present, extract pin rows first (`docs/prd-authority.md` §2); rows ride into the brief as AC | Multi-variant `/prototype` |
+| Behavior AC enough; no UI or UI already has a design pin | Same-session `/implement` (or L2 if multi-slice) — with 原型图/设计稿 present, extract pin rows first (`../to-spec/PRD-AUTHORITY.md` §2); rows ride into the brief as AC | Multi-variant `/prototype` |
 | Multi-slice / other session needs the package | `/to-spec` → `/to-tickets` → `/implement` | Chat-only handoff |
 | Only look-and-feel still open | `/prototype` → pin winner → implement or L2 | Prototype as pixel-perfect delivery |
 | Versioned high-fidelity pin already exists | Put pin on ticket/spec → `/implement` + UI fidelity evidence | Re-exploring variants against a settled pin |
 | Market / worth-doing still open | HEAVY PM | More grill as fake product discovery |
 
-1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s). For UI: name the **design source** — 原型图 / 设计稿 / Figma / 截图 / HTML 原型 / pin — and extract its **pin rows** before implement (`docs/prd-authority.md` §2); the rows ride into the Executor brief as AC. Checklist-only waiver only by explicit user grant.
+1. **AC path** — primary AC is the **product doc / ticket / spec** in play, adjusted only by **explicitly accepted PRD deltas** from this grill. Chat eng pins fill residual seams; they do **not** replace the product doc. **Do not require** a decision file for same-session build. Re-state in one line before the first production edit: product baseline path + accepted deltas (or “no PRD deltas”) + alignment target value(s). For UI: name the **design source** — 原型图 / 设计稿 / Figma / 截图 / HTML 原型 / pin — and extract its **pin rows** before implement (`../to-spec/PRD-AUTHORITY.md` §2); the rows ride into the Executor brief as AC. Checklist-only waiver only by explicit user grant.
 2. **`/tdd` (or project equivalent)** — Red → Green → Refactor at agreed seams. **Red evidence required** when claiming behavior change. Green on a **wrong AC** is failure, not progress — if a mid-slice fact flips the target, stop and re-open that frontier row instead of “fixing forward.” Matching grill recap while missing unlabeled PRD behavior is **wrong AC**.
 3. **`/code-review`** before commit (that skill picks **light** or **full**). Incomplete surface is blocking (sibling write paths, report filters, and historical values that still disagree with the settled target count as incomplete unless explicitly out of scope). Same-surface lookalikes are blocking on UI chrome (`skills/code-review/SAME-SURFACE.md`). Spec / Slice review must dual-read product doc and session AC — unauthorized PRD partial cannot Pass. UI Fidelity worker only when that skill marks it in scope (pin or restyle).
 4. **Git** — follow repo push protocol.

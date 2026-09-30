@@ -15,7 +15,7 @@ Choose only a ticket that is:
 Never implement a `spec`, `wayfinder-map`, or `wayfinder-ticket`. Prefer explicit priority, then configured tracker/map order. If no implementation frontier ticket exists, report the blockers and human frontier rather than taking a nearby task.
 
 Do not mark a ticket `complete` while its body still lists 残差 / 下张票收口 /
-partial against a `Covers` SRC (`docs/prd-authority.md` §4). If this is the last
+partial against a `Covers` SRC (`../to-spec/PRD-AUTHORITY.md` §4). If this is the last
 open ticket of a PRD-sourced spec, `/implement` must run prd-walk before the
 parent can be called delivered.
 

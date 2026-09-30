@@ -39,13 +39,13 @@ See `docs/agents/orchestration.md`.
 | --- | --- | --- |
 | Implement / authorized fix | `Executor` | host general worker → parent |
 | Review axes (code diff) | `Reviewer` × axis | parent + `skills/code-review/AGENT-BRIEFS.md` |
-| Review axes (design/plan after diagnosis) | `Reviewer` × design axis | parent + `docs/agents/DESIGN-REVIEW-BRIEF.md` |
+| Review axes (design/plan after diagnosis) | `Reviewer` × design axis | parent + `skills/code-review/DESIGN-REVIEW-BRIEF.md` |
 | Verdict gate | `Verifier` | parent Verification Reviewer |
 | Research | host explore/search worker | parent |
 
 Design/plan review reuses **`Reviewer`** + optional **`Verifier`** — do not add a
 fourth role. Prefer a **different model** than the proposal author. Full packet
-and axis text: [docs/agents/DESIGN-REVIEW-BRIEF.md](../docs/agents/DESIGN-REVIEW-BRIEF.md).
+and axis text: [DESIGN-REVIEW-BRIEF.md](../skills/code-review/DESIGN-REVIEW-BRIEF.md).
 
 ## Parent responsibilities
 

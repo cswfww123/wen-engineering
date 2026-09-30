@@ -23,7 +23,7 @@ completion.
 
 ## Decision
 
-1. Canonical protocol lives in [docs/prd-authority.md](../prd-authority.md).
+1. Canonical protocol lives in [skills/to-spec/PRD-AUTHORITY.md](../../skills/to-spec/PRD-AUTHORITY.md).
 2. Named multi-slice product docs route to L2. Grill is residual-only; every
    product-behavior change is a labeled `相对 PRD` delta with class
    `doc-change` or `eng-read`.

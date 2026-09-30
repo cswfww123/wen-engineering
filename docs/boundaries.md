@@ -1,6 +1,6 @@
 # WEN Layer Boundaries (Coding)
 
-Companion to [lifecycle.md](lifecycle.md) and [handoff-package.md](handoff-package.md).
+Companion to [LIFECYCLE.md](../skills/ask-process/LIFECYCLE.md) and [handoff-package.md](handoff-package.md).
 
 ## Composition: standalone **or** linked
 

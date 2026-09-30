@@ -12,7 +12,7 @@ Use when:
   or diagnosis→fix mismatch
 
 Do **not** use this for a fixed code delta — that remains
-`skills/code-review/AGENT-BRIEFS.md` + `/code-review`.
+`AGENT-BRIEFS.md` + `/code-review`.
 
 ## Anti-rubber-stamp rules
 
@@ -171,8 +171,9 @@ Authority: read-only; no edits; no tracker
 ## Proposal under review
 <paste full plan>
 
-## Output
-Follow docs/agents/DESIGN-REVIEW-BRIEF.md for this axis.
+## Axis brief
+<paste this axis's full section from this file: its Check list and its
+"Return under 400 words" list — the worker cannot open this file>
 ```
 
 After axes return, optional:
@@ -182,5 +183,5 @@ Role: Verifier | design-plan gate
 Authority: read-only
 Design packet: <same fixed point>
 Candidates: <Reviewer findings>
-Follow DESIGN-REVIEW-BRIEF.md Verifier section.
+Verifier brief: <paste the "Optional: Verifier (design packet)" section in full>
 ```

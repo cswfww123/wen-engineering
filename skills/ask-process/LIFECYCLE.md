@@ -79,7 +79,9 @@ Hard diagnosis first: `/diagnosing-bugs`. Fix authority uses the same implement
 loop. If diagnosis yields a multi-step fix **proposal**, freeze a design packet and
 hard-try pack `Reviewer` (design axes; prefer another model) before coding —
 [DESIGN-REVIEW-BRIEF.md](../code-review/DESIGN-REVIEW-BRIEF.md); then user scopes
-MVP and continues `/implement` or L2.
+MVP and continues `/implement` or L2. Once the fix is in, suggest `/retro` in the
+same session (what would have prevented it); a missing seam to lock the fix down
+is `/improve-codebase-architecture`'s job — recommend, both are user-invoked.
 
 ### L2 — Multi-slice spec spine (usually the hop after G)
 
@@ -212,6 +214,8 @@ tasks may batch. Plan only — never ship the destination inside the map.
 | Public-behavior tests | `/tdd` (Matt red → green + seams) |
 | Cleanup | `/simplify` (this pack) |
 | Diff review | `/code-review` (Matt Standards+Spec; optional WEN axes) |
+| PR body | `/pr` (model-invoked: smallest visual + before/after evidence + merge-danger; reach for it when writing a PR/MR body) |
+| Session look-back | `/retro` (after a build, especially a sideways one; suggests environment changes, not code changes) |
 | Evidence only | `/research`, `/prototype` |
 | Domain terms / ADRs | `/domain-modeling` |
 | Same-session coding interview | `/grill-code` → `/grilling` (+ `/domain-modeling` only if terms change) |
@@ -273,6 +277,8 @@ process and the evidence still required. Optional: `/product-fog` only to record
 
 ```text
 claim → behavior test or compatibility baseline → simplify → verify → code-review → close
+(work goes up as a PR? /pr shapes the body — model-invoked)
+(after the build, /retro closes the loop on the session's environment)
 ```
 
 ## Context and concurrency

@@ -302,9 +302,11 @@ claim → 行为测试或兼容基线 → simplify → verify → code-review �
 - `/to-questionnaire` 把干系人缺口变成会中议程或异步问卷（选项 + 推荐 + 手写）；贴回后 ingest、不重问 → 默认 `/to-spec`。
 - `/handoff` 为新的 agent 写一份紧凑 handoff document。
 - `/improve-codebase-architecture` 扫描代码库中的 deepening opportunities，并写出可视化 HTML report。
+- `/pr` 塑造 PR/MR body：让变更一目了然的最小可视化、before/after 证据、合并风险判断（单向门/双向门 + 影响范围）。模型自动调用——写 PR 时自动启用。
 - `/prototype` 为显式问题或 Wayfinder ticket 创建 disposable logic（可分享 HTML demo）或 UI evidence artifact；胜出的 UI 变体定格为 design pin 时，可观察细节同步抽成 pin rows。
 - `/to-design-md` 为前端包生成或刷新符合 Google Labs 规范的 `DESIGN.md` 视觉身份（可选；从 theme 抽取或综合生成）。
 - `/research` 为显式问题或 Wayfinder ticket 保存带引用的 primary-source evidence。
+- `/retro` 回顾编码会话，建议改的是 agent 的**环境**而非代码：导航指针、自动化检查（机械性违规落成确定性检查）、编码标准、steering 文件、工具经济性。用户调用；在它回顾的那个会话里运行。
 - `/simplify` 清理非微小改动后的代码，关注复用、简化、效率和正确层级。
 - `/setup-project` 配置 issue tracker、分诊标签、领域文档布局和仓库级规范（`docs/rules/`，初始化时带上 PR packet）。不改写 `AGENTS.md`。
 - `/harvest-pins` 从真实 agent session 收割并折旧 `AGENTS.md` Checklist 钉。

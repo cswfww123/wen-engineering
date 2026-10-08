@@ -168,4 +168,4 @@ Required before declaring done:
 - [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
 - [ ] The hypothesis that turned out correct is stated in the commit / PR message — so the next debugger learns
 
-**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling) hand off to the `/improve-codebase-architecture` skill with the specifics. Make the recommendation **after** the fix is in, not before — you have more information now than when you started.
+**Then ask: what would have prevented this bug?** Recommend the user run `/retro` in this same session for that look-back (it is user-invoked — recommend, do not invoke). Where the real finding is that there is no good seam to lock the fix down (tangled callers, hidden coupling), that is a job for `/improve-codebase-architecture` — same rule: recommend it **after** the fix is in, not before, since you have more information now than when you started.

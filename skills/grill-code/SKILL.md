@@ -1,6 +1,6 @@
 ---
 name: grill-code
-description: Default entry for coding requirements — sweep the codebase for collisions first, then interview only the open poles (PRD in play: residual poles under prd-authority). Not non-coding plans (that is /grill-me).
+description: "Default entry for coding requirements — sweep the codebase for collisions first, then interview only the open poles (PRD in play: residual poles under prd-authority). Not non-coding plans (that is /grill-me)."
 disable-model-invocation: true
 ---
 

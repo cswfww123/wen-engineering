@@ -304,9 +304,11 @@ Common skills:
 - `/to-questionnaire` turns stakeholder gaps into a meeting or async questionnaire (options + 推荐 + 手写); paste back → ingest without re-asking → default `/to-spec`.
 - `/handoff` writes a compact handoff document for a fresh agent.
 - `/improve-codebase-architecture` finds deepening opportunities and writes a visual HTML report.
+- `/pr` shapes a PR/MR body: the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door + blast radius). Model-invoked — the agent reaches for it whenever it writes a PR.
 - `/prototype` creates a disposable logic (shareable HTML demo) or UI evidence artifact for an explicit question or Wayfinder ticket; a winning UI variant becomes the design pin with its details extracted as pin rows.
 - `/to-design-md` generates or refreshes a Google Labs–format `DESIGN.md` visual identity for frontend packages (optional; extract from theme or synthesize).
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
+- `/retro` looks back on a coding session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks (mechanical violations become deterministic checks), coding standards, steering files, tool economy. User-invoked; run it in the session it looks back on.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
 - `/setup-project` configures the issue tracker, triage labels, domain-doc layout, and repo-level rules (`docs/rules/`, seeded with the PR packet). It does not rewrite `AGENTS.md`.
 - `/harvest-pins` harvests and depreciates `AGENTS.md` Checklist pins from real agent sessions.

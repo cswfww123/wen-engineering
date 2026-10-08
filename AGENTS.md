@@ -59,11 +59,11 @@ WEN Engineering 基于 Matt Pocock 的 skills 优化而来，但有独有改进�
 - `simplify` - 简化重构
 - `to-design-md` - 设计文档生成
 
-### Matt 独有但 WEN 应新增
+### Matt 独有但 WEN 已新增（v1.3.1 移植完成 2026-10-08）
 
-- `pr` - PR 摘要生成（before/after 证据 + merge-danger）
-- `retro` - 会话回顾和环境改进
-- `teach` - 教学类 skill（低优先级）
+- `pr` - PR 摘要生成（before/after 证据 + merge-danger）✅ 已新增
+- `retro` - 会话回顾和环境改进 ✅ 已新增
+- `teach` - 教学类 skill（低优先级，未新增）
 
 ### 命名约定同步
 

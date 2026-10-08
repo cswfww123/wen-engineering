@@ -21,7 +21,7 @@ Attribution: [ATTRIBUTION.md](ATTRIBUTION.md).
 - A named `bug-report` stays diagnosis-only until a user-invoked workflow
   converts it.
 
-When exploring the codebase, read `CONTEXT.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
+When exploring the codebase, read `GLOSSARY.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
 
 ## Redact
 

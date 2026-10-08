@@ -49,7 +49,7 @@ Frontier bindings this skill adds on top:
    - Same-surface chrome: extra filters/pickers **extend the owner** already on that screen; do not recommend a lookalike Select (`skills/code-review/SAME-SURFACE.md`).
    - Treat dangerous legacy (silent tenant/user fallback, dual sources of money facts, etc.) as **do-not-copy**, not as a recommended design.
    - Default proposals stay **in-environment** (aliases, adapters, fail-closed). **Environment-changing** work (wire/protocol renames, isolation semantics) is out of scope unless I explicitly ask for a migration.
-8. **`/domain-modeling` only when terms actually change** — do **not** load it as a mandatory epic and do **not** create `CONTEXT.md` / ADRs for a trivial pin. If a durable glossary/ADR is truly needed (hard to reverse + surprising + real trade-off), update sparingly; never dump unshipped implementation plans into CONTEXT.
+8. **`/domain-modeling` only when terms actually change** — do **not** load it as a mandatory epic and do **not** create `GLOSSARY.md` / ADRs for a trivial pin. If a durable glossary/ADR is truly needed (hard to reverse + surprising + real trade-off), update sparingly; never dump unshipped implementation plans into CONTEXT.
 9. **Wrong human in the room** — if several frontier decisions need product/business/ops and I am not the owner, **stop serial-grilling me**. Park those rows and offer `/to-questionnaire`. Do not invent Expected / market / user value.
 10. **Filled questionnaire ingest (no re-confirm)** — if I paste a filled `/to-questionnaire` (or `问卷已填` + path):
    - Treat non-empty **选择** / **回答** as **settled product input** — do **not** re-ask those Q-ids.

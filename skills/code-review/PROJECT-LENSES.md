@@ -1,6 +1,6 @@
 # Project Lenses
 
-First identify the project shape from setup harness output, `AGENTS.md`, `CONTEXT.md`, build files, routes, services, deployment config, and any failure-driven `.agents/rules/**` that match the diff. Apply only the lenses that fit the changed files.
+First identify the project shape from setup harness output, `AGENTS.md`, `GLOSSARY.md`, build files, routes, services, deployment config, and any failure-driven `.agents/rules/**` that match the diff. Apply only the lenses that fit the changed files.
 
 ## Frontend
 

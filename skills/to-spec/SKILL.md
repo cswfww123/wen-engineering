@@ -24,6 +24,19 @@ The issue tracker and triage label vocabulary should have been provided to you �
 
 Check with the user that these seams match their expectations.
 
+3.5. **Judge Requirements detail level (automatic)** — Load `to-spec/REQ-DETAIL-JUDGMENT.md` and evaluate requirement complexity by analyzing:
+   - Module count (≥3 → high complexity)
+   - Presence of pricing/billing logic (→ high complexity)
+   - State machine complexity (≥5 states → high complexity)
+   - PRD word count (>15k → high complexity)
+   
+   Select detail mode automatically:
+   - 🔴 High complexity → Detailed rules (algorithm examples, full copy, boundary cases)
+   - 🟡 Medium complexity → Balanced mode (key examples, core copy)
+   - 🟢 Low complexity → Concise mode (formula definitions, PRD references)
+   
+   Tell the user your judgment before generating Requirements. User can override with explicit instruction.
+
 4. Write the spec using the template below (include Inventory + Accepted PRD
    deltas when a product doc is in play), then publish it to the project issue
    tracker. Apply the `ready-for-agent` triage label - no need for additional
@@ -75,6 +88,32 @@ A list of testing decisions that were made. Include:
 - A description of what makes a good test (only test external behavior, not implementation details)
 - Which modules will be tested
 - Prior art for the tests (i.e. similar types of tests in the codebase)
+
+## Implementation Protocol (required when design source present)
+
+When the delivery source includes a design pin (原型图 / 设计稿 / HTML 原型 / Figma frame @version / pinned prototype winner):
+
+**Before implementing each ticket**, the agent MUST:
+
+1. Open the design source file(s) listed in Source Material or ticket `Design pin`
+2. Extract a **style specification table** for the regions this ticket covers:
+   - **Layout**: proportions (%), spacing (px), alignment, scroll behavior, z-index stacking
+   - **Typography**: font-family, size, weight, line-height, color (hex), letter-spacing, text-transform
+   - **Colors**: backgrounds, borders, text, icons — for each interactive state (default / hover / active / disabled / loading / error / empty) — values in hex + opacity
+   - **Controls**: border-radius, box-shadow, transitions (duration + easing function), cursor
+   - **Copy**: exact wording, punctuation, line breaks, ellipsis treatment
+3. Paste this table into the implementation brief or working notes as literal expected values
+
+**During verification**, compare runtime screenshots with the design source **per pin row**:
+- Layout deviations > 10% of stated value → reject
+- Color deviations > ΔE 5 (perceptually noticeable difference) → reject
+- Missing interactive states shown in design → reject
+- Copy mismatches (including punctuation, capitalization, line breaks) → reject
+- Border-radius / shadow / transition absent when design shows them → reject
+
+**Accept only when** every pin row passes pixel-level comparison against the design source, or the user explicitly waives specific rows (list the waived rows in the Done report).
+
+Non-UI slices or slices without a design source skip this section.
 
 ## Out of Scope
 

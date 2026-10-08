@@ -20,7 +20,15 @@ Each ticket runs the `/implement` protocol; this skill adds the graph, concurren
 
 3. (optional) **Explore** with an exploration subagent. It saves notes in a directory outside the repo. The parent reads them to write briefs; Executors do not.
 
-4. **Brief each frontier ticket** — `/implement` §1 plan, written as the DISPATCH **Implementation brief**. Paste the decision-critical text (AC with literal values, Covered pin rows, test names + expected values, walkthrough table); point to the spec only as extra. One ticket per brief.
+4. **Brief each frontier ticket** — `/implement` §1 plan, written as the DISPATCH **Implementation brief**.
+
+   **UI / design-pin tickets**: before writing the brief, the parent MUST:
+   - Open the design source file(s) (listed in spec Source Material or ticket `Design pin`)
+   - Extract the style specification table for the regions this ticket `Covers` (see `/implement` UI.md §Pin rows first for the table format and extraction tools)
+   - Paste that table into the brief's **Acceptance** section as literal expected values (e.g., "左栏 width: 60%, 主按钮 border-radius: 999px, hover opacity: 0.9")
+   - Include the table in the brief's **Walkthrough** section so the Executor knows what to capture and the parent knows what to judge
+
+   Paste the decision-critical text (AC with literal values, Covered pin rows, test names + expected values, walkthrough table); point to the spec only as extra. One ticket per brief.
 
 5. **Dispatch in parallel** — each Executor in its own local worktree `worktree/<ticket>`, never pushed. Run tickets concurrently only when their **Edit only** lists are disjoint; overlapping tickets queue.
 

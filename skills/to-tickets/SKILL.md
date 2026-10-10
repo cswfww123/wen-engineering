@@ -69,7 +69,7 @@ do **not** punt the fix to a later `/alignment-review`.
 | Blockers | `Blocked by` edges are minimal, acyclic, and only real gates |
 | Frontiers | Implementation frontier = open unblocked unclaimed AFK tickets; human frontier = open unblocked unclaimed HITL with a named judgment/manual gate |
 | Product Expected | No invented product Expected / AC that the parent source does not support |
-| Honest complete (at close, not only publish) | Ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC → cannot `Status: complete` |
+| Honest close (at close, not only publish) | Ticket body still listing 残差 / 下张票收口 / partial for a `Covers` SRC → cannot close |
 
 Report a one-line pass (or list failing rows) in the publish recap. Deeper audit of
 handoff / unreviewed artifacts is optional `/alignment-review` — not a substitute for

@@ -85,10 +85,10 @@ Inventory **rows** are the smallest observable product clauses:
 **Pin rows** join the same inventory when a design pin is part of the source
 (pinned prototype winner, Figma frame/export @version): every observable
 detail that can fail independently — fields, states (default / hover /
-disabled / loading / empty / error), conditional show/require, chrome
+active / disabled / loading / empty / error), conditional show/require, chrome
 controls, copy units, layout rules. `SRC` cites the pin and region
 (`PIN-07 @pin v3 · 弹窗空态`); a detail visible in two states is two rows.
-Pin rows ride the same gates: `Covers` coverage, honest `complete`, and the
+Pin rows ride the same gates: `Covers` coverage, honest close, and the
 prd-walk (§5).
 
 | Inventory field | Rule |
@@ -132,7 +132,7 @@ deltas`), each with a stable id (`S3`, `D-014`, …), class (`doc-change` |
 | `Supports` | **Does not** count as coverage |
 | Dual surface | Two surfaces → two AC bullets or two tickets |
 | Acceptance points | Numbered 验收 / ACC ids each appear in some ticket `Covers` |
-| Honest complete | Ticket body still saying 残差 / 下张票收口 / partial → **cannot** `Status: complete` |
+| Honest close | Ticket body still saying 残差 / 下张票收口 / partial → **cannot** close |
 
 A ticket may `Supports` a nearby REQ for context. That is not “this REQ is done.”
 
@@ -171,7 +171,7 @@ Verdicts: `过` | `缺` | `有意 delta <id>`.
 **Fail closed:**
 
 - Any `缺` → parent spec **must not** be called delivered; tickets that claimed
-  those `SRC`s **must not** stay `complete` without a follow-up ticket or an
+  those `SRC`s **must not** stay closed without a follow-up ticket or an
   accepted delta
 - Do **not** answer “已按 PRD 实现” while any `缺` remains
 - `有意 delta` rows must already exist on the Accepted deltas table; inventing

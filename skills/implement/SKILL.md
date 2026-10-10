@@ -27,7 +27,7 @@ These steps bind how the steps above run in this pack.
 - Tracked work (frontier, bug-report conversion, HITL, claim) → load [TRACKED-WORK.md](TRACKED-WORK.md) before edits.
 - **Intent authority:** apply the rank in [PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) as written. Before the first production edit, record in working notes: product baseline path, design source path, accepted `相对 PRD` deltas (each or `none`), and — when the spec has a PRD Inventory — the `SRC`s (clauses **and pin rows**) this ticket `Covers`.
 - Multi-slice work with a detailed product doc and no eng spec yet → stop and route `/grill-code`.
-- A `Covers` SRC whose ticket body still lists 残差 / 下张票收口 / partial → split a follow-up ticket or accept a labeled delta; `complete` is unavailable.
+- A `Covers` SRC whose ticket body still lists 残差 / 下张票收口 / partial → split a follow-up ticket or accept a labeled delta; closing is unavailable.
 - **Last ticket / “已按 PRD 实现”:** run `/alignment-review` **prd-walk** against the original product doc (PRD-AUTHORITY §5) before claiming the package delivered. Any `缺` → not delivered.
 
 ### 0c. Isolate (default for code edits)

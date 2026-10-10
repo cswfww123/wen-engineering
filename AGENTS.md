@@ -75,5 +75,5 @@ WEN Engineering 基于 Matt Pocock 的 skills 优化而来，但有独有改进�
 
 ## Checklist
 
-- [ ] After skill edits: frontmatter, description length, one-level refs, README/index
+- [ ] After skill edits: frontmatter, description length, one-level refs, README/index; `scripts/check-skill-refs.sh` and `scripts/check-agent-sync.sh` pass
 - [ ] After skill/agent pack edits: sync/install to the machine (`scripts/sync-skills.sh`), not hand-edit `~/.agents` / `~/.zcode`

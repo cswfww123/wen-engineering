@@ -70,7 +70,7 @@ git pull --ff-only
 
 - issue tracker workflow：GitHub、GitLab、本地 markdown，或其他 tracker
 - `/to-tickets` 和 tracker adapters 使用的五个 triage roles
-- domain documentation layout：单个 `CONTEXT.md`，或多 context 的 `CONTEXT-MAP.md`
+- domain documentation layout：单个 `GLOSSARY.md`，或多 context 的 `GLOSSARY-MAP.md`
 - `docs/agents/` 下的 issue-tracker、triage-labels、domain
 - `docs/rules/`，仓库级规范目录（与 `docs/adr/`、`docs/agents/` 同级），初始化时带上 `docs/rules/pr.md`
 
@@ -357,14 +357,14 @@ AI agents 会以很可预测的方式失败。
 
 当 agents 不共享项目 vocabulary 时，它们会写出冗长解释、不一致命名和别扭抽象。
 
-解决办法是 progressive disclosure：让 `AGENTS.md` 保持简短，把 domain language 放进 `CONTEXT.md`，把 architecture decisions 放进 `docs/adr/`，长边界仅在工作匹配时再加载（例如 invariants）。
+解决办法是 progressive disclosure：让 `AGENTS.md` 保持简短，把 domain language 放进 `GLOSSARY.md`，把 architecture decisions 放进 `docs/adr/`，长边界仅在工作匹配时再加载（例如 invariants）。
 
 ## Skills
 
 ### Planning And Alignment
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) - 可选审计未经人审的 specs/tickets；不在默认 L2 **发布**路径上。PRD 源包关单时强制 **prd-walk**（[PRD-AUTHORITY.md](skills/to-spec/PRD-AUTHORITY.md)）。
-- [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `CONTEXT.md`，并在决策结晶时稀疏记录 ADR。
+- [`domain-modeling`](skills/domain-modeling/SKILL.md) - 锐化领域语言、更新 `GLOSSARY.md`，并在决策结晶时稀疏记录 ADR。
 - [`grill-code`](skills/grill-code/SKILL.md) - 用户调用的**编码**需求入口（LIGHT G）：碰撞盘点后只访谈开放极（有 PRD 时只烤残差）；加载 `/grilling`，MVP 边界；默认会话收口、无强制归档。
 - [`grill-me`](skills/grill-me/SKILL.md) - 用户调用的**非编码**访谈（计划、决策、想法）；加载 `/grilling`；只在会话里收口。
 - [`grilling`](skills/grilling/SKILL.md) - 两个 grill 共用的 model-invoked 访谈循环：frontier 轮次 + batch 表、非阻塞事实、确认门。
@@ -450,6 +450,10 @@ docs/
   boundaries.md
   handoff-package.md
 scripts/
+  check-agent-sync.sh
+  check-glossary-migration.sh
+  check-skill-refs.sh
+  migrate-to-glossary.sh
   sync-skills.sh
   test-sync-skills.sh
 skills/
@@ -477,7 +481,7 @@ skills/
       hitl-loop.template.sh
   domain-modeling/
     ADR-FORMAT.md
-    CONTEXT-FORMAT.md
+    GLOSSARY-FORMAT.md
     SKILL.md
   grill-code/
     SKILL.md
@@ -494,11 +498,15 @@ skills/
   improve-codebase-architecture/
     HTML-REPORT.md
     SKILL.md
+  pr/
+    SKILL.md
   prototype/
     LOGIC.md
     SKILL.md
     UI.md
   research/
+    SKILL.md
+  retro/
     SKILL.md
   setup-logging/
     PRINCIPLES.md
@@ -526,6 +534,7 @@ skills/
     SKILL.md
   to-spec/
     PRD-AUTHORITY.md
+    REQ-DETAIL.md
     SKILL.md
     TEMPLATE.md
   to-tickets/

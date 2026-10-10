@@ -192,4 +192,4 @@ Never ask the human to re-paste Destination, iron rules, or full ticket bodies.
 - Claim map/ticket before work when the adapter supports it; release claims on stop. `/research` and `/prototype` return evidence only — Wayfinder owns comments, closure, and map updates.
 - **Chart budget:** ≤5 tickets on first publish; expand only by graduating fog after resolutions.
 - **Architecture scans** (`/improve-codebase-architecture`, etc.) feed **fog or research tickets**, not automatic DECs; Strong findings still need production/runtime Signals when they claim ownership of live paths.
-- Keep narration short; skip honorific filler. Working notes live on the ticket; rewrite CONTEXT/glossary **on ticket close**, not after every micro-answer.
+- Keep narration short; skip honorific filler. Working notes live on the ticket; rewrite GLOSSARY.md **on ticket close**, not after every micro-answer.

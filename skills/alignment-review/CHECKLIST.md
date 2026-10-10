@@ -36,7 +36,7 @@ Use this only when the core workflow needs sharper review prompts.
 - Each behavior ticket delivers a narrow complete path through the system in one fresh context; only the named expand-contract exception may be mechanical.
 - Each ticket's `Covers` field links to stable spec requirements or a legacy source criterion. Inventory `SRC`s must appear in some `Covers`; `Supports` is not coverage.
 - `Covers: none` appears only on an expand-contract enabling ticket with `Supports`, a stable `Decision` source, and behavior-preservation verification; `Supports` is not counted as requirement coverage.
-- Ticket `Status: complete` is invalid if the body still lists 残差 / 下张票收口 for a covered SRC.
+- Closing a ticket is invalid if the body still lists 残差 / 下张票收口 for a covered SRC.
 - Each ticket is demoable or verifiable alone through its named verification seam.
 - Slices are not horizontal tasks such as only schema, only API, only UI, or only tests.
 - Small prefactoring is folded into the first vertical slice; only the named expand-contract exception becomes a separate enabling ticket.

@@ -71,7 +71,7 @@ For a new project, run **`/setup-project`** in the target project after syncing.
 
 - the issue tracker workflow: GitHub, GitLab, local markdown, or another tracker
 - the five triage roles used by `/to-tickets` and tracker adapters
-- the domain documentation layout: single `CONTEXT.md` or multi-context `CONTEXT-MAP.md`
+- the domain documentation layout: single `GLOSSARY.md` or multi-context `GLOSSARY-MAP.md`
 - `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, and `docs/agents/domain.md`
 - `docs/rules/`, the repo-level rules directory (peer of `docs/adr/` and `docs/agents/`), seeded with `docs/rules/pr.md`
 
@@ -359,14 +359,14 @@ The fix is failure-driven, depreciating pins:
 
 When agents do not share the project's vocabulary, they write verbose explanations, inconsistent names, and awkward abstractions.
 
-The fix is progressive disclosure: keep `AGENTS.md` short, put domain language in `CONTEXT.md`, architectural decisions in `docs/adr/`, and load long boundaries only when work matches (e.g. invariants).
+The fix is progressive disclosure: keep `AGENTS.md` short, put domain language in `GLOSSARY.md`, architectural decisions in `docs/adr/`, and load long boundaries only when work matches (e.g. invariants).
 
 ## Skills
 
 ### Planning And Alignment
 
 - [`alignment-review`](skills/alignment-review/SKILL.md) — optional audit of unreviewed specs/tickets; not on the default L2 publish path. Mandatory **prd-walk** at PRD-sourced package close ([PRD-AUTHORITY.md](skills/to-spec/PRD-AUTHORITY.md)).
-- [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `CONTEXT.md`, and records sparse ADRs as decisions crystallize.
+- [`domain-modeling`](skills/domain-modeling/SKILL.md) — sharpens domain language, updates `GLOSSARY.md`, and records sparse ADRs as decisions crystallize.
 - [`grill-code`](skills/grill-code/SKILL.md) — user-invoked **coding** requirement entry (LIGHT G): collision sweep then open-pole interview (PRD: residual only); loads `/grilling`, MVP boundary; default chat close (no mandatory decision file).
 - [`grill-me`](skills/grill-me/SKILL.md) — user-invoked **non-coding** interview (plan, decision, idea); loads `/grilling`; chat close only.
 - [`grilling`](skills/grilling/SKILL.md) — model-invoked interview loop shared by both grills: frontier rounds + batch tables, non-blocking facts, confirmation gate.
@@ -452,6 +452,10 @@ docs/
   boundaries.md
   handoff-package.md
 scripts/
+  check-agent-sync.sh
+  check-glossary-migration.sh
+  check-skill-refs.sh
+  migrate-to-glossary.sh
   sync-skills.sh
   test-sync-skills.sh
 skills/
@@ -479,7 +483,7 @@ skills/
       hitl-loop.template.sh
   domain-modeling/
     ADR-FORMAT.md
-    CONTEXT-FORMAT.md
+    GLOSSARY-FORMAT.md
     SKILL.md
   grill-code/
     SKILL.md
@@ -496,11 +500,15 @@ skills/
   improve-codebase-architecture/
     HTML-REPORT.md
     SKILL.md
+  pr/
+    SKILL.md
   prototype/
     LOGIC.md
     SKILL.md
     UI.md
   research/
+    SKILL.md
+  retro/
     SKILL.md
   setup-logging/
     PRINCIPLES.md
@@ -532,6 +540,7 @@ skills/
     SKILL.md
   to-spec/
     PRD-AUTHORITY.md
+    REQ-DETAIL.md
     SKILL.md
     TEMPLATE.md
   to-tickets/

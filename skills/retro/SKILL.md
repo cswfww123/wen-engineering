@@ -1,222 +1,46 @@
 ---
 name: retro
-description: "对编码会话进行回顾，识别环境改进机会"
+description: "Conduct a retrospective on a coding session."
 disable-model-invocation: true
 ---
 
-用户请求进行**回顾**。你的任务是建议对编码代理的**环境**进行改进，以优化未来的运行。
+The user has asked for a **retrospective**. You are suggesting improvements to the coding agent's **environment** to improve future runs.
 
-## 步骤
+## Steps
 
-1. 调用 Skill 工具加载 `writing-for-agents`，获取写作风格指南。
+1. Call the Skill tool with `writing-for-agents` for the writing style guide.
 
-2. 阅读用户指定会话的主要来源。这可能意味着搜索此机器上的会话日志。如果用户未指定会话，默认为当前会话。
+2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one.
 
-3. 在以下类别中寻找改进候选项。
+3. Look for candidates for improvement in these categories.
 
-- **导航**：代理查找正确文件的难易程度如何？文件之间是否存在隐藏依赖？**导航指针**是否能使其更容易？_使用时机_：会话花费很长时间查找信息时。
+- **Navigation**: how easy was it for the agent to find the right files? Are there hidden dependencies between files? Would a **navigation pointer** make it easier? _Use when_ the session took a long time to find a piece of information.
+- **Automated checks**: are there automated checks that could catch errors the agent made? Linting, typing, tests, filesystem linters? Read the repo's own check command first (its `package.json`/build-tool `lint`/`check` scripts, its CI workflow), so a check that already exists but sits unwired or silently broken is the finding, not a reinvention. A repo with no **guardrail** (no pre-commit hook and no CI job running its lint/typecheck/test command) is itself a finding: an un-linted repo is a standing missed opportunity, not a neutral default. _Use when_ the agent made a mistake an automated check could have caught, or the repo has no guardrail at all.
+- **Coding standards**: should the **reviewer agent** be given a new rule to enforce? Should an existing rule be removed or clarified? Classify the violation first: a **mechanical** one (a fixed syntactic pattern, a banned API, an import shape, a file-location rule) gets a deterministic check, full stop: a custom rule in the repo's own linter, a new pre-commit hook, or a new CI job, whichever the repo's language and existing guardrail make cheapest. Default to building the check over writing the rule. Reserve `CODING_STANDARDS.md` for genuine **judgement calls** (cross-file consistency, "matches the surrounding style," anything no guardrail could ever substitute for). _Use when_ the reviewer agent failed to catch a mistake.
+- **Global AGENTS.md**: are there any steering instructions that should be moved to coding standards (or automated checks) instead? _Use when_ the AGENTS.md file is particularly large - in the repo OR the user's global scope.
+- **Tool economy**: did the agent make expensive tool calls that could be streamlined? Is there any custom tooling (CLI's, MCP's) that is particularly token-inefficient? _Use when_ the agent made an expensive tool call.
+- **No-ops**: look for instructions in steering files that don't modify the agent's behavior. _Use when_ the steering files are large and unwieldy.
+- **Executor briefs**: did a weak worker return off-plan work because the brief left a judgment open (vague AC, no literal values, missing `Do not touch`)? The fix is the brief shape in [DISPATCH.md](../implement/DISPATCH.md), not a stronger worker. _Use when_ the parent rejected or re-briefed a worker.
+- **Product intent**: did a session AC, an unlabeled recommendation, or "code wins" quietly replace a product-doc row? Point at the gate in [PRD-AUTHORITY.md](../to-spec/PRD-AUTHORITY.md) that should have held. _Use when_ the result drifted from the PRD or design pin.
+- **Information access**: look for opportunities to increase the agent's access to information. Teeing dev server logs, readonly access to third-party services. _Use when_ a crucial piece of information was not available to the agent.
 
-- **自动化检查**：是否有自动化检查可以捕获代理犯的错误？Linting、类型检查、测试、文件系统 linters？先阅读仓库自己的检查命令（其 `package.json`/构建工具的 `lint`/`check` 脚本，其 CI 工作流），这样如果检查已存在但未连接或静默失败，发现的是这个问题，而不是重新发明。一个没有**护栏**的仓库（没有 pre-commit hook 且没有 CI job 运行其 lint/typecheck/test 命令）本身就是一个发现：一个未 lint 的仓库是一个长期错失的机会，不是中性默认状态。_使用时机_：代理犯了自动化检查可以捕获的错误，或仓库根本没有护栏。
+4. Present these candidates to the user, in order of severity.
 
-- **编码标准**：**审查代理**是否应该被赋予新规则来执行？现有规则是否应该被删除或澄清？首先对违规进行分类：**机械性**违规（固定的语法模式、禁用的 API、import 形状、文件位置规则）获得确定性检查，句号：仓库自己的 linter 中的自定义规则、新的 pre-commit hook 或新的 CI job，选择仓库的语言和现有护栏使最便宜的那个。默认构建检查而非编写规则。将 `CODING_STANDARDS.md` 保留给真正的**判断调用**（跨文件一致性、"匹配周围风格"，任何护栏永远无法替代的东西）。_使用时机_：审查代理未能捕获错误时。
+## Reference
 
-- **全局 AGENTS.md**：是否有任何指导指令应该移至编码标准（或自动化检查）？_使用时机_：AGENTS.md 文件特别大时 - 在仓库中或用户的全局范围内。
+### Implementation vs Review
 
-- **工具经济性**：代理是否进行了可以精简的昂贵工具调用？是否有任何自定义工具（CLI、MCP）特别浪费 token？_使用时机_：代理进行了昂贵的工具调用时。
+Remember that all work goes through two stages: implementation and review. The implementation agent has the most **context pressure**. They are responsible for exploration, writing code, and debugging failures.
 
-- **无操作指令**：在指导文件中查找不修改代理行为的指令。_使用时机_：指导文件大而笨重时。
+The review agent has the least context pressure - it receives a diff, so no exploration needed. It often does not need to write code or debug.
 
-- **信息访问**：寻找增加代理信息访问的机会。Tee dev server 日志，对第三方服务的只读访问。_使用时机_：关键信息对代理不可用时。
+This means that the review agent should be responsible for imposing coding standards, not the implementation agent.
 
-4. 按严重程度顺序向用户呈现这些候选项。
+### Files
 
-## 参考
+You have access to several files in the repo:
 
-### 实现 vs 审查
-
-记住，所有工作都经过两个阶段：实现和审查。实现代理具有最大的**上下文压力**。他们负责探索、编写代码和调试失败。
-
-审查代理的上下文压力最小 - 它接收一个 diff，因此不需要探索。它通常不需要编写代码或调试。
-
-这意味着审查代理应该负责强制执行编码标准，而不是实现代理。
-
-### 文件
-
-你可以访问仓库中的几个文件：
-
-- `CLAUDE.md`/`AGENTS.md`：这些文件被推送到在此仓库工作的任何代理的上下文窗口。应该非常谨慎地使用，通常只用于**导航指针**到其他文件。
-
-- `CODING_STANDARDS.md`：此文件在审查期间读取，而不是实现期间。如果标准文件超过 1,000 行，添加**导航指针**到 docs 文件夹。
-
-- Docs：使用 docs 作为参考文件，由其他文件指向。在编写新文档之前查找现有文档。
-
-- Skills：将 skills 用于文档（因为它们的描述进入代理的上下文窗口），或用于用户调用的命令。遵循 `writing-for-agents` skill 中的建议。
-
-## WEN 特定指导
-
-### 回顾重点
-
-WEN Engineering 的回顾应特别关注：
-
-1. **代理协作效率**
-   - Executor/Reviewer/Verifier 的协作是否顺畅？
-   - 是否有不必要的往返？
-   - 子代理的 brief 是否清晰？
-
-2. **产品意图保真度**
-   - PRD/spec 的权威性是否被尊重？
-   - 是否有"代码获胜"覆盖产品意图的情况？
-   - GLOSSARY.md 是否被有效使用？
-
-3. **测试驱动开发**
-   - TDD 流程是否被遵循（RED→GREEN→REFACTOR）？
-   - 测试覆盖率是否达到 80%+？
-   - 测试是否在实现之前编写？
-
-4. **代码审查质量**
-   - CRITICAL/HIGH 问题是否在实现阶段就被避免？
-   - 审查代理是否发现了真正的问题？
-   - 是否有误报或漏报？
-
-### 改进优先级
-
-按以下顺序评估改进：
-
-**🔴 立即修复（阻塞性问题）：**
-- 缺失的护栏（无 lint/typecheck/test）
-- 安全问题未被检测到
-- 关键信息无法访问
-
-**🟡 近期改进（质量问题）：**
-- 导航困难（查找文件耗时 > 2分钟）
-- 重复的手动步骤
-- 昂贵的工具调用
-
-**🟢 长期优化（便利性问题）：**
-- 无操作指令清理
-- 文档结构优化
-- Skills 重构
-
-## 输出格式
-
-使用以下格式呈现发现：
-
-```markdown
-# 会话回顾
-
-**会话时间：** [时间范围]
-**主要任务：** [简要描述]
-
----
-
-## 🔴 立即修复
-
-### 1. [问题标题]
-
-**类别：** [导航/自动化检查/编码标准/等]
-
-**问题：**
-[详细描述问题]
-
-**证据：**
-- [具体例子或日志片段]
-
-**建议：**
-[具体的改进措施]
-
-**实施成本：** [低/中/高]
-**预期收益：** [具体收益]
-
----
-
-## 🟡 近期改进
-
-### 2. [问题标题]
-
-[同上格式]
-
----
-
-## 🟢 长期优化
-
-### 3. [问题标题]
-
-[同上格式]
-
----
-
-## 总结
-
-**总发现数：** [数量]
-- 🔴 立即修复：[数量]
-- 🟡 近期改进：[数量]
-- 🟢 长期优化：[数量]
-
-**下一步行动：**
-1. [优先级最高的行动]
-2. [第二优先级行动]
-3. [第三优先级行动]
-```
-
-## 示例
-
-### 示例 1：缺失的类型检查
-
-**类别：** 自动化检查
-
-**问题：**
-代理在实现过程中多次犯了类型错误，导致运行时失败。仓库有 TypeScript 配置但未在 CI 中运行 typecheck。
-
-**证据：**
-```typescript
-// 代理写的代码
-const result = await fetchData();
-result.data.map(item => item.name); // 运行时错误：data 可能为 undefined
-```
-
-**建议：**
-1. 添加 pre-commit hook：
-   ```bash
-   npm run typecheck
-   ```
-2. 在 CI 中添加 typecheck job：
-   ```yaml
-   - name: Type check
-     run: npm run typecheck
-   ```
-
-**实施成本：** 低（15分钟）
-**预期收益：** 高（避免 90% 的类型错误）
-
-### 示例 2：复杂的文件查找
-
-**类别：** 导航
-
-**问题：**
-代理花费 8 分钟查找认证相关代码，在 `src/auth/`、`src/utils/auth/` 和 `src/middleware/` 之间来回。
-
-**证据：**
-- 3 次 grep 搜索
-- 6 次文件读取
-- 最终在 `src/middleware/auth.ts` 找到
-
-**建议：**
-在 `AGENTS.md` 中添加导航指针：
-```markdown
-## 代码组织
-
-- **认证逻辑：** `src/middleware/auth.ts`（核心认证中间件）
-- **认证工具：** `src/utils/auth/`（token、加密）
-- **认证配置：** `src/auth/config.ts`
-```
-
-**实施成本：** 低（5分钟）
-**预期收益：** 中（节省每次认证相关任务 5+ 分钟）
-
-## 注意事项
-
-- **不要建议 "更详细的文档"**：这是无操作建议。具体说明缺少什么信息，以及如何添加。
-- **不要建议 "更好的变量名"**：除非有自动化 linter 规则可以强制执行。
-- **优先自动化检查而非文档**：能用 lint 规则的，不写文档。
-- **测量改进影响**：每个建议应该有可量化的收益预估。
-- **考虑实施成本**：5 分钟的改进比 2 小时的改进更容易被采纳。
+- `CLAUDE.md`/`AGENTS.md`: these files are pushed to the context window of any agent working in this repo. They should be used incredibly sparingly, usually only for **navigation pointers** to other files.
+- `CODING_STANDARDS.md`: this file is read during review, not implementation. Add **navigation pointers** to docs folders if the standards file gets more than 1,000 lines long.
+- Docs: use docs as references files, pointed to by other files. Look for existing docs before writing new ones.
+- Skills: use skills for docs (since their description goes into the agent's context window), or for user-invoked commands. Follow the advice in the `writing-for-agents` skill.

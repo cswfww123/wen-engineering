@@ -131,6 +131,10 @@ Tool preference:
 
 ## Phase 5 — Fix + regression test
 
+Read `LESSONS.md` before the first production edit when the file exists. Match
+the report to a lesson by the class, not by the sample. A rule listed under
+Moved is in `docs/rules/code-standards.md`.
+
 **WEN:** skip this phase under diagnosis-only; return root cause + disposition
 (`bounded-fix` → `/implement`, `spec-and-slice` → `/to-spec` → `/to-tickets`,
 or `blocked`).

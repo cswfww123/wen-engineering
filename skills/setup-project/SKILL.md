@@ -1,22 +1,37 @@
 ---
 name: setup-project
-description: "Configure this repo for the engineering skills: issue tracker, triage labels, domain docs, repo rules, and a thin AGENTS.md that points at them. Also installs the nightly error notebook. Run once, and re-run to thin an AGENTS.md that has grown."
+description: "Configure this repo in the magpie layout: CLAUDE.md injects AGENTS.md and LESSONS.md, AGENTS.md only routes, and the universal loop docs live in docs/. Project-specific rules stay in docs/rules/. Re-run moves leftover AGENTS.md body behind pointers."
 disable-model-invocation: true
 ---
 
 # Setup Project
+
+Two layers, and they do not compete. Magpie is the agent tuning itself: the notebook, the nightly review, the promotion into hard rules. Matt is the human-led build: grill, spec, tickets, implement, the person deciding what gets built. A line that serves one layer is not a duplicate of a line that serves the other. Do not delete either to make the file smaller.
 
 Scaffold the per-repo configuration that the engineering skills assume:
 
 - **Issue tracker**: where issues live (GitHub by default; local markdown is also supported out of the box)
 - **Triage labels**: the strings used for the five canonical triage roles
 - **Domain docs**: where `GLOSSARY.md` and ADRs live, and the consumer rules for reading them
-- **Repo rules**: `docs/rules/`, seeded with the PR packet. Same level as `docs/adr/` and `docs/agents/`; one file per rule, read on demand.
-- **A thin router**: `AGENTS.md` keeps a pointer per branch. Material only some work needs moves behind that pointer.
-- **The closed loop**: `LESSONS.md` plus a nightly review. Repeated misses graduate into `docs/rules/`.
-- **Review rules**: `docs/rules/code-standards.md`, the acceptance a review checks against. Seeded. The nightly review appends graduated lessons. It does not rewrite the seed.
+- **The magpie layout**, the same files in the same places. Universal mechanism is seeded. A project-specific rule is not.
 
-Same tracker, labels, and domain scope as upstream `setup-matt-pocock-skills`. The router thinning and the loop are WEN. `CLAUDE.md` is never authored. Where it exists it is a symlink to `AGENTS.md`, and it stays one.
+| File | What it is |
+| --- | --- |
+| `CLAUDE.md` | `@AGENTS.md` and `@LESSONS.md`. Nothing else. |
+| `AGENTS.md` | A router. No product description, no stack version, no procedure. |
+| `LESSONS.md` | The error notebook. Empty until a miss is recorded. |
+| `docs/contributors.md` | Harm checks before any community run. |
+| `docs/release.md` | No tag until that commit's CI finished green. |
+| `docs/nightly-review.md` | The heartbeat. What the night looks for, and the two speeds. |
+| `docs/decisions.md` | What the notebook does not decide. The maintainer's table starts empty. |
+| `docs/loops.md` | Build, review, release. |
+| `docs/subsystems/README.md` | Empty until the first subsystem has a behavior an agent would re-derive wrong. |
+
+Project-specific, and the only place a repo's own rules go:
+
+- `docs/rules/`, seeded with the PR packet and `docs/rules/code-standards.md`. Language, layers, and review teeth live here, not in the layout above. A graduated lesson appends here.
+
+Same tracker, labels, and domain scope as upstream `setup-matt-pocock-skills`. The layout matches wen-loop, which was checked against yetone/magpie on 2026-10-13. Do not seed `docs/imported-lessons.md` or `docs/provenance.md`. Those are evidence about magpie, not a mechanism a target repo runs.
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write. Re-running thins the router again and refreshes pointers. It does not overwrite `docs/rules/pr.md`, `LESSONS.md`, or a lesson already in the notebook.
 
@@ -69,27 +84,31 @@ The defaults are the five canonical roles, each label string equal to its name: 
 
 Offer **multi-context** (a root `GLOSSARY-MAP.md` pointing to per-context `GLOSSARY.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
 
-**Section D: Router.** Skip the question when `AGENTS.md` is already only pointers plus the `## Agent skills` block. Otherwise ask exactly one question:
+**Section D: Router.** Do not skip this because a previous run already added pointers. Pointers sitting above an unmoved body are the failure this section exists to fix. Ask exactly one question, including on a re-run:
 
-> Thin `AGENTS.md` to a router? Material only some work needs moves behind a pointer. Voice, git identity, and anything every turn needs stay. (recommended: **yes**)
+> Move `AGENTS.md` down to a router? A line stays only when deleting it would make a turn wrong before any branch is entered. Everything else moves behind a pointer, body included. (recommended: **yes**)
 
-On yes, classify each section before drafting. A section every turn needs stays, as a pointer if it is already one. A section only some work needs is disclosed: the body moves to `docs/agents/` or `docs/rules/`, and `AGENTS.md` keeps one line that names the file and the branch that should reach it. The pointer's leading words are the branch, not a description of the file. One line per branch. Collapse two lines that fire on the same work.
+On yes, classify every section, then show the draft. The completion criterion is the move list, not the line count: each moved section names its old heading, its new file, and the one pointer that replaces it. A section with no destination was not classified. Do not write until the user accepts that list.
 
-Do not disclose a failure the model already repeats in this repo. Those stay as one line each, until the nightly review has seen the same one on 3 days and moved it. Deleting a repeated miss from the always-loaded file is how it comes back.
+A line stays only when both are true: it changes what the model does on a turn that has not entered a branch, and no other file already says it. Voice the user set (a form of address) stays. A product description does not stay: it is a cache of `GLOSSARY.md` or the build file, and the two copies drift. A stack version in `pom.xml` or `package.json` does not stay. A procedure for one kind of work does not stay, even when that work is common.
 
-Show the before/after line count with the draft. Never create `CLAUDE.md`. Never put a rule in it. A symlink to `AGENTS.md` stays a symlink.
+A repeated miss does not stay either. Move its body into `LESSONS.md` as a lesson with `Seen 1×` and today's date, and leave one pointer. The notebook is read before any code change, so the miss is in context on the turn that can repeat it. Keeping the paragraph in `AGENTS.md` because it might be skipped is how the router grows back.
+
+A section only some work needs is disclosed. The body moves to `docs/agents/` or `docs/rules/`. `AGENTS.md` keeps one line: the branch first, then the file. One trigger per branch. Two lines that fire on the same work collapse. A body that already exists in the destination is not copied again. The pointer replaces it.
+
+Show the line count before and after with the move list. Never create `CLAUDE.md`. Never put a rule in it. A symlink to `AGENTS.md` stays a symlink. Do not follow it as a second rules file.
 
 **Section E: Closed loop.** Ask exactly one question:
 
 > Install the nightly error notebook? It reviews the day's commits for rework, what should not have merged, and thin verification. A lesson seen on 3 separate days moves into `docs/rules/`. (recommended: **yes**)
 
-On yes, write `LESSONS.md` from [lessons.md](./lessons.md) only when the file is absent. Write `docs/agents/loop.md` from [loop.md](./loop.md); on re-run, refresh it from the seed and keep any trigger line the repo added. Ask for the hour the review should run, in the user's local time. The default is 03:00. Record that hour in `docs/agents/loop.md`. Do not create the schedule yourself — creating it is the host's cron tool, and the skill tells the user the exact prompt to hand the next session so the review actually starts. A file with no trigger is a frozen notebook. Say that.
+On yes, write `LESSONS.md` from [lessons.md](./lessons.md) only when the file is absent. A re-run appends lessons Section D moved and does not rewrite lessons already there. Write `docs/agents/loop.md` from [loop.md](./loop.md); on re-run, refresh it from the seed, keep the repo's trigger line, and keep the import line. Ask for the hour the review should run, in the user's local time. The default is 03:00. Record that hour in `docs/agents/loop.md`. Do not create the schedule yourself — creating it is the host's cron tool, and the skill tells the user the exact prompt to hand the next session so the review actually starts. A file with no trigger is a frozen notebook. Say that.
 
 ### 3. Confirm and edit
 
 Show the user a draft of:
 
-- The `## Agent skills` block (including the fixed `### Work routing` sub-block and, when Section E ran, `### Loop`)
+- The router table plus the `## Agent skills` block, including `### Issue tracker`, `### Triage labels`, and `### Domain docs`.
 - The thinned `AGENTS.md`, when Section D ran, with the line count before and after
 - The contents of `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
 - `docs/agents/loop.md`, when Section E ran
@@ -108,17 +127,52 @@ Write the docs files using the seed templates in this skill folder as a starting
 - [domain.md](./domain.md): domain doc consumer rules + layout
 - [pr.md](./pr.md): the PR packet, written to `docs/rules/pr.md`
 - [code-standards.md](./code-standards.md): the review rules, written to `docs/rules/code-standards.md`
+- [contributors.md](./contributors.md), [release.md](./release.md), [nightly-review.md](./nightly-review.md), [decisions.md](./decisions.md), [loops.md](./loops.md): the universal loop, written to the same names under `docs/`
+- [subsystems.md](./subsystems.md): written to `docs/subsystems/README.md`
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
 
-Always write `docs/rules/pr.md` from [pr.md](./pr.md) and `docs/rules/code-standards.md` from [code-standards.md](./code-standards.md). `docs/rules/` is the repo-level rules directory, a peer of `docs/adr/` and `docs/agents/`: one rule per file, reached by a pointer, not loaded every turn. On re-run, leave an existing `docs/rules/pr.md` and an existing `docs/rules/code-standards.md` in place. The repo's copy wins over the seed. Graduated lessons append to the repo's copy. They never replace it.
+Always write `docs/rules/pr.md` from [pr.md](./pr.md) and `docs/rules/code-standards.md` from [code-standards.md](./code-standards.md). On re-run, leave an existing copy of either in place. The repo's copy wins over the seed. Graduated lessons append to `docs/rules/code-standards.md`. They never replace it.
 
-**Author `AGENTS.md` only as a router.** Create it when it is missing: the block below plus one pointer per branch Section D disclosed. When it exists, replace each disclosed section with its pointer line, and insert or update the block in place. Do not append a second copy. Do not invent voice, product rules, or a checklist the repo did not already have. Prose that is not a pointer is still `writing-for-agents`.
+Always write the universal loop from the seeds, to the same paths: `docs/contributors.md`, `docs/release.md`, `docs/nightly-review.md`, `docs/decisions.md`, `docs/loops.md`, `docs/subsystems/README.md`. On re-run, refresh each from the seed except `docs/decisions.md`: keep every dated row the repo added, and do not wipe an empty table into a sentence. Record the nightly hour in `docs/nightly-review.md`, not in a second file.
 
-**Do not author `CLAUDE.md`.** Do not create it, do not edit it, do not follow it when it is a symlink. A rule written there is a second copy.
+**Write `CLAUDE.md` as the two injection lines and nothing else**, from this seed, replacing whatever is there including a symlink:
 
 ```markdown
+@AGENTS.md
+@LESSONS.md
+```
+
+A rule, a product description, or a third line in that file is a second copy. Delete it.
+
+**Author `AGENTS.md` only as a router.** The table below is the whole universal part. Create the file when it is missing. When it exists, this table replaces any earlier loop pointers, and Section D's move list replaces leftover body. Do not append a second copy. A product description does not survive into the new file. Voice the user set stays as one line above the table. Prose that is not a pointer is still `writing-for-agents`.
+
+```markdown
+# Agent
+
+This file holds two layers. The table is the agent tuning itself. `## Agent skills` is the human-led build. Neither replaces the other.
+
+Before doing a kind of work, read the file it points at.
+
+| Before you | Read |
+| --- | --- |
+| Change any code | `LESSONS.md` |
+| Write or review a change | `docs/rules/code-standards.md` |
+| Change a documented subsystem | its page under `docs/subsystems/`, and check every source link still resolves |
+| Review a community PR or issue | `docs/contributors.md` — harm checks come before any run |
+| Cut a release or a tag | `docs/release.md` |
+| Run the nightly review | `docs/nightly-review.md` |
+| Decide whether to build something, or which of two designs | `docs/decisions.md` — do not invent the call |
+| Write or update a PR description | `docs/rules/pr.md` |
+| Use a domain term or an ADR | `docs/agents/domain.md` |
+
+A rule lives in exactly one place. A lesson seen on 3 separate days moves into `docs/rules/code-standards.md` and leaves the reading section of `LESSONS.md`. Do not copy a rule here to make it easier to find.
+
+Two sessions never commit from the same checkout. Each session works in its own worktree. After committing, `git show --stat HEAD` lists that session's files and only those.
+
 ## Agent skills
+
+The human decides what gets built and when a slice starts. These pointers are how that work is routed. They are not a second copy of the table above.
 
 ### Work routing
 
@@ -135,26 +189,11 @@ Route incoming work yourself; do not ask the user which skill to use. Bug → `/
 ### Domain docs
 
 [one-line summary of layout: "single-context" or "multi-context"]. See `docs/agents/domain.md`.
-
-### Repo rules
-
-Repo-level rules live in `docs/rules/`, one file per rule. Read the matching file before the work it names.
-
-- `docs/rules/pr.md` — writing or updating a PR/MR description.
-- `docs/rules/code-standards.md` — reviewing or merging a change. Read it before the review, not instead of the repo's other rules.
-
-### Loop
-
-Read `LESSONS.md` before changing code. The nightly review and the promotion rule are in `docs/agents/loop.md`.
 ```
 
-Include `### Loop` only when Section E ran. Omit it when the user declined the notebook, so the pointer does not name a file that was not written.
+`## Agent skills` stays. It is the engineering-skills block, not a duplicate of the router table. The table does not point at the issue tracker, the triage labels, or the domain docs. Those three live only here, one line each, because the skills read them by this heading.
 
-Include the `### Triage labels` sub-block, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it isn't, both are omitted.
-
-Always include `### Work routing` verbatim. It is a pack rule, not a per-repo choice, so it is not a section to ask about. It is the only always-loaded carrier of agent-owned entry routing in a target repo: the router skill is user-invoked and `LIFECYCLE.md` is reached only through this line.
-
-When `AGENTS.md` was missing and Section D was skipped, still write the block into a new `AGENTS.md`. A repo with no router cannot reach `docs/rules/` or the notebook. Do not write that block into `CLAUDE.md` instead.
+Keep `### Work routing` verbatim. Include `### Triage labels`, and write `docs/agents/triage-labels.md`, only when `triage` is installed and Section B ran. When it is not, omit that sub-block. On a re-run, update this block in place. Do not add a second one, and do not add a `### Loop` sub-block. Delete `docs/agents/loop.md` if an earlier run wrote it. The heartbeat is `docs/nightly-review.md`.
 
 ### 5. Done
 

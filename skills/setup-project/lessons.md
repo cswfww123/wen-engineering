@@ -28,5 +28,6 @@ No lessons yet.
 
 ## Moved to the rules
 
-Nothing yet. When a lesson moves, leave one line here naming the date and the
-file it moved to. If a moved rule is missed again, record the miss under it.
+Nothing yet. When a lesson moves, delete it from the reading section and leave
+one line here: the rule, the date, the file. A later miss of that rule is a
+new lesson above, not a copy of the rule pasted back.

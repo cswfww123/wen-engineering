@@ -20,7 +20,11 @@ Invoking `/implement` authorizes **local** commits on the current branch (no pus
 
 These steps bind how the steps above run in this pack.
 
-### 0. Route, bound, record intent
+### 0. Notebook, route, bound, record intent
+
+- Read `LESSONS.md` before the first production edit when the file exists. A
+  lesson there is in force. A rule listed under Moved is read from
+  `docs/rules/code-standards.md`, not from memory of the notebook.
 
 - Clear bounded request **or** one implementation-frontier ticket only. Intent not ready → stop; do not invent Expected.
 - Note layer (`frontend` | `backend` | `full-stack` | `non-UI`). UI layer or a design source in play → load [UI.md](UI.md) before the first production edit (pin rows, chrome owner, fidelity).

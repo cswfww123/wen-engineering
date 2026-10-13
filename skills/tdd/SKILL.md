@@ -33,7 +33,7 @@ When the shape of that interface is itself in question — how deep the module i
 
 ## Rules of the loop
 
-- **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
+- **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features. Before calling it red, put the old code back and run the new test: it fails with a real `FAIL` that names the behavior. A compile error or a skip is not red. The record names the test and what it failed with. When `docs/rules/code-standards.md` exists, its Tests and Acceptance sections are the rest of the bar. A check that was not run is listed as not run.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Green locks the real domain step.** The minimal code that passes must implement the source of truth the seam claims — not a config constant, stub, or dual path that leaves sibling channels inconsistent. A green that only asserts a hardcoded fallback is not a lock for "uses the shared service/table." If the real step needs a product decision, stop for that decision; do not green via an incomplete production surface (see `code-review/INCOMPLETE-SURFACE.md`).
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.

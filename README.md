@@ -73,9 +73,11 @@ For a new project, run **`/setup-project`** in the target project after syncing.
 - the five triage roles used by `/to-tickets` and tracker adapters
 - the domain documentation layout: single `GLOSSARY.md` or multi-context `GLOSSARY-MAP.md`
 - `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, and `docs/agents/domain.md`
-- `docs/rules/`, the repo-level rules directory (peer of `docs/adr/` and `docs/agents/`), seeded with `docs/rules/pr.md`
+- `docs/rules/`, the repo-level rules directory (peer of `docs/adr/` and `docs/agents/`), seeded with `docs/rules/pr.md` and `docs/rules/code-standards.md`
+- a thin `AGENTS.md`: material only some work needs moves behind a pointer
+- `LESSONS.md` and a nightly review, when the user accepts the loop
 
-It does **not** rewrite `AGENTS.md` or `CLAUDE.md`. If one of those files already exists, it only inserts or updates the `## Agent skills` pointer block. Writing or revising the rest of that file is `/writing-for-agents`. Logging foundation stays `/setup-logging`, not this skill.
+It never authors `CLAUDE.md`. A symlink to `AGENTS.md` stays one. Voice and product prose stay `/writing-for-agents`. Logging foundation stays `/setup-logging`.
 
 ### Empty Project Routing
 
@@ -310,7 +312,7 @@ Common skills:
 - `/research` saves cited primary-source evidence for an explicit question or Wayfinder ticket.
 - `/retro` looks back on a coding session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks (mechanical violations become deterministic checks), coding standards, steering files, tool economy. User-invoked; run it in the session it looks back on.
 - `/simplify` cleans up non-trivial changed code for reuse, smaller code, efficiency, and right-depth fixes.
-- `/setup-project` configures the issue tracker, triage labels, domain-doc layout, and repo-level rules (`docs/rules/`, seeded with the PR packet). It does not rewrite `AGENTS.md`.
+- `/setup-project` configures the issue tracker, triage labels, domain-doc layout, and repo-level rules (`docs/rules/`, seeded with the PR packet and `docs/rules/code-standards.md`). It thins `AGENTS.md` to a router and installs the nightly error notebook. It never authors `CLAUDE.md`. `/code-review` reads `docs/rules/code-standards.md` when it exists. `/tdd` requires the new test to fail by name against the old code.
 - `/harvest-pins` harvests and depreciates `AGENTS.md` Checklist pins from real agent sessions.
 - `/setup-logging` builds the project logging foundation when the shape requires it.
 - `/tdd` is the red → green reference (seams, anti-patterns); close to Matt upstream.
@@ -324,9 +326,10 @@ Common skills:
 
 - tracker / labels / domain docs under `docs/agents/`
 - `docs/rules/pr.md`, the PR packet (left untouched if the file already exists)
-- an `## Agent skills` pointer block, only inside an `AGENTS.md` or `CLAUDE.md` that already exists, including the fixed `### Work routing` line (agent-owned entry routing) and the `docs/rules/` pointer
+- an `## Agent skills` pointer block in `AGENTS.md`, including the fixed `### Work routing` line and, when the loop was accepted, `### Loop`
+- `LESSONS.md` and `docs/agents/loop.md`, when the loop was accepted
 
-It does not create or rewrite those files. Prose for them is `/writing-for-agents`.
+It creates `AGENTS.md` only as a router. It never writes `CLAUDE.md`. Voice and product prose stay `/writing-for-agents`.
 
 ## Why This Exists
 
@@ -397,7 +400,7 @@ The fix is progressive disclosure: keep `AGENTS.md` short, put domain language i
 
 ### Engineering Harness
 
-- [`setup-project`](skills/setup-project/SKILL.md) — issue tracker, triage labels, domain docs, plus repo-level rules in `docs/rules/` (seeded with the PR packet). Does not rewrite `AGENTS.md`; that prose is `/writing-for-agents`.
+- [`setup-project`](skills/setup-project/SKILL.md) — issue tracker, triage labels, domain docs, repo-level rules in `docs/rules/` (seeded with the PR packet and the review rules in `code-standards.md`), a thin `AGENTS.md` router, and the nightly error notebook. Never authors `CLAUDE.md`. Voice and product prose stay `/writing-for-agents`.
 - [`harvest-pins`](skills/harvest-pins/SKILL.md) — harvests and depreciates `AGENTS.md` Checklist pins from real Claude / Codex / Grok sessions (quote-gated, budgeted, human-gated). Wiring stays frozen.
 - [`setup-logging`](skills/setup-logging/SKILL.md) — builds a project logging foundation (crime-scene replay): unified logger API, correlation, fail-open sinks, redaction, how-to-read; stack recipes for Spring, Next.js, Python, Node, Go.
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md) — writing documents agents consume; skill packaging in `SKILL-MECHANICS.md`.

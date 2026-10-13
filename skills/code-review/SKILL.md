@@ -48,7 +48,7 @@ Look for the originating intent sources (collect **all** that apply; do not stop
 
 ### 3. Identify the standards sources
 
-Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
+Anything in the repo that documents how code should be written. Always include `docs/rules/code-standards.md` when it exists — `/setup-project` seeds it, and a repo without it has no acceptance rules to review against. Also `CODING_STANDARDS.md` or `CONTRIBUTING.md` when the repo has them. A missing `docs/rules/code-standards.md` is a finding: the acceptance rules were never installed. Say so, and do not invent a private checklist to fill the gap.
 
 On top of whatever the repo documents, the Standards axis always carries the **smell baseline** — a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. The full list, each smell as *what it is* → *how to fix*: [REVIEW-AXES.md](REVIEW-AXES.md). Two rules bind it:
 

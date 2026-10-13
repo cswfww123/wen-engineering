@@ -84,12 +84,12 @@ Use these under a flow, not instead of one.
 | A message that did not land | `/wait-what` |
 | Steps only a human can click | `/wizard` |
 | Write or edit `AGENTS.md` / a skill | `/writing-for-agents` |
-| First-time tracker, labels, domain docs | `/setup-project` |
+| Tracker, labels, domain docs, a thin AGENTS.md, the nightly notebook | `/setup-project` |
 | Logging foundation | `/setup-logging` |
 | Incoming raw issues | `/triage` |
 | Checklist pins from real sessions | `/harvest-pins` |
 
-`/setup-project` does not rewrite `AGENTS.md`. It writes `docs/agents/` and, only if a root file already exists, the `## Agent skills` pointer.
+`/setup-project` writes `docs/agents/`, thins `AGENTS.md` to a router, and installs `LESSONS.md` plus the nightly review. It never authors `CLAUDE.md`.
 
 ## Do not route here
 
@@ -97,4 +97,4 @@ Use these under a flow, not instead of one.
 - Re-authoring settled PRD rows (the grill frontier stays residual under a PRD).
 - `/wayfinder` for a feature whose route is already visible.
 - System QA (`/to-test-plan`, `/qa-run`) — optional `wen-test`, not this pack.
-- Creating or rewriting `AGENTS.md` from `/setup-project`.
+- Writing product prose into `AGENTS.md` from `/setup-project`. It writes pointers only. Voice and product rules stay `/writing-for-agents`.
